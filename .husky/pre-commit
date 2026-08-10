@@ -16,5 +16,6 @@ if [ "$NEEDS_CHECKS" = true ]; then
   pnpm run format:check
   pnpm run lint
   pnpm run typecheck
+  pnpm run knip
   cd ..
 fi

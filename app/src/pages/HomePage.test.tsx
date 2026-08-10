@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
-import { SITE_CREATE_COMMAND, SITE_NAME, SITE_REPO_URL } from '../siteConfig';
+import { SITE_CREATE_COMMAND, SITE_NAME, SITE_REPO_URL, SITE_TEMPLATE_REF } from '../siteConfig';
 import { HomePage } from './HomePage';
 
 afterEach(() => {
@@ -23,6 +23,7 @@ describe('HomePage', () => {
     render(<HomePage />);
     const snippet = screen.getByTestId('template-snippet');
     expect(snippet.textContent).toContain(SITE_CREATE_COMMAND);
+    expect(SITE_CREATE_COMMAND).toContain(SITE_TEMPLATE_REF);
     expect(snippet.textContent).toContain('scripts/create.sh');
   });
 

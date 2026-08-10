@@ -16,13 +16,7 @@ export const SITE_AUTHOR_NAME = 'Matthew Z Worthington';
 export const SITE_AUTHOR_URL = 'https://mzworthington.co.uk';
 
 /** One-line create script (prompts for name/slug). Prefer `| bash` (not `| sh`). */
-export const SITE_CREATE_COMMAND =
-  'curl -fsSL https://raw.githubusercontent.com/mzworthington/react-cloudflare-template/main/scripts/create.sh | bash';
-
-/** @deprecated Prefer SITE_CREATE_COMMAND. */
-export function templateCloneSnippet(): string {
-  return SITE_CREATE_COMMAND;
-}
+export const SITE_CREATE_COMMAND = `curl -fsSL https://raw.githubusercontent.com/${SITE_TEMPLATE_REF}/main/scripts/create.sh | bash`;
 
 /** Short hosting teaser; full walkthrough lives in docs/custom-domains. */
 export function hostingBootstrapSnippet(): string {
