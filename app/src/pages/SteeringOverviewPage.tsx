@@ -44,6 +44,11 @@ export function SteeringOverviewPage() {
           {model.mismatchSummary ? (
             <p className="steering-mismatch">{model.mismatchSummary}</p>
           ) : null}
+          {model.decisionNotesSummary ? (
+            <p className="steering-decisions">
+              <Link href="/workspace/decisions">{model.decisionNotesSummary}</Link>
+            </p>
+          ) : null}
         </div>
         <ul className="steering-status-counts" aria-label="Bet status summary">
           <li>

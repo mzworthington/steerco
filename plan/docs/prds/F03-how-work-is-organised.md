@@ -29,7 +29,8 @@ Edit and present the **four fundamental team types** and **three interaction mod
 6. No Backstage/GitHub/Entra labels in default UI
 7. Button: Prepare decision note (deep link to F07)
 
-**Slice 1.5+:** time-box collaboration/facilitation (`expectedUntil`); member edit UI; Slice 3: platform / value-stream **groupings** with fractal zoom (platform as a grouping of team types).
+**Slice 1.5+:** time-box collaboration/facilitation (`expectedUntil` / effective windows); member edit UI; dated capacity toward [F13](./F13-topology-timeline.md).  
+**Slice 3:** platform / value-stream **groupings** with fractal zoom; **topology timeline** view ([F13](./F13-topology-timeline.md)).
 
 ## Acceptance
 

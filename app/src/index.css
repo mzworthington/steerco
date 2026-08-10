@@ -661,6 +661,14 @@
     @apply text-ink-muted mt-2 text-sm;
   }
 
+  .steering-decisions {
+    @apply mt-3 text-sm font-medium;
+
+    a {
+      @apply text-ocean hover:underline;
+    }
+  }
+
   .steering-status-counts {
     @apply flex flex-wrap gap-4 text-sm font-semibold lg:flex-col lg:items-end;
   }
@@ -1070,5 +1078,137 @@
 
   .organisation-actions {
     @apply mt-8 flex justify-end;
+  }
+
+  .decision-notes-page {
+    @apply max-w-5xl;
+  }
+
+  .decision-notes-title {
+    @apply text-ink mt-2 text-3xl font-semibold tracking-tight;
+  }
+
+  .decision-notes-lead {
+    @apply text-ink-muted mt-3 max-w-2xl text-base leading-relaxed;
+  }
+
+  .decision-notes-layout {
+    @apply mt-8 grid gap-8 lg:grid-cols-[minmax(14rem,18rem)_1fr];
+  }
+
+  .decision-notes-list-header {
+    @apply mb-4 flex flex-wrap items-center justify-between gap-2;
+  }
+
+  .decision-notes-section-title {
+    @apply text-ink text-sm font-semibold tracking-wide uppercase;
+  }
+
+  .decision-notes-list ul {
+    @apply space-y-2;
+  }
+
+  .decision-notes-list-item {
+    @apply border-line text-ink hover:border-ocean/40 flex w-full flex-col gap-1 rounded-lg border bg-white px-3 py-3 text-left text-sm transition;
+  }
+
+  .decision-notes-list-item-active {
+    @apply border-ocean bg-foam/40;
+  }
+
+  .decision-notes-list-title {
+    @apply font-medium;
+  }
+
+  .decision-note-editor {
+    @apply border-line space-y-5 rounded-xl border bg-white px-5 py-5;
+  }
+
+  .decision-note-editor-top {
+    @apply grid gap-4 sm:grid-cols-[1fr_auto];
+  }
+
+  .decision-notes-field {
+    @apply text-ink flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+
+    input,
+    select,
+    textarea {
+      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+    }
+
+    textarea {
+      @apply min-h-24 resize-y;
+    }
+  }
+
+  .decision-notes-field-grow {
+    @apply min-w-0;
+  }
+
+  .decision-note-badge {
+    @apply text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .decision-note-section {
+    @apply space-y-3;
+  }
+
+  .decision-notes-helper {
+    @apply text-ink-muted text-sm leading-relaxed font-normal tracking-normal normal-case;
+  }
+
+  .decision-notes-suggestions {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .decision-notes-suggestion {
+    @apply border-line text-ink hover:border-ocean bg-foam/50 rounded-full border px-3 py-1 text-xs font-medium tracking-normal normal-case;
+  }
+
+  .decision-notes-teams {
+    @apply flex flex-col gap-2;
+  }
+
+  .decision-notes-team {
+    @apply text-ink flex items-center gap-2 text-sm font-normal tracking-normal normal-case;
+  }
+
+  .decision-notes-actions {
+    @apply flex flex-wrap items-center justify-end gap-3 pt-2;
+  }
+
+  .decision-notes-feedback {
+    @apply mt-1;
+  }
+
+  .decision-notes-error {
+    @apply text-sm font-medium text-red-700;
+  }
+
+  .decision-notes-saved {
+    @apply text-sm font-medium text-emerald-800;
+  }
+
+  .decision-notes-empty {
+    @apply text-ink-muted text-sm;
+  }
+
+  @media print {
+    .workspace-sidebar,
+    .decision-notes-list,
+    .decision-notes-actions,
+    .decision-notes-suggestions {
+      display: none !important;
+    }
+
+    .decision-notes-layout {
+      display: block;
+    }
+
+    .decision-note-editor {
+      border: none;
+      padding: 0;
+    }
   }
 }
