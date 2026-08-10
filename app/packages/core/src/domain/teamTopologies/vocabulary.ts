@@ -1,9 +1,11 @@
 /**
  * Team Topologies vocabulary baked into SteerLens.
- * Source of truth for team types and interaction modes:
+ * Source of truth for team types, interaction modes, and modeling shapes:
  * https://teamtopologies.com/key-concepts
+ * https://github.com/TeamTopologies/Team-Shape-Templates
  *
  * Executive UI uses these plain-language labels; SteerSpec stores canonical ids.
+ * Shape geometry (not colour alone) must stay distinct for colour-vision accessibility.
  */
 
 export const TEAM_TOPOLOGY_TYPES = [
@@ -19,6 +21,21 @@ export const INTERACTION_MODES = ['x_as_a_service', 'collaboration', 'facilitati
 
 export type InteractionMode = (typeof INTERACTION_MODES)[number];
 
+/** Official Team Topologies team modeling shape geometries. */
+export const TEAM_SHAPE_GEOMETRIES = [
+  'rounded_horizontal',
+  'square_dotted',
+  'rounded_vertical',
+  'octagon',
+] as const;
+
+export type TeamShapeGeometry = (typeof TEAM_SHAPE_GEOMETRIES)[number];
+
+/** Official Team Topologies interaction modeling shape geometries. */
+export const INTERACTION_SHAPE_GEOMETRIES = ['triangle', 'parallelogram', 'circle'] as const;
+
+export type InteractionShapeGeometry = (typeof INTERACTION_SHAPE_GEOMETRIES)[number];
+
 export type TopologyTypeCopy = {
   /** Canonical Team Topologies name */
   topologyName: string;
@@ -28,6 +45,10 @@ export type TopologyTypeCopy = {
   purpose: string;
   /** Teaching cue for new users */
   teaching: string;
+  /** Modeling-shape geometry from the Team Topologies shapes library */
+  shape: TeamShapeGeometry;
+  /** Short cue for why this geometry is used */
+  shapeTeaching: string;
 };
 
 export type InteractionModeCopy = {
@@ -37,6 +58,10 @@ export type InteractionModeCopy = {
   sentenceVerb: string;
   /** Short teaching line */
   teaching: string;
+  /** Modeling-shape geometry from the Team Topologies shapes library */
+  shape: InteractionShapeGeometry;
+  /** Short cue for why this geometry is used */
+  shapeTeaching: string;
 };
 
 export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
@@ -47,6 +72,8 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
       'Aligned to a flow of work from a segment of the business domain — they own outcomes end-to-end (“you build it, you run it”).',
     teaching:
       'Stream-aligned teams deliver customer value along a value stream. Platforms and specialists exist to accelerate them, not to own their outcomes.',
+    shape: 'rounded_horizontal',
+    shapeTeaching: 'Horizontal rounded rectangle — end-to-end flow of change toward the customer.',
   },
   platform: {
     topologyName: 'Platform',
@@ -55,6 +82,9 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
       'A grouping of team types that provide a compelling internal product so stream-aligned teams can move faster with less cognitive load.',
     teaching:
       'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams — not an org chart silo.',
+    shape: 'square_dotted',
+    shapeTeaching:
+      'Square corners with a dotted border — platform as a grouping boundary, not a single silo box.',
   },
   enabling: {
     topologyName: 'Enabling',
@@ -63,6 +93,8 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
       'Helps a stream-aligned team overcome obstacles and detect missing capabilities — then moves on rather than becoming a permanent delivery owner.',
     teaching:
       'Enabling teams facilitate and coach. Facilitation is temporary and focused; they should not absorb long-term delivery ownership.',
+    shape: 'rounded_vertical',
+    shapeTeaching: 'Vertical rounded rectangle — temporary uplift beside stream-aligned teams.',
   },
   complicated_subsystem: {
     topologyName: 'Complicated subsystem',
@@ -71,6 +103,8 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
       'Where significant mathematics, calculation, or deep technical expertise is needed — a specialist team that reduces load on stream-aligned teams.',
     teaching:
       'Use sparingly. Complicated-subsystem teams exist when the specialty would otherwise overload stream-aligned teams.',
+    shape: 'octagon',
+    shapeTeaching: 'Octagon — rare specialty that would otherwise overload stream-aligned teams.',
   },
 };
 
@@ -80,17 +114,23 @@ export const INTERACTION_MODE_COPY: Record<InteractionMode, InteractionModeCopy>
     sentenceVerb: 'uses as a service',
     teaching:
       'One team provides; another consumes with clear boundaries and minimal coordination cost.',
+    shape: 'triangle',
+    shapeTeaching: 'Triangle — the point faces the consumer of the service.',
   },
   collaboration: {
     modeName: 'Collaboration',
     sentenceVerb: 'collaborates with',
     teaching:
       'Working closely together for a defined period to discover new APIs, practices, or technologies — high bandwidth, high cost; time-box it.',
+    shape: 'parallelogram',
+    shapeTeaching: 'Parallelogram — high-bandwidth discovery; keep it time-boxed.',
   },
   facilitation: {
     modeName: 'Facilitation',
     sentenceVerb: 'facilitates',
     teaching: 'One team helps and mentors another — temporary, focused enablement.',
+    shape: 'circle',
+    shapeTeaching: 'Circle — temporary coaching and capability uplift.',
   },
 };
 

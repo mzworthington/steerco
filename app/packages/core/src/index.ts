@@ -33,11 +33,15 @@ export {
 export { DISCIPLINE_COPY, type DisciplineCopy } from './domain/capacity/disciplines';
 export {
   INTERACTION_MODE_COPY,
+  INTERACTION_SHAPE_GEOMETRIES,
+  TEAM_SHAPE_GEOMETRIES,
   TEAM_TOPOLOGY_TYPES,
   TOPOLOGY_TYPE_COPY,
   normalizeInteractionMode,
   normalizeTeamTopologyType,
   type InteractionModeCopy,
+  type InteractionShapeGeometry,
+  type TeamShapeGeometry,
   type TopologyTypeCopy,
 } from './domain/teamTopologies/vocabulary';
 export {

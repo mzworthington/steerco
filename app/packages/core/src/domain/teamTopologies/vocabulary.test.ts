@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import { parseSteerSpecYaml } from '../steerSpec/parseSteerSpecYaml';
-import { INTERACTION_MODE_COPY, TEAM_TOPOLOGY_TYPES, TOPOLOGY_TYPE_COPY } from './vocabulary';
+import {
+  INTERACTION_MODE_COPY,
+  INTERACTION_SHAPE_GEOMETRIES,
+  TEAM_SHAPE_GEOMETRIES,
+  TEAM_TOPOLOGY_TYPES,
+  TOPOLOGY_TYPE_COPY,
+} from './vocabulary';
 
 describe('Team Topologies vocabulary', () => {
   it('covers all four fundamental topologies', () => {
@@ -14,7 +20,14 @@ describe('Team Topologies vocabulary', () => {
       expect(TOPOLOGY_TYPE_COPY[type].topologyName.length).toBeGreaterThan(0);
       expect(TOPOLOGY_TYPE_COPY[type].purpose.length).toBeGreaterThan(20);
       expect(TOPOLOGY_TYPE_COPY[type].teaching.length).toBeGreaterThan(20);
+      expect(TOPOLOGY_TYPE_COPY[type].shapeTeaching.length).toBeGreaterThan(10);
     }
+  });
+
+  it('maps each topology to a distinct Team Topologies modeling shape', () => {
+    const shapes = TEAM_TOPOLOGY_TYPES.map((type) => TOPOLOGY_TYPE_COPY[type].shape);
+    expect(shapes).toEqual(['rounded_horizontal', 'square_dotted', 'rounded_vertical', 'octagon']);
+    expect(new Set(shapes).size).toBe(TEAM_SHAPE_GEOMETRIES.length);
   });
 
   it('covers the three interaction modes', () => {
@@ -23,6 +36,14 @@ describe('Team Topologies vocabulary', () => {
       'facilitation',
       'x_as_a_service',
     ]);
+  });
+
+  it('maps each interaction mode to a distinct modeling shape', () => {
+    expect(INTERACTION_MODE_COPY.x_as_a_service.shape).toBe('triangle');
+    expect(INTERACTION_MODE_COPY.collaboration.shape).toBe('parallelogram');
+    expect(INTERACTION_MODE_COPY.facilitation.shape).toBe('circle');
+    const shapes = Object.values(INTERACTION_MODE_COPY).map((copy) => copy.shape);
+    expect(new Set(shapes).size).toBe(INTERACTION_SHAPE_GEOMETRIES.length);
   });
 });
 

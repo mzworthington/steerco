@@ -67,7 +67,8 @@ describe('OrganisationPage', () => {
 
     expect(screen.getByTestId('organisation-page')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /how work is organised/i })).toBeTruthy();
-    expect(screen.getByText(/four team types from team topologies/i)).toBeTruthy();
+    expect(screen.getByText(/four team topologies shapes/i)).toBeTruthy();
+    expect(screen.getByTestId('organisation-capacity-board')).toBeTruthy();
     expect(
       screen.getByText(/storefront experience uses as a service fulfilment platform/i),
     ).toBeTruthy();
@@ -127,7 +128,7 @@ describe('OrganisationPage', () => {
     expect(parsed.spec.spec.teams.some((team) => team.displayName === 'Returns desk')).toBe(true);
   });
 
-  it('adds a member to an existing team into the session', async () => {
+  it('adds a person onto a team with quick add', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -141,11 +142,11 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    await user.type(screen.getByLabelText('Member name'), 'Nina Torres');
-    await user.type(screen.getByLabelText('Title'), 'Backend Engineer');
-    await user.click(screen.getByRole('button', { name: 'Add member' }));
+    await user.click(screen.getAllByRole('button', { name: 'Add person' })[0]!);
+    await user.type(screen.getByLabelText('Name'), 'Nina Torres');
+    await user.click(screen.getByRole('button', { name: 'Add to team' }));
 
-    expect(screen.getByText(/member added to this workspace session/i)).toBeTruthy();
+    expect(screen.getByText(/nina torres added to the team/i)).toBeTruthy();
     const stored = sessionStorage.getItem('steerlens.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
@@ -160,7 +161,7 @@ describe('OrganisationPage', () => {
     expect(hasMember).toBe(true);
   });
 
-  it('edits an existing member into the session', async () => {
+  it('edits allocation for an existing person', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -174,15 +175,15 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    const editButtons = screen.getAllByRole('button', { name: 'Edit' });
-    await user.click(editButtons[0]!);
-
-    expect(screen.getByRole('heading', { name: /edit member/i })).toBeTruthy();
+    await user.click(
+      screen.getByTestId('organisation-person-mem_storefront_em').querySelector('button')!,
+    );
+    expect(screen.getByTestId('organisation-allocation-editor')).toBeTruthy();
     await user.clear(screen.getByLabelText('Title'));
     await user.type(screen.getByLabelText('Title'), 'Interim Lead');
-    await user.click(screen.getByRole('button', { name: 'Save member' }));
+    await user.click(screen.getByRole('button', { name: 'Save allocation' }));
 
-    expect(screen.getByText(/member updated in this workspace session/i)).toBeTruthy();
-    expect(screen.getByText(/interim lead/i)).toBeTruthy();
+    expect(screen.getByText(/allocation updated/i)).toBeTruthy();
+    expect(screen.getByDisplayValue('Interim Lead')).toBeTruthy();
   });
 });

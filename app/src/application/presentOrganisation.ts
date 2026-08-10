@@ -8,10 +8,12 @@ import {
   normalizeInteractionMode,
   normalizeTeamTopologyType,
   type InteractionMode,
+  type InteractionShapeGeometry,
   type MemberDiscipline,
   type SteerMismatch,
   type SteerSpec,
   type TeamRole,
+  type TeamShapeGeometry,
 } from '@steerlens/core';
 
 export type OrganisationTeamRole = TeamRole;
@@ -26,6 +28,8 @@ export type OrganisationTeamMember = {
   ftePercent: number;
   effectiveFrom: string | null;
   effectiveUntil: string | null;
+  /** Short initials for capacity chips */
+  initials: string;
 };
 
 export type OrganisationTeamCard = {
@@ -34,6 +38,8 @@ export type OrganisationTeamCard = {
   role: OrganisationTeamRole;
   roleLabel: string;
   purpose: string;
+  shape: TeamShapeGeometry;
+  shapeTeaching: string;
   memberCount: number;
   fteTotal: number;
   capacityLabel: string;
@@ -46,6 +52,8 @@ export type OrganisationZone = {
   topologyName: string;
   purpose: string;
   teaching: string;
+  shape: TeamShapeGeometry;
+  shapeTeaching: string;
   teams: OrganisationTeamCard[];
 };
 
@@ -57,6 +65,8 @@ export type OrganisationRelationship = {
   mode: OrganisationInteractionMode;
   modeLabel: string;
   modeTeaching: string;
+  shape: InteractionShapeGeometry;
+  shapeTeaching: string;
   sentence: string;
   expectedUntil: string | null;
 };
@@ -122,9 +132,9 @@ export function presentOrganisation(spec: SteerSpec): OrganisationModel {
       topologyName: copy.topologyName,
       purpose: copy.purpose,
       teaching: copy.teaching,
-      teams: teams
-        .filter((team) => team.role === role)
-        .map((team) => presentTeamCard(team, copy.topologyName, copy.purpose)),
+      shape: copy.shape,
+      shapeTeaching: copy.shapeTeaching,
+      teams: teams.filter((team) => team.role === role).map((team) => presentTeamCard(team, copy)),
     };
   });
 
@@ -143,6 +153,8 @@ export function presentOrganisation(spec: SteerSpec): OrganisationModel {
         mode: relationship.mode,
         modeLabel: modeCopy.modeName,
         modeTeaching: modeCopy.teaching,
+        shape: modeCopy.shape,
+        shapeTeaching: modeCopy.shapeTeaching,
         sentence: `${from.displayName} ${modeCopy.sentenceVerb} ${to.displayName}`,
         expectedUntil: relationship.expectedUntil ?? null,
       },
@@ -153,9 +165,9 @@ export function presentOrganisation(spec: SteerSpec): OrganisationModel {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     lead: 'Topology intent for fast flow of value — not an HR reporting chart.',
     teachingLine:
-      'Four team types from Team Topologies: stream-aligned, platform, enabling, and complicated subsystem. Platforms exist to reduce cognitive load so stream-aligned teams can ship faster.',
+      'Four Team Topologies shapes: stream-aligned (horizontal), platform (dotted square), enabling (vertical), and complicated subsystem (octagon). Platforms exist to reduce cognitive load so stream-aligned teams can ship faster.',
     interactionTeaching:
-      'Only three interaction modes: X-as-a-Service, Collaboration (time-boxed), and Facilitation. Ambiguous “we should coordinate more” is not a mode.',
+      'Only three interaction modes — and three shapes: X-as-a-Service (triangle), Collaboration (parallelogram), Facilitation (circle). Drag people between teams to reshape capacity.',
     empty: teams.length === 0,
     zones,
     relationships,
@@ -191,23 +203,24 @@ function normalizeRelationship(
 
 function presentTeamCard(
   team: SteerSpec['spec']['teams'][number],
-  roleLabel: string,
-  purpose: string,
+  copy: (typeof TOPOLOGY_TYPE_COPY)[TeamRole],
 ): OrganisationTeamCard {
   const members = team.members ?? [];
   const fteTotal = members.reduce((sum, member) => sum + member.ftePercent, 0) / 100;
   const memberCount = members.length;
   const capacityLabel =
     memberCount === 0
-      ? 'No members recorded yet'
-      : `${memberCount} ${memberCount === 1 ? 'member' : 'members'} · ${formatFte(fteTotal)} FTE`;
+      ? 'No people yet — add or drag someone here'
+      : `${memberCount} ${memberCount === 1 ? 'person' : 'people'} · ${formatFte(fteTotal)} FTE`;
 
   return {
     id: team.id,
     displayName: team.displayName,
     role: team.role,
-    roleLabel,
-    purpose,
+    roleLabel: copy.topologyName,
+    purpose: copy.purpose,
+    shape: copy.shape,
+    shapeTeaching: copy.shapeTeaching,
     memberCount,
     fteTotal,
     capacityLabel,
@@ -220,6 +233,7 @@ function presentTeamCard(
       ftePercent: member.ftePercent,
       effectiveFrom: member.effectiveFrom ?? null,
       effectiveUntil: member.effectiveUntil ?? null,
+      initials: initialsFor(member.displayName),
     })),
   };
 }
@@ -332,12 +346,9 @@ function validateOrganisationMemberFields(
     }
   | { ok: false; error: string } {
   const displayName = input.displayName.trim();
-  const title = input.title.trim();
+  const title = input.title.trim() || DISCIPLINE_COPY[input.discipline].label;
   if (!displayName) {
-    return { ok: false, error: 'Give the member a name before saving.' };
-  }
-  if (!title) {
-    return { ok: false, error: 'Give the member a title before saving.' };
+    return { ok: false, error: 'Give the person a name before saving.' };
   }
   if (!Number.isFinite(input.ftePercent) || input.ftePercent < 0 || input.ftePercent > 100) {
     return { ok: false, error: 'FTE percent must be between 0 and 100.' };
@@ -449,8 +460,98 @@ export function applyUpdateOrganisationMember(
   };
 }
 
+export type MoveOrganisationMemberInput = {
+  memberId: string;
+  fromTeamId: string;
+  toTeamId: string;
+  /** Optional FTE override when dropping onto the destination team. */
+  ftePercent?: number;
+};
+
+export function applyMoveOrganisationMember(
+  spec: SteerSpec,
+  input: MoveOrganisationMemberInput,
+): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+  if (!input.fromTeamId || !input.toTeamId) {
+    return { ok: false, error: 'Choose both the current and destination teams.' };
+  }
+  if (input.fromTeamId === input.toTeamId) {
+    if (input.ftePercent === undefined) {
+      return { ok: true, value: spec };
+    }
+    const team = spec.spec.teams.find((item) => item.id === input.fromTeamId);
+    const member = team?.members?.find((item) => item.id === input.memberId);
+    if (!team || !member) {
+      return { ok: false, error: 'That person is not on the selected team.' };
+    }
+    return applyUpdateOrganisationMember(spec, {
+      teamId: input.fromTeamId,
+      memberId: input.memberId,
+      displayName: member.displayName,
+      title: member.title,
+      discipline: member.discipline,
+      ftePercent: input.ftePercent,
+      effectiveFrom: member.effectiveFrom,
+      effectiveUntil: member.effectiveUntil,
+    });
+  }
+
+  const fromIndex = spec.spec.teams.findIndex((team) => team.id === input.fromTeamId);
+  const toIndex = spec.spec.teams.findIndex((team) => team.id === input.toTeamId);
+  if (fromIndex < 0 || toIndex < 0) {
+    return { ok: false, error: 'Both teams must already be in this workspace.' };
+  }
+  const fromTeam = spec.spec.teams[fromIndex];
+  const toTeam = spec.spec.teams[toIndex];
+  if (!fromTeam || !toTeam) {
+    return { ok: false, error: 'Both teams must already be in this workspace.' };
+  }
+
+  const fromMembers = [...(fromTeam.members ?? [])];
+  const memberIndex = fromMembers.findIndex((member) => member.id === input.memberId);
+  if (memberIndex < 0) {
+    return { ok: false, error: 'That person is not on the selected team.' };
+  }
+  const [member] = fromMembers.splice(memberIndex, 1);
+  if (!member) {
+    return { ok: false, error: 'That person is not on the selected team.' };
+  }
+
+  if ((toTeam.members ?? []).some((item) => item.id === member.id)) {
+    return { ok: false, error: 'That person is already on the destination team.' };
+  }
+
+  const moved = {
+    ...member,
+    ftePercent: input.ftePercent ?? member.ftePercent,
+  };
+  const nextTeams = [...spec.spec.teams];
+  nextTeams[fromIndex] = { ...fromTeam, members: fromMembers };
+  nextTeams[toIndex] = {
+    ...toTeam,
+    members: [...(toTeam.members ?? []), moved],
+  };
+
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        teams: nextTeams,
+      },
+    },
+  };
+}
+
 function formatFte(value: number): string {
   return Number.isInteger(value) ? String(value) : value.toFixed(1);
+}
+
+function initialsFor(displayName: string): string {
+  const parts = displayName.trim().split(/\s+/).filter(Boolean).slice(0, 2);
+  if (parts.length === 0) return '?';
+  return parts.map((part) => part.charAt(0).toUpperCase()).join('');
 }
 
 function uniqueTeamId(spec: SteerSpec, displayName: string): string {
