@@ -4,7 +4,7 @@ SteerLens executive theme is a **light editorial** board-pack language: warm sto
 
 Live showcase: [`/design-system`](/design-system). Vector sources: [Design pack](/docs/design-pack).
 
-The logo lockup is still provisional. Preferred mark exploration: `mockups/logo-explorations/steerlens-logo-v16-reticle-arrow.png` (reticle frame + northeast arrow). Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … `04`.
+Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … `04`. Mark direction: sketch `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (evolved from v16 reticle).
 
 ---
 
@@ -12,8 +12,22 @@ The logo lockup is still provisional. Preferred mark exploration: `mockups/logo-
 
 - **Atmosphere:** warm paper / stone (`#f7f5f3`), not cool grey or dark HUD.
 - **Accent:** deep ocean blue (`#044a88`) for CTAs, active nav, on-track.
-- **Wordmark:** Fraunces (serif) at hero weight; mark is the reticle + arrow in ink.
+- **Wordmark:** Fraunces (serif) at hero weight; ink `#041c38`.
 - **First viewport:** brand as hero-level signal, one headline, one lead, one CTA group.
+
+### Mark
+
+Motif: **two hexagons + northeast arrowhead** (scooped base). Still provisional as a lockup, but this is the working direction.
+
+| Use                                          | Asset                      | Rule                               |
+| -------------------------------------------- | -------------------------- | ---------------------------------- |
+| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only**                     |
+| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Hexagons + arrow** (site header) |
+| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field            |
+
+Do not put the full hexagons+arrow motif in a tight square — it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
+
+Explorations: `mockups/logo-explorations/` (v16 reticle ancestry + dots-arrow sketch → hexagons).
 
 ---
 
@@ -65,6 +79,7 @@ Showcase-only classes (`.ds-*`, `.token-*`, `.asset-*`) stay on `/design-system`
 - No purple gradients, no dark-cyber default, no YAML in executive chrome.
 - Distinct fonts — not Inter / Roboto / system-only stacks.
 - Cards only when they carry interaction; prefer whitespace over chrome.
+- Square logos = arrow only; wide brand moments may use hexagons + arrow.
 - Keep SVG fills in `design-pack/` aligned when tokens change.
 
 ---

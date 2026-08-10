@@ -24,17 +24,15 @@
     <path d="M80 0 V630 M160 0 V630 M240 0 V630 M320 0 V630 M400 0 V630 M480 0 V630 M560 0 V630 M640 0 V630 M720 0 V630 M800 0 V630 M880 0 V630 M960 0 V630 M1040 0 V630 M1120 0 V630"/>
   </g>
 
-  <g transform="translate(760, 115) scale(0.8)">
-    <g fill="none" stroke="#041c38" stroke-width="20" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="78" y="78" width="344" height="344" rx="52"/>
-      <path d="M250 40 V88"/>
-      <path d="M250 412 V460"/>
-      <path d="M40 250 H88"/>
-      <path d="M412 250 H460"/>
-      <rect x="150" y="150" width="200" height="200" rx="2"/>
-    </g>
+  <g transform="translate(700 215) scale(0.7)">
     <path fill="#041c38"
-          d="M306 176 L178 248 L214 270 L188 322 L248 300 L270 336 Z"/>
+          d="M 70 62 L 102.91 81 L 102.91 119 L 70 138 L 37.09 119 L 37.09 81 Z"/>
+    <path fill="#041c38"
+          d="M 190 62 L 222.91 81 L 222.91 119 L 190 138 L 157.09 119 L 157.09 81 Z"/>
+    <g transform="translate(302 100) rotate(-45)">
+      <path fill="#041c38"
+            d="M 48 0 L -48 38 Q -18 0 -48 -38 Z"/>
+    </g>
   </g>
 
   <text x="88" y="268"

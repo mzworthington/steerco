@@ -30,7 +30,7 @@ export function DesignSystemPage() {
           <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             design-pack/
           </code>
-          . Distinct from ArchLens; logo lockup still provisional (preferred mark: reticle + arrow).
+          . Distinct from ArchLens. Mark: hexagons + arrow lockup; square icons use the arrow alone.
         </p>
       </header>
 
@@ -72,16 +72,23 @@ function IdentityPanel() {
       <section className="ds-section">
         <h2>Brand signal</h2>
         <p>
-          Product name as a hero-level serif signal; reticle mark for precision and steering. First
-          viewport: brand, one headline, one lead line, one CTA group — not a dashboard of cards.
+          Product name as a hero-level serif signal. Motif is two hexagons + a northeast arrowhead;
+          square surfaces (nav, favicon, app icons) use the arrow alone. First viewport: brand, one
+          headline, one lead line, one CTA group — not a dashboard of cards.
         </p>
-        <div className="surface mt-6 flex items-center gap-4">
-          <BrandMark className="h-12 w-12" />
-          <div>
-            <p className="font-display text-ink text-2xl font-semibold tracking-tight">
-              {SITE_NAME}
-            </p>
-            <p className="text-ink-muted mt-1 text-sm">Reticle + arrow · provisional lockup</p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="surface flex items-center gap-4">
+            <BrandMark className="h-12 w-12" />
+            <div>
+              <p className="font-display text-ink text-2xl font-semibold tracking-tight">
+                {SITE_NAME}
+              </p>
+              <p className="text-ink-muted mt-1 text-sm">Arrow only · square / favicon</p>
+            </div>
+          </div>
+          <div className="surface flex flex-col justify-center gap-3">
+            <BrandMark variant="lockup" className="h-10 w-auto" />
+            <p className="text-ink-muted text-sm">Hexagons + arrow · header / wide</p>
           </div>
         </div>
       </section>
@@ -185,24 +192,34 @@ function AssetsPanel() {
         <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
           app/public/
         </code>
-        . Preferred exploration:{' '}
+        . Square assets are arrow-only;{' '}
         <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
-          steerlens-logo-v16-reticle-arrow.png
-        </code>
-        .
+          logo-lockup.svg
+        </code>{' '}
+        carries the full hexagons + arrow motif.
       </p>
       <div className="asset-grid">
         <figure className="asset-tile">
           <img src="/assets/logo.svg" alt="" width={64} height={64} />
-          <figcaption>logo.svg · light nav</figcaption>
+          <figcaption>logo.svg · arrow (square / nav)</figcaption>
         </figure>
         <figure className="asset-tile asset-tile-dark">
           <img src="/assets/logo-dark.svg" alt="" width={64} height={64} />
-          <figcaption>logo-dark.svg · dark surfaces</figcaption>
+          <figcaption>logo-dark.svg · arrow on ink</figcaption>
         </figure>
         <figure className="asset-tile">
           <img src="/favicon.svg" alt="" width={64} height={64} />
-          <figcaption>favicon.svg · tab icon</figcaption>
+          <figcaption>favicon.svg · arrow only</figcaption>
+        </figure>
+        <figure className="asset-tile sm:col-span-2 lg:col-span-3">
+          <img
+            src="/assets/logo-lockup.svg"
+            alt=""
+            width={280}
+            height={88}
+            className="h-14 w-auto"
+          />
+          <figcaption>logo-lockup.svg · hexagons + arrow (wide)</figcaption>
         </figure>
         <figure className="asset-tile sm:col-span-2 lg:col-span-3">
           <img

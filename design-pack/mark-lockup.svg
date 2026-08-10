@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 356 200" role="img" aria-label="SteerLens lockup mark">
+  <!-- Two pointy-top hexagons + NE arrow, tight spacing. -->
+  <path fill="#041c38"
+        d="M 70 62
+           L 102.91 81
+           L 102.91 119
+           L 70 138
+           L 37.09 119
+           L 37.09 81
+           Z"/>
+  <path fill="#041c38"
+        d="M 190 62
+           L 222.91 81
+           L 222.91 119
+           L 190 138
+           L 157.09 119
+           L 157.09 81
+           Z"/>
+  <g transform="translate(302 100) rotate(-45)">
+    <path fill="#041c38"
+          d="M 48 0
+             L -48 38
+             Q -18 0 -48 -38
+             Z"/>
+  </g>
+</svg>

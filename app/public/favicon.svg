@@ -1,19 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="SteerLens">
   <rect width="32" height="32" rx="7" fill="#041c38"/>
-  <g fill="none" stroke="#f7f5f3" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="6.2" y="6.2" width="19.6" height="19.6" rx="3.2"/>
-    <path d="M16 3.1 V6.4"/>
-    <path d="M16 25.6 V28.9"/>
-    <path d="M3.1 16 H6.4"/>
-    <path d="M25.6 16 H28.9"/>
-    <rect x="10.4" y="10.4" width="11.2" height="11.2" rx="0.3"/>
+  <g transform="translate(16 16) rotate(-45)">
+    <path fill="#f7f5f3"
+          d="M 8.2 0
+             L -8.2 6.4
+             Q -3.0 0 -8.2 -6.4
+             Z"/>
   </g>
-  <path fill="#f7f5f3"
-        d="M19.6 11.4
-           L11.5 15.9
-           L13.7 17.3
-           L12.1 20.5
-           L15.8 19.2
-           L17.2 21.4
-           Z"/>
 </svg>
