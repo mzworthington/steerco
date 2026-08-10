@@ -1,17 +1,36 @@
 @import 'tailwindcss';
 
+/*
+  SteerLens executive theme — light editorial stone + ocean.
+  Preferred mark: reticle + arrow (design-pack/). Logo lockup still provisional.
+  Aliases: --vl-ink / --vl-paper / --vl-accent mirror architecture docs.
+*/
 @theme {
-  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
-  --font-sans: 'Source Sans 3', ui-sans-serif, system-ui, sans-serif;
-  --color-ink: #0b1220;
-  --color-ink-muted: #4a5568;
-  --color-mist: #eef2f6;
-  --color-mist-soft: #f7f9fb;
-  --color-accent: #0f766e;
-  --color-accent-hover: #0d9488;
-  --color-line: #d5dde8;
+  --font-display: 'Fraunces', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: #041c38;
+  --color-ink-muted: #5c6570;
+  --color-paper: #f7f5f3;
+  --color-paper-soft: #fbfaf8;
+  --color-stone: #ebe7e2;
+  --color-ocean: #044a88;
+  --color-ocean-hover: #0a5ca0;
+  --color-ocean-soft: #e8edf3;
+  --color-line: #ddd8d2;
+  --color-coral: #d84c40;
+  --color-coral-soft: #fcf5ef;
+  --color-amber: #b87c18;
+  --color-signal: #248054;
+
   --animate-fade-up: fade-up 0.7s ease-out both;
   --animate-fade-in: fade-in 0.35s ease-out both;
+}
+
+:root {
+  --vl-ink: var(--color-ink);
+  --vl-paper: var(--color-paper);
+  --vl-accent: var(--color-ocean);
 }
 
 @keyframes fade-up {
@@ -40,11 +59,11 @@
   }
 
   body {
-    @apply bg-mist-soft text-ink font-sans;
+    @apply bg-paper text-ink font-sans;
   }
 
   ::selection {
-    @apply bg-accent/20 text-ink;
+    @apply bg-ocean/20 text-ink;
   }
 }
 
@@ -58,7 +77,7 @@
   }
 
   .site-nav {
-    @apply border-line/70 bg-mist-soft/85 sticky top-0 z-20 border-b backdrop-blur-md;
+    @apply border-line/70 bg-paper-soft/90 sticky top-0 z-20 border-b backdrop-blur-md;
   }
 
   .site-nav-inner {
@@ -66,7 +85,7 @@
   }
 
   .site-brand {
-    @apply font-display text-ink hover:text-accent text-lg font-bold tracking-tight transition-colors;
+    @apply font-display text-ink hover:text-ocean text-lg font-semibold tracking-tight transition-colors;
   }
 
   .site-nav-links {
@@ -79,7 +98,7 @@
 
   .site-nav-link::after {
     content: '';
-    @apply bg-accent absolute -bottom-1 left-0 h-px w-0 transition-all duration-300;
+    @apply bg-ocean absolute -bottom-1 left-0 h-px w-0 transition-all duration-300;
   }
 
   .site-nav-link:hover::after {
@@ -95,23 +114,28 @@
   }
 
   .site-footer a {
-    @apply text-ink hover:text-accent underline-offset-4 transition-colors hover:underline;
+    @apply text-ink hover:text-ocean underline-offset-4 transition-colors hover:underline;
   }
 
   .coming-soon {
     @apply relative isolate overflow-hidden;
     background:
-      radial-gradient(ellipse 80% 60% at 15% 10%, rgb(15 118 110 / 0.16), transparent 55%),
-      radial-gradient(ellipse 70% 50% at 90% 20%, rgb(37 99 235 / 0.08), transparent 50%),
-      linear-gradient(180deg, var(--color-mist) 0%, var(--color-mist-soft) 55%, #fff 100%);
+      radial-gradient(ellipse 80% 55% at 12% 8%, rgb(4 74 136 / 0.12), transparent 55%),
+      radial-gradient(ellipse 65% 45% at 92% 18%, rgb(184 124 24 / 0.06), transparent 50%),
+      linear-gradient(
+        180deg,
+        var(--color-stone) 0%,
+        var(--color-paper) 50%,
+        var(--color-paper-soft) 100%
+      );
   }
 
   .coming-soon::before {
     content: '';
-    @apply pointer-events-none absolute inset-0 opacity-[0.35];
+    @apply pointer-events-none absolute inset-0 opacity-[0.4];
     background-image:
-      linear-gradient(to right, rgb(11 18 32 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(11 18 32 / 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgb(4 28 56 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(4 28 56 / 0.05) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: linear-gradient(180deg, #000 20%, transparent 90%);
   }
@@ -126,11 +150,11 @@
   }
 
   .coming-soon-name {
-    @apply font-display text-ink text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl;
+    @apply font-display text-ink text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl;
   }
 
   .coming-soon-title {
-    @apply font-display text-accent mt-8 text-2xl font-bold tracking-tight sm:text-3xl;
+    @apply font-display text-ocean mt-8 text-2xl font-semibold tracking-tight sm:text-3xl;
     animation: fade-up 0.7s ease-out 0.12s both;
   }
 
@@ -142,17 +166,22 @@
   .hero {
     @apply relative isolate overflow-hidden;
     background:
-      radial-gradient(ellipse 80% 60% at 15% 10%, rgb(15 118 110 / 0.14), transparent 55%),
-      radial-gradient(ellipse 70% 50% at 90% 20%, rgb(37 99 235 / 0.08), transparent 50%),
-      linear-gradient(180deg, var(--color-mist) 0%, var(--color-mist-soft) 55%, #fff 100%);
+      radial-gradient(ellipse 80% 55% at 12% 8%, rgb(4 74 136 / 0.1), transparent 55%),
+      radial-gradient(ellipse 65% 45% at 92% 18%, rgb(184 124 24 / 0.05), transparent 50%),
+      linear-gradient(
+        180deg,
+        var(--color-stone) 0%,
+        var(--color-paper) 50%,
+        var(--color-paper-soft) 100%
+      );
   }
 
   .hero::before {
     content: '';
-    @apply pointer-events-none absolute inset-0 opacity-[0.35];
+    @apply pointer-events-none absolute inset-0 opacity-[0.4];
     background-image:
-      linear-gradient(to right, rgb(11 18 32 / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(11 18 32 / 0.05) 1px, transparent 1px);
+      linear-gradient(to right, rgb(4 28 56 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(4 28 56 / 0.05) 1px, transparent 1px);
     background-size: 48px 48px;
     mask-image: linear-gradient(180deg, #000 20%, transparent 90%);
   }
@@ -162,7 +191,7 @@
   }
 
   .hero-brand {
-    @apply font-display text-ink text-5xl font-extrabold tracking-tight sm:text-6xl lg:text-7xl;
+    @apply font-display text-ink text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl;
     animation: fade-up 0.7s ease-out both;
   }
 
@@ -190,7 +219,7 @@
   }
 
   .hero-snippet pre {
-    @apply border-line bg-ink text-mist-soft overflow-x-auto rounded-lg border px-4 py-3 text-sm leading-relaxed;
+    @apply border-line bg-ink text-paper-soft overflow-x-auto rounded-lg border px-4 py-3 text-sm leading-relaxed;
   }
 
   .hero-snippet code {
@@ -202,27 +231,55 @@
   }
 
   .hero-snippet-hint a {
-    @apply text-accent hover:text-accent-hover font-medium transition-colors;
+    @apply text-ocean hover:text-ocean-hover font-medium transition-colors;
   }
 
   .btn-primary {
-    @apply bg-accent hover:bg-accent-hover inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold text-white transition-colors;
+    @apply bg-ocean hover:bg-ocean-hover inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors;
   }
 
   .btn-secondary {
-    @apply border-line text-ink hover:border-accent hover:text-accent inline-flex items-center justify-center rounded-md border px-5 py-2.5 text-sm font-semibold transition-colors;
+    @apply border-line text-ink hover:border-ocean hover:text-ocean inline-flex items-center justify-center rounded-lg border bg-white px-5 py-2.5 text-sm font-semibold transition-colors;
   }
 
   .btn-tertiary {
-    @apply text-ink-muted hover:text-ink inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-semibold transition-colors;
+    @apply text-ink-muted hover:text-ink inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors;
   }
 
   .surface {
-    @apply border-line bg-mist-soft rounded-lg border p-5;
+    @apply border-line rounded-xl border bg-white p-5 shadow-[0_1px_2px_rgb(4_28_56_/_0.04)];
+  }
+
+  .surface-ocean {
+    @apply bg-ocean rounded-xl p-5 text-white shadow-[0_1px_2px_rgb(4_28_56_/_0.08)];
   }
 
   .eyebrow {
-    @apply text-ink-muted font-mono text-xs font-semibold tracking-[0.14em] uppercase;
+    @apply text-ink-muted font-sans text-xs font-semibold tracking-[0.14em] uppercase;
+  }
+
+  .eyebrow-signal {
+    @apply text-coral font-sans text-xs font-semibold tracking-[0.16em] uppercase;
+  }
+
+  .status-on-track {
+    @apply text-ocean;
+  }
+
+  .status-at-risk {
+    @apply text-amber;
+  }
+
+  .status-stop {
+    @apply text-coral;
+  }
+
+  .status-signal {
+    @apply text-signal;
+  }
+
+  .callout-stop {
+    @apply border-coral/50 bg-coral-soft rounded-xl border px-5 py-4;
   }
 
   .docs-layout {
@@ -234,7 +291,7 @@
   }
 
   .docs-sidebar-title {
-    @apply font-display text-ink text-sm font-bold tracking-wide uppercase;
+    @apply font-display text-ink text-sm font-semibold tracking-wide uppercase;
   }
 
   .docs-nav {
@@ -242,7 +299,7 @@
   }
 
   .docs-nav a {
-    @apply text-ink-muted hover:bg-mist hover:text-ink block rounded-md px-3 py-2 text-sm font-medium transition-colors;
+    @apply text-ink-muted hover:bg-stone hover:text-ink block rounded-lg px-3 py-2 text-sm font-medium transition-colors;
   }
 
   .docs-content {
@@ -250,7 +307,7 @@
   }
 
   .docs-content > h1 {
-    @apply font-display text-ink text-3xl font-bold tracking-tight sm:text-4xl;
+    @apply font-display text-ink text-3xl font-semibold tracking-tight sm:text-4xl;
   }
 
   .prose-docs {
@@ -258,7 +315,7 @@
   }
 
   .prose-docs :where(h1, h2, h3, h4) {
-    @apply font-display text-ink mt-10 mb-3 font-bold tracking-tight first:mt-0;
+    @apply font-display text-ink mt-10 mb-3 font-semibold tracking-tight first:mt-0;
   }
 
   .prose-docs h2 {
@@ -274,7 +331,7 @@
   }
 
   .prose-docs a {
-    @apply text-accent decoration-accent/30 hover:text-accent-hover hover:decoration-accent font-semibold underline underline-offset-2 transition-colors;
+    @apply text-ocean decoration-ocean/30 hover:text-ocean-hover hover:decoration-ocean font-semibold underline underline-offset-2 transition-colors;
   }
 
   .prose-docs ul,
@@ -291,11 +348,11 @@
   }
 
   .prose-docs code {
-    @apply bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em];
+    @apply bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em];
   }
 
   .prose-docs pre {
-    @apply border-line bg-ink text-mist-soft my-6 overflow-x-auto rounded-lg border px-4 py-3 text-sm;
+    @apply border-line bg-ink text-paper-soft my-6 overflow-x-auto rounded-lg border px-4 py-3 text-sm;
   }
 
   .prose-docs pre code {
@@ -316,7 +373,7 @@
   }
 
   .prose-docs blockquote {
-    @apply border-accent/40 text-ink-muted my-6 border-l-2 pl-4 italic;
+    @apply border-ocean/40 text-ink-muted my-6 border-l-2 pl-4 italic;
   }
 
   .prose-docs hr {
@@ -328,14 +385,14 @@
   }
 
   .not-found h1 {
-    @apply font-display text-ink text-4xl font-bold tracking-tight;
+    @apply font-display text-ink text-4xl font-semibold tracking-tight;
   }
 
   .not-found p {
     @apply text-ink-muted mt-3;
   }
 
-  /* Lightweight design-system showcase */
+  /* Design-system showcase */
   .ds-page {
     @apply mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14;
   }
@@ -345,7 +402,7 @@
   }
 
   .ds-intro h1 {
-    @apply font-display text-ink mt-3 text-3xl font-bold tracking-tight sm:text-4xl;
+    @apply font-display text-ink mt-3 text-3xl font-semibold tracking-tight sm:text-4xl;
   }
 
   .ds-intro p {
@@ -357,11 +414,11 @@
   }
 
   .ds-tab {
-    @apply text-ink-muted hover:text-ink shrink-0 rounded-t-md px-4 py-2.5 text-sm font-semibold transition-colors;
+    @apply text-ink-muted hover:text-ink shrink-0 rounded-t-lg px-4 py-2.5 text-sm font-semibold transition-colors;
   }
 
   .ds-tab[aria-selected='true'] {
-    @apply text-accent border-accent border-b-2;
+    @apply text-ocean border-ocean border-b-2;
   }
 
   .ds-panel {
@@ -369,7 +426,7 @@
   }
 
   .ds-section h2 {
-    @apply font-display text-ink text-xl font-bold tracking-tight;
+    @apply font-display text-ink text-xl font-semibold tracking-tight;
   }
 
   .ds-section > p {
@@ -381,7 +438,7 @@
   }
 
   .token-card {
-    @apply border-line overflow-hidden rounded-lg border bg-white;
+    @apply border-line overflow-hidden rounded-xl border bg-white shadow-[0_1px_2px_rgb(4_28_56_/_0.04)];
   }
 
   .token-swatch {
@@ -405,7 +462,7 @@
   }
 
   .asset-tile {
-    @apply border-line flex flex-col items-center gap-3 rounded-lg border bg-white p-6;
+    @apply border-line flex flex-col items-center gap-3 rounded-xl border bg-white p-6;
   }
 
   .asset-tile img {
@@ -421,7 +478,7 @@
   }
 
   .asset-tile-dark figcaption {
-    @apply text-mist;
+    @apply text-stone;
   }
 
   .type-stack {
@@ -429,7 +486,7 @@
   }
 
   .type-sample-display {
-    @apply font-display text-ink text-4xl font-bold tracking-tight;
+    @apply font-display text-ink text-4xl font-semibold tracking-tight;
   }
 
   .type-sample-body {
@@ -442,5 +499,13 @@
 
   .recipe-row {
     @apply mt-6 flex flex-wrap items-center gap-3;
+  }
+
+  .status-row {
+    @apply mt-6 flex flex-wrap items-center gap-6 text-sm font-semibold;
+  }
+
+  .status-dot {
+    @apply mr-2 inline-block h-2.5 w-2.5 rounded-full;
   }
 }

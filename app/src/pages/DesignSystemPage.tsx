@@ -18,19 +18,19 @@ export function DesignSystemPage() {
   return (
     <div className="ds-page" data-testid="design-system">
       <header className="ds-intro">
-        <p className="eyebrow">Coastal-ink</p>
+        <p className="eyebrow">Executive · stone &amp; ocean</p>
         <h1>Design system</h1>
         <p>
-          Lightweight starter language for this template — tokens, assets, and a few named recipes.
-          Rebrand the values in{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          Light editorial language for SteerLens — board-pack calm, deep ocean accent, serif titles.
+          Tokens live in{' '}
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             app/src/index.css
-          </code>{' '}
-          and{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          </code>
+          ; vector sources in{' '}
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             design-pack/
-          </code>{' '}
-          when the product is yours.
+          </code>
+          . Distinct from ArchLens; logo lockup still provisional (preferred mark: reticle + arrow).
         </p>
       </header>
 
@@ -72,15 +72,16 @@ function IdentityPanel() {
       <section className="ds-section">
         <h2>Brand signal</h2>
         <p>
-          The first viewport should read as one composition: product name as the hero, one lead
-          line, one CTA group, and atmosphere from mist gradients plus a soft drafting grid — not a
-          dashboard of cards.
+          Product name as a hero-level serif signal; reticle mark for precision and steering. First
+          viewport: brand, one headline, one lead line, one CTA group — not a dashboard of cards.
         </p>
         <div className="surface mt-6 flex items-center gap-4">
           <BrandMark className="h-12 w-12" />
           <div>
-            <p className="font-display text-ink text-2xl font-bold tracking-tight">{SITE_NAME}</p>
-            <p className="text-ink-muted mt-1 text-sm">Mark + wordmark · coastal-ink</p>
+            <p className="font-display text-ink text-2xl font-semibold tracking-tight">
+              {SITE_NAME}
+            </p>
+            <p className="text-ink-muted mt-1 text-sm">Reticle + arrow · provisional lockup</p>
           </div>
         </div>
       </section>
@@ -88,24 +89,24 @@ function IdentityPanel() {
       <section className="ds-section">
         <h2>Typography</h2>
         <p>
-          Syne for display hierarchy; Source Sans 3 for readable UI copy; mono for tokens and
-          labels.
+          Fraunces for editorial titles and the wordmark; Plus Jakarta Sans for UI and body — not
+          Inter or Roboto.
         </p>
         <div className="type-stack">
           <div>
-            <p className="eyebrow">Display · Syne</p>
-            <p className="type-sample-display mt-2">Ship the shell. Own the brand.</p>
+            <p className="eyebrow">Display · Fraunces</p>
+            <p className="type-sample-display mt-2">Are we getting the outcome?</p>
           </div>
           <div>
-            <p className="eyebrow">Body · Source Sans 3</p>
+            <p className="eyebrow">Body · Plus Jakarta Sans</p>
             <p className="type-sample-body mt-2">
-              Tokens live in a single CSS file. Prefer named recipes over one-off utility piles so
-              rebrands stay mechanical.
+              Strategy, team shape, and evidence stay aligned. Status, confidence, and next steps
+              read at board-pack density — generous whitespace, clear hierarchy.
             </p>
           </div>
           <div>
             <p className="eyebrow">Mono · system</p>
-            <p className="type-sample-mono mt-2">--color-accent · #0f766e</p>
+            <p className="type-sample-mono mt-2">--color-ocean · #044a88 · --vl-accent</p>
           </div>
         </div>
       </section>
@@ -119,14 +120,26 @@ function TokensPanel() {
       <h2>Color tokens</h2>
       <p>
         Declared in{' '}
-        <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
           @theme
         </code>{' '}
         so Tailwind classes like{' '}
-        <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
-          bg-accent
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          bg-ocean
         </code>{' '}
-        stay in sync with CSS variables.
+        stay in sync. Architecture aliases:{' '}
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          --vl-ink
+        </code>
+        ,{' '}
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          --vl-paper
+        </code>
+        ,{' '}
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          --vl-accent
+        </code>
+        .
       </p>
       <div className="token-grid">
         {COLOR_TOKENS.map((token) => (
@@ -148,7 +161,7 @@ function TokensPanel() {
           {TYPE_TOKENS.map((token) => (
             <article key={token.cssVar} className="surface">
               <p className="eyebrow">{token.name}</p>
-              <p className="font-display text-ink mt-2 text-lg font-bold">{token.family}</p>
+              <p className="font-display text-ink mt-2 text-lg font-semibold">{token.family}</p>
               <code className="text-ink-muted mt-2 block font-mono text-xs">{token.cssVar}</code>
               <p className="text-ink-muted mt-2 text-xs">{token.role}</p>
             </article>
@@ -165,14 +178,18 @@ function AssetsPanel() {
       <h2>Vector pack</h2>
       <p>
         Sources under{' '}
-        <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
           design-pack/
         </code>
         ; runtime copies under{' '}
-        <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
           app/public/
         </code>
-        . Keep SVG fills aligned with the token table when you rebrand.
+        . Preferred exploration:{' '}
+        <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          steerlens-logo-v16-reticle-arrow.png
+        </code>
+        .
       </p>
       <div className="asset-grid">
         <figure className="asset-tile">
@@ -195,7 +212,7 @@ function AssetsPanel() {
             height={96}
             className="h-24 w-24 opacity-70"
           />
-          <figcaption>grid.svg · drafting tile (also used as hero atmosphere)</figcaption>
+          <figcaption>grid.svg · soft paper grid (hero atmosphere)</figcaption>
         </figure>
       </div>
     </section>
@@ -209,22 +226,22 @@ function ComponentsPanel() {
         <h2>Calls to action</h2>
         <p>
           Prefer{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             .btn-primary
           </code>
           ,{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             .btn-secondary
           </code>
           , and{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             .btn-tertiary
           </code>{' '}
           over ad-hoc button stacks.
         </p>
         <div className="recipe-row">
           <button type="button" className="btn-primary">
-            Primary
+            Share update
           </button>
           <button type="button" className="btn-secondary">
             Secondary
@@ -236,21 +253,65 @@ function ComponentsPanel() {
       </section>
 
       <section className="ds-section">
+        <h2>Status</h2>
+        <p>Executive status language from the mockups — ocean, amber, coral, signal.</p>
+        <div className="status-row">
+          <span className="status-on-track">
+            <span className="status-dot bg-ocean" aria-hidden />
+            On track
+          </span>
+          <span className="status-at-risk">
+            <span className="status-dot bg-amber" aria-hidden />
+            At risk
+          </span>
+          <span className="status-stop">
+            <span className="status-dot bg-coral" aria-hidden />
+            Stop
+          </span>
+          <span className="status-signal">
+            <span className="status-dot bg-signal" aria-hidden />
+            Signal
+          </span>
+        </div>
+        <div className="callout-stop mt-6 max-w-sm">
+          <p className="eyebrow-signal">Decision note</p>
+          <p className="font-display text-coral mt-2 text-2xl font-semibold">STOP</p>
+          <p className="text-ink-muted mt-2 text-sm leading-relaxed">
+            Coral callout for stop-ready recommendations on decision notes.
+          </p>
+        </div>
+      </section>
+
+      <section className="ds-section">
         <h2>Surface</h2>
         <p>
           Use{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             .surface
           </code>{' '}
-          when a bordered container helps interaction or comparison — not as default page chrome.
+          for interactive panels;{' '}
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+            .surface-ocean
+          </code>{' '}
+          for highlighted org-shape cards. Skip cards when border and fill are not needed.
         </p>
-        <div className="surface mt-6 max-w-md">
-          <p className="eyebrow">Example</p>
-          <p className="text-ink mt-2 text-sm font-semibold">Interactive panel</p>
-          <p className="text-ink-muted mt-1 text-sm leading-relaxed">
-            Good for token cards, settings groups, and showcase demos. Skip the card if removing
-            border and fill still reads clearly.
-          </p>
+        <div className="mt-6 grid max-w-2xl gap-4 sm:grid-cols-2">
+          <div className="surface">
+            <p className="eyebrow">Paper card</p>
+            <p className="text-ink mt-2 text-sm font-semibold">Interactive panel</p>
+            <p className="text-ink-muted mt-1 text-sm leading-relaxed">
+              White on stone paper with a soft edge.
+            </p>
+          </div>
+          <div className="surface-ocean">
+            <p className="text-xs font-semibold tracking-[0.14em] text-white/70 uppercase">
+              Highlight
+            </p>
+            <p className="mt-2 text-sm font-semibold">Shared platform</p>
+            <p className="mt-1 text-sm leading-relaxed text-white/80">
+              Ocean fill for the focal org node.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -258,14 +319,11 @@ function ComponentsPanel() {
         <h2>Docs prose</h2>
         <p>
           In-app Markdown uses{' '}
-          <code className="bg-mist text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             .prose-docs
           </code>
           . Written guide:{' '}
-          <a
-            href="/docs/design-system"
-            className="text-accent hover:text-accent-hover font-semibold"
-          >
+          <a href="/docs/design-system" className="text-ocean hover:text-ocean-hover font-semibold">
             Design system docs →
           </a>
         </p>
