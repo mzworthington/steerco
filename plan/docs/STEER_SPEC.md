@@ -7,12 +7,29 @@ Executive UI never shows this document by default; Technical mode and git review
 ## Design rules
 
 1. **Display names are enough for Slice 1** - external refs optional.
-2. **Stable ids** (`out_…`, `bet_…`, `team_…`) for diff-friendly edits.
+2. **Stable ids** (`out_…`, `bet_…`, `team_…`, `mem_…`) for diff-friendly edits.
 3. **Provenance** on teams drives write-back policy later.
 4. **No secrets** in SteerSpec.
 5. Versioned with `apiVersion` + `kind` for migrations.
+6. **Team Topologies is canonical** for team types and interaction modes ([key concepts](https://teamtopologies.com/key-concepts)).
 
-Operating-model evolution (EDGE LVT fields, Team Topologies groupings / roles, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+Operating-model evolution (EDGE LVT fields, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+
+## Team Topologies in SteerSpec
+
+| SteerSpec                           | Team Topologies                                    |
+| ----------------------------------- | -------------------------------------------------- |
+| `team.role: stream_aligned`         | Stream-aligned team                                |
+| `team.role: platform`               | Platform team (may later be a _grouping_)          |
+| `team.role: enabling`               | Enabling team                                      |
+| `team.role: complicated_subsystem`  | Complicated-subsystem team                         |
+| `relationship.mode: x_as_a_service` | X-as-a-Service                                     |
+| `relationship.mode: collaboration`  | Collaboration (time-box later via `expectedUntil`) |
+| `relationship.mode: facilitation`   | Facilitation                                       |
+
+Legacy aliases (`customer_facing`, `shared_platform`, `coaching_support`, `uses_as_service`, `works_together`, `coaching`) are accepted on parse and normalized to the canonical ids above.
+
+Optional `teams[].members[]` records display name, job `title`, and `ftePercent` (0–100) as a **capacity signal** — not an HR directory.
 
 ## Document shape (v1alpha1)
 
@@ -49,18 +66,24 @@ spec:
   teams:
     - id: team_storefront
       displayName: Storefront experience
-      role: customer_facing # customer_facing | shared_platform | coaching_support
+      role: stream_aligned # stream_aligned | platform | enabling | complicated_subsystem
       provenance: local # local | backstage | github | entra | catalog_file
       externalRefs: []
+      members:
+        - id: mem_storefront_em
+          displayName: Priya Nair
+          title: Engineering Manager
+          ftePercent: 100
     - id: team_fulfilil
       displayName: Fulfilment platform
-      role: shared_platform
+      role: platform
       provenance: local
       externalRefs: []
+      members: []
   relationships:
     - fromTeamId: team_storefront
       toTeamId: team_fulfilil
-      mode: uses_as_service # uses_as_service | works_together | coaching
+      mode: x_as_a_service # x_as_a_service | collaboration | facilitation
   decisionNotes:
     - id: dec_loyalty_stop
       betId: bet_loyalty
@@ -85,19 +108,19 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 
 ## Mismatch rules (core)
 
-| Code                        | When                                                       | Slice |
-| --------------------------- | ---------------------------------------------------------- | ----- |
-| `bet_without_team`          | Bet has empty `fundedTeamIds`                              | 1     |
-| `bet_without_kill_criteria` | Missing kill criteria                                      | 1     |
-| `platform_overload`         | Shared platform has dependents above threshold (default 8); surface as cognitive-load / flow risk | 1 |
-| `team_without_bet`          | Customer-facing team funds zero bets (warning)             | 1     |
-| `orphan_outcome`            | Outcome with zero bets                                     | 1     |
-| `bet_without_mos_link`      | Bet has no linked MoS / metric (when link field exists)    | 1.5   |
-| `collab_without_end`        | `works_together` (or facilitation) without `expectedUntil` | 1.5 |
-| `stream_bet_wip`            | Customer-facing team funded on too many active bets        | 1.5   |
-| `enabling_owns_delivery`    | Coaching/enabling team listed as sole long-term delivery owner | 1.5 |
+| Code                        | When                                                                                                      | Slice |
+| --------------------------- | --------------------------------------------------------------------------------------------------------- | ----- |
+| `bet_without_team`          | Bet has empty `fundedTeamIds`                                                                             | 1     |
+| `bet_without_kill_criteria` | Missing kill criteria                                                                                     | 1     |
+| `platform_overload`         | Platform has X-as-a-Service dependents above threshold (default 8); surface as cognitive-load / flow risk | 1     |
+| `team_without_bet`          | Stream-aligned team funds zero bets (warning)                                                             | 1     |
+| `orphan_outcome`            | Outcome with zero bets                                                                                    | 1     |
+| `bet_without_mos_link`      | Bet has no linked MoS / metric (when link field exists)                                                   | 1.5   |
+| `collab_without_end`        | `collaboration` (or facilitation) without `expectedUntil`                                                 | 1.5   |
+| `stream_bet_wip`            | Stream-aligned team funded on too many active bets                                                        | 1.5   |
+| `enabling_owns_delivery`    | Enabling team listed as sole long-term delivery owner                                                     | 1.5   |
 
-Planned additive fields (Slice 1.5 / 3): bet MoS links, review horizon, funding stance, `complicated_subsystem`, relationship `expectedUntil`, `groupings[]`, optional `initiatives[]`. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md).
+Planned additive fields (Slice 1.5 / 3): bet MoS links, review horizon, funding stance, relationship `expectedUntil`, `groupings[]`, optional `initiatives[]`. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md).
 
 ## Mapping to foreign shapes (later)
 

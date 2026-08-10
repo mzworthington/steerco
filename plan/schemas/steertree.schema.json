@@ -69,7 +69,28 @@
     },
     "teamRole": {
       "type": "string",
-      "enum": ["customer_facing", "shared_platform", "coaching_support"]
+      "description": "Team Topologies team type. Legacy aliases customer_facing, shared_platform, coaching_support are accepted by the parser and normalized on read.",
+      "enum": ["stream_aligned", "platform", "enabling", "complicated_subsystem"]
+    },
+    "teamMember": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "displayName", "title", "ftePercent"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "displayName": { "type": "string", "minLength": 1 },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Job / craft title for this person on the team — not the Team Topologies team type"
+        },
+        "ftePercent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Allocation to this team as a percentage of one FTE"
+        }
+      }
     },
     "provenance": {
       "type": "string",
@@ -77,7 +98,8 @@
     },
     "interactionMode": {
       "type": "string",
-      "enum": ["uses_as_service", "works_together", "coaching"]
+      "description": "Team Topologies interaction mode. Legacy aliases uses_as_service, works_together, coaching are accepted by the parser and normalized on read.",
+      "enum": ["x_as_a_service", "collaboration", "facilitation"]
     },
     "recommendation": {
       "type": "string",
@@ -150,6 +172,12 @@
           "type": "array",
           "items": { "$ref": "#/$defs/externalRef" },
           "default": []
+        },
+        "members": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/teamMember" },
+          "default": [],
+          "description": "Optional roster with job titles and FTE allocation — steering capacity signal, not an HR system of record"
         }
       }
     },

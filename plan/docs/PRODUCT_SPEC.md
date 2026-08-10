@@ -15,7 +15,7 @@ SteerLens is an **interactive board pack**: edit strategy and topology intent in
 It operationalises two complementary models without becoming a PMO or HR tool:
 
 - **EDGE** — Lean Value Tree and lightweight start/stop funding governance (vision → outcomes/MoS → bets → optional initiatives)
-- **Team Topologies** (2e) — topology *intent* for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
+- **Team Topologies** (2e) — topology _intent_ for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
 
 See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice commitments in [ROADMAP.md](./ROADMAP.md).
 
@@ -32,32 +32,32 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 ## 4. Bounded contexts
 
-| Context                            | Responsibility                                                               |
-| ---------------------------------- | ---------------------------------------------------------------------------- |
-| **Investment alignment**           | Outcomes, MoS, bets, kill criteria, decision notes (EDGE LVT)                |
-| **Topology intent**                | How teams relate for fast flow (Team Topologies; not HR reporting lines)     |
-| **Evidence**                       | Leading indicators / learning attached to outcomes/bets (sample Slice 1)     |
-| **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                    |
-| **Work execution** (external)      | Jira - link/annotate later, never dual backlog                               |
-| **System architecture** (external) | ArchLens - optional bet → system refs later                                  |
+| Context                            | Responsibility                                                           |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| **Investment alignment**           | Outcomes, MoS, bets, kill criteria, decision notes (EDGE LVT)            |
+| **Topology intent**                | How teams relate for fast flow (Team Topologies; not HR reporting lines) |
+| **Evidence**                       | Leading indicators / learning attached to outcomes/bets (sample Slice 1) |
+| **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                |
+| **Work execution** (external)      | Jira - link/annotate later, never dual backlog                           |
+| **System architecture** (external) | ArchLens - optional bet → system refs later                              |
 
 ## 5. Domain glossary
 
-| Term                | Definition                                                                                                                          |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Outcome**         | Measurable change the organisation wants (EDGE Goal); carries Measures of Success                                                   |
-| **Measure of Success (MoS)** | Leading indicator that shapes and funds work toward an outcome (not a vanity KPI)                                            |
-| **Bet**             | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet)                                      |
-| **Initiative**      | Optional thin value slice under a bet (EDGE Initiative) — narrative only; never a dual backlog                                      |
-| **Kill criteria**   | Pre-agreed condition that triggers stop or re-scope (supports incremental funding)                                                  |
-| **Team**            | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                               |
-| **Topology intent** | Desired interaction shape for fast flow (Team Topologies): customer-facing ≈ stream-aligned, shared platform (may be a *grouping*), coaching/support ≈ enabling; modes such as “uses as a service” / “works together” / coaching |
-| **Mismatch**        | Detectable conflict (portfolio or topology smell — e.g. unfunded bet; platform overload / cognitive-load proxy)                     |
-| **Decision note**   | One-page start/stop/continue/rescope recommendation with rationale and evidence (lightweight governance)                            |
-| **SteerSpec**       | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                     |
-| **Workspace**       | Local folder containing SteerSpec (+ optional exports)                                                                              |
-| **Overlay** (later) | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync                                          |
-| **Board pack**      | PDF/export for leadership distribution                                                                                              |
+| Term                         | Definition                                                                                                                                                                                                                                                |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Outcome**                  | Measurable change the organisation wants (EDGE Goal); carries Measures of Success                                                                                                                                                                         |
+| **Measure of Success (MoS)** | Leading indicator that shapes and funds work toward an outcome (not a vanity KPI)                                                                                                                                                                         |
+| **Bet**                      | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet)                                                                                                                                                            |
+| **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) — narrative only; never a dual backlog                                                                                                                                                            |
+| **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding)                                                                                                                                                                        |
+| **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                                                     |
+| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned, platform, enabling, complicated subsystem; modes X-as-a-Service / Collaboration / Facilitation; optional members + FTE% as capacity |
+| **Mismatch**                 | Detectable conflict (portfolio or topology smell — e.g. unfunded bet; platform overload / cognitive-load proxy)                                                                                                                                           |
+| **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (lightweight governance)                                                                                                                                                  |
+| **SteerSpec**                | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                                                                                                                                           |
+| **Workspace**                | Local folder containing SteerSpec (+ optional exports)                                                                                                                                                                                                    |
+| **Overlay** (later)          | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync                                                                                                                                                                |
+| **Board pack**               | PDF/export for leadership distribution                                                                                                                                                                                                                    |
 
 **Aggregate roots:** `Workspace` (contains SteerSpec document), `DecisionNote`.
 
@@ -73,12 +73,12 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 SteerLens builds on two operating-model sources (full backlog and vocabulary bridge in [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)):
 
-| Source | Role in SteerLens |
-| --- | --- |
-| **EDGE** (Highsmith / Luu / Robinson) | Lean Value Tree: vision → goals/outcomes + MoS → bets → (optional) initiatives; incremental funding; lightweight start/stop governance |
-| **Team Topologies** 2e (Skelton / Pais) | Topology *intent* for fast flow: stream-aligned, platform *groupings*, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
+| Source                                  | Role in SteerLens                                                                                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **EDGE** (Highsmith / Luu / Robinson)   | Lean Value Tree: vision → goals/outcomes + MoS → bets → (optional) initiatives; incremental funding; lightweight start/stop governance                             |
+| **Team Topologies** 2e (Skelton / Pais) | Topology _intent_ for fast flow: stream-aligned, platform _groupings_, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
 
-Executive UI keeps plain language (`Outcome`, `Bet`, `Customer-facing`). Technical mode and glossary may use Goal / MoS / stream-aligned / platform grouping.
+Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Outcome / Bet / Measure of Success in the default views.
 
 ## 7. Acceptance scenarios (Gherkin)
 

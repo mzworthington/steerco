@@ -14,19 +14,16 @@ const NAV = [
     href: '/workspace/outcomes',
     label: 'Outcomes',
     match: (path: string) => path.startsWith('/workspace/outcomes'),
-    disabled: true,
   },
   {
     href: '/workspace/organisation',
     label: 'How work is organised',
     match: (path: string) => path.startsWith('/workspace/organisation'),
-    disabled: true,
   },
   {
     href: '/workspace/decisions',
     label: 'Decision notes',
     match: (path: string) => path.startsWith('/workspace/decisions'),
-    disabled: true,
   },
   {
     href: '/workspace/export',
