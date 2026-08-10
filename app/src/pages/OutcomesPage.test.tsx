@@ -68,8 +68,13 @@ describe('OutcomesPage', () => {
     expect(screen.getByText(/measures of success for this outcome/i)).toBeTruthy();
     expect(screen.getByRole('heading', { name: /reliable customer promises/i })).toBeTruthy();
     expect(screen.getByText('91%')).toBeTruthy();
-    expect(screen.getByRole('link', { name: /same-day pickup reliability/i })).toBeTruthy();
-    expect(screen.getByRole('link', { name: /loyalty ledger unification/i })).toBeTruthy();
+    expect(screen.getAllByText(/claimed by/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByRole('link', { name: /same-day pickup reliability/i }).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByRole('link', { name: /loyalty ledger unification/i }).length,
+    ).toBeGreaterThan(0);
   });
 
   it('edits a measure current value into the session', async () => {
