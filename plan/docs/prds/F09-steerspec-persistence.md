@@ -20,13 +20,15 @@ Load/validate/save `steertree.yaml` as the workspace source of truth.
 1. Parse YAML → validate with Zod/JSON Schema
 2. Serialize stable key order where practical
 3. Dirty state + Save (and optional autosave to FS when permission granted)
-4. Migration hook for `apiVersion` (passthrough v1alpha1 only in Slice 1)
-5. Never write invalid docs over valid ones
+4. **Pending draft diff** (ArchLens-style): working copy vs last opened/accepted baseline; Revert draft; Accept draft (session baseline). Disk write remains Save/commit below.
+5. Migration hook for `apiVersion` (passthrough v1alpha1 only in Slice 1)
+6. Never write invalid docs over valid ones
 
 ## Acceptance
 
 - Round-trip sample YAML preserves ids and semantics
 - Invalid file blocks save; shows errors
+- Diff view lists added / modified / deleted SteerSpec entities; Revert restores baseline; Accept clears pending without requiring disk yet
 
 ## XFN
 

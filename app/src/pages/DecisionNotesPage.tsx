@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
+import { takeDecisionNoteMeasured } from '../application/decisionNoteSeed';
 import {
   applyDecisionNoteDraft,
   decisionRecommendationOptions,
@@ -16,6 +17,7 @@ export function DecisionNotesPage() {
   const [draft, setDraft] = useState<DecisionNoteDraft | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
+  const evidenceSeedApplied = useRef(false);
 
   useEffect(() => {
     if (!session) {
@@ -23,11 +25,21 @@ export function DecisionNotesPage() {
     }
   }, [session, setLocation]);
 
+  useEffect(() => {
+    const seed = takeDecisionNoteMeasured();
+    if (!seed) return;
+    evidenceSeedApplied.current = true;
+    setSelectedId('new');
+    setDraft({ ...draftFromDecisionNote(null), measuredText: seed.join('\n') });
+    setSavedFlash('Pre-filled measured lines from Evidence.');
+  }, []);
+
   const model = useMemo(() => (session ? presentDecisionNotes(session.spec) : null), [session]);
 
   useEffect(() => {
     if (!model) return;
     document.title = `Decision notes · ${model.workspaceTitle} · SteerLens`;
+    if (evidenceSeedApplied.current) return;
     if (selectedId === null && model.notes[0]) {
       setSelectedId(model.notes[0].id);
     }
@@ -36,7 +48,7 @@ export function DecisionNotesPage() {
   useEffect(() => {
     if (!session || !model) return;
     if (selectedId === 'new') {
-      setDraft(draftFromDecisionNote(null));
+      setDraft((prev) => (prev && prev.id === null ? prev : draftFromDecisionNote(null)));
       return;
     }
     if (!selectedId) {
@@ -109,6 +121,7 @@ export function DecisionNotesPage() {
               className="btn-secondary"
               onClick={() => {
                 setSelectedId('new');
+                setDraft(draftFromDecisionNote(null));
                 setError(null);
                 setSavedFlash(null);
               }}
@@ -191,17 +204,25 @@ export function DecisionNotesPage() {
               </label>
             </div>
 
-            {activeCard ? (
-              <p
+            {activeCard && selectedId !== 'new' ? (
+              <div
                 className={
                   activeCard.recommendationTone === 'stop'
-                    ? 'decision-note-badge status-stop'
-                    : 'decision-note-badge'
+                    ? 'callout-stop'
+                    : 'decision-note-callout'
                 }
-                aria-hidden={selectedId === 'new'}
               >
-                {activeCard.recommendationLabel}
-              </p>
+                <p className="eyebrow-signal">Board recommendation</p>
+                <p
+                  className={
+                    activeCard.recommendationTone === 'stop'
+                      ? 'decision-note-callout-label status-stop'
+                      : 'decision-note-callout-label'
+                  }
+                >
+                  {activeCard.recommendationLabel}
+                </p>
+              </div>
             ) : null}
 
             <label className="decision-notes-field">

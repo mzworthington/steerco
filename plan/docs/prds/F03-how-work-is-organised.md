@@ -30,7 +30,7 @@ Edit and present the **four fundamental team types** and **three interaction mod
 7. Button: Prepare decision note (deep link to F07)
 
 **Slice 1.5+:** time-box collaboration/facilitation (`expectedUntil` / effective windows); member edit UI; dated capacity toward [F13](./F13-topology-timeline.md).  
-**Slice 3:** platform / value-stream **groupings** with fractal zoom; **topology timeline** view ([F13](./F13-topology-timeline.md)).
+**Slice 3:** **value stream** and **platform** **groupings** ([TT 2e](https://teamtopologies.com/key-concepts-content/groupings)) so teams sit under a shared business domain / value stream or platform purpose, with fractal zoom; **topology timeline** view ([F13](./F13-topology-timeline.md)).
 
 ## Acceptance
 

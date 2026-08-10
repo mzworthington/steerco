@@ -12,9 +12,11 @@ import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
 import { SteeringOverviewPage } from './pages/SteeringOverviewPage';
 import { BetDetailPage } from './pages/BetDetailPage';
 import { DecisionNotesPage } from './pages/DecisionNotesPage';
+import { EvidencePage } from './pages/EvidencePage';
 import { ExportStubPage } from './pages/ExportStubPage';
 import { OrganisationPage } from './pages/OrganisationPage';
 import { OutcomesPage } from './pages/OutcomesPage';
+import { WorkspaceDiffPage } from './pages/WorkspaceDiffPage';
 import { WorkspaceSessionProvider } from './workspace/WorkspaceSession';
 import { WorkspaceShell } from './workspace/WorkspaceShell';
 
@@ -60,8 +62,10 @@ function AppRoutes() {
       <Route path="/workspace" component={WorkspaceHomePage} />
       <Route path="/workspace/steering" component={SteeringOverviewPage} />
       <Route path="/workspace/outcomes" component={OutcomesPage} />
+      <Route path="/workspace/evidence" component={EvidencePage} />
       <Route path="/workspace/organisation" component={OrganisationPage} />
       <Route path="/workspace/decisions" component={DecisionNotesPage} />
+      <Route path="/workspace/diff" component={WorkspaceDiffPage} />
       <Route path="/workspace/export" component={ExportStubPage} />
       <Route path="/workspace/bets/:betId" component={BetDetailPage} />
       <Route path="/design-system" component={DesignSystemPage} />

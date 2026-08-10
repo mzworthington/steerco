@@ -5,10 +5,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from '../application/openWorkspace';
-import {
-  WorkspaceSessionProvider,
-  type WorkspaceSessionState,
-} from '../workspace/WorkspaceSession';
+import { WorkspaceSessionProvider, sessionWithBaseline } from '../workspace/WorkspaceSession';
 import { OutcomesPage } from './OutcomesPage';
 
 const setLocation = vi.fn();
@@ -40,8 +37,11 @@ const fixtureDir = path.resolve(
 );
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
-function seedSession(session: WorkspaceSessionState) {
-  sessionStorage.setItem('steerlens.workspace-session', JSON.stringify(session));
+function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
+  sessionStorage.setItem(
+    'steerlens.workspace-session',
+    JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
+  );
 }
 
 afterEach(() => {
@@ -56,11 +56,7 @@ describe('OutcomesPage', () => {
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    seedSession({
-      spec: opened.value,
-      source: 'sample',
-      label: 'sample',
-    });
+    seedSession(opened.value);
 
     render(
       <WorkspaceSessionProvider>
@@ -82,11 +78,7 @@ describe('OutcomesPage', () => {
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    seedSession({
-      spec: opened.value,
-      source: 'sample',
-      label: 'sample',
-    });
+    seedSession(opened.value);
 
     render(
       <WorkspaceSessionProvider>

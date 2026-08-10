@@ -20,7 +20,7 @@ function formatOpenedAt(iso: string): string {
 
 export function WorkspaceHomePage() {
   const [, setLocation] = useLocation();
-  const { setSession } = useWorkspaceSession();
+  const { openSession } = useWorkspaceSession();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [recent, setRecent] = useState<RecentWorkspace[]>(() => listRecentWorkspaces());
@@ -38,7 +38,7 @@ export function WorkspaceHomePage() {
       setError(opened.error);
       return;
     }
-    setSession({
+    openSession({
       spec: opened.value,
       source: 'sample',
       label: SAMPLE_WORKSPACE_LABEL,
@@ -68,7 +68,7 @@ export function WorkspaceHomePage() {
       const title = opened.value.metadata.title ?? opened.value.metadata.name;
       const label = opened.label ?? title;
       const source = label.endsWith('.yaml') || label.endsWith('.yml') ? 'file' : 'folder';
-      setSession({
+      openSession({
         spec: opened.value,
         source,
         label,

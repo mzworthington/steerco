@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import { BrandMark } from '../components/BrandMark';
 import { SITE_NAME } from '../siteConfig';
+import { useWorkspaceSession } from './WorkspaceSession';
 
 const NAV = [
   { href: '/workspace', label: 'Home', match: (path: string) => path === '/workspace' },
@@ -14,6 +15,11 @@ const NAV = [
     href: '/workspace/outcomes',
     label: 'Outcomes',
     match: (path: string) => path.startsWith('/workspace/outcomes'),
+  },
+  {
+    href: '/workspace/evidence',
+    label: 'Evidence',
+    match: (path: string) => path.startsWith('/workspace/evidence'),
   },
   {
     href: '/workspace/organisation',
@@ -34,6 +40,8 @@ const NAV = [
 
 export function WorkspaceShell({ children }: { children: ReactNode }) {
   const [location] = useLocation();
+  const { session, hasPendingChanges } = useWorkspaceSession();
+  const diffActive = location.startsWith('/workspace/diff');
 
   return (
     <div className="workspace-shell" data-testid="workspace-shell">
@@ -45,17 +53,6 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
         <nav className="workspace-nav" aria-label="Workspace sections">
           {NAV.map((item) => {
             const active = item.match(location);
-            if ('disabled' in item && item.disabled) {
-              return (
-                <span
-                  key={item.href}
-                  className="workspace-nav-link workspace-nav-link-disabled"
-                  aria-disabled="true"
-                >
-                  {item.label}
-                </span>
-              );
-            }
             return (
               <Link
                 key={item.href}
@@ -70,6 +67,29 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
             );
           })}
         </nav>
+        {session ? (
+          <Link
+            href="/workspace/diff"
+            className={
+              diffActive
+                ? 'workspace-pending workspace-pending-active'
+                : hasPendingChanges
+                  ? 'workspace-pending workspace-pending-dirty'
+                  : 'workspace-pending'
+            }
+            data-testid="workspace-pending-link"
+            aria-current={diffActive ? 'page' : undefined}
+          >
+            <span className="workspace-pending-label">
+              {hasPendingChanges ? 'Pending changes' : 'No pending changes'}
+            </span>
+            {hasPendingChanges ? (
+              <span className="workspace-pending-badge" aria-hidden="true">
+                ·
+              </span>
+            ) : null}
+          </Link>
+        ) : null}
         <p className="workspace-sidebar-note">No account required for Slice 1.</p>
       </aside>
       <div className="workspace-main">{children}</div>

@@ -1,23 +1,56 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
-import { steerSpecSchema, type SteerSpec } from '@steerlens/core';
+import { steerSpecHasPendingChanges, steerSpecSchema, type SteerSpec } from '@steerlens/core';
 
 export type WorkspaceSource = 'sample' | 'folder' | 'file';
 
 export type WorkspaceSessionState = {
+  /** Editable working copy. */
   spec: SteerSpec;
+  /** Last opened / accepted baseline (ArchLens-style draft vs committed). */
+  baselineSpec: SteerSpec;
   source: WorkspaceSource;
   label: string;
 };
 
 type WorkspaceSessionContextValue = {
   session: WorkspaceSessionState | null;
+  hasPendingChanges: boolean;
   setSession: (session: WorkspaceSessionState) => void;
+  /** Open or replace workspace; seeds baseline = working. */
+  openSession: (input: { spec: SteerSpec; source: WorkspaceSource; label: string }) => void;
+  /** Promote working copy to the new baseline (session accept; disk write = F09). */
+  acceptDraft: () => void;
+  /** Restore working copy from baseline. */
+  revertDraft: () => void;
   clearSession: () => void;
 };
 
 const WorkspaceSessionContext = createContext<WorkspaceSessionContextValue | null>(null);
 
 const SESSION_STORAGE_KEY = 'steerlens.workspace-session';
+
+function cloneSpec(spec: SteerSpec): SteerSpec {
+  return structuredClone(spec);
+}
+
+function normalizeSession(input: {
+  spec: SteerSpec;
+  baselineSpec?: SteerSpec;
+  source: WorkspaceSource;
+  label: string;
+}): WorkspaceSessionState | null {
+  const working = steerSpecSchema.safeParse(input.spec);
+  if (!working.success) return null;
+  const baselineRaw = input.baselineSpec ?? input.spec;
+  const baseline = steerSpecSchema.safeParse(baselineRaw);
+  if (!baseline.success) return null;
+  return {
+    spec: working.data,
+    baselineSpec: baseline.data,
+    source: input.source,
+    label: input.label,
+  };
+}
 
 function readStoredSession(): WorkspaceSessionState | null {
   try {
@@ -34,19 +67,31 @@ function readStoredSession(): WorkspaceSessionState | null {
     ) {
       return null;
     }
-    const validated = steerSpecSchema.safeParse(record.spec);
-    if (!validated.success) {
+    const normalized = normalizeSession({
+      label: record.label,
+      source: record.source,
+      spec: record.spec as SteerSpec,
+      baselineSpec:
+        record.baselineSpec && typeof record.baselineSpec === 'object'
+          ? (record.baselineSpec as SteerSpec)
+          : undefined,
+    });
+    if (!normalized) {
       sessionStorage.removeItem(SESSION_STORAGE_KEY);
       return null;
     }
-    return {
-      label: record.label,
-      source: record.source,
-      spec: validated.data,
-    };
+    return normalized;
   } catch {
     return null;
   }
+}
+
+function persistSession(session: WorkspaceSessionState | null): void {
+  if (!session) {
+    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    return;
+  }
+  sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
 }
 
 export function WorkspaceSessionProvider({ children }: { children: ReactNode }) {
@@ -55,22 +100,70 @@ export function WorkspaceSessionProvider({ children }: { children: ReactNode }) 
   );
 
   const setSession = useCallback((next: WorkspaceSessionState) => {
-    const validated = steerSpecSchema.safeParse(next.spec);
-    const normalized: WorkspaceSessionState = validated.success
-      ? { ...next, spec: validated.data }
-      : next;
+    const normalized = normalizeSession(next);
+    if (!normalized) return;
     setSessionState(normalized);
-    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(normalized));
+    persistSession(normalized);
+  }, []);
+
+  const openSession = useCallback(
+    (input: { spec: SteerSpec; source: WorkspaceSource; label: string }) => {
+      const normalized = normalizeSession({
+        ...input,
+        baselineSpec: cloneSpec(input.spec),
+        spec: cloneSpec(input.spec),
+      });
+      if (!normalized) return;
+      setSessionState(normalized);
+      persistSession(normalized);
+    },
+    [],
+  );
+
+  const acceptDraft = useCallback(() => {
+    setSessionState((prev) => {
+      if (!prev) return prev;
+      const next: WorkspaceSessionState = {
+        ...prev,
+        baselineSpec: cloneSpec(prev.spec),
+      };
+      persistSession(next);
+      return next;
+    });
+  }, []);
+
+  const revertDraft = useCallback(() => {
+    setSessionState((prev) => {
+      if (!prev) return prev;
+      const next: WorkspaceSessionState = {
+        ...prev,
+        spec: cloneSpec(prev.baselineSpec),
+      };
+      persistSession(next);
+      return next;
+    });
   }, []);
 
   const clearSession = useCallback(() => {
     setSessionState(null);
-    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    persistSession(null);
   }, []);
 
+  const hasPendingChanges = session
+    ? steerSpecHasPendingChanges(session.baselineSpec, session.spec)
+    : false;
+
   const value = useMemo(
-    () => ({ session, setSession, clearSession }),
-    [session, setSession, clearSession],
+    () => ({
+      session,
+      hasPendingChanges,
+      setSession,
+      openSession,
+      acceptDraft,
+      revertDraft,
+      clearSession,
+    }),
+    [session, hasPendingChanges, setSession, openSession, acceptDraft, revertDraft, clearSession],
   );
 
   return (
@@ -84,4 +177,18 @@ export function useWorkspaceSession(): WorkspaceSessionContextValue {
     throw new Error('useWorkspaceSession must be used within WorkspaceSessionProvider');
   }
   return ctx;
+}
+
+/** Test helper: session with matching baseline + working. */
+export function sessionWithBaseline(
+  spec: SteerSpec,
+  source: WorkspaceSource,
+  label: string,
+): WorkspaceSessionState {
+  return {
+    spec: cloneSpec(spec),
+    baselineSpec: cloneSpec(spec),
+    source,
+    label,
+  };
 }
