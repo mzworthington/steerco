@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Please report security issues privately via [GitHub Security Advisories](https://github.com/mzworthington/react-cloudflare-template/security/advisories/new) rather than opening a public issue.
+Please report security issues privately via [GitHub Security Advisories](https://github.com/mzworthington/steerlens/security/advisories/new) rather than opening a public issue.
 
 Include:
 

@@ -1,9 +1,8 @@
 config:
   # Fill via bin/setup-cloudflare-hosting.sh (writes gitignored Pulumi.<stack>.yaml).
-  # Do not commit real account/zone/hostnames in the template.
-  react-cloudflare-template:accountId: YOUR_CLOUDFLARE_ACCOUNT_ID
-  react-cloudflare-template:zoneId: YOUR_CLOUDFLARE_ZONE_ID
-  react-cloudflare-template:pagesProjectName: my-app
-  # Subdomains on an existing active zone:
-  react-cloudflare-template:pagesHostnames:
-    - app.example.com
+  steerlens:accountId: YOUR_CLOUDFLARE_ACCOUNT_ID
+  steerlens:zoneId: YOUR_CLOUDFLARE_ZONE_ID
+  steerlens:pagesProjectName: steerlens
+  # Subdomain on the shared mzworthington.co.uk zone (owned by edge-dns):
+  steerlens:pagesHostnames:
+    - steerlens.mzworthington.co.uk
