@@ -17,7 +17,7 @@ export function ComingSoonPage() {
     >
       <div className="coming-soon-inner">
         <div className="coming-soon-brand">
-          <BrandMark className="h-12 w-12 sm:h-14 sm:w-14" />
+          <BrandMark variant="lockup" className="h-14 w-auto sm:h-16" />
           <p className="coming-soon-name">{SITE_NAME}</p>
         </div>
         <h1 id="coming-soon-heading" className="coming-soon-title">

@@ -145,7 +145,7 @@
   }
 
   .coming-soon-brand {
-    @apply flex flex-col items-center gap-4;
+    @apply flex flex-col items-center gap-3;
     animation: fade-up 0.7s ease-out both;
   }
 

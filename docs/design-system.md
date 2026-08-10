@@ -19,11 +19,11 @@ Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … 
 
 Motif: **two hexagons + northeast arrowhead** (scooped base). Still provisional as a lockup, but this is the working direction.
 
-| Use                                          | Asset                      | Rule                               |
-| -------------------------------------------- | -------------------------- | ---------------------------------- |
-| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only**                     |
-| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Hexagons + arrow** (site header) |
-| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field            |
+| Use                                          | Asset                      | Rule                                                  |
+| -------------------------------------------- | -------------------------- | ----------------------------------------------------- |
+| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only**                                        |
+| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Hexagons + arrow** (main logo, header, Coming Soon) |
+| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field                               |
 
 Do not put the full hexagons+arrow motif in a tight square — it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
 
