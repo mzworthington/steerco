@@ -1,106 +1,106 @@
 apiVersion: steerlens.dev/v1alpha1
 kind: SteerTree
 metadata:
-  name: platform-transformation
-  title: Platform transformation
-  description: Sample workspace for Slice 1 demos and executive mockups
+  name: northwind-q3-alignment
+  title: Northwind Q3 alignment
+  description: Synthetic demo workspace for Slice 1 — fictional retailer, not a real programme
 spec:
-  vision: Deliver product value three times faster without burning out teams
+  vision: Ship customer promises in days, not weeks, without burning out store and digital teams
   outcomes:
-    - id: out_delivery
-      title: 3× feature delivery
-      summary: Year-on-year increase in features reaching customers
+    - id: out_promise
+      title: Reliable customer promises
+      summary: Customers receive accurate delivery and pickup estimates they can trust
       status: on_track
       metrics:
-        - id: met_delivery_rate
-          title: Delivery rate
-          unit: features/quarter
-          current: 42
-          baseline: 14
-          target: 42
-          interpretation: On the target run-rate
-        - id: met_time_to_release
-          title: Time to release
+        - id: met_promise_hit
+          title: Promise hit rate
+          unit: percent
+          current: 91
+          baseline: 74
+          target: 95
+          interpretation: Climbing, still short of the target band
+        - id: met_cycle_days
+          title: Promise-to-fulfilil days
           unit: days
-          current: 12
-          baseline: 28
-          target: 10
+          current: 4.2
+          baseline: 9.0
+          target: 3.0
           interpretation: Improved, not yet at target
-        - id: met_platform_wait
-          title: Platform wait time
+        - id: met_shared_wait
+          title: Shared-service wait time
           unit: days
-          current: 9
-          baseline: 6
-          target: 3
+          current: 3.5
+          baseline: 2.0
+          target: 1.0
           interpretation: Bottleneck risk for two bets
   bets:
-    - id: bet_pipeline
-      outcomeId: out_delivery
-      title: Discovery to rollout pipeline
-      successSignal: Cross-team handoffs no longer dominate cycle time
-      killCriteria: Lead time does not improve after one quarter of topology changes
+    - id: bet_pickup
+      outcomeId: out_promise
+      title: Same-day pickup reliability
+      successSignal: Store pickup promises miss less than five percent of orders
+      killCriteria: Hit rate stays flat after one quarter of staffing and routing changes
       status: on_track
-      fundedTeamIds: [team_checkout, team_sportsbook]
-    - id: bet_idp
-      outcomeId: out_delivery
-      title: Shared platform golden paths
-      successSignal: New services reach production via the golden path within one week
-      killCriteria: Fewer than two product teams adopt the path after two quarters
+      fundedTeamIds: [team_storefront, team_catalog]
+    - id: bet_fulfilil
+      outcomeId: out_promise
+      title: Shared fulfilment spine
+      successSignal: New channels reuse one fulfilment path within two weeks of launch
+      killCriteria: Fewer than two channels adopt the spine after two quarters
       status: at_risk
-      fundedTeamIds: [team_platform, team_checkout]
-    - id: bet_obs
-      outcomeId: out_delivery
-      title: Observability unification
-      successSignal: Incident time-to-diagnose drops by half
-      killCriteria: Delivery rate unaffected after two quarters while cost rises
+      fundedTeamIds: [team_fulfilil, team_storefront]
+    - id: bet_loyalty
+      outcomeId: out_promise
+      title: Loyalty ledger unification
+      successSignal: Points balance disputes drop by half
+      killCriteria: Promise hit rate unchanged after two quarters while programme cost rises
       status: stop_ready
-      fundedTeamIds: [team_platform]
+      fundedTeamIds: [team_fulfilil]
   teams:
-    - id: team_checkout
-      displayName: Customer checkout teams
+    - id: team_storefront
+      displayName: Storefront experience
       role: customer_facing
       provenance: local
       externalRefs: []
-    - id: team_sportsbook
-      displayName: Sportsbook product teams
+    - id: team_catalog
+      displayName: Catalog and discovery
       role: customer_facing
       provenance: local
       externalRefs: []
-    - id: team_platform
-      displayName: Shared platform
+    - id: team_fulfilil
+      displayName: Fulfilment platform
       role: shared_platform
       provenance: local
       externalRefs: []
-    - id: team_devex
-      displayName: Coaching support
+    - id: team_enablement
+      displayName: Ways of working
       role: coaching_support
       provenance: local
       externalRefs: []
   relationships:
-    - fromTeamId: team_checkout
-      toTeamId: team_platform
+    - fromTeamId: team_storefront
+      toTeamId: team_fulfilil
       mode: uses_as_service
-    - fromTeamId: team_sportsbook
-      toTeamId: team_platform
+    - fromTeamId: team_catalog
+      toTeamId: team_fulfilil
       mode: uses_as_service
-    - fromTeamId: team_devex
-      toTeamId: team_checkout
+    - fromTeamId: team_enablement
+      toTeamId: team_storefront
       mode: coaching
   decisionNotes:
-    - id: dec_obs_stop
-      betId: bet_obs
+    - id: dec_loyalty_stop
+      betId: bet_loyalty
       recommendation: stop
-      title: Stop Observability unification?
+      title: Stop Loyalty ledger unification?
       why: >
-        Spend and coordination cost rose without a measurable lift in delivery rate.
-        Incident diagnosis improved locally but not enough to justify the programme tax.
+        Coordination cost rose without a measurable lift in promise hit rate.
+        Dispute handling improved in pockets but not enough to justify the programme tax.
       measured:
-        - Delivery rate unchanged quarter-on-quarter
-        - Platform wait time increased
-      affectedTeamIds: [team_platform, team_checkout]
-      nextStep: Pause rollout; keep existing tooling for two quarters and revisit
+        - Promise hit rate unchanged quarter-on-quarter
+        - Shared-service wait time increased
+      affectedTeamIds: [team_fulfilil, team_storefront]
+      nextStep: Pause rollout; keep the existing ledger for two quarters and revisit
   evidence:
     - id: ev_sample
-      metricId: met_delivery_rate
+      metricId: met_promise_hit
       source: sample
-      note: Sample data for Slice 1 · connect systems later for live evidence
+      note: Synthetic sample data for Slice 1 · connect systems later for live evidence

@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
-import { SITE_NAME, SITE_REPO_URL, SITE_TAGLINE } from '../siteConfig';
+import { SITE_NAME, SITE_TAGLINE } from '../siteConfig';
 import { HomePage } from './HomePage';
 
 afterEach(() => {
@@ -14,11 +14,11 @@ describe('HomePage', () => {
     expect(screen.getByText(SITE_TAGLINE)).toBeTruthy();
   });
 
-  it('links to docs and the GitHub repository', () => {
+  it('links to workspace and docs', () => {
     render(<HomePage />);
-    expect(screen.getByRole('link', { name: /read the docs/i }).getAttribute('href')).toBe('/docs');
-    expect(screen.getByRole('link', { name: /view on github/i }).getAttribute('href')).toBe(
-      SITE_REPO_URL,
+    expect(screen.getByRole('link', { name: /open workspace/i }).getAttribute('href')).toBe(
+      '/workspace',
     );
+    expect(screen.getByRole('link', { name: /read the docs/i }).getAttribute('href')).toBe('/docs');
   });
 });

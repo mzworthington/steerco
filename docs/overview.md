@@ -17,7 +17,7 @@ Jira holds work, Backstage holds services, and directories hold people. Nothing 
 | **ADRs**         | Accepted decisions under [`docs/ADRs/`](/docs/adrs)                       |
 | **Hosting**      | Cloudflare Pages via Pulumi + Wrangler                                    |
 
-Slice 1 (local executive workspace: open sample/folder, steer, decide, export) is the next product vertical — see `plan/docs/ROADMAP.md`.
+Slice 1 (local executive workspace: open sample/folder, steer, decide, export) is in progress — see `plan/docs/ROADMAP.md`. Operating-model foundations (EDGE Lean Value Tree + Team Topologies 2e) are captured in `plan/docs/OPERATING_MODEL_ALIGNMENT.md`.
 
 ## Principles
 

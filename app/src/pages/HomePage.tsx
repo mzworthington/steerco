@@ -1,12 +1,5 @@
 import { useEffect } from 'react';
-import {
-  SITE_DESCRIPTION,
-  SITE_NAME,
-  SITE_ORIGIN,
-  SITE_REPO_URL,
-  SITE_SLUG,
-  SITE_TAGLINE,
-} from '../siteConfig';
+import { SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN, SITE_SLUG, SITE_TAGLINE } from '../siteConfig';
 
 export function HomePage() {
   useEffect(() => {
@@ -30,11 +23,11 @@ export function HomePage() {
           decision note fit for a board pack.
         </p>
         <div className="hero-actions">
-          <a href="/docs" className="btn-primary">
-            Read the docs
+          <a href="/workspace" className="btn-primary">
+            Open workspace
           </a>
-          <a href={SITE_REPO_URL} className="btn-secondary" target="_blank" rel="noreferrer">
-            View on GitHub →
+          <a href="/docs" className="btn-secondary">
+            Read the docs
           </a>
         </div>
       </div>

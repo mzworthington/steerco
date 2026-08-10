@@ -12,6 +12,13 @@ Engineering Directors and executive sponsors must align **outcomes**, **funded b
 
 SteerLens is an **interactive board pack**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, export decision notes. It reads and later writes _around_ existing systems of record; it does not become one.
 
+It operationalises two complementary models without becoming a PMO or HR tool:
+
+- **EDGE** — Lean Value Tree and lightweight start/stop funding governance (vision → outcomes/MoS → bets → optional initiatives)
+- **Team Topologies** (2e) — topology *intent* for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
+
+See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice commitments in [ROADMAP.md](./ROADMAP.md).
+
 ## 3. Target users
 
 | Persona                                 | Need                                                             |
@@ -27,9 +34,9 @@ SteerLens is an **interactive board pack**: edit strategy and topology intent in
 
 | Context                            | Responsibility                                                               |
 | ---------------------------------- | ---------------------------------------------------------------------------- |
-| **Investment alignment**           | Outcomes, bets, kill criteria, decision notes                                |
-| **Topology intent**                | How teams relate for delivery (not HR reporting lines)                       |
-| **Evidence**                       | Leading indicators attached to outcomes/bets (sample in Slice 1; live later) |
+| **Investment alignment**           | Outcomes, MoS, bets, kill criteria, decision notes (EDGE LVT)                |
+| **Topology intent**                | How teams relate for fast flow (Team Topologies; not HR reporting lines)     |
+| **Evidence**                       | Leading indicators / learning attached to outcomes/bets (sample Slice 1)     |
 | **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                    |
 | **Work execution** (external)      | Jira - link/annotate later, never dual backlog                               |
 | **System architecture** (external) | ArchLens - optional bet → system refs later                                  |
@@ -38,13 +45,15 @@ SteerLens is an **interactive board pack**: edit strategy and topology intent in
 
 | Term                | Definition                                                                                                                          |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| **Outcome**         | Measurable change the organisation wants (e.g. “3× feature delivery”)                                                               |
-| **Bet**             | Time-boxed investment intended to move an outcome; has success signal and stop rule                                                 |
-| **Kill criteria**   | Pre-agreed condition that triggers stop or re-scope                                                                                 |
+| **Outcome**         | Measurable change the organisation wants (EDGE Goal); carries Measures of Success                                                   |
+| **Measure of Success (MoS)** | Leading indicator that shapes and funds work toward an outcome (not a vanity KPI)                                            |
+| **Bet**             | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet)                                      |
+| **Initiative**      | Optional thin value slice under a bet (EDGE Initiative) — narrative only; never a dual backlog                                      |
+| **Kill criteria**   | Pre-agreed condition that triggers stop or re-scope (supports incremental funding)                                                  |
 | **Team**            | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                               |
-| **Topology intent** | Desired interaction shape: customer-facing, shared platform, coaching/support; modes such as “uses as a service” / “works together” |
-| **Mismatch**        | Detectable conflict (e.g. bet funded with no delivering team; platform overloaded)                                                  |
-| **Decision note**   | One-page start/stop/continue recommendation with rationale and evidence                                                             |
+| **Topology intent** | Desired interaction shape for fast flow (Team Topologies): customer-facing ≈ stream-aligned, shared platform (may be a *grouping*), coaching/support ≈ enabling; modes such as “uses as a service” / “works together” / coaching |
+| **Mismatch**        | Detectable conflict (portfolio or topology smell — e.g. unfunded bet; platform overload / cognitive-load proxy)                     |
+| **Decision note**   | One-page start/stop/continue/rescope recommendation with rationale and evidence (lightweight governance)                            |
 | **SteerSpec**       | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                     |
 | **Workspace**       | Local folder containing SteerSpec (+ optional exports)                                                                              |
 | **Overlay** (later) | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync                                          |
@@ -59,6 +68,17 @@ SteerLens is an **interactive board pack**: edit strategy and topology intent in
 3. **Local-first Slice 1** - full value offline; auth only when connectors need it.
 4. **Vastly different from ArchLens** - suite link in data, not in chrome.
 5. **Git-friendly contract** - SteerSpec is diffable and reviewable even before CI exists.
+
+### Foundational frameworks
+
+SteerLens builds on two operating-model sources (full backlog and vocabulary bridge in [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)):
+
+| Source | Role in SteerLens |
+| --- | --- |
+| **EDGE** (Highsmith / Luu / Robinson) | Lean Value Tree: vision → goals/outcomes + MoS → bets → (optional) initiatives; incremental funding; lightweight start/stop governance |
+| **Team Topologies** 2e (Skelton / Pais) | Topology *intent* for fast flow: stream-aligned, platform *groupings*, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
+
+Executive UI keeps plain language (`Outcome`, `Bet`, `Customer-facing`). Technical mode and glossary may use Goal / MoS / stream-aligned / platform grouping.
 
 ## 7. Acceptance scenarios (Gherkin)
 
@@ -113,7 +133,7 @@ Feature: Topology intent
   Scenario: Surface overload mismatch
     Given a shared platform team with many dependents
     When the leader opens How work is organised
-    Then they see a calm mismatch message about platform overload
+    Then they see a calm mismatch message about platform load and slower flow
 ```
 
 ### Feature: Decision and export
@@ -129,6 +149,7 @@ Feature: Decision note and board pack
     Given decision notes and an org shape
     When the leader exports a board pack
     Then they receive a PDF suitable for steering distribution
+    And sections are grouped for invest, work, and adapt
     And technical exports remain behind an advanced action
 ```
 
@@ -159,3 +180,5 @@ Greenfield - no existing tests. Design phase should add:
 - Auto-mutating Entra or GitHub team membership
 - Replacing ArchLens canvas or ChaosLens
 - Multi-user realtime collaboration (revisit after auth)
+- Full BAU vs strategic finance accounting; full cognitive-load assessment instruments
+- Proprietary Team Topologies diagram artwork without permission

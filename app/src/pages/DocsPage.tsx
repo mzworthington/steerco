@@ -1,3 +1,4 @@
+import { Children, isValidElement, lazy, Suspense, type ReactNode } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useRoute } from 'wouter';
@@ -6,6 +7,10 @@ import { docsNavPages, DOC_SLUGS, findDocPage } from '../docs/pages';
 import { splitDocsMarkdown } from '../docs/presentDocsMarkdown';
 import { resolveDocsHref } from '../docs/resolveDocsHref';
 
+const MermaidPreview = lazy(() =>
+  import('../components/MermaidPreview').then((m) => ({ default: m.MermaidPreview })),
+);
+
 const DOC_NAV = [
   { href: '/docs', title: 'Overview' },
   ...docsNavPages().map((entry) => ({
@@ -13,6 +18,15 @@ const DOC_NAV = [
     title: entry.title,
   })),
 ];
+
+function extractCodeText(node: ReactNode): string {
+  if (typeof node === 'string' || typeof node === 'number') return String(node);
+  if (Array.isArray(node)) return node.map(extractCodeText).join('');
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return extractCodeText(node.props.children);
+  }
+  return '';
+}
 
 export function DocsPage() {
   const [, params] = useRoute('/docs/*');
@@ -53,6 +67,28 @@ export function DocsPage() {
                     {children}
                   </a>
                 );
+              },
+              pre: ({ children }) => {
+                const codeEl = Children.toArray(children).find((child) => isValidElement(child));
+                const className =
+                  isValidElement<{ className?: string }>(codeEl) && codeEl.props.className
+                    ? codeEl.props.className
+                    : '';
+                if (/\blanguage-mermaid\b/.test(className)) {
+                  const code = extractCodeText(codeEl).replace(/\n$/, '');
+                  return (
+                    <Suspense
+                      fallback={
+                        <div className="docs-mermaid docs-mermaid-loading" aria-busy="true">
+                          Loading diagram…
+                        </div>
+                      }
+                    >
+                      <MermaidPreview code={code} />
+                    </Suspense>
+                  );
+                }
+                return <pre>{children}</pre>;
               },
             }}
           >
