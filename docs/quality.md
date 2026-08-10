@@ -43,9 +43,9 @@ On relevant staged files (`app/`, `docs/`, or common source extensions), `.husky
 
 1. **lint-staged**: **Prettier** `--write` on staged paths
 2. **`pnpm format:check`**: full Prettier scope (app + root docs / GitHub YAML)
-3. **`pnpm lint`** (**oxlint**) + **`pnpm typecheck`** (**TypeScript**)
+3. **`pnpm lint`** (**oxlint**) + **`pnpm typecheck`** (**TypeScript**) + **`pnpm knip`**
 
-So formatting and type breaks rarely wait for CI. **knip** and **Vitest** still run in CI on every PR (and you can run them locally anytime).
+So formatting, type, and unused-export breaks rarely wait for CI. **Vitest** still runs in CI on every PR (and you can run it locally anytime).
 
 ## CI (every PR / `main`)
 
