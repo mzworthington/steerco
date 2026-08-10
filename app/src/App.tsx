@@ -27,7 +27,7 @@ export function App() {
       <header className="site-nav">
         <div className="site-nav-inner">
           <a href="/" className="site-brand inline-flex items-center gap-2.5">
-            <BrandMark />
+            <BrandMark variant="lockup" />
             <span>{SITE_NAME}</span>
           </a>
           <nav className="site-nav-links" aria-label="Primary">

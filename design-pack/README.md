@@ -1,10 +1,10 @@
 # Design pack
 
-SteerLens brand assets — reticle + arrow mark, warm paper field, ocean accent. Same role as the template vector pack (favicon, logos, social share), tuned to executive tokens in `app/src/index.css`.
+SteerLens brand assets — hexagons + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
 
 Live swatches: `/design-system`. Written guide: `docs/design-system.md`.
 
-Preferred exploration (not yet final lockup): `mockups/logo-explorations/steerlens-logo-v16-reticle-arrow.png`.
+Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v16 reticle explorations; circles became hexagons).
 
 ## Identity
 
@@ -22,15 +22,19 @@ Preferred exploration (not yet final lockup): `mockups/logo-explorations/steerle
 | Display | Fraunces | Headings / wordmarks |
 | Body | Plus Jakarta Sans | UI copy |
 
-**Mark:** rounded reticle frame with mid-side ticks, inner sharp square, solid northeast steer/cursor arrow.
+**Mark**
+
+- Full motif: two filled hexagons + northeast arrowhead with scooped base (`mark-lockup.svg`).
+- Square applications: **arrow only** (`mark.svg`, `mark-dark.svg`, `favicon.svg`, PWA / apple-touch).
 
 ## Sources (this folder)
 
 | File | Purpose |
 | --- | --- |
-| `mark.svg` / `mark.png` | Light logo (500×500) |
-| `mark-dark.svg` / `mark-dark.png` | Dark logo (500×500) |
-| `favicon.svg` / `favicon.png` | Tab icon |
+| `mark.svg` / `mark.png` | Light square logo — arrow only (500×500) |
+| `mark-dark.svg` / `mark-dark.png` | Dark square logo — arrow only (500×500) |
+| `mark-lockup.svg` / `mark-lockup.png` | Wide hexagons + arrow motif |
+| `favicon.svg` / `favicon.png` | Tab icon — arrow only |
 | `grid.svg` | Repeatable paper grid tile |
 | `social-share.svg` / `social-share.png` | Open Graph / Twitter card (1200×630) |
 
@@ -43,14 +47,16 @@ app/public/
   favicon.svg
   favicon.png
   assets/
-    logo.svg          ← mark.svg
+    logo.svg          ← mark.svg (arrow)
     logo.png
-    logo-dark.svg     ← mark-dark.svg
+    logo-dark.svg     ← mark-dark.svg (arrow)
     logo-dark.png
+    logo-lockup.svg   ← mark-lockup.svg (hexagons + arrow)
+    logo-lockup.png
     social-share.png
     grid.svg
   icons/
-    apple-touch-icon.png   (180×180, dark mark)
+    apple-touch-icon.png   (180×180, dark arrow)
     pwa-192x192.png
     pwa-512x512.png
 ```
