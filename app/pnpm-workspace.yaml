@@ -1,0 +1,18 @@
+allowBuilds:
+  esbuild: true
+  workerd: true
+minimumReleaseAgeExclude:
+  - vite
+  - '@pulumi/cloudflare'
+  - miniflare@5.20260801.1-alpha
+  - wrangler@4.120.0
+  - tmp
+  - undici
+  - uuid
+
+# Dependabot / transitive security pins (dev-tooling only).
+overrides:
+  tmp: '>=0.2.7'
+  uuid: '>=11.1.1'
+  'undici@7': '7.29.0'
+  'undici@8': '>=8.9.0'
