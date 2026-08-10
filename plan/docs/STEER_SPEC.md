@@ -12,67 +12,69 @@ Executive UI never shows this document by default; Technical mode and git review
 4. **No secrets** in SteerSpec.
 5. Versioned with `apiVersion` + `kind` for migrations.
 
+Operating-model evolution (EDGE LVT fields, Team Topologies groupings / roles, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+
 ## Document shape (v1alpha1)
 
 ```yaml
 apiVersion: steerlens.dev/v1alpha1
 kind: SteerTree
 metadata:
-  name: platform-transformation
-  title: Platform transformation
-  description: Company-wide engineering investment alignment
+  name: northwind-q3-alignment
+  title: Northwind Q3 alignment
+  description: Synthetic demo workspace — fictional retailer
 spec:
-  vision: Deliver product value three times faster without burning out teams
+  vision: Ship customer promises in days, not weeks, without burning out store and digital teams
   outcomes:
-    - id: out_delivery
-      title: 3× feature delivery
-      summary: Year-on-year increase in features reaching customers
+    - id: out_promise
+      title: Reliable customer promises
+      summary: Customers receive accurate delivery and pickup estimates they can trust
       status: on_track # on_track | at_risk | achieved | abandoned
       metrics:
-        - id: met_delivery_rate
-          title: Delivery rate
-          unit: features/quarter
-          current: 42
-          baseline: 14
-          target: 42
-          interpretation: On the target run-rate
+        - id: met_promise_hit
+          title: Promise hit rate
+          unit: percent
+          current: 91
+          baseline: 74
+          target: 95
+          interpretation: Climbing, still short of the target band
   bets:
-    - id: bet_idp
-      outcomeId: out_delivery
-      title: Shared platform golden paths
-      successSignal: New services reach production via the golden path within one week
-      killCriteria: Fewer than two product teams adopt the path after two quarters
+    - id: bet_fulfilil
+      outcomeId: out_promise
+      title: Shared fulfilment spine
+      successSignal: New channels reuse one fulfilment path within two weeks of launch
+      killCriteria: Fewer than two channels adopt the spine after two quarters
       status: on_track # proposed | on_track | at_risk | stop_ready | stopped | done
-      fundedTeamIds: [team_platform, team_checkout]
+      fundedTeamIds: [team_fulfilil, team_storefront]
   teams:
-    - id: team_checkout
-      displayName: Customer checkout teams
+    - id: team_storefront
+      displayName: Storefront experience
       role: customer_facing # customer_facing | shared_platform | coaching_support
       provenance: local # local | backstage | github | entra | catalog_file
       externalRefs: []
-    - id: team_platform
-      displayName: Shared platform
+    - id: team_fulfilil
+      displayName: Fulfilment platform
       role: shared_platform
       provenance: local
       externalRefs: []
   relationships:
-    - fromTeamId: team_checkout
-      toTeamId: team_platform
+    - fromTeamId: team_storefront
+      toTeamId: team_fulfilil
       mode: uses_as_service # uses_as_service | works_together | coaching
   decisionNotes:
-    - id: dec_obs_stop
-      betId: bet_obs
+    - id: dec_loyalty_stop
+      betId: bet_loyalty
       recommendation: stop # start | continue | stop | rescope
-      title: Stop Observability unification?
-      why: Spend and coordination cost rose without improving delivery rate
+      title: Stop Loyalty ledger unification?
+      why: Coordination cost rose without improving promise hit rate
       measured: []
-      affectedTeamIds: [team_platform]
-      nextStep: Pause rollout; keep existing tooling for two quarters
+      affectedTeamIds: [team_fulfilil]
+      nextStep: Pause rollout; keep the existing ledger for two quarters
   evidence:
     - id: ev_1
-      metricId: met_delivery_rate
+      metricId: met_promise_hit
       source: sample # sample | manual | github | other
-      note: Sample data for Slice 1 demos
+      note: Synthetic sample data for Slice 1 demos
 ```
 
 ## JSON Schema
@@ -83,13 +85,19 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 
 ## Mismatch rules (core)
 
-| Code                        | When                                                       |
-| --------------------------- | ---------------------------------------------------------- |
-| `bet_without_team`          | Bet has empty `fundedTeamIds`                              |
-| `bet_without_kill_criteria` | Missing kill criteria                                      |
-| `platform_overload`         | Shared platform has dependents above threshold (default 8) |
-| `team_without_bet`          | Customer-facing team funds zero bets (warning)             |
-| `orphan_outcome`            | Outcome with zero bets                                     |
+| Code                        | When                                                       | Slice |
+| --------------------------- | ---------------------------------------------------------- | ----- |
+| `bet_without_team`          | Bet has empty `fundedTeamIds`                              | 1     |
+| `bet_without_kill_criteria` | Missing kill criteria                                      | 1     |
+| `platform_overload`         | Shared platform has dependents above threshold (default 8); surface as cognitive-load / flow risk | 1 |
+| `team_without_bet`          | Customer-facing team funds zero bets (warning)             | 1     |
+| `orphan_outcome`            | Outcome with zero bets                                     | 1     |
+| `bet_without_mos_link`      | Bet has no linked MoS / metric (when link field exists)    | 1.5   |
+| `collab_without_end`        | `works_together` (or facilitation) without `expectedUntil` | 1.5 |
+| `stream_bet_wip`            | Customer-facing team funded on too many active bets        | 1.5   |
+| `enabling_owns_delivery`    | Coaching/enabling team listed as sole long-term delivery owner | 1.5 |
+
+Planned additive fields (Slice 1.5 / 3): bet MoS links, review horizon, funding stance, `complicated_subsystem`, relationship `expectedUntil`, `groupings[]`, optional `initiatives[]`. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md).
 
 ## Mapping to foreign shapes (later)
 

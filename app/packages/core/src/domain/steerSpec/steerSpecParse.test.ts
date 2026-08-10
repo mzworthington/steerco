@@ -15,14 +15,18 @@ describe('parseSteerSpecYaml', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
 
-    expect(result.value.metadata.name).toBe('platform-transformation');
-    expect(result.value.spec.outcomes.map((o) => o.id)).toEqual(['out_delivery']);
-    expect(result.value.spec.bets.map((b) => b.id)).toEqual(['bet_pipeline', 'bet_idp', 'bet_obs']);
+    expect(result.value.metadata.name).toBe('northwind-q3-alignment');
+    expect(result.value.spec.outcomes.map((o) => o.id)).toEqual(['out_promise']);
+    expect(result.value.spec.bets.map((b) => b.id)).toEqual([
+      'bet_pickup',
+      'bet_fulfilil',
+      'bet_loyalty',
+    ]);
     expect(result.value.spec.teams.map((t) => t.id)).toEqual([
-      'team_checkout',
-      'team_sportsbook',
-      'team_platform',
-      'team_devex',
+      'team_storefront',
+      'team_catalog',
+      'team_fulfilil',
+      'team_enablement',
     ]);
   });
 

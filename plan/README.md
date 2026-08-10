@@ -18,6 +18,7 @@ This folder holds **product planning** (specs, PRDs, schema, samples). Implement
 | ------------------------------------------------ | ------------------------------------------ |
 | [docs/PRESS_RELEASE.md](./docs/PRESS_RELEASE.md) | Positioning / launch narrative             |
 | [docs/PRODUCT_SPEC.md](./docs/PRODUCT_SPEC.md)   | Domain glossary, acceptance scenarios, XFN |
+| [docs/OPERATING_MODEL_ALIGNMENT.md](./docs/OPERATING_MODEL_ALIGNMENT.md) | EDGE (LVT) + Team Topologies 2e backlog & vocabulary bridge |
 | [docs/TECH_STACK.md](./docs/TECH_STACK.md)       | Stack notes (see also ADR 0002)            |
 | [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)   | Hexagonal architecture & adapters          |
 | [docs/STEER_SPEC.md](./docs/STEER_SPEC.md)       | Canonical SteerSpec contract               |
@@ -33,13 +34,15 @@ Executive mockups also live at repo-root [`mockups/`](../mockups/).
 
 Canonical ADRs: [`docs/ADRs/`](../docs/ADRs/) (tech stack, local-first, suite relationship, provider write-back, hosting).
 
-## Slice 1 (committed direction)
+## Slice direction (summary)
 
-- **Local only** — open a folder, edit SteerSpec, export a board pack
-- **No authentication**
-- **Executive visual language** (light, editorial) — technical import/merge comes later behind a secondary surface
-- Auth and live connectors (Backstage / GitHub / Entra) land in **Slice 2+**
+- **Slice 1** — Local only; open a folder; edit SteerSpec; export a board pack; EDGE/TT copy & Invest/Work/Adapt pack (no schema break)
+- **Slice 1.5** — Additive SteerSpec for MoS links, funding review cues, TT roles/time-boxes, richer mismatches
+- **Slice 2+** — Auth and connectors (Backstage / GitHub / Entra); Technical mode vocabulary bridge
+- **Slice 3** — Groupings / initiatives / suite links (ArchLens, CI)
+
+Full roadmap: [docs/ROADMAP.md](./docs/ROADMAP.md). Framework backlog: [docs/OPERATING_MODEL_ALIGNMENT.md](./docs/OPERATING_MODEL_ALIGNMENT.md).
 
 ## One-liner
 
-> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerLens contracts how strategy, team shape, and evidence stay aligned — and when to stop.
+> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerLens contracts how outcomes, bets, topology intent, and evidence stay aligned — and when to stop.

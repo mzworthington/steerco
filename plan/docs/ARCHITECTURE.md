@@ -40,10 +40,10 @@ Pure TypeScript + Zod. No React, no `fetch`, no filesystem.
 | Module       | Responsibility                                                                 |
 | ------------ | ------------------------------------------------------------------------------ |
 | `steerSpec`  | Schema, parse, serialize, migrate                                              |
-| `mismatches` | Rules: unfunded topology, overloaded platform, bet without kill criteria, etc. |
-| `decisions`  | Decision note model + invariants                                               |
-| `topology`   | Team nodes, interaction modes, display labels                                  |
-| `evidence`   | Metric attachments (opaque values in Slice 1)                                  |
+| `mismatches` | Rules: unfunded topology, platform overload (load/flow), kill criteria; Slice 1.5+ MoS link, collab time-box, stream WIP |
+| `decisions`  | Decision note model + invariants (EDGE lightweight governance)                 |
+| `topology`   | Team nodes, interaction modes, display labels (Team Topologies intent)         |
+| `evidence`   | MoS / metric attachments (opaque values in Slice 1)                            |
 
 **Invariants (examples):**
 

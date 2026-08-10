@@ -1,5 +1,7 @@
 # Roadmap
 
+SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topology intent** (Team Topologies) as an interactive board pack. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+
 ## Slice 0 - Spec (this folder)
 
 - [x] Press release, product spec, architecture, tech stack
@@ -7,10 +9,19 @@
 - [x] Executive mockups
 - [x] Feature PRDs
 - [x] ADRs for stack, local-first, suite relationship (canonical under `docs/ADRs/`)
+- [x] Operating-model alignment (EDGE + Team Topologies 2e) — [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)
 
 ## Slice 1 - Local executive workspace (no auth)
 
 **Goal:** A leader can open a sample or folder, edit outcomes/bets/teams, see mismatches, write a decision note, and export a board pack - fully offline.
+
+**Operating-model bar (copy + presentation, no schema break):**
+
+- Steering answers EDGE’s three questions in plain language: invest / work / adapt
+- Outcomes present **Measures of Success**, not a metrics warehouse
+- Org shape teaches Team Topologies purposes (customer-facing / platform / coaching) and that platforms exist to **reduce load** for faster flow
+- Board pack sections map to **Invest / Work / Adapt**
+- Stop-ready bets and learning cues are elevated before vanity status
 
 | Capability               | PRD                                        |
 | ------------------------ | ------------------------------------------ |
@@ -24,7 +35,22 @@
 | Export board pack        | [F08](./prds/F08-export-board-pack.md)     |
 | SteerSpec persistence    | [F09](./prds/F09-steerspec-persistence.md) |
 
-**Exit criteria:** Playwright critical journey green; axe clean on executive routes; schema validates sample.
+**Exit criteria:** Playwright critical journey green; axe clean on executive routes; schema validates sample; Invest/Work/Adapt board-pack outline present; platform overload copy references load/flow (not HR headcount).
+
+## Slice 1.5 - Operating model depth (additive SteerSpec)
+
+**Goal:** Encode EDGE incremental funding and Team Topologies 2e signals in the contract without becoming a PMO or HR tool.
+
+| Theme | Commitments |
+| --- | --- |
+| **EDGE / LVT** | Bet ↔ MoS link (`metricIds` / `primaryMetricId`); optional `reviewDate` / horizon; `fundingStance` (`explore` \| `exploit` \| `sustain`); optional `kind` (`opportunity` \| `capability`); soft WIP mismatch for stream teams |
+| **Team Topologies** | `complicated_subsystem` role; `relationships[].expectedUntil` for collaboration/facilitation; retarget + extend mismatches (`bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, …); empty/teaching states for four purposes |
+| **Governance** | Decision notes prefer MoS ids in `measured`; steering “next review” from bet horizons |
+| **Docs / Technical** | Glossary aliases (Goal, MoS, stream-aligned, platform grouping) — may land with [F12](./prds/F12-technical-mode.md) early |
+
+**PRD impact:** amend F02–F07 + [STEER_SPEC.md](./STEER_SPEC.md) / schema; new mismatch rules in `@steerlens/core`. Prefer additive fields + migrate helpers; bump `apiVersion` only if needed.
+
+**Exit criteria:** Sample workspace uses MoS links + at least one timed collaboration; core mismatch suite covers new codes; executive UI remains jargon-light.
 
 ## Slice 2 - Connectors & auth
 
@@ -32,17 +58,34 @@
 - OAuth for GitHub / Microsoft Entra; Backstage token or session
 - Import & merge teams ([F11](./prds/F11-import-merge.md))
 - Write-back policy enforced (no provider Group YAML)
-- Technical mode surfaces ([F12](./prds/F12-technical-mode.md))
+- Technical mode surfaces ([F12](./prds/F12-technical-mode.md)) — includes EDGE/TT vocabulary bridge for staff+
 
-## Slice 3 - Portfolio suite links
+## Slice 3 - Portfolio suite links & topology groupings
 
 - Optional ArchLens `systemRefs` on bets
-- CI check action for SteerSpec mismatches
+- CI check action for SteerSpec mismatches (incl. Slice 1.5 codes)
 - Optional Backstage overlay `SteerBet` kind docs
+- **Team Topologies 2e:** `groupings[]` (`platform` \| `value_stream`) + fractal membership; org view zoom grouping → members
+- **EDGE:** optional `initiatives[]` under bets (thin narrative slices — never dual backlog)
+- Optional WIP / relative value rank UI; capability vs opportunity mix hint on steering
 
 ## Explicit non-goals (all near-term slices)
 
-- Replacing Jira planning
+- Replacing Jira planning or owning execution backlogs
 - Mutating Entra membership automatically
 - Dark-cyber UI as default
 - Multiplayer CRDT editing
+- Full BAU vs strategic finance / ROI accounting (EDGE Ch.7) — guardrails only if ever shown
+- Full Team Topologies cognitive-load assessment instrument (Weis / 20+ drivers)
+- Copying proprietary Team Topologies book diagrams without permission
+- Prescribing one “correct” org chart for every customer
+
+## Traceability
+
+| Framework theme | Primary slices |
+| --- | --- |
+| EDGE LVT + MoS + incremental funding | 1 (copy), 1.5 (schema), 3 (initiatives / rank) |
+| EDGE lightweight governance (start/stop) | 1 (F07/F08), 1.5 (MoS-measured) |
+| Team Topologies types + interaction modes | 1 (F03), 1.5 (subsystem + time-box), 3 (groupings) |
+| Cognitive load / fast flow as signals | 1 (copy), 1.5 (mismatches), 3 (fractal zoom) |
+| Full rationale | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) |

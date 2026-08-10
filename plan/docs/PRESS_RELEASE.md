@@ -4,11 +4,11 @@
 
 ## SteerLens brings investment clarity to engineering leadership - without another planning silo
 
-**London, UK** - Today, Matthew Worthington introduces **SteerLens**, an interactive briefing space for Engineering Directors and executive sponsors who need a clear answer to three questions: _Are we funding the right outcomes? Is the organisation shaped to deliver them? What should we stop?_
+**London, UK** - Today, Matthew Worthington introduces **SteerLens**, an interactive briefing space for Engineering Directors and executive sponsors who need a clear answer to three questions: _Are we funding the right outcomes? Is the organisation shaped for fast flow of value? What should we stop?_
 
-Most enterprises already have Jira for work, Backstage for services, and Entra or GitHub for people and teams. None of those tools own the **investment contract** - the living link between business outcomes, funded bets, team topology intent, and the evidence that should trigger a stop or re-scope. Leaders end up stitching slide decks by hand. Alignment decays between steering committees.
+Most enterprises already have Jira for work, Backstage for services, and Entra or GitHub for people and teams. None of those tools own the **investment contract** - the living link between business outcomes, Measures of Success, funded bets, team topology intent, and the evidence that should trigger a stop or re-scope. Leaders end up stitching slide decks by hand. Alignment decays between steering committees.
 
-SteerLens treats that contract as a first-class artifact. Leaders open a local workspace, shape a plain-language map of outcomes and bets, organise how work is delivered across customer teams and shared platforms, and leave with a **decision note** fit for a board pack - not a backlog.
+SteerLens treats that contract as a first-class artifact, drawing on value-driven portfolio practice (Lean Value Tree / EDGE) and modern team-of-teams design (Team Topologies). Leaders open a local workspace, shape a plain-language map of outcomes and bets, organise how work flows across customer-facing teams and shared platforms, and leave with a **decision note** fit for a board pack - not a backlog.
 
 ### Not another system of record
 
