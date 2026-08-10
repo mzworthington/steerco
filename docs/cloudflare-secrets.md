@@ -12,9 +12,9 @@ export BWS_PROJECT_ID="..."
 
 # Site identity (or use a gitignored .env — see .env.example)
 export PULUMI_STACK=prod
-export DOMAIN=example.com
-export PAGES_HOSTNAMES=app.example.com
-export PAGES_PROJECT_NAME=my-app   # same as init-project slug
+export DOMAIN=mzworthington.co.uk
+export PAGES_HOSTNAMES=steerlens.mzworthington.co.uk
+export PAGES_PROJECT_NAME=steerlens
 
 gh auth login
 pulumi login
@@ -25,7 +25,7 @@ The shim downloads the canonical script from edge-dns (`EDGE_DNS_REF`, default `
 
 Then `cd infra/cloudflare && pulumi up`, or merge to `main` for CI.
 
-Set public origin in the app with `bin/init-project.sh --origin https://app.example.com`.
+Public origin is `https://steerlens.mzworthington.co.uk` (`SITE_ORIGIN` in `app/src/siteConfig.ts`).
 
 ### Existing zone required
 

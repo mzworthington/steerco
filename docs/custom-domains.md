@@ -24,12 +24,12 @@ You can ship on `*.pages.dev` only, then add a custom subdomain later.
 
 ## Hostname layout
 
-| Variable             | Example                                         |
-| -------------------- | ----------------------------------------------- |
-| `DOMAIN`             | `example.com` (the **zone** name in Cloudflare) |
-| `PAGES_HOSTNAMES`    | `app.example.com`                               |
-| `PAGES_PROJECT_NAME` | same as init slug (e.g. `my-app`)               |
-| `--origin`           | `https://app.example.com`                       |
+| Variable             | Example                                        |
+| -------------------- | ---------------------------------------------- |
+| `DOMAIN`             | `mzworthington.co.uk` (zone owned by edge-dns) |
+| `PAGES_HOSTNAMES`    | `steerlens.mzworthington.co.uk`                |
+| `PAGES_PROJECT_NAME` | `steerlens`                                    |
+| `--origin`           | `https://steerlens.mzworthington.co.uk`        |
 
 Multiple subdomains: `PAGES_HOSTNAMES=app.example.com,staging.example.com`.
 
@@ -42,8 +42,8 @@ Omit hostnames bootstrap later. After the first `main` deploy, open `https://<PA
 ### 1. Customize the app origin
 
 ```bash
-bin/init-project.sh --name "My App" --slug my-app \
-  --origin https://app.example.com
+bin/init-project.sh --name "SteerLens" --slug steerlens \
+  --origin https://steerlens.mzworthington.co.uk
 ```
 
 Or run `bin/init-project.sh` with no flags and answer the prompts.
@@ -56,13 +56,13 @@ This writes `SITE_ORIGIN` in `app/src/siteConfig.ts`. Re-run with `--force` to c
 cp .env.example .env
 ```
 
-Edit at least (Pages project name should match the slug from init):
+Edit at least (defaults already target the shared apex subdomain):
 
 ```bash
 PULUMI_STACK=prod
-DOMAIN=example.com
-PAGES_HOSTNAMES=app.example.com
-PAGES_PROJECT_NAME=my-app
+DOMAIN=mzworthington.co.uk
+PAGES_HOSTNAMES=steerlens.mzworthington.co.uk
+PAGES_PROJECT_NAME=steerlens
 CLOUDFLARE_API_TOKEN=...   # or use Bitwarden (BWS_*); see secrets doc
 ```
 
@@ -121,7 +121,7 @@ Push to `main` (or wait for the next CI run). Wrangler uploads `app/dist`.
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Zone missing or not active                          | Add the zone in Cloudflare and wait until it is **Active** before running bootstrap. This template does not configure nameservers.                                                                   |
 | Custom domain pending                               | DNS CNAME exists and is proxied (orange cloud); wait for SSL.                                                                                                                                        |
-| CI Pulumi fails on hostnames                        | Set repo variable `PULUMI_PAGES_HOSTNAMES` to JSON, e.g. `["app.example.com"]`.                                                                                                                      |
+| CI Pulumi fails on hostnames                        | Set repo variable `PULUMI_PAGES_HOSTNAMES` to JSON, e.g. `["steerlens.mzworthington.co.uk"]`.                                                                                                        |
 | Wrong site origin in HTML/meta                      | Re-run `bin/init-project.sh --origin https://… --force` and redeploy.                                                                                                                                |
 | Token denied                                        | Token needs Pages Edit + Zone Read + DNS Edit on the correct account/zone.                                                                                                                           |
 | Wrong zone in Pulumi (`zoneName` is another domain) | Shared BWS had `CLOUDFLARE_ZONE_ID` for a different site. Re-run bootstrap after the fix that resolves zone from `DOMAIN`; update GitHub `CLOUDFLARE_ZONE_ID` secret. Prefer a BWS project per site. |

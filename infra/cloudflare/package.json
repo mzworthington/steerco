@@ -1,5 +1,5 @@
 {
-  "name": "react-cloudflare-template-infra",
+  "name": "steerlens-infra",
   "license": "MIT",
   "private": true,
   "packageManager": "pnpm@11.20.0",

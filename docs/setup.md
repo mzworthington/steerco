@@ -17,7 +17,7 @@ bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
+Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Coming Soon** splash; append `?preview=1` to unlock the site (remembered for the browser tab via `sessionStorage`).
 
 App sources and the pnpm workspace live under `app/`. Repo docs stay in `docs/` and are imported by the in-app viewer. Product identity lives in `app/src/siteConfig.ts` (written by `bin/init-project.sh`).
 

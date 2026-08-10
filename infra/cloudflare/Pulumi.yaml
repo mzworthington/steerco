@@ -1,5 +1,5 @@
-name: react-cloudflare-template
-description: Cloudflare Pages project and optional custom domains
+name: steerlens
+description: Cloudflare Pages project and custom domains for SteerLens
 runtime:
   name: nodejs
   options:

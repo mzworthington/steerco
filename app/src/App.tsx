@@ -1,12 +1,27 @@
+import { useState } from 'react';
 import { Route, Switch } from 'wouter';
 import { BrandMark } from './components/BrandMark';
 import { SiteFooter } from './components/SiteFooter';
 import { SITE_NAME } from './siteConfig';
+import { isPreviewUnlocked } from './siteGate';
+import { ComingSoonPage } from './pages/ComingSoonPage';
 import { DesignSystemPage } from './pages/DesignSystemPage';
 import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
 
 export function App() {
+  const [unlocked] = useState(() => isPreviewUnlocked());
+
+  if (!unlocked) {
+    return (
+      <div className="site-shell">
+        <main>
+          <ComingSoonPage />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="site-shell">
       <header className="site-nav">

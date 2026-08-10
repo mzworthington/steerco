@@ -22,9 +22,9 @@ test.describe('docs media', () => {
   });
 
   test('home page screenshot', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?preview=1');
     await expect(page.getByTestId('home')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /react cloudflare template/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /steerlens/i })).toBeVisible();
     await page.screenshot({
       path: path.join(outDir, 'home.png'),
       fullPage: true,
@@ -32,7 +32,7 @@ test.describe('docs media', () => {
   });
 
   test('docs overview screenshot', async ({ page }) => {
-    await page.goto('/docs');
+    await page.goto('/docs?preview=1');
     await expect(page.getByTestId('docs')).toBeVisible();
     await expect(page.getByRole('heading', { name: /what's included/i })).toBeVisible();
     await page.screenshot({
@@ -42,7 +42,7 @@ test.describe('docs media', () => {
   });
 
   test('docs workflows screenshot', async ({ page }) => {
-    await page.goto('/docs/workflows');
+    await page.goto('/docs/workflows?preview=1');
     await expect(page.getByTestId('docs')).toBeVisible();
     await expect(page.getByRole('heading', { name: /workflows/i })).toBeVisible();
     await page.screenshot({

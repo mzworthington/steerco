@@ -2,7 +2,7 @@
 module.exports = {
   ci: {
     collect: {
-      url: ['http://127.0.0.1:4173/', 'http://127.0.0.1:4173/docs/setup'],
+      url: ['http://127.0.0.1:4173/?preview=1', 'http://127.0.0.1:4173/docs/setup?preview=1'],
       startServerCommand: 'pnpm exec vite preview --host 127.0.0.1 --port 4173',
       startServerReadyPattern: 'Local',
       numberOfRuns: 1,

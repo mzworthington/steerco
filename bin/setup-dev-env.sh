@@ -15,7 +15,7 @@ eval "$(mise activate bash --shims)"
 mise install node pnpm
 
 # Marker for shells that source activation once.
-# react-cloudflare-template mise activation
+# steerlens mise activation
 
 (cd app && CI=true pnpm install)
 

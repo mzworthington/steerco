@@ -118,4 +118,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy app/dist --project-name=${{ vars.PULUMI_PAGES_PROJECT_NAME || 'react-cloudflare-template' }}
+          command: pages deploy app/dist --project-name=${{ vars.PULUMI_PAGES_PROJECT_NAME || 'steerlens' }}
