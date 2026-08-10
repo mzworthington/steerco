@@ -26,8 +26,8 @@ export function HomePage() {
           <a href="/workspace" className="btn-primary">
             Open workspace
           </a>
-          <a href="/docs" className="btn-secondary">
-            Read the docs
+          <a href="/docs/product-guide" className="btn-secondary">
+            Product guide
           </a>
         </div>
       </div>

@@ -10,7 +10,7 @@ Engineering Directors and executive sponsors must align **outcomes**, **funded b
 
 ## 2. Product thesis
 
-SteerLens is an **interactive board pack**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, export decision notes. It reads and later writes _around_ existing systems of record; it does not become one.
+SteerLens is a **steering workspace**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, leave with decision notes, and export a board pack when you need to share. It reads and later writes _around_ existing systems of record; it does not become one.
 
 It operationalises two complementary models without becoming a PMO or HR tool:
 
@@ -51,7 +51,7 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) — narrative only; never a dual backlog                                                                                                                                                            |
 | **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding)                                                                                                                                                                        |
 | **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                                                     |
-| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned, platform, enabling, complicated subsystem; modes X-as-a-Service / Collaboration / Facilitation; optional members + FTE% as capacity |
+| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned, platform, enabling, complicated subsystem; modes X-as-a-Service / Collaboration / Facilitation; optional members with `discipline` + FTE% as capacity / mix |
 | **Mismatch**                 | Detectable conflict (portfolio or topology smell — e.g. unfunded bet; platform overload / cognitive-load proxy)                                                                                                                                           |
 | **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (lightweight governance)                                                                                                                                                  |
 | **SteerSpec**                | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                                                                                                                                           |

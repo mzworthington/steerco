@@ -13,14 +13,24 @@ export {
 } from './domain/steerSpec/diffSteerSpec';
 export {
   INTERACTION_MODES,
+  MEMBER_DISCIPLINES,
   TEAM_ROLES,
   steerSpecSchema,
+  type Bet,
+  type BetKind,
+  type DecisionNote,
+  type FundingStance,
   type InteractionMode,
+  type MemberDiscipline,
+  type Relationship,
   type SteerSpec,
   type TeamMember,
   type TeamRole,
   type TeamTopologyType,
+  type TopologyEvent,
+  type TopologyEventKind,
 } from './domain/steerSpec/steerSpecSchema';
+export { DISCIPLINE_COPY, type DisciplineCopy } from './domain/capacity/disciplines';
 export {
   INTERACTION_MODE_COPY,
   TEAM_TOPOLOGY_TYPES,

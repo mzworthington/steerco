@@ -41,6 +41,9 @@ export function SteeringOverviewPage() {
           <h1 className="steering-title">{model.workspaceTitle}</h1>
           <p className="steering-vision">{model.vision}</p>
           <p className="steering-alignment">{model.alignmentSummary}</p>
+          {model.nextReviewSummary ? (
+            <p className="steering-next-review">{model.nextReviewSummary}</p>
+          ) : null}
           {model.mismatchSummary ? (
             <p className="steering-mismatch">{model.mismatchSummary}</p>
           ) : null}

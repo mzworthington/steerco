@@ -118,6 +118,21 @@ export function OutcomesPage() {
                       {measure.displayValue}
                     </p>
                     <p className="outcomes-mos-interpretation">{measure.interpretation}</p>
+                    {measure.claimedByBets.length > 0 ? (
+                      <p className="outcomes-mos-claims">
+                        Claimed by{' '}
+                        {measure.claimedByBets.map((bet, index) => (
+                          <span key={bet.id}>
+                            {index > 0 ? ', ' : null}
+                            <Link href={`/workspace/bets/${bet.id}`}>{bet.title}</Link>
+                          </span>
+                        ))}
+                      </p>
+                    ) : (
+                      <p className="outcomes-mos-claims outcomes-mos-claims-empty">
+                        No bet claims this measure yet.
+                      </p>
+                    )}
 
                     {isEditing && editing ? (
                       <div className="outcomes-mos-edit">

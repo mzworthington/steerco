@@ -1,6 +1,6 @@
 type BrandMarkProps = {
   className?: string;
-  /** Square arrow-only mark, or wide hexagons + arrow lockup. */
+  /** Square arrow-only mark, or wide circles + arrow lockup. */
   variant?: 'mark' | 'lockup';
 };
 
@@ -11,7 +11,7 @@ export function BrandMark({ className, variant = 'mark' }: BrandMarkProps) {
       <img
         src="/assets/logo-lockup.svg"
         alt=""
-        width={89}
+        width={83}
         height={50}
         className={className ?? 'h-7 w-auto'}
         decoding="async"

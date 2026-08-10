@@ -41,7 +41,7 @@ export type WorkspaceDiffModel = {
 export function presentWorkspaceDiff(
   baseline: SteerSpec,
   working: SteerSpec,
-  options?: { sourceLabel?: string },
+  options?: { sourceLabel?: string; canWriteToFolder?: boolean },
 ): WorkspaceDiffModel {
   const diff = diffSteerSpec(baseline, working);
   const workspaceTitle = working.metadata.title ?? humanizeName(working.metadata.name);
@@ -53,10 +53,9 @@ export function presentWorkspaceDiff(
     summary: buildSummary(diff),
     sections,
     counts: diff.counts,
-    acceptHint:
-      options?.sourceLabel === 'sample'
-        ? 'Accept keeps this draft as the session baseline. Writing steertree.yaml to disk lands with Save (F09).'
-        : 'Accept keeps this draft as the session baseline. Folder write-back lands with Save (F09).',
+    acceptHint: options?.canWriteToFolder
+      ? 'Save writes steertree.yaml in the open folder and clears pending changes.'
+      : 'Save downloads steertree.yaml and clears pending changes for this session.',
   };
 }
 

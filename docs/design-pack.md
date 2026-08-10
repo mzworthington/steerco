@@ -5,7 +5,7 @@ SteerLens favicon, logos, and social-share art ship under `design-pack/` (vector
 **Mark rules**
 
 - **Square** (favicon, app icons, nav): arrow only (`mark.svg` / `favicon.svg`).
-- **Wide lockup** (social, brand moments): two hexagons + arrow (`mark-lockup.svg`).
+- **Wide lockup** (social, brand moments): two circles + arrow (`mark-lockup.svg`).
 
 Sketch reference: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png`.
 
@@ -14,7 +14,7 @@ Sketch reference: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.pn
 | Favicon      | `/favicon.svg`, `/favicon.png`              | Browser tab (arrow only)             |
 | Logo (light) | `/assets/logo.svg`                          | Nav / square brand mark (arrow only) |
 | Logo (dark)  | `/assets/logo-dark.svg`                     | Dark / ink surfaces (arrow only)     |
-| Logo lockup  | `/assets/logo-lockup.svg`                   | Site header + wide hexagons + arrow  |
+| Logo lockup  | `/assets/logo-lockup.svg`                   | Site header + wide circles + arrow   |
 | Social share | `/assets/social-share.png`                  | `og:image` / Twitter card (1200×630) |
 | Apple touch  | `/icons/apple-touch-icon.png`               | iOS home screen (arrow only)         |
 | PWA icons    | `/icons/pwa-192x192.png`, `pwa-512x512.png` | Optional install icons (arrow only)  |
@@ -25,4 +25,4 @@ After changing mark SVGs, regenerate rasters:
 bin/sync-design-pack.sh   # requires librsvg: brew install librsvg
 ```
 
-Tokens, recipes, and live swatches: [`/design-system`](/design-system). Keep SVG fills and CSS variables in `app/src/index.css` aligned when the palette shifts.
+Tokens, recipes, and live swatches: [`/docs/design-system`](/docs/design-system). Keep SVG fills and CSS variables in `app/src/index.css` aligned when the palette shifts.

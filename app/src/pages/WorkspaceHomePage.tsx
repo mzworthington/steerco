@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'wouter';
 import { loadSampleWorkspace, SAMPLE_WORKSPACE_LABEL } from '../adapters/sampleWorkspaceLoader';
-import { openWorkspaceFromLocalPick } from '../adapters/localSteerSpecPicker';
+import {
+  openWorkspaceFromDirectoryHandle,
+  openWorkspaceFromLocalPick,
+} from '../adapters/localSteerSpecPicker';
 import {
   listRecentWorkspaces,
   rememberRecentWorkspace,
   type RecentWorkspace,
 } from '../adapters/recentWorkspacesStore';
+import {
+  ensureDirectoryWritePermission,
+  loadWorkspaceDirectoryBinding,
+} from '../adapters/workspaceDirectoryStore';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 function formatOpenedAt(iso: string): string {
@@ -20,7 +27,7 @@ function formatOpenedAt(iso: string): string {
 
 export function WorkspaceHomePage() {
   const [, setLocation] = useLocation();
-  const { openSession } = useWorkspaceSession();
+  const { session, openSession } = useWorkspaceSession();
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [recent, setRecent] = useState<RecentWorkspace[]>(() => listRecentWorkspaces());
@@ -42,6 +49,7 @@ export function WorkspaceHomePage() {
       spec: opened.value,
       source: 'sample',
       label: SAMPLE_WORKSPACE_LABEL,
+      persistence: { mode: 'download' },
     });
     setRecent(
       rememberRecentWorkspace({
@@ -72,6 +80,14 @@ export function WorkspaceHomePage() {
         spec: opened.value,
         source,
         label,
+        persistence:
+          opened.directory && opened.fileName
+            ? {
+                mode: 'directory',
+                directory: opened.directory,
+                fileName: opened.fileName,
+              }
+            : { mode: 'download' },
       });
       setRecent(
         rememberRecentWorkspace({
@@ -86,14 +102,58 @@ export function WorkspaceHomePage() {
     }
   }
 
-  function reopenRecent(entry: RecentWorkspace) {
+  async function reopenRecent(entry: RecentWorkspace) {
     if (entry.kind === 'sample') {
       void startFromSample();
       return;
     }
-    setError(
-      'Re-open that workspace with Open folder — folder access is not kept between visits yet.',
-    );
+
+    setError(null);
+    setBusy(true);
+    try {
+      const binding = await loadWorkspaceDirectoryBinding(entry.id);
+      if (!binding) {
+        setError(
+          'Re-open that workspace with Open folder — the browser no longer has a saved folder handle.',
+        );
+        return;
+      }
+      const allowed = await ensureDirectoryWritePermission(binding.directory);
+      if (!allowed) {
+        setError('Folder access was denied. Choose Open folder and grant permission again.');
+        return;
+      }
+      const opened = await openWorkspaceFromDirectoryHandle(binding.directory);
+      if (!opened.ok) {
+        setError(opened.error);
+        return;
+      }
+      const title = opened.value.metadata.title ?? opened.value.metadata.name;
+      const source = entry.id.startsWith('file:') ? 'file' : 'folder';
+      openSession({
+        spec: opened.value,
+        source,
+        label: opened.label ?? title,
+        persistence:
+          opened.directory && opened.fileName
+            ? {
+                mode: 'directory',
+                directory: opened.directory,
+                fileName: opened.fileName,
+              }
+            : { mode: 'download' },
+      });
+      setRecent(
+        rememberRecentWorkspace({
+          id: entry.id,
+          title,
+          kind: 'file',
+        }),
+      );
+      setLocation('/workspace/steering');
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -104,15 +164,41 @@ export function WorkspaceHomePage() {
           Everything stays on this device until you choose to connect systems.
         </p>
         <div className="workspace-home-actions">
+          {session ? (
+            <button
+              type="button"
+              className="btn-primary"
+              data-testid="workspace-continue"
+              onClick={() => setLocation('/workspace/steering')}
+            >
+              Continue {session.label}
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => void openFolder()}
+              disabled={busy}
+            >
+              Open folder
+            </button>
+          )}
+          {session ? (
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => void openFolder()}
+              disabled={busy}
+            >
+              Open folder
+            </button>
+          ) : null}
           <button
             type="button"
-            className="btn-primary"
-            onClick={() => void openFolder()}
+            className={session ? 'btn-tertiary' : 'btn-secondary'}
+            onClick={() => void startFromSample()}
             disabled={busy}
           >
-            Open folder
-          </button>
-          <button type="button" className="btn-secondary" onClick={() => void startFromSample()}>
             Start from sample
           </button>
         </div>
@@ -134,7 +220,8 @@ export function WorkspaceHomePage() {
                 <button
                   type="button"
                   className="workspace-recent-item"
-                  onClick={() => reopenRecent(entry)}
+                  onClick={() => void reopenRecent(entry)}
+                  disabled={busy}
                 >
                   <span className="workspace-recent-name">{entry.title}</span>
                   <span className="workspace-recent-meta">{formatOpenedAt(entry.openedAt)}</span>

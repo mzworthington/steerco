@@ -49,4 +49,34 @@ describe('WorkspaceHomePage', () => {
     expect(setLocation).toHaveBeenCalledWith('/workspace/steering');
     expect(sessionStorage.getItem('steerlens.workspace-session')).toMatch(/northwind-q3-alignment/);
   });
+
+  it('offers continue when a session is already open', async () => {
+    const user = userEvent.setup();
+    const { loadSampleWorkspace, SAMPLE_WORKSPACE_LABEL } =
+      await import('../adapters/sampleWorkspaceLoader');
+    const opened = loadSampleWorkspace();
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    sessionStorage.setItem(
+      'steerlens.workspace-session',
+      JSON.stringify({
+        spec: opened.value,
+        baselineSpec: opened.value,
+        source: 'sample',
+        label: SAMPLE_WORKSPACE_LABEL,
+      }),
+    );
+
+    render(
+      <WorkspaceSessionProvider>
+        <WorkspaceHomePage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const continueButton = screen.getByTestId('workspace-continue');
+    expect(continueButton.textContent).toMatch(/continue/i);
+    await user.click(continueButton);
+    expect(setLocation).toHaveBeenCalledWith('/workspace/steering');
+  });
 });

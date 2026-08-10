@@ -10,10 +10,6 @@ vi.mock('./pages/DocsPage', () => ({
   DocsPage: () => <div data-testid="docs" />,
 }));
 
-vi.mock('./pages/DesignSystemPage', () => ({
-  DesignSystemPage: () => <div data-testid="design-system" />,
-}));
-
 import { App } from './App';
 
 afterEach(() => {
@@ -36,11 +32,11 @@ describe('App site gate', () => {
     expect(screen.getByTestId('home')).toBeTruthy();
   });
 
-  it('redirects /docs/design-system to /design-system when unlocked', () => {
-    window.history.replaceState({}, '', '/docs/design-system?preview=1');
+  it('redirects /design-system to /docs/design-system when unlocked', () => {
+    window.history.replaceState({}, '', '/design-system?preview=1');
     render(<App />);
-    expect(screen.getByTestId('design-system')).toBeTruthy();
-    expect(window.location.pathname).toBe('/design-system');
+    expect(screen.getByTestId('docs')).toBeTruthy();
+    expect(window.location.pathname).toBe('/docs/design-system');
   });
 
   it('routes nested ADR docs paths to DocsPage when unlocked', () => {

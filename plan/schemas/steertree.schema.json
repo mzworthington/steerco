@@ -54,6 +54,12 @@
           "type": "array",
           "items": { "$ref": "#/$defs/evidence" },
           "default": []
+        },
+        "topologyEvents": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/topologyEvent" },
+          "default": [],
+          "description": "Timeline of capacity and relationship changes — Slice 1.5"
         }
       }
     }
@@ -75,22 +81,38 @@
     "teamMember": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "displayName", "title", "ftePercent"],
+      "required": ["id", "displayName", "discipline", "title", "ftePercent"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "displayName": { "type": "string", "minLength": 1 },
+        "discipline": {
+          "$ref": "#/$defs/memberDiscipline"
+        },
         "title": {
           "type": "string",
           "minLength": 1,
-          "description": "Job / craft title for this person on the team — not the Team Topologies team type"
+          "description": "Free-text job title for board packs and diffs — not the Team Topologies team type"
         },
         "ftePercent": {
           "type": "number",
           "minimum": 0,
           "maximum": 100,
           "description": "Allocation to this team as a percentage of one FTE"
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "description": "ISO date this allocation starts — Slice 1.5"
+        },
+        "effectiveUntil": {
+          "type": "string",
+          "description": "ISO date this allocation ends — Slice 1.5"
         }
       }
+    },
+    "memberDiscipline": {
+      "type": "string",
+      "description": "Coarse discipline for capacity / mix advice. Not an HR job family and not the Team Topologies team type.",
+      "enum": ["engineering", "design", "product", "quality", "leadership", "other"]
     },
     "provenance": {
       "type": "string",
@@ -104,6 +126,25 @@
     "recommendation": {
       "type": "string",
       "enum": ["start", "continue", "stop", "rescope"]
+    },
+    "fundingStance": {
+      "type": "string",
+      "enum": ["explore", "exploit", "sustain"]
+    },
+    "betKind": {
+      "type": "string",
+      "enum": ["opportunity", "capability"]
+    },
+    "topologyEventKind": {
+      "type": "string",
+      "enum": [
+        "capacity_up",
+        "capacity_down",
+        "relationship_added",
+        "relationship_ended",
+        "relationship_mode_changed",
+        "other"
+      ]
     },
     "outcome": {
       "type": "object",
@@ -156,7 +197,27 @@
           "items": { "type": "string" },
           "default": [],
           "description": "Optional ArchLens entityRefs - unused in Slice 1"
-        }
+        },
+        "metricIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Measure-of-Success links — metric ids this bet is judged against"
+        },
+        "primaryMetricId": {
+          "type": ["string", "null"],
+          "description": "Headline metric id for this bet, if one metric leads"
+        },
+        "reviewDate": {
+          "type": "string",
+          "description": "ISO date (YYYY-MM-DD preferred) for the next funding review"
+        },
+        "horizon": {
+          "type": "string",
+          "description": "Free text review horizon, e.g. \"Q3 review\""
+        },
+        "fundingStance": { "$ref": "#/$defs/fundingStance" },
+        "kind": { "$ref": "#/$defs/betKind" }
       }
     },
     "team": {
@@ -177,7 +238,7 @@
           "type": "array",
           "items": { "$ref": "#/$defs/teamMember" },
           "default": [],
-          "description": "Optional roster with job titles and FTE allocation — steering capacity signal, not an HR system of record"
+          "description": "Optional roster with disciplines, job titles, and FTE allocation — steering capacity signal, not an HR system of record"
         }
       }
     },
@@ -200,7 +261,19 @@
       "properties": {
         "fromTeamId": { "type": "string" },
         "toTeamId": { "type": "string" },
-        "mode": { "$ref": "#/$defs/interactionMode" }
+        "mode": { "$ref": "#/$defs/interactionMode" },
+        "expectedUntil": {
+          "type": "string",
+          "description": "ISO date time-box for collaboration/facilitation — Slice 1.5"
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "description": "ISO date this relationship starts — Slice 1.5"
+        },
+        "effectiveUntil": {
+          "type": "string",
+          "description": "ISO date this relationship ends — Slice 1.5"
+        }
       }
     },
     "decisionNote": {
@@ -217,6 +290,12 @@
           "type": "array",
           "items": { "type": "string" },
           "default": []
+        },
+        "measuredMetricIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Structured Measure-of-Success refs — metric ids this decision cites"
         },
         "affectedTeamIds": {
           "type": "array",
@@ -238,6 +317,26 @@
           "enum": ["sample", "manual", "github", "other"]
         },
         "note": { "type": "string" }
+      }
+    },
+    "topologyEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "at", "kind", "summary"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "at": { "type": "string", "minLength": 1, "description": "ISO date the event occurred" },
+        "kind": { "$ref": "#/$defs/topologyEventKind" },
+        "summary": { "type": "string", "minLength": 1 },
+        "teamIds": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "relationshipKey": {
+          "type": "string",
+          "description": "fromTeamId::toTeamId — links back to the relationship this event describes"
+        }
       }
     }
   }

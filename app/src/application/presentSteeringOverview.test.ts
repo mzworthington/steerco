@@ -22,13 +22,15 @@ describe('presentSteeringOverview', () => {
     expect(model.workspaceTitle).toBe('Northwind Q3 alignment');
     expect(model.periodLabel).toBe('Sample period');
     expect(model.vision).toMatch(/customer promises/i);
-    expect(model.alignmentSummary).toBe('Three bets funded. One recommended to stop.');
+    expect(model.alignmentSummary).toBe('One recommended to stop. Three bets funded.');
     expect(model.statusCounts).toEqual({ onTrack: 1, atRisk: 1, stop: 1 });
     expect(model.decisionNotesSummary).toMatch(/stop recommendation/i);
     expect(model.decisionNotes[0]?.title).toMatch(/loyalty ledger/i);
+    expect(model.nextReviewSummary).toMatch(/review/i);
 
     const bets = model.outcomes.flatMap((outcome) => outcome.bets);
     expect(bets).toHaveLength(3);
+    expect(bets[0]?.status).toBe('Stop');
     expect(bets.map((bet) => bet.status).sort()).toEqual(['At risk', 'On track', 'Stop']);
     const visible = [
       model.vision,

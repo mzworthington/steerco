@@ -7,7 +7,20 @@ export type SteerMismatchCode =
   | 'bet_without_kill_criteria'
   | 'platform_overload'
   | 'team_without_bet'
-  | 'orphan_outcome';
+  | 'orphan_outcome'
+  | 'bet_without_mos_link'
+  | 'collab_without_end'
+  | 'stream_bet_wip'
+  | 'enabling_owns_delivery'
+  | 'stream_missing_product';
+
+/** Bet statuses considered "active" — funded and being steered, not just proposed or closed out. */
+const ACTIVE_BET_STATUSES = new Set(['on_track', 'at_risk', 'stop_ready']);
+/** Bet statuses that count toward work-in-progress — active plus proposed-but-not-yet-started. */
+const WIP_BET_STATUSES = new Set(['proposed', 'on_track', 'at_risk', 'stop_ready']);
+/** Interaction modes expected to be temporary and therefore worth time-boxing. */
+const TIME_BOXABLE_MODES = new Set(['collaboration', 'facilitation']);
+const STREAM_BET_WIP_THRESHOLD = 2;
 
 export type SteerMismatchSeverity = 'error' | 'warning';
 
@@ -52,6 +65,16 @@ export function detectSteerSpecMismatches(
         relatedBetIds: [bet.id],
       });
     }
+    const hasMosLink = bet.metricIds.length > 0 || Boolean(bet.primaryMetricId);
+    if (ACTIVE_BET_STATUSES.has(bet.status) && !hasMosLink) {
+      mismatches.push({
+        code: 'bet_without_mos_link',
+        severity: 'warning',
+        title: 'Bet without a Measure of Success link',
+        headline: `“${bet.title}” is active but has no linked metric — steering conversations need a number to point at.`,
+        relatedBetIds: [bet.id],
+      });
+    }
   }
 
   for (const outcome of doc.spec.outcomes) {
@@ -92,6 +115,66 @@ export function detectSteerSpecMismatches(
         title: 'Platform under heavy load',
         headline: `“${team.displayName}” has ${dependents.length} teams using it as a service — a cognitive-load and flow risk for those dependents, not a headcount problem.`,
         relatedTeamIds: [team.id, ...dependents.map((item) => item.fromTeamId)],
+      });
+    }
+  }
+
+  for (const relationship of doc.spec.relationships) {
+    if (!TIME_BOXABLE_MODES.has(relationship.mode) || relationship.expectedUntil) continue;
+    const from = teamsById.get(relationship.fromTeamId);
+    const to = teamsById.get(relationship.toTeamId);
+    mismatches.push({
+      code: 'collab_without_end',
+      severity: 'warning',
+      title: 'Time-boxed interaction without an end date',
+      headline: `“${from?.displayName ?? relationship.fromTeamId}” → “${to?.displayName ?? relationship.toTeamId}” (${relationship.mode}) has no expectedUntil — collaboration and facilitation are meant to be temporary.`,
+      relatedTeamIds: [relationship.fromTeamId, relationship.toTeamId],
+    });
+  }
+
+  for (const team of doc.spec.teams) {
+    if (team.role !== 'stream_aligned') continue;
+    const activeBets = doc.spec.bets.filter(
+      (bet) => WIP_BET_STATUSES.has(bet.status) && bet.fundedTeamIds.includes(team.id),
+    );
+    if (activeBets.length > STREAM_BET_WIP_THRESHOLD) {
+      mismatches.push({
+        code: 'stream_bet_wip',
+        severity: 'warning',
+        title: 'Stream-aligned team stretched across too many active bets',
+        headline: `“${team.displayName}” is funded on ${activeBets.length} active bets at once — a work-in-progress risk, not a headcount problem.`,
+        relatedTeamIds: [team.id],
+        relatedBetIds: activeBets.map((bet) => bet.id),
+      });
+    }
+  }
+
+  for (const bet of doc.spec.bets) {
+    if (!ACTIVE_BET_STATUSES.has(bet.status) || bet.fundedTeamIds.length !== 1) continue;
+    const soleTeam = teamsById.get(bet.fundedTeamIds[0]);
+    if (soleTeam?.role === 'enabling') {
+      mismatches.push({
+        code: 'enabling_owns_delivery',
+        severity: 'warning',
+        title: 'Enabling team carrying sole delivery ownership',
+        headline: `“${soleTeam.displayName}” is the only funded team on “${bet.title}” — enabling teams should coach delivery, not own it long-term.`,
+        relatedTeamIds: [soleTeam.id],
+        relatedBetIds: [bet.id],
+      });
+    }
+  }
+
+  for (const team of doc.spec.teams) {
+    if (team.role !== 'stream_aligned') continue;
+    if (team.members.length === 0) continue;
+    const hasProduct = team.members.some((member) => member.discipline === 'product');
+    if (!hasProduct) {
+      mismatches.push({
+        code: 'stream_missing_product',
+        severity: 'warning',
+        title: 'Stream team without product capacity',
+        headline: `“${team.displayName}” has members recorded but no product discipline FTE — discovery and outcome framing may stall.`,
+        relatedTeamIds: [team.id],
       });
     }
   }

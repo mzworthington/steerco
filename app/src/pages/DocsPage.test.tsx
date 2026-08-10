@@ -23,3 +23,15 @@ describe('DocsPage mermaid fences', () => {
     expect(screen.queryByText(/```mermaid/)).not.toBeInTheDocument();
   });
 });
+
+describe('DocsPage design system', () => {
+  it('renders the live showcase inside the docs shell', () => {
+    window.history.replaceState({}, '', '/docs/design-system');
+    render(<DocsPage />);
+
+    expect(screen.getByTestId('docs')).toBeTruthy();
+    expect(screen.getByTestId('design-system')).toBeTruthy();
+    expect(screen.getByRole('navigation', { name: 'Build & ops' })).toBeTruthy();
+    expect(screen.getByRole('heading', { level: 1, name: 'Design system' })).toBeTruthy();
+  });
+});

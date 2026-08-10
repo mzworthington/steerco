@@ -1,5 +1,25 @@
-import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import { steerSpecHasPendingChanges, steerSpecSchema, type SteerSpec } from '@steerlens/core';
+import {
+  saveSteerSpecToPersistence,
+  type SaveSteerSpecResult,
+  type WorkspacePersistence,
+} from '../adapters/steerSpecPersistence';
+import {
+  ensureDirectoryWritePermission,
+  loadWorkspaceDirectoryBinding,
+  saveWorkspaceDirectoryBinding,
+  workspaceDirectoryKey,
+  type SteerSpecFileName,
+} from '../adapters/workspaceDirectoryStore';
 
 export type WorkspaceSource = 'sample' | 'folder' | 'file';
 
@@ -15,13 +35,23 @@ export type WorkspaceSessionState = {
 type WorkspaceSessionContextValue = {
   session: WorkspaceSessionState | null;
   hasPendingChanges: boolean;
+  /** Folder write target when File System Access handle is available (memory or IndexedDB). */
+  persistence: WorkspacePersistence;
+  canWriteToFolder: boolean;
   setSession: (session: WorkspaceSessionState) => void;
   /** Open or replace workspace; seeds baseline = working. */
-  openSession: (input: { spec: SteerSpec; source: WorkspaceSource; label: string }) => void;
-  /** Promote working copy to the new baseline (session accept; disk write = F09). */
+  openSession: (input: {
+    spec: SteerSpec;
+    source: WorkspaceSource;
+    label: string;
+    persistence?: WorkspacePersistence;
+  }) => void;
+  /** Promote working copy to the new baseline (session only). */
   acceptDraft: () => void;
   /** Restore working copy from baseline. */
   revertDraft: () => void;
+  /** Validate, write/download SteerSpec, then promote baseline. */
+  saveWorkspace: () => Promise<SaveSteerSpecResult>;
   clearSession: () => void;
 };
 
@@ -94,10 +124,62 @@ function persistSession(session: WorkspaceSessionState | null): void {
   sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
 }
 
+function defaultPersistenceForSource(_source: WorkspaceSource): WorkspacePersistence {
+  return { mode: 'download' };
+}
+
+function isSteerSpecFileName(value: string): value is SteerSpecFileName {
+  return value === 'steertree.yaml' || value === 'steertree.yml';
+}
+
+async function rememberDirectoryPersistence(
+  session: WorkspaceSessionState,
+  persistence: WorkspacePersistence,
+): Promise<void> {
+  if (persistence.mode !== 'directory') return;
+  const key = workspaceDirectoryKey(session.source, session.spec.metadata.name);
+  await saveWorkspaceDirectoryBinding({
+    workspaceKey: key,
+    fileName: persistence.fileName,
+    directory: persistence.directory,
+  });
+}
+
 export function WorkspaceSessionProvider({ children }: { children: ReactNode }) {
   const [session, setSessionState] = useState<WorkspaceSessionState | null>(() =>
     typeof sessionStorage === 'undefined' ? null : readStoredSession(),
   );
+  const [persistence, setPersistence] = useState<WorkspacePersistence>({ mode: 'download' });
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function restoreDirectoryHandle() {
+      if (!session || session.source === 'sample') return;
+      if (persistence.mode === 'directory') return;
+
+      const key = workspaceDirectoryKey(session.source, session.spec.metadata.name);
+      try {
+        const binding = await loadWorkspaceDirectoryBinding(key);
+        if (!binding || cancelled) return;
+        const allowed = await ensureDirectoryWritePermission(binding.directory);
+        if (!allowed || cancelled) return;
+        if (!isSteerSpecFileName(binding.fileName)) return;
+        setPersistence({
+          mode: 'directory',
+          directory: binding.directory,
+          fileName: binding.fileName,
+        });
+      } catch {
+        // Leave download fallback if IndexedDB / permission restore fails.
+      }
+    }
+
+    void restoreDirectoryHandle();
+    return () => {
+      cancelled = true;
+    };
+  }, [session, persistence.mode]);
 
   const setSession = useCallback((next: WorkspaceSessionState) => {
     const normalized = normalizeSession(next);
@@ -107,15 +189,25 @@ export function WorkspaceSessionProvider({ children }: { children: ReactNode }) 
   }, []);
 
   const openSession = useCallback(
-    (input: { spec: SteerSpec; source: WorkspaceSource; label: string }) => {
+    (input: {
+      spec: SteerSpec;
+      source: WorkspaceSource;
+      label: string;
+      persistence?: WorkspacePersistence;
+    }) => {
       const normalized = normalizeSession({
         ...input,
         baselineSpec: cloneSpec(input.spec),
         spec: cloneSpec(input.spec),
       });
       if (!normalized) return;
+      const nextPersistence = input.persistence ?? defaultPersistenceForSource(input.source);
       setSessionState(normalized);
       persistSession(normalized);
+      setPersistence(nextPersistence);
+      void rememberDirectoryPersistence(normalized, nextPersistence).catch(() => {
+        // Non-fatal: session still works; Save may fall back to download.
+      });
     },
     [],
   );
@@ -144,9 +236,46 @@ export function WorkspaceSessionProvider({ children }: { children: ReactNode }) 
     });
   }, []);
 
+  const saveWorkspace = useCallback(async (): Promise<SaveSteerSpecResult> => {
+    if (!session) {
+      return { ok: false, error: 'Open a workspace before saving.' };
+    }
+
+    let activePersistence = persistence;
+    if (activePersistence.mode !== 'directory' && session.source !== 'sample') {
+      const key = workspaceDirectoryKey(session.source, session.spec.metadata.name);
+      try {
+        const binding = await loadWorkspaceDirectoryBinding(key);
+        if (binding && (await ensureDirectoryWritePermission(binding.directory))) {
+          activePersistence = {
+            mode: 'directory',
+            directory: binding.directory,
+            fileName: binding.fileName,
+          };
+          setPersistence(activePersistence);
+        }
+      } catch {
+        // fall through to download
+      }
+    }
+
+    const result = await saveSteerSpecToPersistence(session.spec, activePersistence, {
+      downloadFileName: `${session.spec.metadata.name || 'steertree'}.yaml`,
+    });
+    if (!result.ok) return result;
+    const next: WorkspaceSessionState = {
+      ...session,
+      baselineSpec: cloneSpec(session.spec),
+    };
+    setSessionState(next);
+    persistSession(next);
+    return result;
+  }, [session, persistence]);
+
   const clearSession = useCallback(() => {
     setSessionState(null);
     persistSession(null);
+    setPersistence({ mode: 'download' });
   }, []);
 
   const hasPendingChanges = session
@@ -157,13 +286,26 @@ export function WorkspaceSessionProvider({ children }: { children: ReactNode }) 
     () => ({
       session,
       hasPendingChanges,
+      persistence,
+      canWriteToFolder: persistence.mode === 'directory',
       setSession,
       openSession,
       acceptDraft,
       revertDraft,
+      saveWorkspace,
       clearSession,
     }),
-    [session, hasPendingChanges, setSession, openSession, acceptDraft, revertDraft, clearSession],
+    [
+      session,
+      hasPendingChanges,
+      persistence,
+      setSession,
+      openSession,
+      acceptDraft,
+      revertDraft,
+      saveWorkspace,
+      clearSession,
+    ],
   );
 
   return (

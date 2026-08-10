@@ -1,11 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { INTERACTION_MODE_COPY, TEAM_TOPOLOGY_TYPES, TOPOLOGY_TYPE_COPY } from '@steerlens/core';
 import {
+  INTERACTION_MODE_COPY,
+  TEAM_TOPOLOGY_TYPES,
+  TOPOLOGY_TYPE_COPY,
+  type MemberDiscipline,
+} from '@steerlens/core';
+import {
+  applyAddOrganisationMember,
   applyAddOrganisationRelationship,
   applyAddOrganisationTeam,
+  applyUpdateOrganisationMember,
+  organisationMemberDisciplineOptions,
   presentOrganisation,
   type OrganisationInteractionMode,
+  type OrganisationTeamMember,
   type OrganisationTeamRole,
 } from '../application/presentOrganisation';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
@@ -22,6 +31,8 @@ const MODE_OPTIONS = (Object.keys(INTERACTION_MODE_COPY) as OrganisationInteract
   }),
 );
 
+const TIME_BOXABLE_MODES = new Set<OrganisationInteractionMode>(['collaboration', 'facilitation']);
+
 export function OrganisationPage() {
   const { session, setSession } = useWorkspaceSession();
   const [, setLocation] = useLocation();
@@ -30,8 +41,18 @@ export function OrganisationPage() {
   const [fromTeamId, setFromTeamId] = useState('');
   const [toTeamId, setToTeamId] = useState('');
   const [mode, setMode] = useState<OrganisationInteractionMode>('x_as_a_service');
+  const [expectedUntil, setExpectedUntil] = useState('');
+  const [memberTeamId, setMemberTeamId] = useState('');
+  const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
+  const [memberName, setMemberName] = useState('');
+  const [memberTitle, setMemberTitle] = useState('');
+  const [memberFte, setMemberFte] = useState('100');
+  const [memberDiscipline, setMemberDiscipline] = useState<MemberDiscipline>('engineering');
+  const [memberEffectiveFrom, setMemberEffectiveFrom] = useState('');
+  const [memberEffectiveUntil, setMemberEffectiveUntil] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
+  const disciplineOptions = useMemo(() => organisationMemberDisciplineOptions(), []);
 
   useEffect(() => {
     if (!session) {
@@ -72,6 +93,7 @@ export function OrganisationPage() {
       fromTeamId,
       toTeamId,
       mode,
+      expectedUntil: expectedUntil || undefined,
     });
     if (!applied.ok) {
       setError(applied.error);
@@ -79,8 +101,79 @@ export function OrganisationPage() {
       return;
     }
     setSession({ ...session, spec: applied.value });
+    setExpectedUntil('');
     setError(null);
     setSavedFlash('Relationship saved to this workspace session.');
+  };
+
+  const addMember = () => {
+    const applied = applyAddOrganisationMember(session.spec, {
+      teamId: memberTeamId || allTeams[0]?.id || '',
+      displayName: memberName,
+      title: memberTitle,
+      ftePercent: Number(memberFte),
+      discipline: memberDiscipline,
+      effectiveFrom: memberEffectiveFrom || undefined,
+      effectiveUntil: memberEffectiveUntil || undefined,
+    });
+    if (!applied.ok) {
+      setError(applied.error);
+      setSavedFlash(null);
+      return;
+    }
+    setSession({ ...session, spec: applied.value });
+    clearMemberForm();
+    setError(null);
+    setSavedFlash('Member added to this workspace session.');
+  };
+
+  const saveMember = () => {
+    if (!editingMemberId) {
+      addMember();
+      return;
+    }
+    const applied = applyUpdateOrganisationMember(session.spec, {
+      teamId: memberTeamId || allTeams[0]?.id || '',
+      memberId: editingMemberId,
+      displayName: memberName,
+      title: memberTitle,
+      ftePercent: Number(memberFte),
+      discipline: memberDiscipline,
+      effectiveFrom: memberEffectiveFrom || undefined,
+      effectiveUntil: memberEffectiveUntil || undefined,
+    });
+    if (!applied.ok) {
+      setError(applied.error);
+      setSavedFlash(null);
+      return;
+    }
+    setSession({ ...session, spec: applied.value });
+    clearMemberForm();
+    setError(null);
+    setSavedFlash('Member updated in this workspace session.');
+  };
+
+  const clearMemberForm = () => {
+    setEditingMemberId(null);
+    setMemberName('');
+    setMemberTitle('');
+    setMemberFte('100');
+    setMemberDiscipline('engineering');
+    setMemberEffectiveFrom('');
+    setMemberEffectiveUntil('');
+  };
+
+  const beginEditMember = (teamId: string, member: OrganisationTeamMember) => {
+    setMemberTeamId(teamId);
+    setEditingMemberId(member.id);
+    setMemberName(member.displayName);
+    setMemberTitle(member.title);
+    setMemberFte(String(member.ftePercent));
+    setMemberDiscipline(member.discipline);
+    setMemberEffectiveFrom(member.effectiveFrom ?? '');
+    setMemberEffectiveUntil(member.effectiveUntil ?? '');
+    setError(null);
+    setSavedFlash(null);
   };
 
   return (
@@ -97,6 +190,32 @@ export function OrganisationPage() {
         <p className="organisation-overload" role="status">
           {model.overloadBanner}
         </p>
+      ) : null}
+
+      {model.mismatches.length > 0 ? (
+        <section
+          className="organisation-mismatches"
+          aria-labelledby="organisation-mismatches-heading"
+          data-testid="organisation-mismatches"
+        >
+          <h2 id="organisation-mismatches-heading" className="organisation-section-title">
+            Operating-model checks
+          </h2>
+          <ul>
+            {model.mismatches.map((mismatch, index) => (
+              <li
+                key={`${mismatch.code}-${index}`}
+                className={
+                  mismatch.severity === 'error'
+                    ? 'organisation-mismatch organisation-mismatch-error'
+                    : 'organisation-mismatch'
+                }
+              >
+                {mismatch.headline}
+              </li>
+            ))}
+          </ul>
+        </section>
       ) : null}
 
       {model.empty ? (
@@ -139,8 +258,19 @@ export function OrganisationPage() {
                     {team.members.length > 0 ? (
                       <ul className="organisation-member-list">
                         {team.members.map((member) => (
-                          <li key={member.id}>
-                            {member.displayName} · {member.title} · {member.ftePercent}% FTE
+                          <li key={member.id} className="organisation-member-row">
+                            <span>
+                              {member.displayName} · {member.disciplineLabel} · {member.title} ·{' '}
+                              {member.ftePercent}% FTE
+                              {member.effectiveUntil ? ` · until ${member.effectiveUntil}` : ''}
+                            </span>
+                            <button
+                              type="button"
+                              className="organisation-member-edit"
+                              onClick={() => beginEditMember(team.id, member)}
+                            >
+                              Edit
+                            </button>
                           </li>
                         ))}
                       </ul>
@@ -166,7 +296,15 @@ export function OrganisationPage() {
           <ul className="organisation-relationship-list">
             {model.relationships.map((relationship) => (
               <li key={`${relationship.fromTeamId}-${relationship.mode}-${relationship.toTeamId}`}>
-                <span>{relationship.sentence}</span>
+                <span>
+                  {relationship.sentence}
+                  {relationship.expectedUntil ? (
+                    <span className="organisation-relationship-expected">
+                      {' '}
+                      · expected until {relationship.expectedUntil}
+                    </span>
+                  ) : null}
+                </span>
                 <span className="organisation-relationship-mode">{relationship.modeLabel}</span>
               </li>
             ))}
@@ -252,9 +390,110 @@ export function OrganisationPage() {
               ))}
             </select>
           </label>
+          {TIME_BOXABLE_MODES.has(mode) ? (
+            <label className="organisation-field">
+              <span>Expected until</span>
+              <input
+                type="date"
+                value={expectedUntil}
+                onChange={(event) => setExpectedUntil(event.target.value)}
+              />
+            </label>
+          ) : null}
           <button type="submit" className="btn-secondary" disabled={allTeams.length < 2}>
             Save relationship
           </button>
+        </form>
+
+        <form
+          className="organisation-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            saveMember();
+          }}
+        >
+          <h2 className="organisation-section-title">
+            {editingMemberId ? 'Edit member' : 'Add a member'}
+          </h2>
+          <label className="organisation-field">
+            <span>Team</span>
+            <select
+              value={memberTeamId || allTeams[0]?.id || ''}
+              onChange={(event) => setMemberTeamId(event.target.value)}
+              disabled={Boolean(editingMemberId)}
+            >
+              {allTeams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.displayName}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="organisation-field">
+            <span>Member name</span>
+            <input
+              value={memberName}
+              onChange={(event) => setMemberName(event.target.value)}
+              placeholder="Nina Torres"
+            />
+          </label>
+          <label className="organisation-field">
+            <span>Title</span>
+            <input
+              value={memberTitle}
+              onChange={(event) => setMemberTitle(event.target.value)}
+              placeholder="Backend Engineer"
+            />
+          </label>
+          <label className="organisation-field">
+            <span>Discipline</span>
+            <select
+              value={memberDiscipline}
+              onChange={(event) => setMemberDiscipline(event.target.value as MemberDiscipline)}
+            >
+              {disciplineOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="organisation-field">
+            <span>FTE percent</span>
+            <input
+              type="number"
+              min={0}
+              max={100}
+              value={memberFte}
+              onChange={(event) => setMemberFte(event.target.value)}
+            />
+          </label>
+          <label className="organisation-field">
+            <span>Effective from (optional)</span>
+            <input
+              type="date"
+              value={memberEffectiveFrom}
+              onChange={(event) => setMemberEffectiveFrom(event.target.value)}
+            />
+          </label>
+          <label className="organisation-field">
+            <span>Effective until (optional)</span>
+            <input
+              type="date"
+              value={memberEffectiveUntil}
+              onChange={(event) => setMemberEffectiveUntil(event.target.value)}
+            />
+          </label>
+          <div className="organisation-form-actions">
+            <button type="submit" className="btn-secondary" disabled={allTeams.length === 0}>
+              {editingMemberId ? 'Save member' : 'Add member'}
+            </button>
+            {editingMemberId ? (
+              <button type="button" className="btn-tertiary" onClick={clearMemberForm}>
+                Cancel edit
+              </button>
+            ) : null}
+          </div>
         </form>
       </div>
 

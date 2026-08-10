@@ -25,7 +25,7 @@ Present one primary outcome with large **Measures of Success** and funded bets a
 4. Bet rows with simple progress cue
 5. Manual edit of metric current/target in Slice 1 (inline or secondary form)
 
-**Slice 1.5:** prefer ≥1 MoS per outcome in validation; show which bets claim each MoS.
+**Slice 1.5:** prefer ≥1 MoS per outcome in validation; show which bets claim each MoS (`metricIds` / `primaryMetricId`) on the Outcomes page.
 
 ## Acceptance
 

@@ -2,7 +2,7 @@
 
 SteerLens executive theme is a **light editorial** board-pack language: warm stone paper, deep ocean accent, serif titles. It is deliberately distinct from ArchLens’s dark cyan drafting chrome.
 
-In-app home: [`/design-system`](/design-system) (not under `/docs`). Vector sources: [Design pack](/docs/design-pack).
+In-app showcase: [`/docs/design-system`](/docs/design-system) (live swatches in the docs shell). Vector sources: [Design pack](/docs/design-pack).
 
 Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … `04`. Mark direction: sketch `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (evolved from v16 reticle).
 
@@ -17,17 +17,17 @@ Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … 
 
 ### Mark
 
-Motif: **two hexagons + northeast arrowhead** (scooped base). Still provisional as a lockup, but this is the working direction.
+Motif: **two circles + northeast arrowhead** (scooped base). Still provisional as a lockup, but this is the working direction.
 
-| Use                                          | Asset                      | Rule                                                  |
-| -------------------------------------------- | -------------------------- | ----------------------------------------------------- |
-| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only**                                        |
-| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Hexagons + arrow** (main logo, header, Coming Soon) |
-| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field                               |
+| Use                                          | Asset                      | Rule                                                 |
+| -------------------------------------------- | -------------------------- | ---------------------------------------------------- |
+| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only**                                       |
+| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Circles + arrow** (main logo, header, Coming Soon) |
+| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field                              |
 
-Do not put the full hexagons+arrow motif in a tight square — it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
+Do not put the full circles+arrow motif in a tight square — it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
 
-Explorations: `mockups/logo-explorations/` (v16 reticle ancestry + dots-arrow sketch → hexagons).
+Explorations: `mockups/logo-explorations/` (v16 reticle ancestry + dots-arrow sketch).
 
 ---
 
@@ -70,7 +70,7 @@ Declared in `app/src/index.css` under `@theme` (Tailwind CSS 4). Architecture al
 | `.hero` / `.hero-*`                                                        | Marketing first viewport                  |
 | `.prose-docs`                                                              | In-app Markdown docs                      |
 
-Showcase-only classes (`.ds-*`, `.token-*`, `.asset-*`) stay on `/design-system`.
+Showcase-only classes (`.ds-*`, `.token-*`, `.asset-*`) stay on `/docs/design-system`.
 
 ---
 
@@ -79,7 +79,7 @@ Showcase-only classes (`.ds-*`, `.token-*`, `.asset-*`) stay on `/design-system`
 - No purple gradients, no dark-cyber default, no YAML in executive chrome.
 - Distinct fonts — not Inter / Roboto / system-only stacks.
 - Cards only when they carry interaction; prefer whitespace over chrome.
-- Square logos = arrow only; wide brand moments may use hexagons + arrow.
+- Square logos = arrow only; wide brand moments may use circles + arrow.
 - Keep SVG fills in `design-pack/` aligned when tokens change.
 
 ---
@@ -88,4 +88,4 @@ Showcase-only classes (`.ds-*`, `.token-*`, `.asset-*`) stay on `/design-system`
 
 1. Edit `@theme` in `app/src/index.css` (and `designSystem/tokens.ts` swatches).
 2. Update `design-pack/` SVGs; run `bin/sync-design-pack.sh`.
-3. Skim [`/design-system`](/design-system) and this doc.
+3. Skim [`/docs/design-system`](/docs/design-system) and this written guide.

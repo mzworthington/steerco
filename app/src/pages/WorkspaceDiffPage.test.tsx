@@ -91,9 +91,17 @@ describe('WorkspaceDiffPage', () => {
     );
   });
 
-  it('accepts the draft as the new baseline', async () => {
+  it('saves the draft as the new baseline via download', async () => {
     const user = userEvent.setup();
     expect(seedDirtySession()).toBeTruthy();
+
+    const createObjectURL = vi.fn(() => 'blob:steerlens');
+    const revokeObjectURL = vi.fn();
+    vi.stubGlobal('URL', {
+      ...URL,
+      createObjectURL,
+      revokeObjectURL,
+    });
 
     render(
       <WorkspaceSessionProvider>
@@ -103,6 +111,7 @@ describe('WorkspaceDiffPage', () => {
 
     await user.click(screen.getByTestId('workspace-diff-accept'));
     expect(screen.getByTestId('workspace-diff-empty')).toBeTruthy();
+    expect(screen.getByText(/downloaded/i)).toBeTruthy();
 
     const stored = JSON.parse(sessionStorage.getItem('steerlens.workspace-session') ?? '{}') as {
       spec: { spec: { bets: Array<{ id: string; status: string }> } };

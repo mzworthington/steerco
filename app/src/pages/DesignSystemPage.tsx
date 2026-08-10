@@ -30,7 +30,7 @@ export function DesignSystemPage() {
           <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             design-pack/
           </code>
-          . Distinct from ArchLens. Mark: hexagons + arrow lockup; square icons use the arrow alone.
+          . Distinct from ArchLens. Mark: circles + arrow lockup; square icons use the arrow alone.
         </p>
       </header>
 
@@ -72,7 +72,7 @@ function IdentityPanel() {
       <section className="ds-section">
         <h2>Brand signal</h2>
         <p>
-          Product name as a hero-level serif signal. Motif is two hexagons + a northeast arrowhead;
+          Product name as a hero-level serif signal. Motif is two circles + a northeast arrowhead;
           square surfaces (nav, favicon, app icons) use the arrow alone. First viewport: brand, one
           headline, one lead line, one CTA group — not a dashboard of cards.
         </p>
@@ -88,7 +88,7 @@ function IdentityPanel() {
           </div>
           <div className="surface flex flex-col justify-center gap-3">
             <BrandMark variant="lockup" className="h-10 w-auto" />
-            <p className="text-ink-muted text-sm">Hexagons + arrow · header / wide</p>
+            <p className="text-ink-muted text-sm">Circles + arrow · header / wide</p>
           </div>
         </div>
       </section>
@@ -196,7 +196,7 @@ function AssetsPanel() {
         <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
           logo-lockup.svg
         </code>{' '}
-        carries the full hexagons + arrow motif.
+        carries the full circles + arrow motif.
       </p>
       <div className="asset-grid">
         <figure className="asset-tile">
@@ -219,7 +219,7 @@ function AssetsPanel() {
             height={88}
             className="h-14 w-auto"
           />
-          <figcaption>logo-lockup.svg · hexagons + arrow (wide)</figcaption>
+          <figcaption>logo-lockup.svg · circles + arrow (wide)</figcaption>
         </figure>
         <figure className="asset-tile sm:col-span-2 lg:col-span-3">
           <img

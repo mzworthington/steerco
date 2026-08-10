@@ -19,7 +19,7 @@ Open [http://localhost:5173](http://localhost:5173). Append `?preview=1` to unlo
 
 ## Docs
 
-In-app docs at `/docs` (Markdown under `docs/`). Design tokens and recipes: `/design-system` and [docs/design-system.md](./docs/design-system.md).
+In-app docs at `/docs` (Markdown under `docs/`). Design tokens and recipes: `/docs/design-system` and [docs/design-system.md](./docs/design-system.md).
 
 ## License
 

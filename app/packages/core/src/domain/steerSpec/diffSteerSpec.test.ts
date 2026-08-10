@@ -37,6 +37,7 @@ describe('diffSteerSpec', () => {
       title: 'Keep pickup bet',
       why: 'Hit rate climbing',
       measured: ['Promise hit rate up'],
+      measuredMetricIds: [],
       affectedTeamIds: ['team_storefront'],
       nextStep: 'Fund next quarter',
     });

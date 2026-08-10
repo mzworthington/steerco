@@ -43,7 +43,7 @@ Matthew Skelton, Manuel Pais (IT Revolution). Subtitle: _Organizing Business and
 
 ## How the two frameworks meet in SteerLens
 
-EDGE answers **how we invest** and **how we adapt funding**. Team Topologies answers **how we organise for fast flow of value**. SteerLens is the board-pack surface that keeps both contracts versionable.
+EDGE answers **how we invest** and **how we adapt funding**. Team Topologies answers **how we organise for fast flow of value**. SteerLens is the steering workspace that keeps both contracts versionable — with a board pack as the shareable export.
 
 ```mermaid
 flowchart TB
@@ -92,7 +92,7 @@ flowchart TB
 
 | EDGE idea                                     | SteerLens today                                        |
 | --------------------------------------------- | ------------------------------------------------------ |
-| Operating model between strategy and delivery | Interactive board pack / SteerSpec investment contract |
+| Operating model between strategy and delivery | Steering workspace / SteerSpec investment contract |
 | Outcome over output                           | Outcomes + metrics; bets carry success/kill signals    |
 | Value-driven portfolio (LVT)                  | `vision` → `outcomes` → `bets` in `steertree.yaml`     |
 | Lightweight governance                        | Decision notes: start / continue / stop / rescope      |
@@ -337,24 +337,25 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] MoS framing on outcomes page; bet detail shows related outcome MoS as context
 - [x] Decision note helper copy prefers MoS / evidence language
 - [x] F03 / steering copy: cognitive load, fast flow, platform reduces load; overload banner wording
-- [ ] Elevate stop-ready in steering alignment summary
-- [ ] Board pack outline: Invest / Work / Adapt sections ([F08](./prds/F08-export-board-pack.md))
+- [x] Elevate stop-ready in steering alignment summary
+- [x] Board pack outline: Invest / Work / Adapt sections ([F08](./prds/F08-export-board-pack.md))
 
 ### C2. Schema / core (Slice 1.5 — additive)
 
 - [x] Canonical Team Topologies team types (`stream_aligned` \| `platform` \| `enabling` \| `complicated_subsystem`) + legacy alias parse
 - [x] Canonical interaction modes (`x_as_a_service` \| `collaboration` \| `facilitation`) + legacy alias parse
-- [x] `teams[].members[]` with job `title` + `ftePercent` (capacity signal)
-- [ ] `bets[].metricIds[]` or `primaryMetricId`
-- [ ] `bets[].reviewDate` / `horizon`
-- [ ] `bets[].fundingStance`: `explore` \| `exploit` \| `sustain`
-- [ ] `bets[].kind`: `opportunity` \| `capability` (optional)
-- [ ] `relationships[].expectedUntil` (collaboration / facilitation time-box)
-- [ ] Member / relationship `effectiveFrom`–`effectiveUntil` windows (capacity + interaction history toward [F13](./prds/F13-topology-timeline.md))
-- [ ] Optional `topologyEvents[]` ledger (capacity up/down, relationship added/ended/mode-changed)
-- [ ] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery` (names TBD)
-- [ ] Decision notes prefer structured MoS refs in `measured` (keep free text)
-- [ ] Member edit UX on organisation page
+- [x] `teams[].members[]` with `discipline` + job `title` + `ftePercent` (capacity / mix signal)
+- [x] Discipline-mix mismatches / advice (e.g. stream-aligned team missing product FTE) — soft capacity cues, not staffing policy
+- [x] `bets[].metricIds[]` or `primaryMetricId`
+- [x] `bets[].reviewDate` / `horizon`
+- [x] `bets[].fundingStance`: `explore` \| `exploit` \| `sustain`
+- [x] `bets[].kind`: `opportunity` \| `capability` (optional)
+- [x] `relationships[].expectedUntil` (collaboration / facilitation time-box)
+- [x] Member / relationship `effectiveFrom`–`effectiveUntil` windows (capacity + interaction history toward [F13](./prds/F13-topology-timeline.md))
+- [x] Optional `topologyEvents[]` ledger (capacity up/down, relationship added/ended/mode-changed)
+- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`
+- [x] Decision notes prefer structured MoS refs in `measured` (keep free text)
+- [x] Member edit UX on organisation page
 
 ### C3. Later (Slice 3+)
 

@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState, type MouseEvent } from 'react';
 import { Link, useLocation, useParams } from 'wouter';
+import type { BetKind, FundingStance } from '@steerlens/core';
 import {
   applyBetDetailDraft,
+  betDetailFundingStanceOptions,
+  betDetailKindOptions,
   betDetailStatusOptions,
   presentBetDetail,
   validateBetDetailDraft,
@@ -24,7 +27,17 @@ function draftFromModel(model: BetDetailModel): BetDetailDraft {
     killCriteria: model.killCriteria,
     status: model.status,
     fundedTeamIds: model.fundedTeams.filter((team) => team.selected).map((team) => team.id),
+    metricIds: model.metricOptions.filter((metric) => metric.selected).map((metric) => metric.id),
+    primaryMetricId: model.primaryMetricId,
+    reviewDate: model.reviewDate,
+    horizon: model.horizon,
+    fundingStance: model.fundingStance,
+    kind: model.kind,
   };
+}
+
+function sameIds(a: string[], b: string[]): boolean {
+  return a.length === b.length && a.every((id, index) => id === b[index]);
 }
 
 function draftsEqual(a: BetDetailDraft, b: BetDetailDraft): boolean {
@@ -33,8 +46,13 @@ function draftsEqual(a: BetDetailDraft, b: BetDetailDraft): boolean {
     a.successSignal === b.successSignal &&
     a.killCriteria === b.killCriteria &&
     a.status === b.status &&
-    a.fundedTeamIds.length === b.fundedTeamIds.length &&
-    a.fundedTeamIds.every((id, index) => id === b.fundedTeamIds[index])
+    sameIds(a.fundedTeamIds, b.fundedTeamIds) &&
+    sameIds(a.metricIds, b.metricIds) &&
+    a.primaryMetricId === b.primaryMetricId &&
+    a.reviewDate === b.reviewDate &&
+    a.horizon === b.horizon &&
+    a.fundingStance === b.fundingStance &&
+    a.kind === b.kind
   );
 }
 
@@ -82,6 +100,8 @@ export function BetDetailPage() {
   }, [dirty]);
 
   const statusOptions = useMemo(() => betDetailStatusOptions(), []);
+  const fundingStanceOptions = useMemo(() => betDetailFundingStanceOptions(), []);
+  const kindOptions = useMemo(() => betDetailKindOptions(), []);
 
   if (!session) return null;
 
@@ -121,6 +141,17 @@ export function BetDetailPage() {
     if (selected.has(teamId)) selected.delete(teamId);
     else selected.add(teamId);
     updateDraft({ ...draft, fundedTeamIds: [...selected] });
+  };
+
+  const toggleMetric = (metricId: string) => {
+    const selected = new Set(draft.metricIds);
+    if (selected.has(metricId)) selected.delete(metricId);
+    else selected.add(metricId);
+    const nextMetricIds = [...selected];
+    const primaryMetricId = nextMetricIds.includes(draft.primaryMetricId ?? '')
+      ? draft.primaryMetricId
+      : null;
+    updateDraft({ ...draft, metricIds: nextMetricIds, primaryMetricId });
   };
 
   const onSave = () => {
@@ -269,6 +300,120 @@ export function BetDetailPage() {
               </label>
             ))}
           </fieldset>
+        </section>
+
+        <section className="bet-detail-card" aria-labelledby="bet-metrics-heading">
+          <h2 id="bet-metrics-heading" className="bet-detail-card-title">
+            Measures this bet moves
+          </h2>
+          {model.metricOptions.length === 0 ? (
+            <p className="bet-detail-mos-empty">No metrics recorded in this workspace yet.</p>
+          ) : (
+            <>
+              <fieldset className="bet-detail-teams">
+                <legend className="sr-only">Linked metrics</legend>
+                {model.metricOptions.map((metric) => (
+                  <label key={metric.id} className="bet-detail-team">
+                    <input
+                      type="checkbox"
+                      checked={draft.metricIds.includes(metric.id)}
+                      onChange={() => toggleMetric(metric.id)}
+                    />
+                    <span>
+                      {metric.title}
+                      <span className="bet-detail-metric-outcome"> · {metric.outcomeTitle}</span>
+                    </span>
+                  </label>
+                ))}
+              </fieldset>
+              <label className="bet-detail-inline-field">
+                <span>Primary metric</span>
+                <select
+                  value={draft.primaryMetricId ?? ''}
+                  onChange={(event) =>
+                    updateDraft({
+                      ...draft,
+                      primaryMetricId: event.target.value ? event.target.value : null,
+                    })
+                  }
+                >
+                  <option value="">None</option>
+                  {model.metricOptions
+                    .filter((metric) => draft.metricIds.includes(metric.id))
+                    .map((metric) => (
+                      <option key={metric.id} value={metric.id}>
+                        {metric.title}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            </>
+          )}
+        </section>
+
+        <section className="bet-detail-card" aria-labelledby="bet-funding-heading">
+          <h2 id="bet-funding-heading" className="bet-detail-card-title">
+            Funding &amp; review
+          </h2>
+          <div className="bet-detail-grid">
+            <label className="bet-detail-inline-field">
+              <span>Funding stance</span>
+              <select
+                value={draft.fundingStance ?? ''}
+                onChange={(event) =>
+                  updateDraft({
+                    ...draft,
+                    fundingStance: event.target.value
+                      ? (event.target.value as FundingStance)
+                      : null,
+                  })
+                }
+              >
+                <option value="">Not set</option>
+                {fundingStanceOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="bet-detail-inline-field">
+              <span>Kind</span>
+              <select
+                value={draft.kind ?? ''}
+                onChange={(event) =>
+                  updateDraft({
+                    ...draft,
+                    kind: event.target.value ? (event.target.value as BetKind) : null,
+                  })
+                }
+              >
+                <option value="">Not set</option>
+                {kindOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="bet-detail-inline-field">
+              <span>Review date</span>
+              <input
+                type="date"
+                value={draft.reviewDate}
+                onChange={(event) => updateDraft({ ...draft, reviewDate: event.target.value })}
+              />
+            </label>
+            <label className="bet-detail-inline-field">
+              <span>Horizon</span>
+              <input
+                type="text"
+                value={draft.horizon}
+                placeholder="Q3 review"
+                onChange={(event) => updateDraft({ ...draft, horizon: event.target.value })}
+              />
+            </label>
+          </div>
         </section>
       </div>
 

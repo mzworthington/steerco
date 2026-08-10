@@ -25,6 +25,7 @@ describe('presentDecisionNotes', () => {
     const model = presentDecisionNotes(opened.value);
     expect(model.helperMeasured).toMatch(/measures of success/i);
     expect(model.mosSuggestions.some((item) => /promise hit rate/i.test(item))).toBe(true);
+    expect(model.metricOptions.some((metric) => metric.title === 'Promise hit rate')).toBe(true);
     expect(model.notes).toHaveLength(1);
     expect(model.notes[0]?.recommendationLabel).toBe('Stop');
     expect(model.notes[0]?.title).toMatch(/loyalty ledger/i);
@@ -53,6 +54,7 @@ describe('applyDecisionNoteDraft', () => {
     if (!existing) return;
 
     const draft = draftFromDecisionNote(existing);
+    expect(draft.measuredMetricIds).toEqual(['met_promise_hit', 'met_shared_wait']);
     draft.measuredText = 'Promise hit rate unchanged\nShared-service wait time still elevated';
     const applied = applyDecisionNoteDraft(opened.value, draft);
     expect(applied.ok).toBe(true);
@@ -61,9 +63,13 @@ describe('applyDecisionNoteDraft', () => {
       'Promise hit rate unchanged',
       'Shared-service wait time still elevated',
     ]);
+    expect(applied.value.spec.decisionNotes[0]?.measuredMetricIds).toEqual([
+      'met_promise_hit',
+      'met_shared_wait',
+    ]);
   });
 
-  it('creates a new continue note', () => {
+  it('creates a new continue note with measured metric links', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -75,14 +81,16 @@ describe('applyDecisionNoteDraft', () => {
       betId: 'bet_pickup',
       why: 'Hit rate is climbing and kill criteria have not been met.',
       measuredText: 'Promise hit rate 91%, climbing toward 95%',
+      measuredMetricIds: ['met_promise_hit', 'met_unknown'],
       affectedTeamIds: ['team_storefront', 'team_catalog'],
       nextStep: 'Keep funding for one more quarter; review at Q4 steering.',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
     expect(applied.value.spec.decisionNotes).toHaveLength(2);
-    expect(
-      applied.value.spec.decisionNotes.some((note) => note.recommendation === 'continue'),
-    ).toBe(true);
+    const created = applied.value.spec.decisionNotes.find(
+      (note) => note.recommendation === 'continue',
+    );
+    expect(created?.measuredMetricIds).toEqual(['met_promise_hit']);
   });
 });

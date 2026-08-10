@@ -5,7 +5,6 @@ import { SiteFooter } from './components/SiteFooter';
 import { SITE_NAME } from './siteConfig';
 import { isPreviewUnlocked } from './siteGate';
 import { ComingSoonPage } from './pages/ComingSoonPage';
-import { DesignSystemPage } from './pages/DesignSystemPage';
 import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
 import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
@@ -13,7 +12,7 @@ import { SteeringOverviewPage } from './pages/SteeringOverviewPage';
 import { BetDetailPage } from './pages/BetDetailPage';
 import { DecisionNotesPage } from './pages/DecisionNotesPage';
 import { EvidencePage } from './pages/EvidencePage';
-import { ExportStubPage } from './pages/ExportStubPage';
+import { ExportBoardPackPage } from './pages/ExportBoardPackPage';
 import { OrganisationPage } from './pages/OrganisationPage';
 import { OutcomesPage } from './pages/OutcomesPage';
 import { WorkspaceDiffPage } from './pages/WorkspaceDiffPage';
@@ -43,9 +42,6 @@ function SiteChrome({ children }: { children: ReactNode }) {
             <a href="/docs" className="site-nav-link">
               Docs
             </a>
-            <a href="/design-system" className="site-nav-link">
-              Design
-            </a>
           </nav>
         </div>
       </header>
@@ -66,11 +62,10 @@ function AppRoutes() {
       <Route path="/workspace/organisation" component={OrganisationPage} />
       <Route path="/workspace/decisions" component={DecisionNotesPage} />
       <Route path="/workspace/diff" component={WorkspaceDiffPage} />
-      <Route path="/workspace/export" component={ExportStubPage} />
+      <Route path="/workspace/export" component={ExportBoardPackPage} />
       <Route path="/workspace/bets/:betId" component={BetDetailPage} />
-      <Route path="/design-system" component={DesignSystemPage} />
-      <Route path="/docs/design-system">
-        <Redirect to="/design-system" />
+      <Route path="/design-system">
+        <Redirect to="/docs/design-system" />
       </Route>
       <Route path="/docs/*" component={DocsPage} />
       <Route path="/docs" component={DocsPage} />

@@ -18,9 +18,9 @@
   --color-ocean-hover: #0a5ca0;
   --color-ocean-soft: #e8edf3;
   --color-line: #ddd8d2;
-  --color-coral: #d84c40;
+  --color-coral: #b8362c;
   --color-coral-soft: #fcf5ef;
-  --color-amber: #b87c18;
+  --color-amber: #8a5a12;
   --color-signal: #248054;
 
   --animate-fade-up: fade-up 0.7s ease-out both;
@@ -294,12 +294,32 @@
     @apply font-display text-ink text-sm font-semibold tracking-wide uppercase;
   }
 
+  .docs-nav-sections {
+    @apply mt-4 space-y-6;
+  }
+
+  .docs-nav-section-title {
+    @apply text-ink mb-2 px-3 text-xs font-semibold tracking-wide uppercase;
+  }
+
   .docs-nav {
-    @apply mt-4 space-y-1;
+    @apply space-y-1;
   }
 
   .docs-nav a {
     @apply text-ink-muted hover:bg-stone hover:text-ink block rounded-lg px-3 py-2 text-sm font-medium transition-colors;
+  }
+
+  .docs-nav a[aria-current='page'] {
+    @apply bg-ocean-soft text-ocean;
+  }
+
+  .docs-nav-section[aria-label='Build & ops'] .docs-nav-section-title {
+    @apply text-ink-muted font-medium;
+  }
+
+  .docs-nav-section[aria-label='Build & ops'] .docs-nav a {
+    @apply text-ink-muted/80 py-1.5 text-[0.8125rem];
   }
 
   .docs-content {
@@ -436,9 +456,9 @@
     @apply text-ink-muted mt-3;
   }
 
-  /* Design-system showcase */
+  /* Design-system showcase (nested in docs-content) */
   .ds-page {
-    @apply mx-auto max-w-6xl px-5 py-10 sm:px-8 sm:py-14;
+    @apply min-w-0;
   }
 
   .ds-intro {
@@ -581,6 +601,10 @@
     @apply cursor-default opacity-45;
   }
 
+  .workspace-nav-hint {
+    @apply text-ink-muted mt-3 px-3 text-xs leading-relaxed;
+  }
+
   .workspace-pending {
     @apply text-ink-muted hover:bg-stone hover:text-ink mt-4 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors;
   }
@@ -597,8 +621,36 @@
     @apply text-amber text-lg leading-none;
   }
 
+  .workspace-persist {
+    @apply mt-4 space-y-2;
+  }
+
+  .workspace-save {
+    @apply w-full;
+  }
+
+  .workspace-save-error {
+    @apply text-xs font-medium text-red-700;
+  }
+
+  .workspace-save-flash {
+    @apply text-xs font-medium text-emerald-800;
+  }
+
+  .workspace-diff-error {
+    @apply mt-4 text-sm font-medium text-red-700;
+  }
+
+  .workspace-sidebar-footer {
+    @apply mt-auto flex flex-col gap-2 pt-6;
+  }
+
+  .workspace-sidebar-docs {
+    @apply text-ink-muted hover:text-ocean text-sm font-medium transition-colors;
+  }
+
   .workspace-sidebar-note {
-    @apply text-ink-muted mt-auto pt-6 text-xs leading-relaxed;
+    @apply text-ink-muted text-xs leading-relaxed;
   }
 
   .workspace-main {
@@ -671,6 +723,10 @@
 
   .steering-alignment {
     @apply text-ink-muted mt-3 text-base font-medium;
+  }
+
+  .steering-next-review {
+    @apply text-ocean mt-2 text-sm font-medium;
   }
 
   .steering-mismatch {
@@ -825,6 +881,23 @@
     @apply mt-8 flex flex-wrap items-center justify-end gap-3;
   }
 
+  .bet-detail-metric-outcome {
+    @apply text-ink-muted text-xs;
+  }
+
+  .bet-detail-inline-field {
+    @apply text-ink mt-4 flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+
+    input,
+    select {
+      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+    }
+  }
+
+  .bet-detail-grid {
+    @apply grid gap-x-6 sm:grid-cols-2;
+  }
+
   .outcomes-page {
     @apply mx-auto max-w-4xl;
   }
@@ -879,6 +952,18 @@
 
   .outcomes-mos-interpretation {
     @apply text-ink-muted mt-2 text-sm leading-relaxed;
+  }
+
+  .outcomes-mos-claims {
+    @apply text-ink mt-3 text-xs leading-relaxed;
+
+    a {
+      @apply text-ocean font-medium underline-offset-2 hover:underline;
+    }
+  }
+
+  .outcomes-mos-claims-empty {
+    @apply text-ink-muted;
   }
 
   .outcomes-mos-edit-trigger {
@@ -961,6 +1046,26 @@
     @apply border-amber/40 bg-amber/10 text-ink mt-6 rounded-xl border px-4 py-3 text-sm leading-relaxed;
   }
 
+  .organisation-mismatches {
+    @apply border-line mt-6 rounded-xl border bg-white px-5 py-4;
+
+    ul {
+      @apply mt-3 space-y-2;
+    }
+  }
+
+  .organisation-mismatch {
+    @apply text-ink-muted text-sm leading-relaxed;
+  }
+
+  .organisation-mismatch-error {
+    @apply font-medium text-red-700;
+  }
+
+  .organisation-relationship-expected {
+    @apply text-ink-muted text-xs;
+  }
+
   .organisation-empty {
     @apply border-line mt-8 rounded-xl border border-dashed bg-white px-5 py-5;
   }
@@ -1030,6 +1135,14 @@
     @apply text-ink-muted mt-2 space-y-1 text-xs;
   }
 
+  .organisation-member-row {
+    @apply flex items-start justify-between gap-2;
+  }
+
+  .organisation-member-edit {
+    @apply text-ocean shrink-0 text-[0.65rem] font-semibold tracking-wide uppercase underline-offset-2 hover:underline;
+  }
+
   .organisation-zone-platform .organisation-team-card {
     @apply border-white/20 bg-white/10;
   }
@@ -1041,6 +1154,10 @@
   .organisation-zone-platform .organisation-team-capacity,
   .organisation-zone-platform .organisation-member-list {
     @apply text-white/75;
+  }
+
+  .organisation-zone-platform .organisation-member-edit {
+    @apply text-white underline-offset-2;
   }
 
   .organisation-relationships {
@@ -1069,6 +1186,10 @@
 
   .organisation-form {
     @apply border-line space-y-4 rounded-xl border bg-white px-5 py-5;
+  }
+
+  .organisation-form-actions {
+    @apply flex flex-wrap items-center gap-3;
   }
 
   .organisation-field {
@@ -1188,6 +1309,10 @@
 
   .decision-notes-teams {
     @apply m-0 flex flex-col gap-2 border-0 p-0;
+  }
+
+  .decision-notes-metrics-legend {
+    @apply text-ink mb-2 block text-xs font-semibold tracking-wide uppercase;
   }
 
   .decision-notes-team {
@@ -1386,14 +1511,203 @@
     @apply text-ink-muted max-w-xl text-sm leading-relaxed;
   }
 
+  .export-page {
+    @apply mx-auto max-w-6xl;
+  }
+
+  .export-title {
+    @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight sm:text-4xl;
+  }
+
+  .export-lead {
+    @apply text-ink-muted mt-3 max-w-2xl text-base leading-relaxed;
+  }
+
+  .export-layout {
+    @apply mt-8 grid gap-8 lg:grid-cols-[minmax(16rem,22rem)_1fr];
+  }
+
+  .export-config {
+    @apply space-y-4;
+  }
+
+  .export-panel {
+    @apply border-line space-y-4 rounded-xl border bg-white px-5 py-5;
+  }
+
+  .export-panel-title {
+    @apply text-ink text-sm font-semibold tracking-wide uppercase;
+  }
+
+  .export-field {
+    @apply text-ink flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+
+    input {
+      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+    }
+  }
+
+  .export-section-group {
+    @apply space-y-2 border-0 p-0;
+  }
+
+  .export-section-pillar {
+    @apply text-ocean mb-2 flex flex-col gap-0.5 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .export-section-pillar-hint {
+    @apply text-ink-muted font-normal tracking-normal normal-case;
+  }
+
+  .export-section-option {
+    @apply text-ink flex items-start gap-3 text-sm font-normal tracking-normal normal-case;
+  }
+
+  .export-section-label {
+    @apply block font-medium;
+  }
+
+  .export-section-desc {
+    @apply text-ink-muted mt-0.5 block text-xs;
+  }
+
+  .export-config-note {
+    @apply text-ink-muted text-xs leading-relaxed;
+  }
+
+  .export-technical {
+    @apply text-ink-muted mt-3 text-xs;
+
+    span {
+      @apply opacity-70;
+    }
+  }
+
+  .export-preview-shell {
+    @apply border-line bg-stone/40 min-w-0 rounded-xl border p-3 sm:p-4;
+  }
+
+  .export-preview-toolbar {
+    @apply mb-3 flex flex-wrap items-baseline justify-between gap-2 px-1;
+  }
+
+  .export-preview-toolbar-title {
+    @apply text-ink text-sm font-semibold;
+  }
+
+  .export-preview-filename {
+    @apply text-ink-muted font-mono text-xs;
+  }
+
+  .export-preview {
+    @apply max-h-[70vh] overflow-y-auto rounded-lg bg-white px-6 py-8 text-sm leading-relaxed shadow-sm sm:px-8;
+  }
+
+  .export-cover {
+    @apply border-line mb-8 border-b pb-8;
+  }
+
+  .export-cover-brand {
+    @apply text-ocean text-xs font-semibold tracking-[0.16em] uppercase;
+  }
+
+  .export-cover-title {
+    @apply font-display text-ink mt-3 text-3xl font-semibold tracking-tight;
+  }
+
+  .export-cover-date {
+    @apply text-ink-muted mt-2 text-sm;
+  }
+
+  .export-cover-blurb {
+    @apply text-ink mt-4 max-w-xl text-base leading-relaxed;
+  }
+
+  .export-cover-pillars {
+    @apply mt-6 space-y-2;
+
+    li {
+      @apply text-ink flex flex-col gap-0.5 text-sm sm:flex-row sm:gap-3;
+    }
+  }
+
+  .export-cover-pillar-label {
+    @apply text-ocean min-w-16 font-semibold tracking-wide uppercase;
+  }
+
+  .export-preview-section {
+    @apply border-line mt-8 border-t pt-8;
+
+    h3 {
+      @apply font-display text-ink text-2xl font-semibold tracking-tight;
+    }
+
+    h4 {
+      @apply text-ink mt-4 text-sm font-semibold;
+    }
+
+    ul {
+      @apply text-ink mt-2 list-disc space-y-1 pl-5;
+    }
+  }
+
+  .export-preview-pillar {
+    @apply text-ocean mb-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .export-preview-vision {
+    @apply text-ink mt-3 text-base font-medium;
+  }
+
+  .export-preview-muted {
+    @apply text-ink-muted mt-2;
+  }
+
+  .export-preview-alert {
+    @apply text-coral mt-2;
+  }
+
+  .export-preview-block {
+    @apply mt-4;
+  }
+
+  .export-decision-note {
+    @apply border-line bg-paper-soft/60 rounded-lg border px-4 py-3;
+  }
+
   @media print {
     .workspace-sidebar,
+    .no-print,
     .decision-notes-list,
     .decision-notes-actions,
     .decision-notes-suggestions,
     .evidence-footer,
     .evidence-card-actions {
       display: none !important;
+    }
+
+    .workspace-shell,
+    .workspace-main {
+      display: block !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+    }
+
+    .export-layout {
+      display: block !important;
+    }
+
+    .export-preview-shell {
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+    }
+
+    .export-preview {
+      max-height: none !important;
+      overflow: visible !important;
+      box-shadow: none !important;
+      padding: 0 !important;
     }
 
     .decision-notes-layout {

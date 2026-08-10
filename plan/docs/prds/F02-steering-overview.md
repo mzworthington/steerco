@@ -9,7 +9,7 @@ Sponsors need one screen that answers “what are we funding and how is it going
 
 ## Goal
 
-Show vision, outcomes, bets, and statuses as an interactive board pack - not a backlog. Surface stop-ready / adapt cues so leaders do not only see “green” status.
+Show vision, outcomes, bets, and statuses in a steering workspace - not a backlog. Surface stop-ready / adapt cues so leaders do not only see “green” status.
 
 ## User stories
 
