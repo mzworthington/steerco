@@ -99,4 +99,56 @@ describe('DecisionNotesPage', () => {
       'Shared wait time up',
     ]);
   });
+
+  it('checks a measured metric when its suggestion chip is clicked', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <DecisionNotesPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const cycleCheckbox = screen.getByRole('checkbox', { name: 'Promise-to-fulfilil days' });
+    expect(cycleCheckbox).not.toBeChecked();
+
+    await user.click(screen.getByRole('button', { name: /promise-to-fulfilil days/i }));
+
+    expect(cycleCheckbox).toBeChecked();
+
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const parsed = JSON.parse(stored ?? '{}') as {
+      spec: { spec: { decisionNotes: Array<{ measuredMetricIds: string[] }> } };
+    };
+    expect(parsed.spec.spec.decisionNotes[0]?.measuredMetricIds).toEqual(
+      expect.arrayContaining(['met_promise_hit', 'met_shared_wait', 'met_cycle_days']),
+    );
+  });
+
+  it('toggles a measured metric checkbox directly', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <DecisionNotesPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const sharedWaitCheckbox = screen.getByRole('checkbox', { name: 'Shared-service wait time' });
+    expect(sharedWaitCheckbox).toBeChecked();
+
+    await user.click(sharedWaitCheckbox);
+    expect(sharedWaitCheckbox).not.toBeChecked();
+  });
 });

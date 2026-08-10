@@ -65,7 +65,7 @@ describe('SteeringOverviewPage', () => {
 
     expect(screen.getByTestId('steering-overview')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /northwind q3 alignment/i })).toBeTruthy();
-    expect(screen.getByText(/three bets funded\. one recommended to stop\./i)).toBeTruthy();
+    expect(screen.getByText(/one recommended to stop\. three bets funded\./i)).toBeTruthy();
     expect(screen.getAllByText('On track').length).toBeGreaterThan(0);
     expect(screen.getAllByText('At risk').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Stop').length).toBeGreaterThan(0);

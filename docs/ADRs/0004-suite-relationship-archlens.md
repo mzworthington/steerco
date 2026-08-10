@@ -33,7 +33,7 @@ Chosen option: **Option B**.
 
 ### Consequences
 
-- Good, because sponsors stay in a board-pack surface
+- Good, because sponsors stay in a steering workspace (board pack is the export)
 - Bad, because some Vite/Zod/Cloudflare patterns are duplicated (accepted)
 - Follow-up: deep links out of SteerLens for architecture detail
 

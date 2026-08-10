@@ -1,39 +1,36 @@
 # SteerLens
 
-SteerLens is an interactive board pack for Engineering Directors and executive sponsors: align **outcomes**, **funded bets**, and **team shape**, then leave with a decision note — not another backlog.
+SteerLens is a **steering workspace** for Engineering Directors and executive sponsors: align **outcomes**, **funded bets**, and **team shape**, then leave with a **decision note** — and export a board pack when you need to share it.
 
-## Problem
+## The problem
 
 Jira holds work, Backstage holds services, and directories hold people. Nothing holds the **investment contract**, so steering meetings re-litigate priorities in slide decks.
 
-## What you get today
+## What you do here
 
-| Area             | Status                                                                    |
-| ---------------- | ------------------------------------------------------------------------- |
-| **Product plan** | Specs, PRDs, SteerSpec schema, and executive mockups under `plan/`        |
-| **Domain core**  | `@steerlens/core` — parse, validate, and serialize SteerSpec (YAML)       |
-| **Site**         | Vite + React SPA with Coming Soon gate, in-app docs, and `/design-system` |
-| **Design**       | Executive stone + ocean theme (distinct from ArchLens)                    |
-| **ADRs**         | Accepted decisions under [`docs/ADRs/`](/docs/adrs)                       |
-| **Hosting**      | Cloudflare Pages via Pulumi + Wrangler                                    |
+| Step                        | Intent                                                           |
+| --------------------------- | ---------------------------------------------------------------- |
+| Open a local workspace      | Start from a sample or a folder — no account required            |
+| Steer investment            | Outcomes, measures of success, and funded bets in plain language |
+| Shape how work is organised | Team Topologies intent for fast flow (not an org chart)          |
+| Decide and share            | Decision notes and a board pack for leadership                   |
 
-Slice 1 (local executive workspace: open sample/folder, steer, decide, export) is in progress — see `plan/docs/ROADMAP.md`. Operating-model foundations (EDGE Lean Value Tree + Team Topologies 2e) are captured in `plan/docs/OPERATING_MODEL_ALIGNMENT.md`.
+Start with the [Product guide](/docs/product-guide), or [open the workspace](/workspace) and try the sample.
 
 ## Principles
 
 1. **Executive surface first** — no YAML or provider jargon in the default UI.
 2. **Reference, don’t replace** — never invent competing IdP/catalog Groups.
 3. **Local-first** — full value offline before connectors.
-4. **Git-friendly contract** — SteerSpec is diffable YAML.
+4. **Git-friendly contract** — the underlying SteerSpec is diffable YAML when you need it.
 
-## Architecture sketch
+## Operating model
 
-```text
-Browser  →  React app (+ /docs, /design-system)
-             └─ @steerlens/core (SteerSpec)
-Git      →  docs/*.md · plan/ product specs
-GitHub   →  CI quality gates → Cloudflare Pages
-Pulumi   →  Pages project + optional custom domain
-```
+SteerLens operationalises two complementary models without becoming a PMO or HR tool:
 
-Next: [Setup](/docs/setup) · [Architecture](/docs/architecture) · [Design system](/design-system) · [Tech stack](/docs/tech-stack) · [Quality](/docs/quality) · [Workflows](/docs/workflows)
+- **EDGE** — Lean Value Tree and lightweight start / stop funding (vision → outcomes + measures → bets)
+- **Team Topologies** — topology intent for fast flow of value (team types, interaction modes, cognitive load as a signal)
+
+## For builders
+
+Setup, architecture, CI, and ADRs live under **Build & ops** in the sidebar. They support the product; they are not the starting point for leaders.

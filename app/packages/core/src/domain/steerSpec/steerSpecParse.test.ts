@@ -28,6 +28,11 @@ describe('parseSteerSpecYaml', () => {
       'team_fulfilil',
       'team_enablement',
     ]);
+    expect(result.value.spec.teams[0]?.members[0]).toMatchObject({
+      id: 'mem_storefront_em',
+      discipline: 'leadership',
+      title: 'Engineering Manager',
+    });
   });
 
   it('rejects an unsupported apiVersion with a plain-language error', () => {
@@ -86,6 +91,33 @@ extra: surprise
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(result.error).toMatch(/yaml|syntax|parse/i);
+  });
+
+  it('rejects a team member missing discipline', () => {
+    const result = parseSteerSpecYaml(`
+apiVersion: steerlens.dev/v1alpha1
+kind: SteerTree
+metadata:
+  name: demo
+spec:
+  vision: A vision
+  outcomes: []
+  bets: []
+  teams:
+    - id: team_a
+      displayName: Team A
+      role: stream_aligned
+      provenance: local
+      members:
+        - id: mem_a
+          displayName: Ada
+          title: Engineer
+          ftePercent: 100
+`);
+
+    expect(result.ok).toBe(false);
+    if (result.ok) return;
+    expect(result.error).toMatch(/discipline/i);
   });
 
   it('rejects a bet that references a missing outcome', () => {

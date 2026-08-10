@@ -1,4 +1,4 @@
-import type { SteerSpec } from '@steerlens/core';
+import type { BetKind, FundingStance, SteerSpec } from '@steerlens/core';
 import {
   presentBetStatus,
   type ExecutiveBetStatus,
@@ -19,6 +19,16 @@ export type BetDetailTeamOption = {
   selected: boolean;
 };
 
+export type BetDetailMetricOption = {
+  id: string;
+  title: string;
+  outcomeTitle: string;
+  selected: boolean;
+};
+
+/** Active bet statuses expected to carry a Measure-of-Success link (Slice 1.5). */
+const ACTIVE_BET_STATUSES = new Set<BetDetailStatus>(['on_track', 'at_risk', 'stop_ready']);
+
 export type BetDetailModel = {
   id: string;
   title: string;
@@ -34,6 +44,12 @@ export type BetDetailModel = {
     measures: BetDetailMeasure[];
   } | null;
   fundedTeams: BetDetailTeamOption[];
+  metricOptions: BetDetailMetricOption[];
+  primaryMetricId: string | null;
+  reviewDate: string;
+  horizon: string;
+  fundingStance: FundingStance | null;
+  kind: BetKind | null;
 };
 
 export type BetDetailDraft = {
@@ -42,10 +58,16 @@ export type BetDetailDraft = {
   killCriteria: string;
   status: BetDetailStatus;
   fundedTeamIds: string[];
+  metricIds: string[];
+  primaryMetricId: string | null;
+  reviewDate: string;
+  horizon: string;
+  fundingStance: FundingStance | null;
+  kind: BetKind | null;
 };
 
 export type BetDetailFieldIssue = {
-  field: 'title' | 'successSignal' | 'killCriteria' | 'fundedTeamIds' | 'status';
+  field: 'title' | 'successSignal' | 'killCriteria' | 'fundedTeamIds' | 'status' | 'metricIds';
   message: string;
 };
 
@@ -64,6 +86,17 @@ const STATUS_OPTIONS: BetDetailStatus[] = [
   'done',
 ];
 
+const FUNDING_STANCE_LABELS: Record<FundingStance, string> = {
+  explore: 'Explore',
+  exploit: 'Exploit',
+  sustain: 'Sustain',
+};
+
+const BET_KIND_LABELS: Record<BetKind, string> = {
+  opportunity: 'Opportunity',
+  capability: 'Capability',
+};
+
 export function betDetailStatusOptions(): Array<{
   value: BetDetailStatus;
   label: ExecutiveBetStatus;
@@ -74,13 +107,31 @@ export function betDetailStatusOptions(): Array<{
   }));
 }
 
+export function betDetailFundingStanceOptions(): Array<{
+  value: FundingStance;
+  label: string;
+}> {
+  return (Object.keys(FUNDING_STANCE_LABELS) as FundingStance[]).map((value) => ({
+    value,
+    label: FUNDING_STANCE_LABELS[value],
+  }));
+}
+
+export function betDetailKindOptions(): Array<{ value: BetKind; label: string }> {
+  return (Object.keys(BET_KIND_LABELS) as BetKind[]).map((value) => ({
+    value,
+    label: BET_KIND_LABELS[value],
+  }));
+}
+
 export function presentBetDetail(spec: SteerSpec, betId: string): BetDetailModel | null {
   const bet = spec.spec.bets.find((item) => item.id === betId);
   if (!bet) return null;
 
   const outcome = spec.spec.outcomes.find((item) => item.id === bet.outcomeId) ?? null;
   const status = presentBetStatus(bet.status);
-  const selected = new Set(bet.fundedTeamIds);
+  const selectedTeams = new Set(bet.fundedTeamIds);
+  const selectedMetrics = new Set(bet.metricIds);
 
   return {
     id: bet.id,
@@ -105,8 +156,17 @@ export function presentBetDetail(spec: SteerSpec, betId: string): BetDetailModel
     fundedTeams: spec.spec.teams.map((team) => ({
       id: team.id,
       displayName: team.displayName,
-      selected: selected.has(team.id),
+      selected: selectedTeams.has(team.id),
     })),
+    metricOptions: collectWorkspaceMetrics(spec).map((metric) => ({
+      ...metric,
+      selected: selectedMetrics.has(metric.id),
+    })),
+    primaryMetricId: bet.primaryMetricId ?? null,
+    reviewDate: bet.reviewDate ?? '',
+    horizon: bet.horizon ?? '',
+    fundingStance: bet.fundingStance ?? null,
+    kind: bet.kind ?? null,
   };
 }
 
@@ -138,6 +198,14 @@ export function validateBetDetailDraft(draft: BetDetailDraft): BetDetailValidati
       message: 'No funded teams yet — assign who delivers this bet when you can.',
     });
   }
+  const hasMosLink = draft.metricIds.length > 0 || Boolean(draft.primaryMetricId);
+  if (ACTIVE_BET_STATUSES.has(draft.status) && !hasMosLink) {
+    warnings.push({
+      field: 'metricIds',
+      message:
+        'This bet is active but has no linked Measure of Success — steering conversations need a number to point at.',
+    });
+  }
 
   if (errors.length > 0) {
     return { ok: false, errors, warnings };
@@ -162,6 +230,12 @@ export function applyBetDetailDraft(
 
   const knownTeams = new Set(spec.spec.teams.map((team) => team.id));
   const fundedTeamIds = draft.fundedTeamIds.filter((id) => knownTeams.has(id));
+  const knownMetrics = new Set(collectWorkspaceMetrics(spec).map((metric) => metric.id));
+  const metricIds = draft.metricIds.filter((id) => knownMetrics.has(id));
+  const primaryMetricId =
+    draft.primaryMetricId && metricIds.includes(draft.primaryMetricId)
+      ? draft.primaryMetricId
+      : null;
   const current = spec.spec.bets[index];
   if (!current) {
     return { ok: false, error: 'That bet is not in the open workspace.' };
@@ -175,6 +249,12 @@ export function applyBetDetailDraft(
     killCriteria: draft.killCriteria.trim(),
     status: draft.status,
     fundedTeamIds,
+    metricIds,
+    primaryMetricId,
+    reviewDate: draft.reviewDate.trim() || undefined,
+    horizon: draft.horizon.trim() || undefined,
+    fundingStance: draft.fundingStance ?? undefined,
+    kind: draft.kind ?? undefined,
   };
 
   return {
@@ -187,6 +267,19 @@ export function applyBetDetailDraft(
       },
     },
   };
+}
+
+/** All metrics across every outcome in the workspace, for "measures this bet moves" pickers. */
+function collectWorkspaceMetrics(
+  spec: SteerSpec,
+): Array<{ id: string; title: string; outcomeTitle: string }> {
+  return spec.spec.outcomes.flatMap((outcome) =>
+    outcome.metrics.map((metric) => ({
+      id: metric.id,
+      title: metric.title,
+      outcomeTitle: outcome.title,
+    })),
+  );
 }
 
 function formatMeasureCue(metric: {

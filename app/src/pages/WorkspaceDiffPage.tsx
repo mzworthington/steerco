@@ -4,9 +4,12 @@ import { presentWorkspaceDiff } from '../application/presentWorkspaceDiff';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function WorkspaceDiffPage() {
-  const { session, hasPendingChanges, acceptDraft, revertDraft } = useWorkspaceSession();
+  const { session, hasPendingChanges, canWriteToFolder, revertDraft, saveWorkspace } =
+    useWorkspaceSession();
   const [, setLocation] = useLocation();
   const [flash, setFlash] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!session) {
@@ -19,9 +22,10 @@ export function WorkspaceDiffPage() {
       session
         ? presentWorkspaceDiff(session.baselineSpec, session.spec, {
             sourceLabel: session.source,
+            canWriteToFolder,
           })
         : null,
-    [session],
+    [session, canWriteToFolder],
   );
 
   useEffect(() => {
@@ -38,13 +42,29 @@ export function WorkspaceDiffPage() {
     );
     if (!confirmed) return;
     revertDraft();
+    setError(null);
     setFlash('Draft reverted to the last accepted baseline.');
   };
 
-  const onAccept = () => {
-    if (!hasPendingChanges) return;
-    acceptDraft();
-    setFlash('Draft accepted as the new session baseline.');
+  const onSave = async () => {
+    if (!hasPendingChanges || saving) return;
+    setSaving(true);
+    setError(null);
+    try {
+      const result = await saveWorkspace();
+      if (!result.ok) {
+        setFlash(null);
+        setError(result.error);
+        return;
+      }
+      setFlash(
+        result.method === 'directory'
+          ? `Saved ${result.fileName} to the open folder.`
+          : `Downloaded ${result.fileName}.`,
+      );
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -53,13 +73,24 @@ export function WorkspaceDiffPage() {
         <p className="eyebrow">Pending draft changes</p>
         <h1 className="workspace-diff-title">What changed</h1>
         <p className="workspace-diff-lead">
-          Compare this session’s working SteerSpec to the last opened or accepted baseline — then
-          revert or accept. Disk write-back ships with Save (F09).
+          Compare this session’s working SteerSpec to the last opened or saved baseline — then
+          revert or save.
         </p>
         <p className="workspace-diff-summary" data-testid="workspace-diff-summary">
           {model.summary}
         </p>
       </header>
+
+      {error ? (
+        <p className="workspace-diff-error" role="alert">
+          {error}
+        </p>
+      ) : null}
+      {flash ? (
+        <p className="workspace-diff-flash" role="status">
+          {flash}
+        </p>
+      ) : null}
 
       {!model.hasChanges ? (
         <div className="workspace-diff-empty" data-testid="workspace-diff-empty">
@@ -103,12 +134,6 @@ export function WorkspaceDiffPage() {
 
           <p className="workspace-diff-hint">{model.acceptHint}</p>
 
-          {flash ? (
-            <p className="workspace-diff-flash" role="status">
-              {flash}
-            </p>
-          ) : null}
-
           <div className="workspace-diff-actions">
             <button
               type="button"
@@ -122,9 +147,10 @@ export function WorkspaceDiffPage() {
               type="button"
               className="btn-primary"
               data-testid="workspace-diff-accept"
-              onClick={onAccept}
+              disabled={saving}
+              onClick={() => void onSave()}
             >
-              Accept draft
+              {saving ? 'Saving…' : 'Save'}
             </button>
           </div>
         </>

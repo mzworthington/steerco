@@ -1,10 +1,10 @@
 # Design pack
 
-SteerLens brand assets — hexagons + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
+SteerLens brand assets — circles + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
 
-Live swatches: `/design-system`. Written guide: `docs/design-system.md`.
+Live swatches: `/docs/design-system`. Written guide: `docs/design-system.md`.
 
-Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v16 reticle explorations; circles became hexagons).
+Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v16 reticle explorations).
 
 ## Identity
 
@@ -24,7 +24,7 @@ Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v
 
 **Mark**
 
-- Full motif: two filled hexagons + northeast arrowhead with scooped base (`mark-lockup.svg`).
+- Full motif: two filled circles + northeast arrowhead with scooped base (`mark-lockup.svg`).
 - Square applications: **arrow only** (`mark.svg`, `mark-dark.svg`, `favicon.svg`, PWA / apple-touch).
 
 ## Sources (this folder)
@@ -33,7 +33,7 @@ Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v
 | --- | --- |
 | `mark.svg` / `mark.png` | Light square logo — arrow only (500×500) |
 | `mark-dark.svg` / `mark-dark.png` | Dark square logo — arrow only (500×500) |
-| `mark-lockup.svg` / `mark-lockup.png` | Wide hexagons + arrow motif |
+| `mark-lockup.svg` / `mark-lockup.png` | Wide circles + arrow motif |
 | `favicon.svg` / `favicon.png` | Tab icon — arrow only |
 | `grid.svg` | Repeatable paper grid tile |
 | `social-share.svg` / `social-share.png` | Open Graph / Twitter card (1200×630) |
@@ -51,7 +51,7 @@ app/public/
     logo.png
     logo-dark.svg     ← mark-dark.svg (arrow)
     logo-dark.png
-    logo-lockup.svg   ← mark-lockup.svg (hexagons + arrow)
+    logo-lockup.svg   ← mark-lockup.svg (circles + arrow)
     logo-lockup.png
     social-share.png
     grid.svg

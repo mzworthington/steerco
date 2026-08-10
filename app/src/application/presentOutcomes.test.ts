@@ -41,6 +41,12 @@ describe('presentOutcomes', () => {
       'Loyalty ledger unification',
     ]);
     expect(outcome?.bets.every((bet) => bet.progressCue.length > 0)).toBe(true);
+    expect(outcome?.measures[0]?.claimedByBets.map((bet) => bet.id)).toEqual([
+      'bet_pickup',
+      'bet_loyalty',
+    ]);
+    expect(outcome?.measures[1]?.claimedByBets.map((bet) => bet.id)).toEqual(['bet_fulfilil']);
+    expect(outcome?.measures[2]?.claimedByBets.map((bet) => bet.id)).toEqual(['bet_fulfilil']);
   });
 });
 

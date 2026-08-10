@@ -70,7 +70,7 @@ describe('BetDetailPage', () => {
 
     expect(screen.getByTestId('bet-detail')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /this bet should move/i })).toBeTruthy();
-    expect(screen.getByText('Promise hit rate')).toBeTruthy();
+    expect(screen.getAllByText('Promise hit rate').length).toBeGreaterThan(0);
     expect(screen.getByLabelText('Kill criteria')).toBeTruthy();
 
     const title = screen.getByLabelText('Bet title');
@@ -87,6 +87,59 @@ describe('BetDetailPage', () => {
     expect(parsed.spec.spec.bets.find((bet) => bet.id === 'bet_loyalty')?.title).toBe(
       'Loyalty ledger pause',
     );
+  });
+
+  it('saves funding stance, kind, review timing, and metric links', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <BetDetailPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    await user.selectOptions(screen.getByLabelText('Funding stance'), 'explore');
+    await user.selectOptions(screen.getByLabelText('Kind'), 'capability');
+    await user.type(screen.getByLabelText('Review date'), '2026-11-15');
+    await user.type(screen.getByLabelText('Horizon'), 'Q4 review');
+
+    const cycleMetric = screen.getByRole('checkbox', { name: /promise-to-fulfilil days/i });
+    await user.click(cycleMetric);
+    await user.selectOptions(screen.getByLabelText('Primary metric'), 'met_cycle_days');
+
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+    expect(screen.getByText(/saved to this workspace session/i)).toBeTruthy();
+
+    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const parsed = JSON.parse(stored ?? '{}') as {
+      spec: {
+        spec: {
+          bets: Array<{
+            id: string;
+            fundingStance?: string;
+            kind?: string;
+            reviewDate?: string;
+            horizon?: string;
+            metricIds: string[];
+            primaryMetricId?: string | null;
+          }>;
+        };
+      };
+    };
+    const bet = parsed.spec.spec.bets.find((item) => item.id === 'bet_loyalty');
+    expect(bet).toMatchObject({
+      fundingStance: 'explore',
+      kind: 'capability',
+      reviewDate: '2026-11-15',
+      horizon: 'Q4 review',
+      primaryMetricId: 'met_cycle_days',
+    });
+    expect(bet?.metricIds).toEqual(expect.arrayContaining(['met_promise_hit', 'met_cycle_days']));
   });
 
   it('blocks save when title is empty', async () => {

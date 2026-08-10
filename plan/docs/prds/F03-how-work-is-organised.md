@@ -24,7 +24,7 @@ Edit and present the **four fundamental team types** and **three interaction mod
 1. Four zones matching `team.role`: `stream_aligned` | `platform` | `enabling` | `complicated_subsystem`
 2. Relationships as labelled edges using TT modes: `x_as_a_service` | `collaboration` | `facilitation` (plain-language sentences in UI)
 3. Empty state CTA: Add a team; copy teaches four types + three modes; platform exists to **reduce load** on stream-aligned teams; shape evolves
-4. Optional `teams[].members[]` with `displayName`, job `title`, `ftePercent` (0–100); show member count + FTE total on team cards
+4. Optional `teams[].members[]` with `displayName`, `discipline`, job `title`, `ftePercent` (0–100); show member count + FTE total on team cards
 5. Mismatch banner for `platform_overload` (threshold configurable in core, default 8) — wording references load on the platform and slower flow for dependents
 6. No Backstage/GitHub/Entra labels in default UI
 7. Button: Prepare decision note (deep link to F07)

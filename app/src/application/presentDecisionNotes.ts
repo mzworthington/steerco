@@ -9,8 +9,15 @@ export type DecisionNoteDraft = {
   betId: string | null;
   why: string;
   measuredText: string;
+  measuredMetricIds: string[];
   affectedTeamIds: string[];
   nextStep: string;
+};
+
+export type DecisionNoteMetricOption = {
+  id: string;
+  title: string;
+  suggestion: string;
 };
 
 export type DecisionNoteCard = {
@@ -30,6 +37,7 @@ export type DecisionNotesModel = {
   workspaceTitle: string;
   helperMeasured: string;
   mosSuggestions: string[];
+  metricOptions: DecisionNoteMetricOption[];
   notes: DecisionNoteCard[];
   bets: Array<{ id: string; title: string }>;
   teams: Array<{ id: string; displayName: string }>;
@@ -60,14 +68,14 @@ export function decisionRecommendationOptions(): Array<{
 export function presentDecisionNotes(spec: SteerSpec): DecisionNotesModel {
   const teamById = new Map(spec.spec.teams.map((team) => [team.id, team.displayName]));
   const betById = new Map(spec.spec.bets.map((bet) => [bet.id, bet.title]));
-  const mosSuggestions = spec.spec.outcomes.flatMap((outcome) =>
+  const metricOptions: DecisionNoteMetricOption[] = spec.spec.outcomes.flatMap((outcome) =>
     outcome.metrics.map((metric) => {
       const cue = metric.interpretation?.trim()
         ? metric.interpretation.trim()
         : [metric.title, metric.current != null ? `current ${metric.current}` : null]
             .filter(Boolean)
             .join(' — ');
-      return `${metric.title}: ${cue}`;
+      return { id: metric.id, title: metric.title, suggestion: `${metric.title}: ${cue}` };
     }),
   );
 
@@ -75,7 +83,8 @@ export function presentDecisionNotes(spec: SteerSpec): DecisionNotesModel {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     helperMeasured:
       'Prefer Measures of Success and evidence language (hit rate, wait time, adoption) over activity counts (tickets closed, meetings held).',
-    mosSuggestions,
+    mosSuggestions: metricOptions.map((metric) => metric.suggestion),
+    metricOptions,
     notes: spec.spec.decisionNotes.map((note) => {
       const copy = RECOMMENDATION_COPY[note.recommendation];
       return {
@@ -109,6 +118,7 @@ export function draftFromDecisionNote(
       betId: null,
       why: '',
       measuredText: '',
+      measuredMetricIds: [],
       affectedTeamIds: [],
       nextStep: '',
     };
@@ -120,6 +130,7 @@ export function draftFromDecisionNote(
     betId: note.betId ?? null,
     why: note.why,
     measuredText: note.measured.join('\n'),
+    measuredMetricIds: [...note.measuredMetricIds],
     affectedTeamIds: [...note.affectedTeamIds],
     nextStep: note.nextStep,
   };
@@ -151,7 +162,11 @@ export function applyDecisionNoteDraft(
     .filter(Boolean);
   const knownTeams = new Set(spec.spec.teams.map((team) => team.id));
   const knownBets = new Set(spec.spec.bets.map((bet) => bet.id));
+  const knownMetrics = new Set(
+    spec.spec.outcomes.flatMap((outcome) => outcome.metrics.map((metric) => metric.id)),
+  );
   const affectedTeamIds = draft.affectedTeamIds.filter((id) => knownTeams.has(id));
+  const measuredMetricIds = draft.measuredMetricIds.filter((id) => knownMetrics.has(id));
   const resolvedBetId = draft.betId && knownBets.has(draft.betId) ? draft.betId : null;
 
   const note = {
@@ -161,6 +176,7 @@ export function applyDecisionNoteDraft(
     title: draft.title.trim(),
     why: draft.why.trim(),
     measured,
+    measuredMetricIds,
     affectedTeamIds,
     nextStep: draft.nextStep.trim(),
   };

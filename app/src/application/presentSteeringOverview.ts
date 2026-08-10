@@ -24,6 +24,8 @@ export type SteeringOverviewModel = {
   alignmentSummary: string;
   mismatchSummary: string | null;
   decisionNotesSummary: string | null;
+  /** Soonest review horizon across funded bets (Slice 1.5). */
+  nextReviewSummary: string | null;
   decisionNotes: Array<{ id: string; title: string; recommendationLabel: string }>;
   outcomes: SteeringOutcomeGroup[];
   statusCounts: {
@@ -31,6 +33,13 @@ export type SteeringOverviewModel = {
     atRisk: number;
     stop: number;
   };
+};
+
+const STATUS_SORT: Record<SteeringBetCard['statusTone'], number> = {
+  stop: 0,
+  'at-risk': 1,
+  'on-track': 2,
+  neutral: 3,
 };
 
 export function presentSteeringOverview(
@@ -62,7 +71,8 @@ export function presentSteeringOverview(
           status: presented.label,
           statusTone: presented.tone,
         };
-      }),
+      })
+      .sort((a, b) => STATUS_SORT[a.statusTone] - STATUS_SORT[b.statusTone]),
   }));
 
   const decisionNotes = spec.spec.decisionNotes.map((note) => ({
@@ -78,6 +88,7 @@ export function presentSteeringOverview(
     alignmentSummary: buildAlignmentSummary(bets.length, statusCounts.stop),
     mismatchSummary: buildMismatchSummary(statusCounts),
     decisionNotesSummary: buildDecisionNotesSummary(decisionNotes),
+    nextReviewSummary: buildNextReviewSummary(bets),
     decisionNotes,
     outcomes,
     statusCounts,
@@ -108,9 +119,10 @@ function buildAlignmentSummary(betCount: number, stopCount: number): string {
   if (stopCount === 0) {
     return `${betsLabel}.`;
   }
+  // Elevate stop-ready before vanity “funded” counts (Slice 1 operating-model bar).
   const stopLabel =
     stopCount === 1 ? 'One recommended to stop' : `${spellCount(stopCount)} recommended to stop`;
-  return `${betsLabel}. ${stopLabel}.`;
+  return `${stopLabel}. ${betsLabel}.`;
 }
 
 function buildDecisionNotesSummary(notes: Array<{ recommendationLabel: string }>): string | null {
@@ -142,6 +154,31 @@ function recommendationLabel(
     case 'rescope':
       return 'Re-scope';
   }
+}
+
+function buildNextReviewSummary(bets: SteerSpec['spec']['bets']): string | null {
+  const dated = bets
+    .filter((bet) => bet.reviewDate || bet.horizon)
+    .map((bet) => ({
+      title: bet.title,
+      reviewDate: bet.reviewDate ?? null,
+      horizon: bet.horizon ?? null,
+    }))
+    .sort((a, b) => {
+      if (a.reviewDate && b.reviewDate) return a.reviewDate.localeCompare(b.reviewDate);
+      if (a.reviewDate) return -1;
+      if (b.reviewDate) return 1;
+      return a.title.localeCompare(b.title);
+    });
+  const soonest = dated[0];
+  if (!soonest) return null;
+  if (soonest.reviewDate && soonest.horizon) {
+    return `Next review: ${soonest.horizon} (${soonest.reviewDate}) · ${soonest.title}`;
+  }
+  if (soonest.reviewDate) {
+    return `Next review: ${soonest.reviewDate} · ${soonest.title}`;
+  }
+  return `Next review: ${soonest.horizon} · ${soonest.title}`;
 }
 
 function buildMismatchSummary(counts: SteeringOverviewModel['statusCounts']): string | null {

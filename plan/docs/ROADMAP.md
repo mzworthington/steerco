@@ -1,6 +1,6 @@
 # Roadmap
 
-SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topology intent** (Team Topologies) as an interactive board pack. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topology intent** (Team Topologies) in a steering workspace — with a board pack as the shareable export. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
 
 ## Slice 0 - Spec (this folder)
 
@@ -34,9 +34,15 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 | Evidence (sample/manual) | [F06](./prds/F06-evidence.md)              |
 | Decision note            | [F07](./prds/F07-decision-note.md)         |
 | Export board pack        | [F08](./prds/F08-export-board-pack.md)     |
-| SteerSpec persistence    | [F09](./prds/F09-steerspec-persistence.md) — includes pending-draft diff / revert / accept (disk Save still open) |
+| SteerSpec persistence    | [F09](./prds/F09-steerspec-persistence.md) — pending-draft diff + Save (folder write or download) |
 
 **Exit criteria:** Playwright critical journey green; axe clean on executive routes; schema validates sample; Invest/Work/Adapt board-pack outline present; platform overload copy references load/flow (not HR headcount).
+
+**Status:** Slice 1 PRDs F01–F09 landed in product. Critical journey + axe: `cd app && pnpm test:e2e`. Folder handles persist in IndexedDB so Save-to-folder can survive refresh (permission re-prompt when the browser requires it).
+
+### Slice 1 follow-ups (backlog)
+
+- [x] **IndexedDB for File System Access handles** — persist folder handles (and optional working-copy metadata) across refresh so **Save to folder** works without re-picking the directory. SteerSpec drafts live in `sessionStorage`; directory handles live in IndexedDB (`steerlens-workspace`). Pattern reference: ArchLens IndexedDB working-copy / baseline. See [F09](./prds/F09-steerspec-persistence.md).
 
 ## Slice 1.5 - Operating model depth (additive SteerSpec)
 
@@ -46,7 +52,7 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **EDGE / LVT**        | Bet ↔ MoS link (`metricIds` / `primaryMetricId`); optional `reviewDate` / horizon; `fundingStance` (`explore` \| `exploit` \| `sustain`); optional `kind` (`opportunity` \| `capability`); soft WIP mismatch for stream teams                                                                                 |
 | **Team Topologies**   | Four types + three modes are canonical in v1alpha1; `relationships[].expectedUntil` / effective windows for collaboration/facilitation; optional member edit UX; retarget + extend mismatches (`bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, …); platform / value-stream _groupings_ (domain org) deferred to Slice 3 |
-| **Capacity**          | `teams[].members[]` with job title + `ftePercent` (schema landed); richer edit/mismatch cues; **dated capacity windows** toward [F13](./prds/F13-topology-timeline.md)                                                                                                                                        |
+| **Capacity**          | `teams[].members[]` with `discipline` + job `title` + `ftePercent` (schema landed); richer edit/mismatch cues; **dated capacity windows** toward [F13](./prds/F13-topology-timeline.md)                                                                                                                                        |
 | **Topology timeline** | Additive temporal fields for member/relationship effective windows (+ optional `topologyEvents[]`); projection “as of” date (UI in Slice 3 — [F13](./prds/F13-topology-timeline.md))                                                                                                                          |
 | **Governance**        | Decision notes prefer MoS ids in `measured`; steering “next review” from bet horizons                                                                                                                                                                                                                         |
 | **Docs / Technical**  | Glossary stays TT-first (stream-aligned, X-as-a-Service, facilitation, cognitive load) — may deepen with [F12](./prds/F12-technical-mode.md)                                                                                                                                                                  |
@@ -54,6 +60,8 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 **PRD impact:** amend F02–F07 + [STEER_SPEC.md](./STEER_SPEC.md) / schema; new mismatch rules in `@steerlens/core`. Prefer additive fields + migrate helpers; bump `apiVersion` only if needed.
 
 **Exit criteria:** Sample workspace uses MoS links + at least one timed collaboration; core mismatch suite covers new codes; executive UI remains jargon-light.
+
+**Status:** Slice 1.5 complete — schema + mismatches + executive edit surfaces (bet MoS/funding/review, relationship `expectedUntil`, member add/edit, decision `measuredMetricIds`, `topologyEvents[]` in contract). Timeline UI remains Slice 3 ([F13](./prds/F13-topology-timeline.md)).
 
 ## Slice 2 - Connectors & auth
 

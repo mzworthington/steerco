@@ -28,7 +28,7 @@ describe('presentWorkspaceDiff', () => {
     expect(model.hasChanges).toBe(true);
     expect(model.summary).toMatch(/modified/i);
     expect(model.sections.some((section) => section.section === 'bets')).toBe(true);
-    expect(model.acceptHint).toMatch(/F09/);
+    expect(model.acceptHint).toMatch(/downloads steertree\.yaml/i);
   });
 
   it('reports a clean baseline when nothing changed', () => {

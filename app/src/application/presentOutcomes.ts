@@ -15,6 +15,7 @@ export type OutcomesMeasure = {
   displayValue: string;
   interpretation: string;
   textAlternative: string;
+  claimedByBets: Array<{ id: string; title: string }>;
 };
 
 export type OutcomesBetRow = {
@@ -51,15 +52,17 @@ export function presentOutcomes(spec: SteerSpec): OutcomesModel {
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     framingLine: 'Measures of success for this outcome — not a status dashboard.',
-    outcomes: spec.spec.outcomes.map((outcome) => ({
-      id: outcome.id,
-      title: outcome.title,
-      summary: outcome.summary ?? null,
-      statusLabel: presentOutcomeStatus(outcome.status),
-      measures: outcome.metrics.map((metric) => presentMeasure(metric)),
-      bets: spec.spec.bets
-        .filter((bet) => bet.outcomeId === outcome.id)
-        .map((bet) => {
+    outcomes: spec.spec.outcomes.map((outcome) => {
+      const outcomeBets = spec.spec.bets.filter((bet) => bet.outcomeId === outcome.id);
+      return {
+        id: outcome.id,
+        title: outcome.title,
+        summary: outcome.summary ?? null,
+        statusLabel: presentOutcomeStatus(outcome.status),
+        measures: outcome.metrics.map((metric) =>
+          presentMeasure(metric, betsClaimingMetric(outcomeBets, metric.id)),
+        ),
+        bets: outcomeBets.map((bet) => {
           const status = presentBetStatus(bet.status);
           return {
             id: bet.id,
@@ -69,7 +72,8 @@ export function presentOutcomes(spec: SteerSpec): OutcomesModel {
             statusTone: status.tone,
           };
         }),
-    })),
+      };
+    }),
   };
 }
 
@@ -141,15 +145,30 @@ export function applyOutcomeMetricEdit(
   };
 }
 
-function presentMeasure(metric: {
-  id: string;
-  title: string;
-  unit?: string;
-  current?: number | null;
-  baseline?: number | null;
-  target?: number | null;
-  interpretation?: string;
-}): OutcomesMeasure {
+function betsClaimingMetric(
+  bets: SteerSpec['spec']['bets'],
+  metricId: string,
+): Array<{ id: string; title: string }> {
+  return bets
+    .filter((bet) => {
+      if (bet.primaryMetricId === metricId) return true;
+      return (bet.metricIds ?? []).includes(metricId);
+    })
+    .map((bet) => ({ id: bet.id, title: bet.title }));
+}
+
+function presentMeasure(
+  metric: {
+    id: string;
+    title: string;
+    unit?: string;
+    current?: number | null;
+    baseline?: number | null;
+    target?: number | null;
+    interpretation?: string;
+  },
+  claimedByBets: Array<{ id: string; title: string }>,
+): OutcomesMeasure {
   const unit = metric.unit ?? null;
   const current = typeof metric.current === 'number' ? metric.current : null;
   const baseline = typeof metric.baseline === 'number' ? metric.baseline : null;
@@ -177,6 +196,7 @@ function presentMeasure(metric: {
     displayValue,
     interpretation,
     textAlternative,
+    claimedByBets,
   };
 }
 

@@ -15,6 +15,7 @@ export function serializeSteerSpec(doc: SteerSpec): string {
       relationships: doc.spec.relationships,
       decisionNotes: doc.spec.decisionNotes,
       evidence: doc.spec.evidence,
+      topologyEvents: doc.spec.topologyEvents,
     },
   };
 

@@ -1,4 +1,16 @@
 import '@testing-library/jest-dom/vitest';
+import { IDBKeyRange, indexedDB } from 'fake-indexeddb';
+
+Object.defineProperty(globalThis, 'indexedDB', {
+  configurable: true,
+  writable: true,
+  value: indexedDB,
+});
+Object.defineProperty(globalThis, 'IDBKeyRange', {
+  configurable: true,
+  writable: true,
+  value: IDBKeyRange,
+});
 
 function createMemoryStorage(): Storage {
   const store = new Map<string, string>();

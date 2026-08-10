@@ -28,8 +28,13 @@ Load/validate/save `steertree.yaml` as the workspace source of truth.
 
 - Round-trip sample YAML preserves ids and semantics
 - Invalid file blocks save; shows errors
-- Diff view lists added / modified / deleted SteerSpec entities; Revert restores baseline; Accept clears pending without requiring disk yet
+- Diff view lists added / modified / deleted SteerSpec entities; Revert restores baseline
+- **Save** writes `steertree.yaml` when a folder handle is available; otherwise downloads YAML and promotes the session baseline
 
 ## XFN
 
-Security: no secret fields · Resilience: atomic write where FS allows
+Security: no secret fields · Resilience: atomic write where FS allows (`createWritable` + close; abort on failure)
+
+## Backlog
+
+- [x] **IndexedDB directory handles** — store `FileSystemDirectoryHandle` (and file name) so folder Save survives tab refresh without re-open; re-prompt for permission when the browser requires it. Implemented via `workspaceDirectoryStore` (IndexedDB `steerlens-workspace`).

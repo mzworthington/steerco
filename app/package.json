@@ -16,6 +16,7 @@
     "format:check": "prettier --config ../.prettierrc --ignore-path ../.prettierignore --check \"**/*.{ts,tsx,css,json,md,html,yml,yaml}\" \"../*.md\" \"../docs/**/*.{md,ts}\" \"../.github/**/*.{yml,yaml,md}\"",
     "test": "vitest run && pnpm --filter @steerlens/core test",
     "test:watch": "vitest",
+    "test:e2e": "playwright test",
     "test:lighthouse": "lhci autorun",
     "lighthouse:summary": "node scripts/writeLighthouseSummary.mjs",
     "record:docs-media": "RECORD_DOCS_MEDIA=1 playwright test --config playwright.docs-media.config.ts",
@@ -32,6 +33,7 @@
     "wouter": "3.10.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.11.1",
     "@lhci/cli": "0.15.1",
     "@playwright/test": "1.62.1",
     "@tailwindcss/vite": "4.3.3",
@@ -43,6 +45,7 @@
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
     "@vitejs/plugin-react": "6.0.5",
+    "fake-indexeddb": "6.2.5",
     "git-cliff": "2.13.1",
     "husky": "9.1.7",
     "jsdom": "30.0.1",

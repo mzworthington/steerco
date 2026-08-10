@@ -74,12 +74,24 @@ export function DecisionNotesPage() {
     setSavedFlash(null);
   };
 
-  const appendSuggestion = (suggestion: string) => {
+  const appendSuggestion = (suggestion: string, metricId: string) => {
     if (!draft) return;
     const next = draft.measuredText.trim()
       ? `${draft.measuredText.trim()}\n${suggestion}`
       : suggestion;
-    setDraft({ ...draft, measuredText: next });
+    const measuredMetricIds = draft.measuredMetricIds.includes(metricId)
+      ? draft.measuredMetricIds
+      : [...draft.measuredMetricIds, metricId];
+    setDraft({ ...draft, measuredText: next, measuredMetricIds });
+    setSavedFlash(null);
+  };
+
+  const toggleMeasuredMetric = (metricId: string) => {
+    if (!draft) return;
+    const selected = new Set(draft.measuredMetricIds);
+    if (selected.has(metricId)) selected.delete(metricId);
+    else selected.add(metricId);
+    setDraft({ ...draft, measuredMetricIds: [...selected] });
     setSavedFlash(null);
   };
 
@@ -268,16 +280,16 @@ export function DecisionNotesPage() {
                 What we measured
               </h2>
               <p className="decision-notes-helper">{model.helperMeasured}</p>
-              {model.mosSuggestions.length > 0 ? (
+              {model.metricOptions.length > 0 ? (
                 <div className="decision-notes-suggestions">
-                  {model.mosSuggestions.map((suggestion) => (
+                  {model.metricOptions.map((metric) => (
                     <button
-                      key={suggestion}
+                      key={metric.id}
                       type="button"
                       className="decision-notes-suggestion"
-                      onClick={() => appendSuggestion(suggestion)}
+                      onClick={() => appendSuggestion(metric.suggestion, metric.id)}
                     >
-                      + {suggestion}
+                      + {metric.suggestion}
                     </button>
                   ))}
                 </div>
@@ -296,6 +308,23 @@ export function DecisionNotesPage() {
                   }
                 />
               </label>
+              {model.metricOptions.length > 0 ? (
+                <fieldset className="decision-notes-teams">
+                  <legend className="decision-notes-metrics-legend">
+                    Measures of Success we point to
+                  </legend>
+                  {model.metricOptions.map((metric) => (
+                    <label key={metric.id} className="decision-notes-team">
+                      <input
+                        type="checkbox"
+                        checked={draft.measuredMetricIds.includes(metric.id)}
+                        onChange={() => toggleMeasuredMetric(metric.id)}
+                      />
+                      <span>{metric.title}</span>
+                    </label>
+                  ))}
+                </fieldset>
+              ) : null}
             </section>
 
             <section className="decision-note-section" aria-labelledby="decision-affected">

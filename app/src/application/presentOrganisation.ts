@@ -1,11 +1,14 @@
 import {
   detectSteerSpecMismatches,
+  DISCIPLINE_COPY,
   INTERACTION_MODE_COPY,
+  MEMBER_DISCIPLINES,
   TEAM_TOPOLOGY_TYPES,
   TOPOLOGY_TYPE_COPY,
   normalizeInteractionMode,
   normalizeTeamTopologyType,
   type InteractionMode,
+  type MemberDiscipline,
   type SteerMismatch,
   type SteerSpec,
   type TeamRole,
@@ -17,8 +20,12 @@ export type OrganisationInteractionMode = InteractionMode;
 export type OrganisationTeamMember = {
   id: string;
   displayName: string;
+  discipline: MemberDiscipline;
+  disciplineLabel: string;
   title: string;
   ftePercent: number;
+  effectiveFrom: string | null;
+  effectiveUntil: string | null;
 };
 
 export type OrganisationTeamCard = {
@@ -51,6 +58,7 @@ export type OrganisationRelationship = {
   modeLabel: string;
   modeTeaching: string;
   sentence: string;
+  expectedUntil: string | null;
 };
 
 export type OrganisationModel = {
@@ -74,6 +82,22 @@ export type AddOrganisationRelationshipInput = {
   fromTeamId: string;
   toTeamId: string;
   mode: OrganisationInteractionMode;
+  /** ISO date time-box, especially for collaboration/facilitation (Slice 1.5). */
+  expectedUntil?: string;
+};
+
+export type AddOrganisationMemberInput = {
+  teamId: string;
+  displayName: string;
+  title: string;
+  ftePercent: number;
+  discipline: MemberDiscipline;
+  effectiveFrom?: string;
+  effectiveUntil?: string;
+};
+
+export type UpdateOrganisationMemberInput = AddOrganisationMemberInput & {
+  memberId: string;
 };
 
 export function presentOrganisation(spec: SteerSpec): OrganisationModel {
@@ -120,6 +144,7 @@ export function presentOrganisation(spec: SteerSpec): OrganisationModel {
         modeLabel: modeCopy.modeName,
         modeTeaching: modeCopy.teaching,
         sentence: `${from.displayName} ${modeCopy.sentenceVerb} ${to.displayName}`,
+        expectedUntil: relationship.expectedUntil ?? null,
       },
     ];
   });
@@ -189,10 +214,21 @@ function presentTeamCard(
     members: members.map((member) => ({
       id: member.id,
       displayName: member.displayName,
+      discipline: member.discipline,
+      disciplineLabel: DISCIPLINE_COPY[member.discipline].label,
       title: member.title,
       ftePercent: member.ftePercent,
+      effectiveFrom: member.effectiveFrom ?? null,
+      effectiveUntil: member.effectiveUntil ?? null,
     })),
   };
+}
+
+export function organisationMemberDisciplineOptions(): Array<{
+  value: MemberDiscipline;
+  label: string;
+}> {
+  return MEMBER_DISCIPLINES.map((value) => ({ value, label: DISCIPLINE_COPY[value].label }));
 }
 
 function validateAddOrganisationTeam(
@@ -271,8 +307,143 @@ export function applyAddOrganisationRelationship(
             fromTeamId: input.fromTeamId,
             toTeamId: input.toTeamId,
             mode: input.mode,
+            expectedUntil: input.expectedUntil?.trim() || undefined,
           },
         ],
+      },
+    },
+  };
+}
+
+function validateOrganisationMemberFields(
+  input: Pick<
+    AddOrganisationMemberInput,
+    'displayName' | 'title' | 'ftePercent' | 'discipline' | 'effectiveFrom' | 'effectiveUntil'
+  >,
+):
+  | {
+      ok: true;
+      displayName: string;
+      title: string;
+      ftePercent: number;
+      discipline: MemberDiscipline;
+      effectiveFrom: string | undefined;
+      effectiveUntil: string | undefined;
+    }
+  | { ok: false; error: string } {
+  const displayName = input.displayName.trim();
+  const title = input.title.trim();
+  if (!displayName) {
+    return { ok: false, error: 'Give the member a name before saving.' };
+  }
+  if (!title) {
+    return { ok: false, error: 'Give the member a title before saving.' };
+  }
+  if (!Number.isFinite(input.ftePercent) || input.ftePercent < 0 || input.ftePercent > 100) {
+    return { ok: false, error: 'FTE percent must be between 0 and 100.' };
+  }
+  return {
+    ok: true,
+    displayName,
+    title,
+    ftePercent: input.ftePercent,
+    discipline: input.discipline,
+    effectiveFrom: input.effectiveFrom?.trim() || undefined,
+    effectiveUntil: input.effectiveUntil?.trim() || undefined,
+  };
+}
+
+export function applyAddOrganisationMember(
+  spec: SteerSpec,
+  input: AddOrganisationMemberInput,
+): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+  const validated = validateOrganisationMemberFields(input);
+  if (!validated.ok) return validated;
+
+  const teamIndex = spec.spec.teams.findIndex((team) => team.id === input.teamId);
+  if (teamIndex < 0) {
+    return { ok: false, error: 'That team is not in this workspace.' };
+  }
+  const team = spec.spec.teams[teamIndex];
+  if (!team) {
+    return { ok: false, error: 'That team is not in this workspace.' };
+  }
+
+  const id = uniqueMemberId(spec, validated.displayName);
+  const nextTeams = [...spec.spec.teams];
+  nextTeams[teamIndex] = {
+    ...team,
+    members: [
+      ...(team.members ?? []),
+      {
+        id,
+        displayName: validated.displayName,
+        title: validated.title,
+        discipline: validated.discipline,
+        ftePercent: validated.ftePercent,
+        effectiveFrom: validated.effectiveFrom,
+        effectiveUntil: validated.effectiveUntil,
+      },
+    ],
+  };
+
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        teams: nextTeams,
+      },
+    },
+  };
+}
+
+export function applyUpdateOrganisationMember(
+  spec: SteerSpec,
+  input: UpdateOrganisationMemberInput,
+): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+  const validated = validateOrganisationMemberFields(input);
+  if (!validated.ok) return validated;
+
+  const teamIndex = spec.spec.teams.findIndex((team) => team.id === input.teamId);
+  if (teamIndex < 0) {
+    return { ok: false, error: 'That team is not in this workspace.' };
+  }
+  const team = spec.spec.teams[teamIndex];
+  if (!team) {
+    return { ok: false, error: 'That team is not in this workspace.' };
+  }
+  const members = team.members ?? [];
+  const memberIndex = members.findIndex((member) => member.id === input.memberId);
+  if (memberIndex < 0) {
+    return { ok: false, error: 'That member is not on this team.' };
+  }
+  const existing = members[memberIndex];
+  if (!existing) {
+    return { ok: false, error: 'That member is not on this team.' };
+  }
+
+  const nextMembers = [...members];
+  nextMembers[memberIndex] = {
+    ...existing,
+    displayName: validated.displayName,
+    title: validated.title,
+    discipline: validated.discipline,
+    ftePercent: validated.ftePercent,
+    effectiveFrom: validated.effectiveFrom,
+    effectiveUntil: validated.effectiveUntil,
+  };
+  const nextTeams = [...spec.spec.teams];
+  nextTeams[teamIndex] = { ...team, members: nextMembers };
+
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        teams: nextTeams,
       },
     },
   };
@@ -285,6 +456,15 @@ function formatFte(value: number): string {
 function uniqueTeamId(spec: SteerSpec, displayName: string): string {
   const base = `team_${slugify(displayName)}`;
   const existing = new Set(spec.spec.teams.map((team) => team.id));
+  if (!existing.has(base)) return base;
+  let index = 2;
+  while (existing.has(`${base}_${index}`)) index += 1;
+  return `${base}_${index}`;
+}
+
+function uniqueMemberId(spec: SteerSpec, displayName: string): string {
+  const base = `mem_${slugify(displayName)}`;
+  const existing = new Set(spec.spec.teams.flatMap((team) => team.members?.map((m) => m.id) ?? []));
   if (!existing.has(base)) return base;
   let index = 2;
   while (existing.has(`${base}_${index}`)) index += 1;

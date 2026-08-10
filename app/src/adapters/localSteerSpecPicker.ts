@@ -1,13 +1,22 @@
 import { openWorkspaceFromYaml, type OpenWorkspaceResult } from '../application/openWorkspace';
 
-const STEERSPEC_NAMES = new Set(['steertree.yaml', 'steertree.yml']);
+const STEERSPEC_NAMES = ['steertree.yaml', 'steertree.yml'] as const;
 
 type LocalSteerSpecPick =
-  { ok: true; text: string; label: string } | { ok: false; error: string; cancelled?: boolean };
+  | {
+      ok: true;
+      text: string;
+      label: string;
+      directory?: FileSystemDirectoryHandle;
+      fileName?: (typeof STEERSPEC_NAMES)[number];
+    }
+  | { ok: false; error: string; cancelled?: boolean };
 
 type DirectoryPickerWindow = Window &
   typeof globalThis & {
-    showDirectoryPicker?: () => Promise<FileSystemDirectoryHandle>;
+    showDirectoryPicker?: (options?: {
+      mode?: 'read' | 'readwrite';
+    }) => Promise<FileSystemDirectoryHandle>;
   };
 
 /**
@@ -20,7 +29,7 @@ async function pickLocalSteerSpec(options?: {
   const win = window as DirectoryPickerWindow;
   if (typeof win.showDirectoryPicker === 'function') {
     try {
-      const directory = await win.showDirectoryPicker();
+      const directory = await win.showDirectoryPicker({ mode: 'readwrite' });
       return await readSteerSpecFromDirectory(directory);
     } catch (error) {
       if (isAbortError(error)) {
@@ -38,7 +47,12 @@ async function pickLocalSteerSpec(options?: {
 }
 
 export async function openWorkspaceFromLocalPick(): Promise<
-  OpenWorkspaceResult & { label?: string; cancelled?: boolean }
+  OpenWorkspaceResult & {
+    label?: string;
+    cancelled?: boolean;
+    directory?: FileSystemDirectoryHandle;
+    fileName?: (typeof STEERSPEC_NAMES)[number];
+  }
 > {
   const picked = await pickLocalSteerSpec();
   if (!picked.ok) {
@@ -50,7 +64,38 @@ export async function openWorkspaceFromLocalPick(): Promise<
   }
   const opened = openWorkspaceFromYaml(picked.text);
   if (!opened.ok) return opened;
-  return { ok: true, value: opened.value, label: picked.label };
+  return {
+    ok: true,
+    value: opened.value,
+    label: picked.label,
+    directory: picked.directory,
+    fileName: picked.fileName,
+  };
+}
+
+/** Re-open a previously granted directory handle (IndexedDB restore / recent). */
+export async function openWorkspaceFromDirectoryHandle(
+  directory: FileSystemDirectoryHandle,
+): Promise<
+  OpenWorkspaceResult & {
+    label?: string;
+    directory?: FileSystemDirectoryHandle;
+    fileName?: (typeof STEERSPEC_NAMES)[number];
+  }
+> {
+  const picked = await readSteerSpecFromDirectory(directory);
+  if (!picked.ok) {
+    return { ok: false, error: picked.error };
+  }
+  const opened = openWorkspaceFromYaml(picked.text);
+  if (!opened.ok) return opened;
+  return {
+    ok: true,
+    value: opened.value,
+    label: picked.label,
+    directory: picked.directory,
+    fileName: picked.fileName,
+  };
 }
 
 async function readSteerSpecFromDirectory(
@@ -61,7 +106,7 @@ async function readSteerSpecFromDirectory(
       const handle = await directory.getFileHandle(name);
       const file = await handle.getFile();
       const text = await file.text();
-      return { ok: true, text, label: directory.name };
+      return { ok: true, text, label: directory.name, directory, fileName: name };
     } catch {
       // try next name
     }

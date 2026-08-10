@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { MEMBER_DISCIPLINES, type MemberDiscipline } from '../capacity/disciplines';
 import {
   INTERACTION_MODES,
   TEAM_TOPOLOGY_TYPES,
@@ -30,6 +31,16 @@ const interactionModeSchema = z.preprocess(
 
 const provenanceSchema = z.enum(['local', 'backstage', 'github', 'entra', 'catalog_file']);
 const recommendationSchema = z.enum(['start', 'continue', 'stop', 'rescope']);
+const fundingStanceSchema = z.enum(['explore', 'exploit', 'sustain']);
+const betKindSchema = z.enum(['opportunity', 'capability']);
+const topologyEventKindSchema = z.enum([
+  'capacity_up',
+  'capacity_down',
+  'relationship_added',
+  'relationship_ended',
+  'relationship_mode_changed',
+  'other',
+]);
 
 const metricSchema = z
   .object({
@@ -63,6 +74,15 @@ const betSchema = z
     status: statusBetSchema,
     fundedTeamIds: z.array(z.string()).default([]),
     systemRefs: z.array(z.string()).default([]),
+    /** Measure-of-Success links — metric ids this bet is judged against. */
+    metricIds: z.array(z.string()).default([]),
+    primaryMetricId: z.string().nullable().optional(),
+    /** ISO date (YYYY-MM-DD preferred) for the next funding review. */
+    reviewDate: z.string().optional(),
+    /** Free text review horizon, e.g. "Q3 review". */
+    horizon: z.string().optional(),
+    fundingStance: fundingStanceSchema.optional(),
+    kind: betKindSchema.optional(),
   })
   .strict();
 
@@ -73,14 +93,21 @@ const externalRefSchema = z
   })
   .strict();
 
+const memberDisciplineSchema = z.enum(MEMBER_DISCIPLINES);
+
 const teamMemberSchema = z
   .object({
     id: z.string().min(1),
     displayName: z.string().min(1),
-    /** Job / craft title — not the Team Topologies team type. */
+    /** Coarse discipline for mix / capacity advice — not the Team Topologies team type. */
+    discipline: memberDisciplineSchema,
+    /** Free-text job title for board packs and diffs. */
     title: z.string().min(1),
     /** Allocation to this team as a percentage of one FTE (0–100). */
     ftePercent: z.number().min(0).max(100),
+    /** ISO date capacity window — when this allocation starts/ends. */
+    effectiveFrom: z.string().optional(),
+    effectiveUntil: z.string().optional(),
   })
   .strict();
 
@@ -102,6 +129,10 @@ const relationshipSchema = z
     toTeamId: z.string().min(1),
     /** Team Topologies interaction mode. */
     mode: interactionModeSchema,
+    /** ISO date — time-box for collaboration/facilitation; expected to end. */
+    expectedUntil: z.string().optional(),
+    effectiveFrom: z.string().optional(),
+    effectiveUntil: z.string().optional(),
   })
   .strict();
 
@@ -113,8 +144,23 @@ const decisionNoteSchema = z
     title: z.string().min(1),
     why: z.string().min(1),
     measured: z.array(z.string()).default([]),
+    /** Structured Measure-of-Success refs — metric ids this decision cites. */
+    measuredMetricIds: z.array(z.string()).default([]),
     affectedTeamIds: z.array(z.string()).default([]),
     nextStep: z.string().min(1),
+  })
+  .strict();
+
+const topologyEventSchema = z
+  .object({
+    id: z.string().min(1),
+    /** ISO date the event occurred. */
+    at: z.string().min(1),
+    kind: topologyEventKindSchema,
+    summary: z.string().min(1),
+    teamIds: z.array(z.string()).default([]),
+    /** `fromTeamId::toTeamId` — links back to the relationship this event describes. */
+    relationshipKey: z.string().optional(),
   })
   .strict();
 
@@ -147,6 +193,7 @@ const specSchema = z
     relationships: z.array(relationshipSchema).default([]),
     decisionNotes: z.array(decisionNoteSchema).default([]),
     evidence: z.array(evidenceSchema).default([]),
+    topologyEvents: z.array(topologyEventSchema).default([]),
   })
   .strict();
 
@@ -161,6 +208,13 @@ export const steerSpecSchema = z
 
 export type SteerSpec = z.infer<typeof steerSpecSchema>;
 export type TeamMember = z.infer<typeof teamMemberSchema>;
+export type Bet = z.infer<typeof betSchema>;
+export type Relationship = z.infer<typeof relationshipSchema>;
+export type DecisionNote = z.infer<typeof decisionNoteSchema>;
+export type TopologyEvent = z.infer<typeof topologyEventSchema>;
+export type TopologyEventKind = TopologyEvent['kind'];
+export type FundingStance = NonNullable<Bet['fundingStance']>;
+export type BetKind = NonNullable<Bet['kind']>;
 export type TeamRole = TeamTopologyType;
-export type { InteractionMode, TeamTopologyType };
-export { TEAM_TOPOLOGY_TYPES as TEAM_ROLES, INTERACTION_MODES };
+export type { InteractionMode, MemberDiscipline, TeamTopologyType };
+export { MEMBER_DISCIPLINES, TEAM_TOPOLOGY_TYPES as TEAM_ROLES, INTERACTION_MODES };

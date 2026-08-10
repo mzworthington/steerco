@@ -14,11 +14,13 @@ describe('HomePage', () => {
     expect(screen.getByText(SITE_TAGLINE)).toBeTruthy();
   });
 
-  it('links to workspace and docs', () => {
+  it('links to workspace and product guide', () => {
     render(<HomePage />);
     expect(screen.getByRole('link', { name: /open workspace/i }).getAttribute('href')).toBe(
       '/workspace',
     );
-    expect(screen.getByRole('link', { name: /read the docs/i }).getAttribute('href')).toBe('/docs');
+    expect(screen.getByRole('link', { name: /product guide/i }).getAttribute('href')).toBe(
+      '/docs/product-guide',
+    );
   });
 });

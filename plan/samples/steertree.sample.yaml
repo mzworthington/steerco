@@ -41,6 +41,12 @@ spec:
       killCriteria: Hit rate stays flat after one quarter of staffing and routing changes
       status: on_track
       fundedTeamIds: [team_storefront, team_catalog]
+      metricIds: [met_promise_hit]
+      primaryMetricId: met_promise_hit
+      reviewDate: 2026-09-30
+      horizon: Q3 review
+      fundingStance: exploit
+      kind: opportunity
     - id: bet_fulfilil
       outcomeId: out_promise
       title: Shared fulfilment spine
@@ -48,6 +54,12 @@ spec:
       killCriteria: Fewer than two channels adopt the spine after two quarters
       status: at_risk
       fundedTeamIds: [team_fulfilil, team_storefront]
+      metricIds: [met_cycle_days, met_shared_wait]
+      primaryMetricId: met_cycle_days
+      reviewDate: 2026-10-15
+      horizon: Q3 review
+      fundingStance: explore
+      kind: capability
     - id: bet_loyalty
       outcomeId: out_promise
       title: Loyalty ledger unification
@@ -55,6 +67,9 @@ spec:
       killCriteria: Promise hit rate unchanged after two quarters while programme cost rises
       status: stop_ready
       fundedTeamIds: [team_fulfilil]
+      metricIds: [met_promise_hit]
+      fundingStance: sustain
+      kind: opportunity
   teams:
     - id: team_storefront
       displayName: Storefront experience
@@ -64,14 +79,17 @@ spec:
       members:
         - id: mem_storefront_em
           displayName: Priya Nair
+          discipline: leadership
           title: Engineering Manager
           ftePercent: 100
         - id: mem_storefront_ic
           displayName: Jordan Blake
+          discipline: engineering
           title: Senior Engineer
           ftePercent: 100
         - id: mem_storefront_pm
           displayName: Casey Morales
+          discipline: product
           title: Product Manager
           ftePercent: 50
     - id: team_catalog
@@ -82,12 +100,19 @@ spec:
       members:
         - id: mem_catalog_em
           displayName: Sam Okonkwo
+          discipline: leadership
           title: Engineering Manager
           ftePercent: 100
         - id: mem_catalog_ic
           displayName: Riley Chen
+          discipline: engineering
           title: Engineer
           ftePercent: 100
+        - id: mem_catalog_pm
+          displayName: Avery Ng
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
     - id: team_fulfilil
       displayName: Fulfilment platform
       role: platform
@@ -96,14 +121,17 @@ spec:
       members:
         - id: mem_fulfilil_tl
           displayName: Alex Rivera
+          discipline: leadership
           title: Platform Lead
           ftePercent: 100
         - id: mem_fulfilil_sre
           displayName: Morgan Ellis
+          discipline: engineering
           title: Site Reliability Engineer
           ftePercent: 100
         - id: mem_fulfilil_shared
           displayName: Casey Morales
+          discipline: product
           title: Product Manager
           ftePercent: 50
     - id: team_enablement
@@ -114,6 +142,7 @@ spec:
       members:
         - id: mem_enable_coach
           displayName: Taylor Brooks
+          discipline: other
           title: Delivery Coach
           ftePercent: 100
   relationships:
@@ -126,6 +155,7 @@ spec:
     - fromTeamId: team_enablement
       toTeamId: team_storefront
       mode: facilitation
+      expectedUntil: 2026-12-31
   decisionNotes:
     - id: dec_loyalty_stop
       betId: bet_loyalty
@@ -137,6 +167,7 @@ spec:
       measured:
         - Promise hit rate unchanged quarter-on-quarter
         - Shared-service wait time increased
+      measuredMetricIds: [met_promise_hit, met_shared_wait]
       affectedTeamIds: [team_fulfilil, team_storefront]
       nextStep: Pause rollout; keep the existing ledger for two quarters and revisit
   evidence:
@@ -152,3 +183,10 @@ spec:
       metricId: met_shared_wait
       source: sample
       note: Shared-service wait — sample bottleneck signal for two bets
+  topologyEvents:
+    - id: evt_enablement_facilitation
+      at: 2026-07-01
+      kind: relationship_added
+      summary: Ways of working started a time-boxed facilitation partnership with Storefront through Q4
+      teamIds: [team_enablement, team_storefront]
+      relationshipKey: team_enablement::team_storefront
