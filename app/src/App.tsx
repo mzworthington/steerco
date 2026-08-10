@@ -10,7 +10,10 @@ import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
 import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
 import { SteeringOverviewPage } from './pages/SteeringOverviewPage';
-import { BetDetailStubPage } from './pages/BetDetailStubPage';
+import { BetDetailPage } from './pages/BetDetailPage';
+import { DecisionNotesStubPage } from './pages/DecisionNotesStubPage';
+import { OrganisationPage } from './pages/OrganisationPage';
+import { OutcomesPage } from './pages/OutcomesPage';
 import { WorkspaceSessionProvider } from './workspace/WorkspaceSession';
 import { WorkspaceShell } from './workspace/WorkspaceShell';
 
@@ -55,7 +58,10 @@ function AppRoutes() {
       <Route path="/" component={HomePage} />
       <Route path="/workspace" component={WorkspaceHomePage} />
       <Route path="/workspace/steering" component={SteeringOverviewPage} />
-      <Route path="/workspace/bets/:betId" component={BetDetailStubPage} />
+      <Route path="/workspace/outcomes" component={OutcomesPage} />
+      <Route path="/workspace/organisation" component={OrganisationPage} />
+      <Route path="/workspace/decisions" component={DecisionNotesStubPage} />
+      <Route path="/workspace/bets/:betId" component={BetDetailPage} />
       <Route path="/design-system" component={DesignSystemPage} />
       <Route path="/docs/design-system">
         <Redirect to="/design-system" />

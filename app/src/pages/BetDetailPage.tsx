@@ -1,0 +1,295 @@
+import { useEffect, useMemo, useState, type MouseEvent } from 'react';
+import { Link, useLocation, useParams } from 'wouter';
+import {
+  applyBetDetailDraft,
+  betDetailStatusOptions,
+  presentBetDetail,
+  validateBetDetailDraft,
+  type BetDetailDraft,
+  type BetDetailModel,
+  type BetDetailStatus,
+} from '../application/presentBetDetail';
+import { useWorkspaceSession } from '../workspace/WorkspaceSession';
+
+type EditState = {
+  betId: string;
+  draft: BetDetailDraft;
+  baseline: BetDetailDraft;
+};
+
+function draftFromModel(model: BetDetailModel): BetDetailDraft {
+  return {
+    title: model.title,
+    successSignal: model.successSignal,
+    killCriteria: model.killCriteria,
+    status: model.status,
+    fundedTeamIds: model.fundedTeams.filter((team) => team.selected).map((team) => team.id),
+  };
+}
+
+function draftsEqual(a: BetDetailDraft, b: BetDetailDraft): boolean {
+  return (
+    a.title === b.title &&
+    a.successSignal === b.successSignal &&
+    a.killCriteria === b.killCriteria &&
+    a.status === b.status &&
+    a.fundedTeamIds.length === b.fundedTeamIds.length &&
+    a.fundedTeamIds.every((id, index) => id === b.fundedTeamIds[index])
+  );
+}
+
+export function BetDetailPage() {
+  const params = useParams<{ betId: string }>();
+  const { session, setSession } = useWorkspaceSession();
+  const [, setLocation] = useLocation();
+  const [edit, setEdit] = useState<EditState | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
+  const [savedFlash, setSavedFlash] = useState(false);
+
+  useEffect(() => {
+    if (!session) {
+      setLocation('/workspace');
+    }
+  }, [session, setLocation]);
+
+  const model = useMemo(
+    () => (session && params.betId ? presentBetDetail(session.spec, params.betId) : null),
+    [session, params.betId],
+  );
+
+  const activeEdit =
+    model && edit?.betId === model.id
+      ? edit
+      : model
+        ? { betId: model.id, draft: draftFromModel(model), baseline: draftFromModel(model) }
+        : null;
+
+  useEffect(() => {
+    document.title = model ? `${model.title} · SteerLens` : 'Bet · SteerLens';
+  }, [model]);
+
+  const dirty = Boolean(activeEdit && !draftsEqual(activeEdit.draft, activeEdit.baseline));
+
+  useEffect(() => {
+    if (!dirty) return;
+    const onBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [dirty]);
+
+  const statusOptions = useMemo(() => betDetailStatusOptions(), []);
+
+  if (!session) return null;
+
+  if (!model || !activeEdit) {
+    return (
+      <section className="bet-detail" data-testid="bet-detail-missing">
+        <h1 className="bet-detail-title">Bet not found</h1>
+        <p className="bet-detail-lead">That bet is not in the open workspace.</p>
+        <Link href="/workspace/steering" className="btn-secondary">
+          ← Back to steering
+        </Link>
+      </section>
+    );
+  }
+
+  const { draft } = activeEdit;
+
+  const updateDraft = (next: BetDetailDraft) => {
+    setEdit({
+      betId: model.id,
+      draft: next,
+      baseline: activeEdit.baseline,
+    });
+    setSavedFlash(false);
+  };
+
+  const onBack = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!dirty) return;
+    const leave = window.confirm('You have unsaved changes. Leave without saving?');
+    if (!leave) {
+      event.preventDefault();
+    }
+  };
+
+  const toggleTeam = (teamId: string) => {
+    const selected = new Set(draft.fundedTeamIds);
+    if (selected.has(teamId)) selected.delete(teamId);
+    else selected.add(teamId);
+    updateDraft({ ...draft, fundedTeamIds: [...selected] });
+  };
+
+  const onSave = () => {
+    const validation = validateBetDetailDraft(draft);
+    if (!validation.ok) {
+      setFormError(validation.errors[0]?.message ?? 'Could not save this bet.');
+      setWarning(validation.warnings[0]?.message ?? null);
+      return;
+    }
+
+    const applied = applyBetDetailDraft(session.spec, model.id, draft);
+    if (!applied.ok) {
+      setFormError(applied.error);
+      return;
+    }
+
+    setSession({
+      ...session,
+      spec: applied.value,
+    });
+    setEdit({
+      betId: model.id,
+      draft,
+      baseline: draft,
+    });
+    setFormError(null);
+    setWarning(validation.warnings[0]?.message ?? null);
+    setSavedFlash(true);
+  };
+
+  return (
+    <section className="bet-detail" data-testid="bet-detail">
+      <Link href="/workspace/steering" className="bet-detail-back" onClick={onBack}>
+        ← Back to steering
+      </Link>
+
+      <header className="bet-detail-header">
+        <div>
+          <p className="eyebrow">Bet detail</p>
+          <label className="bet-detail-field">
+            <span className="sr-only">Bet title</span>
+            <input
+              className="bet-detail-title-input"
+              value={draft.title}
+              onChange={(event) => updateDraft({ ...draft, title: event.target.value })}
+              aria-invalid={Boolean(formError && !draft.title.trim())}
+            />
+          </label>
+          {model.outcome ? (
+            <p className="bet-detail-outcome">
+              Outcome · <span>{model.outcome.title}</span>
+            </p>
+          ) : null}
+        </div>
+        <label className="bet-detail-status-field">
+          <span className="sr-only">Status</span>
+          <select
+            className="bet-detail-status-select"
+            value={draft.status}
+            onChange={(event) =>
+              updateDraft({ ...draft, status: event.target.value as BetDetailStatus })
+            }
+          >
+            {statusOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </header>
+
+      <div className="bet-detail-sections">
+        <section className="bet-detail-card" aria-labelledby="bet-success-heading">
+          <h2 id="bet-success-heading" className="bet-detail-card-title">
+            What success looks like
+          </h2>
+          <label className="bet-detail-field">
+            <span className="sr-only">Success signal</span>
+            <textarea
+              className="bet-detail-textarea"
+              rows={3}
+              value={draft.successSignal}
+              onChange={(event) => updateDraft({ ...draft, successSignal: event.target.value })}
+            />
+          </label>
+        </section>
+
+        <section className="bet-detail-card" aria-labelledby="bet-mos-heading">
+          <h2 id="bet-mos-heading" className="bet-detail-card-title">
+            This bet should move
+          </h2>
+          {model.outcome ? (
+            <>
+              <p className="bet-detail-mos-summary">
+                {model.outcome.summary ?? model.outcome.title}
+              </p>
+              {model.outcome.measures.length > 0 ? (
+                <ul className="bet-detail-mos-list">
+                  {model.outcome.measures.map((measure) => (
+                    <li key={measure.id}>
+                      <strong>{measure.title}</strong>
+                      <span>{measure.cue}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="bet-detail-mos-empty">This outcome has no Measures of Success yet.</p>
+              )}
+            </>
+          ) : (
+            <p className="bet-detail-mos-empty">No linked outcome in this workspace.</p>
+          )}
+        </section>
+
+        <section className="bet-detail-card" aria-labelledby="bet-kill-heading">
+          <h2 id="bet-kill-heading" className="bet-detail-card-title">
+            When we stop
+          </h2>
+          <label className="bet-detail-field">
+            <span className="sr-only">Kill criteria</span>
+            <textarea
+              className="bet-detail-textarea"
+              rows={3}
+              value={draft.killCriteria}
+              onChange={(event) => updateDraft({ ...draft, killCriteria: event.target.value })}
+              aria-invalid={Boolean(formError && !draft.killCriteria.trim())}
+            />
+          </label>
+        </section>
+
+        <section className="bet-detail-card" aria-labelledby="bet-teams-heading">
+          <h2 id="bet-teams-heading" className="bet-detail-card-title">
+            Who delivers
+          </h2>
+          <fieldset className="bet-detail-teams">
+            <legend className="sr-only">Funded teams</legend>
+            {model.fundedTeams.map((team) => (
+              <label key={team.id} className="bet-detail-team">
+                <input
+                  type="checkbox"
+                  checked={draft.fundedTeamIds.includes(team.id)}
+                  onChange={() => toggleTeam(team.id)}
+                />
+                <span>{team.displayName}</span>
+              </label>
+            ))}
+          </fieldset>
+        </section>
+      </div>
+
+      {(formError || warning || savedFlash) && (
+        <div className="bet-detail-feedback" role="status">
+          {formError ? <p className="bet-detail-error">{formError}</p> : null}
+          {!formError && warning ? <p className="bet-detail-warning">{warning}</p> : null}
+          {!formError && savedFlash ? (
+            <p className="bet-detail-saved">Saved to this workspace session.</p>
+          ) : null}
+        </div>
+      )}
+
+      <div className="bet-detail-actions">
+        <Link href="/workspace/steering" className="btn-secondary" onClick={onBack}>
+          Back to steering
+        </Link>
+        <button type="button" className="btn-primary" onClick={onSave}>
+          Save
+        </button>
+      </div>
+    </section>
+  );
+}

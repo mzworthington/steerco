@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
-import type { SteerSpec } from '@steerlens/core';
+import { steerSpecSchema, type SteerSpec } from '@steerlens/core';
 
 export type WorkspaceSource = 'sample' | 'folder' | 'file';
 
@@ -34,10 +34,15 @@ function readStoredSession(): WorkspaceSessionState | null {
     ) {
       return null;
     }
+    const validated = steerSpecSchema.safeParse(record.spec);
+    if (!validated.success) {
+      sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
     return {
       label: record.label,
       source: record.source,
-      spec: record.spec as SteerSpec,
+      spec: validated.data,
     };
   } catch {
     return null;
@@ -50,8 +55,12 @@ export function WorkspaceSessionProvider({ children }: { children: ReactNode }) 
   );
 
   const setSession = useCallback((next: WorkspaceSessionState) => {
-    setSessionState(next);
-    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(next));
+    const validated = steerSpecSchema.safeParse(next.spec);
+    const normalized: WorkspaceSessionState = validated.success
+      ? { ...next, spec: validated.data }
+      : next;
+    setSessionState(normalized);
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(normalized));
   }, []);
 
   const clearSession = useCallback(() => {

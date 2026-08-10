@@ -58,34 +58,74 @@ spec:
   teams:
     - id: team_storefront
       displayName: Storefront experience
-      role: customer_facing
+      role: stream_aligned
       provenance: local
       externalRefs: []
+      members:
+        - id: mem_storefront_em
+          displayName: Priya Nair
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_storefront_ic
+          displayName: Jordan Blake
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_storefront_pm
+          displayName: Casey Morales
+          title: Product Manager
+          ftePercent: 50
     - id: team_catalog
       displayName: Catalog and discovery
-      role: customer_facing
+      role: stream_aligned
       provenance: local
       externalRefs: []
+      members:
+        - id: mem_catalog_em
+          displayName: Sam Okonkwo
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_catalog_ic
+          displayName: Riley Chen
+          title: Engineer
+          ftePercent: 100
     - id: team_fulfilil
       displayName: Fulfilment platform
-      role: shared_platform
+      role: platform
       provenance: local
       externalRefs: []
+      members:
+        - id: mem_fulfilil_tl
+          displayName: Alex Rivera
+          title: Platform Lead
+          ftePercent: 100
+        - id: mem_fulfilil_sre
+          displayName: Morgan Ellis
+          title: Site Reliability Engineer
+          ftePercent: 100
+        - id: mem_fulfilil_shared
+          displayName: Casey Morales
+          title: Product Manager
+          ftePercent: 50
     - id: team_enablement
       displayName: Ways of working
-      role: coaching_support
+      role: enabling
       provenance: local
       externalRefs: []
+      members:
+        - id: mem_enable_coach
+          displayName: Taylor Brooks
+          title: Delivery Coach
+          ftePercent: 100
   relationships:
     - fromTeamId: team_storefront
       toTeamId: team_fulfilil
-      mode: uses_as_service
+      mode: x_as_a_service
     - fromTeamId: team_catalog
       toTeamId: team_fulfilil
-      mode: uses_as_service
+      mode: x_as_a_service
     - fromTeamId: team_enablement
       toTeamId: team_storefront
-      mode: coaching
+      mode: facilitation
   decisionNotes:
     - id: dec_loyalty_stop
       betId: bet_loyalty

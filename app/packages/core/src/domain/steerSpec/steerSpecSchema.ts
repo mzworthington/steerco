@@ -1,4 +1,12 @@
 import { z } from 'zod';
+import {
+  INTERACTION_MODES,
+  TEAM_TOPOLOGY_TYPES,
+  normalizeInteractionMode,
+  normalizeTeamTopologyType,
+  type InteractionMode,
+  type TeamTopologyType,
+} from '../teamTopologies/vocabulary';
 
 const statusOutcomeSchema = z.enum(['on_track', 'at_risk', 'achieved', 'abandoned']);
 const statusBetSchema = z.enum([
@@ -9,9 +17,18 @@ const statusBetSchema = z.enum([
   'stopped',
   'done',
 ]);
-const teamRoleSchema = z.enum(['customer_facing', 'shared_platform', 'coaching_support']);
+
+const teamRoleSchema = z.preprocess(
+  (value) => (typeof value === 'string' ? normalizeTeamTopologyType(value) : value),
+  z.enum(TEAM_TOPOLOGY_TYPES),
+);
+
+const interactionModeSchema = z.preprocess(
+  (value) => (typeof value === 'string' ? normalizeInteractionMode(value) : value),
+  z.enum(INTERACTION_MODES),
+);
+
 const provenanceSchema = z.enum(['local', 'backstage', 'github', 'entra', 'catalog_file']);
-const interactionModeSchema = z.enum(['uses_as_service', 'works_together', 'coaching']);
 const recommendationSchema = z.enum(['start', 'continue', 'stop', 'rescope']);
 
 const metricSchema = z
@@ -56,13 +73,26 @@ const externalRefSchema = z
   })
   .strict();
 
+const teamMemberSchema = z
+  .object({
+    id: z.string().min(1),
+    displayName: z.string().min(1),
+    /** Job / craft title — not the Team Topologies team type. */
+    title: z.string().min(1),
+    /** Allocation to this team as a percentage of one FTE (0–100). */
+    ftePercent: z.number().min(0).max(100),
+  })
+  .strict();
+
 const teamSchema = z
   .object({
     id: z.string().min(1),
     displayName: z.string().min(1),
+    /** Team Topologies fundamental topology type. */
     role: teamRoleSchema,
     provenance: provenanceSchema,
     externalRefs: z.array(externalRefSchema).default([]),
+    members: z.array(teamMemberSchema).default([]),
   })
   .strict();
 
@@ -70,6 +100,7 @@ const relationshipSchema = z
   .object({
     fromTeamId: z.string().min(1),
     toTeamId: z.string().min(1),
+    /** Team Topologies interaction mode. */
     mode: interactionModeSchema,
   })
   .strict();
@@ -129,3 +160,7 @@ export const steerSpecSchema = z
   .strict();
 
 export type SteerSpec = z.infer<typeof steerSpecSchema>;
+export type TeamMember = z.infer<typeof teamMemberSchema>;
+export type TeamRole = TeamTopologyType;
+export type { InteractionMode, TeamTopologyType };
+export { TEAM_TOPOLOGY_TYPES as TEAM_ROLES, INTERACTION_MODES };
