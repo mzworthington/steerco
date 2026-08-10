@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SteerLens — Dial">
+  <rect width="512" height="512" rx="112" fill="#041c38" />
+  <g transform="translate(256 282.56) scale(1.04)">
+    <path fill="#f7f5f3" d="M -130.94 140.42 A 192 192 0 1 1 130.94 140.42 L 96.84 103.85 A 142 142 0 1 0 -96.84 103.85 Z M 36.27 -17.7 L 61.86 -113.06 L 34.04 -124.3 L -13.8 -37.93 Z M -44 0 A 44 44 0 1 1 44 0 A 44 44 0 1 1 -44 0 Z" />
+  </g>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="SteerLens">
+  <rect width="512" height="512" rx="112" fill="#041c38" />
+  <g transform="translate(256 288.81) scale(1.04)">
+    <path fill="#f7f5f3" d="M -142.68 128.47 A 192 192 0 1 1 142.68 128.47 L 87.69 78.96 A 118 118 0 1 0 -87.69 78.96 Z M 36.27 -17.7 L 55.86 -98.23 L 28.05 -109.46 L -13.8 -37.93 Z M -54 0 A 54 54 0 1 1 54 0 A 54 54 0 1 1 -54 0 Z" />
+  </g>
+</svg>

@@ -38,6 +38,10 @@ credentials.json
 # Local overrides
 *.local
 
+# Python (mockup/asset generators)
+__pycache__/
+*.pyc
+
 # OS
 .DS_Store
 Thumbs.db
