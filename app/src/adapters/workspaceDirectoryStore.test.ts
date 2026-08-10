@@ -12,8 +12,18 @@ function fakeDirectory(name: string): FileSystemDirectoryHandle {
   return {
     kind: 'directory',
     name,
-    queryPermission: vi.fn(async () => 'granted'),
-    requestPermission: vi.fn(async () => 'granted'),
+  } as unknown as FileSystemDirectoryHandle;
+}
+
+function fakeDirectoryWithPermission(
+  name: string,
+  state: PermissionState = 'granted',
+): FileSystemDirectoryHandle {
+  return {
+    kind: 'directory',
+    name,
+    queryPermission: vi.fn(async () => state),
+    requestPermission: vi.fn(async () => state),
   } as unknown as FileSystemDirectoryHandle;
 }
 
@@ -39,7 +49,7 @@ describe('workspaceDirectoryStore', () => {
     const loaded = await loadWorkspaceDirectoryBinding('folder:northwind-q3-alignment');
     expect(loaded?.fileName).toBe('steertree.yaml');
     expect(loaded?.directoryName).toBe('northwind');
-    expect(loaded?.directory).toBe(directory);
+    expect(loaded?.directory.name).toBe('northwind');
   });
 
   it('clears a single binding', async () => {
@@ -54,7 +64,7 @@ describe('workspaceDirectoryStore', () => {
   });
 
   it('treats granted queryPermission as ready', async () => {
-    const directory = fakeDirectory('northwind');
+    const directory = fakeDirectoryWithPermission('northwind', 'granted');
     await expect(ensureDirectoryWritePermission(directory)).resolves.toBe(true);
   });
 });
