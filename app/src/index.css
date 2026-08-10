@@ -1094,9 +1094,14 @@
     @apply border-ocean/30 bg-ocean text-white;
 
     .organisation-zone-purpose,
-    .organisation-zone-empty {
+    .organisation-zone-empty,
+    .organisation-zone-shape-hint {
       @apply text-white/80;
     }
+  }
+
+  .organisation-zone-heading {
+    @apply flex items-start gap-3;
   }
 
   .organisation-zone-title {
@@ -1111,6 +1116,10 @@
     @apply text-ink-muted mt-2 text-sm leading-relaxed;
   }
 
+  .organisation-zone-shape-hint {
+    @apply text-ink-muted mt-1 text-xs leading-relaxed;
+  }
+
   .organisation-zone-empty {
     @apply text-ink-muted mt-4 text-sm;
   }
@@ -1119,8 +1128,66 @@
     @apply mt-4 space-y-3;
   }
 
-  .organisation-team-card {
-    @apply border-line/60 rounded-lg border bg-white/90 px-3 py-2;
+  .organisation-capacity-intro {
+    @apply mt-8;
+  }
+
+  .organisation-capacity-lead {
+    @apply text-ink-muted text-sm leading-relaxed;
+  }
+
+  .organisation-shape-glyph {
+    @apply border-line bg-stone mt-0.5 inline-block shrink-0 border;
+  }
+
+  .organisation-shape-glyph--rounded_horizontal {
+    @apply h-3 w-7 rounded-full;
+  }
+
+  .organisation-shape-glyph--square_dotted {
+    @apply h-5 w-5 rounded-none border-dashed;
+  }
+
+  .organisation-shape-glyph--rounded_vertical {
+    @apply h-7 w-3 rounded-full;
+  }
+
+  .organisation-shape-glyph--octagon {
+    @apply h-5 w-5 border-0;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+  }
+
+  .organisation-zone-platform .organisation-shape-glyph {
+    @apply border-white/40 bg-white/20;
+  }
+
+  .organisation-team-shape {
+    @apply border-line bg-paper-soft/80 px-3 py-3 transition;
+  }
+
+  .organisation-team-shape--rounded_horizontal {
+    @apply rounded-2xl border;
+  }
+
+  .organisation-team-shape--square_dotted {
+    @apply rounded-none border-2 border-dashed;
+  }
+
+  .organisation-team-shape--rounded_vertical {
+    @apply rounded-[1.75rem] border px-3 py-4;
+  }
+
+  .organisation-team-shape--octagon {
+    @apply bg-amber/10 border-0 px-4 py-4;
+    clip-path: polygon(12% 0%, 88% 0%, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0% 88%, 0% 12%);
+  }
+
+  .organisation-team-shape--over {
+    @apply border-ocean bg-ocean-soft ring-ocean/30 ring-2;
+  }
+
+  .organisation-team-shape-header {
+    @apply flex items-start justify-between gap-3;
   }
 
   .organisation-team-name {
@@ -1131,20 +1198,89 @@
     @apply text-ink-muted mt-1 text-xs;
   }
 
-  .organisation-member-list {
-    @apply text-ink-muted mt-2 space-y-1 text-xs;
+  .organisation-team-add {
+    @apply text-ocean shrink-0 text-[0.7rem] font-semibold tracking-wide uppercase underline-offset-2 hover:underline;
   }
 
-  .organisation-member-row {
-    @apply flex items-start justify-between gap-2;
+  .organisation-team-drop-hint {
+    @apply text-ink-muted mt-3 text-xs leading-relaxed;
   }
 
-  .organisation-member-edit {
-    @apply text-ocean shrink-0 text-[0.65rem] font-semibold tracking-wide uppercase underline-offset-2 hover:underline;
+  .organisation-person-list {
+    @apply mt-3 space-y-2;
   }
 
-  .organisation-zone-platform .organisation-team-card {
-    @apply border-white/20 bg-white/10;
+  .organisation-person-chip {
+    @apply border-line flex items-stretch overflow-hidden rounded-xl border bg-white shadow-[0_1px_2px_rgb(4_28_56_/_0.04)];
+  }
+
+  .organisation-person-chip--selected {
+    @apply border-ocean ring-ocean/20 ring-2;
+  }
+
+  .organisation-person-chip--overlay {
+    @apply shadow-lg;
+  }
+
+  .organisation-person-chip-main {
+    @apply flex min-w-0 flex-1 items-center gap-2 px-2.5 py-2 text-left;
+  }
+
+  .organisation-person-avatar {
+    @apply bg-ocean-soft text-ocean inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold;
+  }
+
+  .organisation-person-copy {
+    @apply flex min-w-0 flex-col;
+  }
+
+  .organisation-person-name {
+    @apply text-ink truncate text-sm font-semibold;
+  }
+
+  .organisation-person-meta {
+    @apply text-ink-muted truncate text-[0.7rem];
+  }
+
+  .organisation-person-drag {
+    @apply text-ink-muted hover:bg-stone hover:text-ink border-line border-l px-2 text-xs tracking-tighter;
+    cursor: grab;
+  }
+
+  .organisation-person-drag:active {
+    cursor: grabbing;
+  }
+
+  .organisation-quick-add {
+    @apply border-line mt-3 space-y-3 rounded-xl border border-dashed bg-white px-3 py-3;
+  }
+
+  .organisation-quick-add-row {
+    @apply grid grid-cols-2 gap-3;
+  }
+
+  .organisation-allocation-editor {
+    @apply border-line mt-8 space-y-4 rounded-xl border bg-white px-5 py-5 shadow-[0_1px_2px_rgb(4_28_56_/_0.04)];
+  }
+
+  .organisation-allocation-editor-header {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .organisation-allocation-grid {
+    @apply grid gap-4 sm:grid-cols-2;
+  }
+
+  .organisation-field-span {
+    @apply sm:col-span-2;
+  }
+
+  .organisation-zone-platform .organisation-team-shape {
+    @apply border-white/25 bg-white/10;
+  }
+
+  .organisation-zone-platform .organisation-team-shape--square_dotted {
+    @apply border-white/50;
   }
 
   .organisation-zone-platform .organisation-team-name {
@@ -1152,12 +1288,20 @@
   }
 
   .organisation-zone-platform .organisation-team-capacity,
-  .organisation-zone-platform .organisation-member-list {
+  .organisation-zone-platform .organisation-team-drop-hint {
     @apply text-white/75;
   }
 
-  .organisation-zone-platform .organisation-member-edit {
-    @apply text-white underline-offset-2;
+  .organisation-zone-platform .organisation-team-add {
+    @apply text-white;
+  }
+
+  .organisation-zone-platform .organisation-person-chip {
+    @apply border-white/15 bg-white/95;
+  }
+
+  .organisation-zone-platform .organisation-quick-add {
+    @apply border-white/30 bg-white/10;
   }
 
   .organisation-relationships {
@@ -1176,8 +1320,32 @@
     }
   }
 
+  .organisation-relationship-row {
+    @apply flex items-center gap-3;
+  }
+
   .organisation-relationship-mode {
     @apply text-ocean text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-mode-glyph {
+    @apply border-line bg-stone inline-block shrink-0 border;
+  }
+
+  .organisation-mode-glyph--triangle {
+    @apply h-0 w-0 border-none bg-transparent;
+    border-left: 0.45rem solid transparent;
+    border-right: 0.45rem solid transparent;
+    border-bottom: 0.75rem solid var(--color-ocean, #0b5fff);
+  }
+
+  .organisation-mode-glyph--parallelogram {
+    @apply bg-ocean/70 h-3 w-4 border-0;
+    transform: skewX(-20deg);
+  }
+
+  .organisation-mode-glyph--circle {
+    @apply bg-ocean/70 h-3.5 w-3.5 rounded-full border-0;
   }
 
   .organisation-forms {

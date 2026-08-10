@@ -7,6 +7,7 @@ import {
   applyAddOrganisationMember,
   applyAddOrganisationRelationship,
   applyAddOrganisationTeam,
+  applyMoveOrganisationMember,
   applyUpdateOrganisationMember,
   presentOrganisation,
 } from './presentOrganisation';
@@ -25,7 +26,7 @@ describe('presentOrganisation', () => {
 
     const model = presentOrganisation(opened.value);
     expect(model.empty).toBe(false);
-    expect(model.teachingLine).toMatch(/four team types/i);
+    expect(model.teachingLine).toMatch(/four team topologies shapes/i);
     expect(model.zones.map((zone) => zone.role)).toEqual([
       'stream_aligned',
       'platform',
@@ -36,15 +37,21 @@ describe('presentOrganisation', () => {
       'Storefront experience',
       'Catalog and discovery',
     ]);
-    expect(model.zones[0]?.teams[0]?.capacityLabel).toMatch(/3 members/i);
+    expect(model.zones[0]?.shape).toBe('rounded_horizontal');
+    expect(model.zones[1]?.shape).toBe('square_dotted');
+    expect(model.zones[0]?.teams[0]?.capacityLabel).toMatch(/3 people/i);
     expect(model.zones[0]?.teams[0]?.members[0]).toMatchObject({
       discipline: 'leadership',
       disciplineLabel: 'Leadership',
       title: 'Engineering Manager',
+      initials: 'PN',
     });
     expect(model.zones[0]?.teams[0]?.fteTotal).toBe(2.5);
     expect(model.relationships.some((item) => /uses as a service/i.test(item.sentence))).toBe(true);
     expect(model.relationships.some((item) => item.modeLabel === 'X-as-a-Service')).toBe(true);
+    expect(model.relationships.find((item) => item.mode === 'x_as_a_service')?.shape).toBe(
+      'triangle',
+    );
     expect(model.overloadBanner).toBeNull();
     const facilitation = model.relationships.find((item) => item.mode === 'facilitation');
     expect(facilitation?.expectedUntil).toBe('2026-12-31');
@@ -199,6 +206,44 @@ describe('applyAddOrganisationMember', () => {
       title: 'Backend Engineer',
       ftePercent: 80,
       discipline: 'engineering',
+    });
+    expect(applied.ok).toBe(false);
+  });
+});
+
+describe('applyMoveOrganisationMember', () => {
+  it('moves a person from one team shape to another', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyMoveOrganisationMember(opened.value, {
+      memberId: 'mem_storefront_pm',
+      fromTeamId: 'team_storefront',
+      toTeamId: 'team_catalog',
+      ftePercent: 40,
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+
+    const storefront = applied.value.spec.teams.find((team) => team.id === 'team_storefront');
+    const catalog = applied.value.spec.teams.find((team) => team.id === 'team_catalog');
+    expect(storefront?.members?.some((member) => member.id === 'mem_storefront_pm')).toBe(false);
+    expect(catalog?.members?.find((member) => member.id === 'mem_storefront_pm')).toMatchObject({
+      displayName: 'Casey Morales',
+      ftePercent: 40,
+    });
+  });
+
+  it('rejects moving a person who is not on the source team', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyMoveOrganisationMember(opened.value, {
+      memberId: 'mem_storefront_pm',
+      fromTeamId: 'team_catalog',
+      toTeamId: 'team_fulfilil',
     });
     expect(applied.ok).toBe(false);
   });
