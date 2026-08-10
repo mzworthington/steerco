@@ -120,7 +120,7 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 | `stream_bet_wip`            | Stream-aligned team funded on too many active bets                                                        | 1.5   |
 | `enabling_owns_delivery`    | Enabling team listed as sole long-term delivery owner                                                     | 1.5   |
 
-Planned additive fields (Slice 1.5 / 3): bet MoS links, review horizon, funding stance, relationship `expectedUntil`, `groupings[]`, optional `initiatives[]`. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md).
+Planned additive fields (Slice 1.5 / 3): bet MoS links, review horizon, funding stance, relationship `expectedUntil` / effective windows, member capacity windows, optional `topologyEvents[]` ([F13](./prds/F13-topology-timeline.md)), `groupings[]`, optional `initiatives[]`. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md).
 
 ## Mapping to foreign shapes (later)
 

@@ -1,0 +1,88 @@
+import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { openWorkspaceFromYaml } from './openWorkspace';
+import {
+  applyDecisionNoteDraft,
+  draftFromDecisionNote,
+  presentDecisionNotes,
+  validateDecisionNoteDraft,
+} from './presentDecisionNotes';
+
+const fixtureDir = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../../packages/core/fixtures',
+);
+const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
+
+describe('presentDecisionNotes', () => {
+  it('presents the sample stop note with MoS helper suggestions', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const model = presentDecisionNotes(opened.value);
+    expect(model.helperMeasured).toMatch(/measures of success/i);
+    expect(model.mosSuggestions.some((item) => /promise hit rate/i.test(item))).toBe(true);
+    expect(model.notes).toHaveLength(1);
+    expect(model.notes[0]?.recommendationLabel).toBe('Stop');
+    expect(model.notes[0]?.title).toMatch(/loyalty ledger/i);
+    expect(model.notes[0]?.betTitle).toBe('Loyalty ledger unification');
+    expect(model.notes[0]?.affectedTeams).toEqual(
+      expect.arrayContaining(['Fulfilment platform', 'Storefront experience']),
+    );
+  });
+});
+
+describe('validateDecisionNoteDraft', () => {
+  it('requires title, why, and next step', () => {
+    const result = validateDecisionNoteDraft(draftFromDecisionNote(null));
+    expect(result.ok).toBe(false);
+  });
+});
+
+describe('applyDecisionNoteDraft', () => {
+  it('updates the loyalty stop note measured lines', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const existing = opened.value.spec.decisionNotes[0];
+    expect(existing).toBeTruthy();
+    if (!existing) return;
+
+    const draft = draftFromDecisionNote(existing);
+    draft.measuredText = 'Promise hit rate unchanged\nShared-service wait time still elevated';
+    const applied = applyDecisionNoteDraft(opened.value, draft);
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    expect(applied.value.spec.decisionNotes[0]?.measured).toEqual([
+      'Promise hit rate unchanged',
+      'Shared-service wait time still elevated',
+    ]);
+  });
+
+  it('creates a new continue note', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyDecisionNoteDraft(opened.value, {
+      id: null,
+      title: 'Continue same-day pickup reliability',
+      recommendation: 'continue',
+      betId: 'bet_pickup',
+      why: 'Hit rate is climbing and kill criteria have not been met.',
+      measuredText: 'Promise hit rate 91%, climbing toward 95%',
+      affectedTeamIds: ['team_storefront', 'team_catalog'],
+      nextStep: 'Keep funding for one more quarter; review at Q4 steering.',
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    expect(applied.value.spec.decisionNotes).toHaveLength(2);
+    expect(
+      applied.value.spec.decisionNotes.some((note) => note.recommendation === 'continue'),
+    ).toBe(true);
+  });
+});

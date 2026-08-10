@@ -24,6 +24,8 @@ describe('presentSteeringOverview', () => {
     expect(model.vision).toMatch(/customer promises/i);
     expect(model.alignmentSummary).toBe('Three bets funded. One recommended to stop.');
     expect(model.statusCounts).toEqual({ onTrack: 1, atRisk: 1, stop: 1 });
+    expect(model.decisionNotesSummary).toMatch(/stop recommendation/i);
+    expect(model.decisionNotes[0]?.title).toMatch(/loyalty ledger/i);
 
     const bets = model.outcomes.flatMap((outcome) => outcome.bets);
     expect(bets).toHaveLength(3);

@@ -23,6 +23,8 @@ export type SteeringOverviewModel = {
   vision: string;
   alignmentSummary: string;
   mismatchSummary: string | null;
+  decisionNotesSummary: string | null;
+  decisionNotes: Array<{ id: string; title: string; recommendationLabel: string }>;
   outcomes: SteeringOutcomeGroup[];
   statusCounts: {
     onTrack: number;
@@ -63,12 +65,20 @@ export function presentSteeringOverview(
       }),
   }));
 
+  const decisionNotes = spec.spec.decisionNotes.map((note) => ({
+    id: note.id,
+    title: note.title,
+    recommendationLabel: recommendationLabel(note.recommendation),
+  }));
+
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     periodLabel: options?.periodLabel ?? 'Local workspace',
     vision: spec.spec.vision,
     alignmentSummary: buildAlignmentSummary(bets.length, statusCounts.stop),
     mismatchSummary: buildMismatchSummary(statusCounts),
+    decisionNotesSummary: buildDecisionNotesSummary(decisionNotes),
+    decisionNotes,
     outcomes,
     statusCounts,
   };
@@ -101,6 +111,37 @@ function buildAlignmentSummary(betCount: number, stopCount: number): string {
   const stopLabel =
     stopCount === 1 ? 'One recommended to stop' : `${spellCount(stopCount)} recommended to stop`;
   return `${betsLabel}. ${stopLabel}.`;
+}
+
+function buildDecisionNotesSummary(notes: Array<{ recommendationLabel: string }>): string | null {
+  if (notes.length === 0) return null;
+  const stops = notes.filter((note) => note.recommendationLabel === 'Stop').length;
+  if (stops === 0) {
+    return notes.length === 1
+      ? 'One decision note ready.'
+      : `${notes.length} decision notes ready.`;
+  }
+  if (stops === notes.length) {
+    return stops === 1
+      ? 'One stop recommendation ready for the board.'
+      : `${stops} stop recommendations ready for the board.`;
+  }
+  return `${notes.length} decision notes · ${stops} recommend stop.`;
+}
+
+function recommendationLabel(
+  recommendation: SteerSpec['spec']['decisionNotes'][number]['recommendation'],
+): string {
+  switch (recommendation) {
+    case 'start':
+      return 'Start';
+    case 'continue':
+      return 'Continue';
+    case 'stop':
+      return 'Stop';
+    case 'rescope':
+      return 'Re-scope';
+  }
 }
 
 function buildMismatchSummary(counts: SteeringOverviewModel['statusCounts']): string | null {

@@ -29,7 +29,6 @@ const NAV = [
     href: '/workspace/export',
     label: 'Export',
     match: (path: string) => path.startsWith('/workspace/export'),
-    disabled: true,
   },
 ] as const;
 

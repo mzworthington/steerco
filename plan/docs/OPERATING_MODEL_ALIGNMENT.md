@@ -314,6 +314,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 6. Soft “one primary bet per stream team” mismatch
 7. Optional cognitive-load proxy strip on org view
 8. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
+9. Topology timeline: capacity deltas + relationship spans over time ([F13](./prds/F13-topology-timeline.md))
 
 ---
 
@@ -327,7 +328,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] Document TT mapping in glossary (roles ↔ types; modes ↔ interactions; platform grouping note)
 - [x] Commit Slice 1 operating-model bar + Slice 1.5/3 in [ROADMAP.md](./ROADMAP.md); amend PRDs F02–F08, F12
 - [x] MoS framing on outcomes page; bet detail shows related outcome MoS as context
-- [ ] Decision note helper copy prefers MoS / evidence language
+- [x] Decision note helper copy prefers MoS / evidence language
 - [x] F03 / steering copy: cognitive load, fast flow, platform reduces load; overload banner wording
 - [ ] Elevate stop-ready in steering alignment summary
 - [ ] Board pack outline: Invest / Work / Adapt sections ([F08](./prds/F08-export-board-pack.md))
@@ -342,6 +343,8 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [ ] `bets[].fundingStance`: `explore` \| `exploit` \| `sustain`
 - [ ] `bets[].kind`: `opportunity` \| `capability` (optional)
 - [ ] `relationships[].expectedUntil` (collaboration / facilitation time-box)
+- [ ] Member / relationship `effectiveFrom`–`effectiveUntil` windows (capacity + interaction history toward [F13](./prds/F13-topology-timeline.md))
+- [ ] Optional `topologyEvents[]` ledger (capacity up/down, relationship added/ended/mode-changed)
 - [ ] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery` (names TBD)
 - [ ] Decision notes prefer structured MoS refs in `measured` (keep free text)
 - [ ] Member edit UX on organisation page
@@ -352,6 +355,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [ ] Optional `initiatives[]` under bets
 - [ ] WIP / rank UI for value-based prioritization
 - [ ] Fractal zoom on org view (grouping → members)
+- [ ] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** — capacity deltas + relationship spans; as-of scrubber
 - [ ] Capability vs opportunity portfolio mix hint
 - [ ] ArchLens `systemRefs` on bets stay optional (suite link, not TT)
 - [ ] Narrative tie-in: AI gains without topology redesign stall in bottlenecks (press / docs only until evidence exists)
@@ -360,19 +364,21 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ## Part D — SteerSpec vocabulary bridge
 
-| SteerSpec (exec)             | EDGE                        | Team Topologies                               |
-| ---------------------------- | --------------------------- | --------------------------------------------- |
-| `metadata` / workspace title | Portfolio / steering period | Intent for this period                        |
-| `spec.vision`                | Vision                      | Purpose / direction                           |
-| `outcomes` + `metrics`       | Goals + Measures of Success | Value definition that flow should serve       |
-| `bets`                       | Bets                        | Funded work streams for stream/platform teams |
-| `initiatives` (future)       | Initiatives                 | Thin slices (not backlog items)               |
-| `teams` + `role`             | Delivery capacity           | Team types (incl. complicated subsystem)      |
-| `groupings` (future)         | —                           | Platform / value-stream groupings (fractal)   |
-| `relationships` + `mode`     | How we work                 | Interaction modes                             |
-| `decisionNotes`              | Lightweight governance      | Response to flow/load signals                 |
-| `evidence`                   | Feedback for adapt          | Learning that changes funding or shape        |
-| Mismatches                   | Portfolio smells            | Cognitive-load / interaction smells           |
+| SteerSpec (exec)                     | EDGE                        | Team Topologies                               |
+| ------------------------------------ | --------------------------- | --------------------------------------------- |
+| `metadata` / workspace title         | Portfolio / steering period | Intent for this period                        |
+| `spec.vision`                        | Vision                      | Purpose / direction                           |
+| `outcomes` + `metrics`               | Goals + Measures of Success | Value definition that flow should serve       |
+| `bets`                               | Bets                        | Funded work streams for stream/platform teams |
+| `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
+| `teams` + `role`                     | Delivery capacity           | Team types (incl. complicated subsystem)      |
+| `groupings` (future)                 | —                           | Platform / value-stream groupings (fractal)   |
+| `relationships` + `mode`             | How we work                 | Interaction modes                             |
+| Capacity / topology windows (future) | Delivery capacity over time | Shape evolves; collaboration time-boxed       |
+| `topologyEvents` (future)            | What changed in the period  | Evidence for adapt / load response            |
+| `decisionNotes`                      | Lightweight governance      | Response to flow/load signals                 |
+| `evidence`                           | Feedback for adapt          | Learning that changes funding or shape        |
+| Mismatches                           | Portfolio smells            | Cognitive-load / interaction smells           |
 
 ---
 

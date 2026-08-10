@@ -42,13 +42,14 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 
 **Goal:** Encode EDGE incremental funding and Team Topologies 2e signals in the contract without becoming a PMO or HR tool.
 
-| Theme                | Commitments                                                                                                                                                                                                                                                                               |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **EDGE / LVT**       | Bet ↔ MoS link (`metricIds` / `primaryMetricId`); optional `reviewDate` / horizon; `fundingStance` (`explore` \| `exploit` \| `sustain`); optional `kind` (`opportunity` \| `capability`); soft WIP mismatch for stream teams                                                             |
-| **Team Topologies**  | Four types + three modes are canonical in v1alpha1; `relationships[].expectedUntil` for collaboration/facilitation; optional member edit UX; retarget + extend mismatches (`bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, …); platform as _grouping_ deferred to Slice 3 |
-| **Capacity**         | `teams[].members[]` with job title + `ftePercent` (schema landed); richer edit/mismatch cues                                                                                                                                                                                              |
-| **Governance**       | Decision notes prefer MoS ids in `measured`; steering “next review” from bet horizons                                                                                                                                                                                                     |
-| **Docs / Technical** | Glossary stays TT-first (stream-aligned, X-as-a-Service, facilitation, cognitive load) — may deepen with [F12](./prds/F12-technical-mode.md)                                                                                                                                              |
+| Theme                 | Commitments                                                                                                                                                                                                                                                                                                   |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **EDGE / LVT**        | Bet ↔ MoS link (`metricIds` / `primaryMetricId`); optional `reviewDate` / horizon; `fundingStance` (`explore` \| `exploit` \| `sustain`); optional `kind` (`opportunity` \| `capability`); soft WIP mismatch for stream teams                                                                                 |
+| **Team Topologies**   | Four types + three modes are canonical in v1alpha1; `relationships[].expectedUntil` / effective windows for collaboration/facilitation; optional member edit UX; retarget + extend mismatches (`bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, …); platform as _grouping_ deferred to Slice 3 |
+| **Capacity**          | `teams[].members[]` with job title + `ftePercent` (schema landed); richer edit/mismatch cues; **dated capacity windows** toward [F13](./prds/F13-topology-timeline.md)                                                                                                                                        |
+| **Topology timeline** | Additive temporal fields for member/relationship effective windows (+ optional `topologyEvents[]`); projection “as of” date (UI in Slice 3 — [F13](./prds/F13-topology-timeline.md))                                                                                                                          |
+| **Governance**        | Decision notes prefer MoS ids in `measured`; steering “next review” from bet horizons                                                                                                                                                                                                                         |
+| **Docs / Technical**  | Glossary stays TT-first (stream-aligned, X-as-a-Service, facilitation, cognitive load) — may deepen with [F12](./prds/F12-technical-mode.md)                                                                                                                                                                  |
 
 **PRD impact:** amend F02–F07 + [STEER_SPEC.md](./STEER_SPEC.md) / schema; new mismatch rules in `@steerlens/core`. Prefer additive fields + migrate helpers; bump `apiVersion` only if needed.
 
@@ -62,12 +63,13 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 - Write-back policy enforced (no provider Group YAML)
 - Technical mode surfaces ([F12](./prds/F12-technical-mode.md)) — includes EDGE/TT vocabulary bridge for staff+
 
-## Slice 3 - Portfolio suite links & topology groupings
+## Slice 3 - Portfolio suite links, topology groupings & timeline
 
 - Optional ArchLens `systemRefs` on bets
 - CI check action for SteerSpec mismatches (incl. Slice 1.5 codes)
 - Optional Backstage overlay `SteerBet` kind docs
 - **Team Topologies 2e:** `groupings[]` (`platform` \| `value_stream`) + fractal membership; org view zoom grouping → members
+- **Topology timeline ([F13](./prds/F13-topology-timeline.md)):** visualise capacity increases/decreases and relationship spans over time; scrub “as of” date to project org shape + mismatches
 - **EDGE:** optional `initiatives[]` under bets (thin narrative slices — never dual backlog)
 - Optional WIP / relative value rank UI; capability vs opportunity mix hint on steering
 
@@ -84,10 +86,11 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 
 ## Traceability
 
-| Framework theme                           | Primary slices                                                 |
-| ----------------------------------------- | -------------------------------------------------------------- |
-| EDGE LVT + MoS + incremental funding      | 1 (copy), 1.5 (schema), 3 (initiatives / rank)                 |
-| EDGE lightweight governance (start/stop)  | 1 (F07/F08), 1.5 (MoS-measured)                                |
-| Team Topologies types + interaction modes | 1 (F03), 1.5 (subsystem + time-box), 3 (groupings)             |
-| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches), 3 (fractal zoom)                   |
-| Full rationale                            | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) |
+| Framework theme                           | Primary slices                                                           |
+| ----------------------------------------- | ------------------------------------------------------------------------ |
+| EDGE LVT + MoS + incremental funding      | 1 (copy), 1.5 (schema), 3 (initiatives / rank)                           |
+| EDGE lightweight governance (start/stop)  | 1 (F07/F08), 1.5 (MoS-measured)                                          |
+| Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (groupings + F13 timeline) |
+| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (fractal zoom + timeline) |
+| Topology evolution over time              | 1.5 (schema), 3 ([F13](./prds/F13-topology-timeline.md) view)            |
+| Full rationale                            | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)           |
