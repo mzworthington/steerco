@@ -1,36 +1,34 @@
 # Quality
 
-The template ships a full local + CI quality toolchain, not “add Prettier later.”
+SteerLens keeps a full local + CI quality toolchain so regressions fail early.
 
-**In the box by name:**
+**Toolchain:**
 
 | Tool                             | Role                                                                                    |
 | -------------------------------- | --------------------------------------------------------------------------------------- |
 | **Prettier**                     | Opinionated formatting (incl. Tailwind class sorting via `prettier-plugin-tailwindcss`) |
-| **oxlint**                       | Fast lint for `src/`                                                                    |
-| **TypeScript**                   | Strict `tsc --noEmit` typecheck                                                         |
+| **oxlint**                       | Fast lint for `app/src` and `packages/core/src`                                         |
+| **TypeScript**                   | Strict `tsc --noEmit` for the SPA and `@steerlens/core`                                 |
 | **knip**                         | Unused files, exports, and dependencies (`app/knip.json`)                               |
-| **Vitest** + **Testing Library** | Unit / component tests                                                                  |
+| **Vitest** + **Testing Library** | Unit / component tests (app + core)                                                     |
 | **Husky**                        | Git hooks (`.husky/pre-commit`)                                                         |
 | **lint-staged**                  | Prettier on staged files before the full pre-commit suite                               |
 | **CodeQL**                       | GitHub security analysis for JS/TS                                                      |
 | **Lighthouse CI**                | Perf / a11y / SEO gates (`app/lighthouserc.cjs`)                                        |
-| **Playwright**                   | Docs/README screenshot capture (`pnpm record:docs-media`)                               |
-
-Quality is layered so problems fail early: on your laptop, on every PR, and on a weekly schedule for slower checks.
+| **Playwright**                   | Docs screenshot capture (`pnpm record:docs-media`)                                      |
 
 ## Local gates
 
 Run from `app/`:
 
-| Command                             | Tool                            | Catches                                     |
-| ----------------------------------- | ------------------------------- | ------------------------------------------- |
-| `pnpm format` / `pnpm format:check` | **Prettier**                    | Style drift across app, docs, and workflows |
-| `pnpm lint`                         | **oxlint**                      | Obvious bugs and smell in `src/`            |
-| `pnpm typecheck`                    | **TypeScript** (`tsc --noEmit`) | Type errors before runtime                  |
-| `pnpm knip`                         | **knip**                        | Unused files, exports, and dependencies     |
-| `pnpm test`                         | **Vitest** + Testing Library    | Unit / component regressions                |
-| `pnpm build`                        | `tsc` + Vite                    | Production bundle breaks                    |
+| Command                             | Tool                         | Catches                                     |
+| ----------------------------------- | ---------------------------- | ------------------------------------------- |
+| `pnpm format` / `pnpm format:check` | **Prettier**                 | Style drift across app, docs, and workflows |
+| `pnpm lint`                         | **oxlint**                   | Bugs and smell in app + core sources        |
+| `pnpm typecheck`                    | **TypeScript**               | Type errors before runtime                  |
+| `pnpm knip`                         | **knip**                     | Unused files, exports, and dependencies     |
+| `pnpm test`                         | **Vitest** + Testing Library | Unit / component regressions                |
+| `pnpm build`                        | `tsc` + Vite                 | Production bundle breaks                    |
 
 ```bash
 cd app
@@ -45,11 +43,11 @@ On relevant staged files (`app/`, `docs/`, or common source extensions), `.husky
 2. **`pnpm format:check`**: full Prettier scope (app + root docs / GitHub YAML)
 3. **`pnpm lint`** (**oxlint**) + **`pnpm typecheck`** (**TypeScript**) + **`pnpm knip`**
 
-So formatting, type, and unused-export breaks rarely wait for CI. **Vitest** still runs in CI on every PR (and you can run it locally anytime).
+**Vitest** still runs in CI on every PR (and locally anytime).
 
 ## CI (every PR / `main`)
 
-The **CI & Deployment** workflow runs the same local suite:
+The **CI & Deployment** workflow runs:
 
 `format:check` → `lint` → `typecheck` → **knip** → **test** → **build**
 
@@ -75,18 +73,6 @@ Weekly workflow uploads the report artifact; locally: `pnpm build && pnpm test:l
 
 ## Docs media (Playwright)
 
-**Playwright** (gated by `RECORD_DOCS_MEDIA=1`) captures README/docs screenshots via `pnpm record:docs-media`. The weekly **Refresh derived** workflow can regenerate them with the changelog.
-
-## Why this mix
-
-| Tool                                       | Job                                                  |
-| ------------------------------------------ | ---------------------------------------------------- |
-| **Prettier** + **oxlint** + **TypeScript** | Fast feedback while editing                          |
-| **knip**                                   | Keep the fork lean (dead code / deps)                |
-| **Vitest**                                 | Protect behavior you care about                      |
-| **Husky** + **lint-staged**                | Don’t wait for CI for the cheap checks               |
-| **CodeQL**                                 | Security signal without a separate SaaS              |
-| **Lighthouse CI**                          | Catch a11y/SEO/perf regressions after the UI settles |
-| **Playwright**                             | Keep README screenshots honest                       |
+**Playwright** (gated by `RECORD_DOCS_MEDIA=1`) captures docs screenshots via `pnpm record:docs-media`. The weekly **Refresh derived** workflow can regenerate them with the changelog.
 
 Next: [Workflows](/docs/workflows) · [Setup](/docs/setup) · [Tech stack](/docs/tech-stack)

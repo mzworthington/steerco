@@ -34,7 +34,7 @@ test.describe('docs media', () => {
   test('docs overview screenshot', async ({ page }) => {
     await page.goto('/docs?preview=1');
     await expect(page.getByTestId('docs')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /what's included/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /steerlens/i })).toBeVisible();
     await page.screenshot({
       path: path.join(outDir, 'docs-overview.png'),
       fullPage: true,

@@ -266,7 +266,7 @@ export function templateCloneSnippet(): string {{
   return SITE_CREATE_COMMAND;
 }}
 
-/** Short hosting teaser; full walkthrough lives in docs/custom-domains. */
+/** Short hosting teaser; secrets checklist lives in docs/cloudflare-secrets.md. */
 export function hostingBootstrapSnippet(): string {{
   return [
     'cp .env.example .env   # DOMAIN, PAGES_HOSTNAMES, BWS_* or token',

@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an improvement to the template
+description: Suggest an improvement to SteerLens
 labels: [enhancement]
 body:
   - type: textarea

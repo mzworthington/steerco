@@ -314,8 +314,32 @@
     @apply text-ink-muted mt-8 max-w-none text-base leading-relaxed;
   }
 
+  .docs-frontmatter {
+    @apply border-line mb-8 flex flex-wrap gap-x-8 gap-y-3 border-b pb-5;
+  }
+
+  .docs-frontmatter-item {
+    @apply flex min-w-[7rem] flex-col gap-0.5;
+  }
+
+  .docs-frontmatter dt {
+    @apply text-ink-muted text-[0.7rem] font-semibold tracking-[0.08em] uppercase;
+  }
+
+  .docs-frontmatter dd {
+    @apply text-ink m-0 text-[0.95rem] leading-snug;
+  }
+
+  .docs-frontmatter + :where(h1, h2, h3, h4) {
+    @apply mt-0;
+  }
+
   .prose-docs :where(h1, h2, h3, h4) {
     @apply font-display text-ink mt-10 mb-3 font-semibold tracking-tight first:mt-0;
+  }
+
+  .prose-docs h1 {
+    @apply text-3xl sm:text-4xl;
   }
 
   .prose-docs h2 {

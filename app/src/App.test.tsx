@@ -35,4 +35,18 @@ describe('App site gate', () => {
     expect(screen.queryByTestId('coming-soon')).toBeNull();
     expect(screen.getByTestId('home')).toBeTruthy();
   });
+
+  it('redirects /docs/design-system to /design-system when unlocked', () => {
+    window.history.replaceState({}, '', '/docs/design-system?preview=1');
+    render(<App />);
+    expect(screen.getByTestId('design-system')).toBeTruthy();
+    expect(window.location.pathname).toBe('/design-system');
+  });
+
+  it('routes nested ADR docs paths to DocsPage when unlocked', () => {
+    window.history.replaceState({}, '', '/docs/adrs/0005-provider-teams-reference-only?preview=1');
+    render(<App />);
+    expect(screen.getByTestId('docs')).toBeTruthy();
+    expect(screen.queryByText(/not found/i)).toBeNull();
+  });
 });

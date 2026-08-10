@@ -8,18 +8,20 @@
 ## Quick start
 
 ```bash
-# Greenfield: prompts for name/slug, creates the repo, brands it
-curl -fsSL https://raw.githubusercontent.com/mzworthington/react-cloudflare-template/main/scripts/create.sh | bash
-
-# Already cloned from “Use this template”:
-bin/init-project.sh   # prompts; or --name / --slug / --origin
+git clone https://github.com/mzworthington/steerlens.git
+cd steerlens
 bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Coming Soon** splash; append `?preview=1` to unlock the site (remembered for the browser tab via `sessionStorage`).
+Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Coming Soon** splash; append `?preview=1` to unlock the full site (remembered for the tab via `sessionStorage`).
 
-App sources and the pnpm workspace live under `app/`. Repo docs stay in `docs/` and are imported by the in-app viewer. Product identity lives in `app/src/siteConfig.ts` (written by `bin/init-project.sh`).
+| Path                    | Role                                                        |
+| ----------------------- | ----------------------------------------------------------- |
+| `app/`                  | pnpm workspace — SPA (`@steerlens/app`) + `@steerlens/core` |
+| `docs/`                 | Product & ops Markdown (rendered at `/docs`)                |
+| `plan/`                 | Product specs, PRDs, SteerSpec schema/sample, mockups       |
+| `app/src/siteConfig.ts` | Public name, origin, and SEO copy                           |
 
 ## Quality checks
 
@@ -29,27 +31,26 @@ Named tools (see [Quality](./quality.md)): **Prettier**, **oxlint**, **TypeScrip
 cd app
 pnpm format:check   # Prettier
 pnpm lint           # oxlint
-pnpm typecheck      # TypeScript
+pnpm typecheck      # TypeScript (app + core)
 pnpm knip           # unused code / deps
-pnpm test           # Vitest
+pnpm test           # Vitest (app + core)
 pnpm build          # production build
 ```
 
-**Pre-commit:** Husky runs lint-staged (Prettier), then format:check, oxlint, and typecheck on staged `app/` / `docs/` changes. After a UI change, optionally:
+**Pre-commit:** Husky runs lint-staged (Prettier), then format:check, oxlint, typecheck, and knip on staged `app/` / `docs/` changes. After a UI change, optionally:
 
 ```bash
 cd app
 pnpm build && pnpm test:lighthouse
-pnpm record:docs-media   # Playwright screenshots for the README
+pnpm record:docs-media   # Playwright screenshots for docs
 ```
 
 ## Cloudflare hosting
 
 1. Create a Cloudflare API token (Pages Edit + Zone DNS Edit if using a custom domain).
-2. Follow **[Custom domains](./custom-domains.md)** for hostname layouts (subdomains on an existing zone), `.env`, bootstrap, and verify steps.
-3. Secrets/var names: [cloudflare-secrets.md](./cloudflare-secrets.md).
-4. Apply infra: `cd infra/cloudflare && pulumi up` (or merge to `main` for CI).
-5. Push to `main`; CI builds and runs `wrangler pages deploy`.
+2. Bootstrap secrets/vars and hostname layout: [cloudflare-secrets.md](./cloudflare-secrets.md).
+3. Apply infra: `cd infra/cloudflare && pulumi up` (or merge to `main` for CI).
+4. Push to `main`; CI builds and runs `wrangler pages deploy`.
 
 Without a custom domain, the site is available at `https://<PAGES_PROJECT_NAME>.pages.dev` after the first deploy.
 

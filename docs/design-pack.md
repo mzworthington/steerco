@@ -25,4 +25,4 @@ After changing mark SVGs, regenerate rasters:
 bin/sync-design-pack.sh   # requires librsvg: brew install librsvg
 ```
 
-Tokens and named recipes: [Design system](/docs/design-system); live swatches: [`/design-system`](/design-system). Keep SVG fills and CSS variables in `app/src/index.css` aligned when the palette shifts.
+Tokens, recipes, and live swatches: [`/design-system`](/design-system). Keep SVG fills and CSS variables in `app/src/index.css` aligned when the palette shifts.

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Route, Switch } from 'wouter';
+import { Redirect, Route, Switch } from 'wouter';
 import { BrandMark } from './components/BrandMark';
 import { SiteFooter } from './components/SiteFooter';
 import { SITE_NAME } from './siteConfig';
@@ -47,12 +47,15 @@ export function App() {
         <Switch>
           <Route path="/" component={HomePage} />
           <Route path="/design-system" component={DesignSystemPage} />
-          <Route path="/docs/:slug*" component={DocsPage} />
+          <Route path="/docs/design-system">
+            <Redirect to="/design-system" />
+          </Route>
+          <Route path="/docs/*" component={DocsPage} />
           <Route path="/docs" component={DocsPage} />
           <Route>
             <section className="not-found">
               <h1>Not found</h1>
-              <p>That page is not part of this starter.</p>
+              <p>That page is not part of SteerLens.</p>
               <a href="/" className="btn-secondary mt-6">
                 ← Back home
               </a>

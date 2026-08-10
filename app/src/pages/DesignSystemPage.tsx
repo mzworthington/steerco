@@ -339,9 +339,9 @@ function ComponentsPanel() {
           <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             .prose-docs
           </code>
-          . Written guide:{' '}
-          <a href="/docs/design-system" className="text-ocean hover:text-ocean-hover font-semibold">
-            Design system docs →
+          . Vector sources:{' '}
+          <a href="/docs/design-pack" className="text-ocean hover:text-ocean-hover font-semibold">
+            Design pack →
           </a>
         </p>
       </section>

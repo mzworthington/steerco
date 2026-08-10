@@ -37,13 +37,13 @@
 
 Pure TypeScript + Zod. No React, no `fetch`, no filesystem.
 
-| Module | Responsibility |
-|--------|----------------|
-| `steerSpec` | Schema, parse, serialize, migrate |
+| Module       | Responsibility                                                                 |
+| ------------ | ------------------------------------------------------------------------------ |
+| `steerSpec`  | Schema, parse, serialize, migrate                                              |
 | `mismatches` | Rules: unfunded topology, overloaded platform, bet without kill criteria, etc. |
-| `decisions` | Decision note model + invariants |
-| `topology` | Team nodes, interaction modes, display labels |
-| `evidence` | Metric attachments (opaque values in Slice 1) |
+| `decisions`  | Decision note model + invariants                                               |
+| `topology`   | Team nodes, interaction modes, display labels                                  |
+| `evidence`   | Metric attachments (opaque values in Slice 1)                                  |
 
 **Invariants (examples):**
 
@@ -69,22 +69,22 @@ Orchestrate use cases; still framework-agnostic:
 
 ### Slice 1
 
-| Adapter | Port |
-|---------|------|
-| `FileSystemWorkspaceRepo` | Load/save `steertree.yaml` via File System Access API |
-| `LegacyDownloadUploadRepo` | Fallback for browsers without FS Access |
-| `PrintBoardPackExporter` | `window.print` / print CSS |
-| `SampleWorkspaceLoader` | Bundled sample YAML |
+| Adapter                    | Port                                                  |
+| -------------------------- | ----------------------------------------------------- |
+| `FileSystemWorkspaceRepo`  | Load/save `steertree.yaml` via File System Access API |
+| `LegacyDownloadUploadRepo` | Fallback for browsers without FS Access               |
+| `PrintBoardPackExporter`   | `window.print` / print CSS                            |
+| `SampleWorkspaceLoader`    | Bundled sample YAML                                   |
 
 ### Slice 2+
 
-| Adapter | Policy |
-|---------|--------|
-| `BackstageCatalogClient` | Read Groups/Users; detect provider annotations |
+| Adapter                  | Policy                                                                     |
+| ------------------------ | -------------------------------------------------------------------------- |
+| `BackstageCatalogClient` | Read Groups/Users; detect provider annotations                             |
 | `BackstageOverlayWriter` | Emit `SteerBet` / overlay YAML only - **no Group YAML** if provider-backed |
-| `GitHubTeamsClient` | Resolve team refs; optional delivery metrics |
-| `EntraGraphClient` | Resolve group refs - propose-only changes |
-| `ArchLensLink` | Optional system entityRef on bets |
+| `GitHubTeamsClient`      | Resolve team refs; optional delivery metrics                               |
+| `EntraGraphClient`       | Resolve group refs - propose-only changes                                  |
+| `ArchLensLink`           | Optional system entityRef on bets                                          |
 
 ## 6. Write-back policy engine
 
@@ -108,11 +108,11 @@ ELSE
 
 ## 8. Security architecture (evolution)
 
-| Slice | Posture |
-|-------|---------|
-| 1 | Air-gapped capable; user-controlled files only |
-| 2 | Tokens in browser memory / OS keychain patterns; never commit secrets to SteerSpec |
-| 3 | Optional Worker proxy for secret-bearing Graph calls if browser-only proves insufficient |
+| Slice | Posture                                                                                  |
+| ----- | ---------------------------------------------------------------------------------------- |
+| 1     | Air-gapped capable; user-controlled files only                                           |
+| 2     | Tokens in browser memory / OS keychain patterns; never commit secrets to SteerSpec       |
+| 3     | Optional Worker proxy for secret-bearing Graph calls if browser-only proves insufficient |
 
 ## 9. Integration with ArchLens (data only)
 

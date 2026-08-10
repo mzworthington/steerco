@@ -1,16 +1,12 @@
 import { useEffect } from 'react';
 import {
-  SITE_CREATE_COMMAND,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_ORIGIN,
   SITE_REPO_URL,
   SITE_SLUG,
   SITE_TAGLINE,
-  hostingBootstrapSnippet,
 } from '../siteConfig';
-
-const HOSTING_SNIPPET = hostingBootstrapSnippet();
 
 export function HomePage() {
   useEffect(() => {
@@ -29,30 +25,17 @@ export function HomePage() {
       <div className="hero-inner">
         <h1 className="hero-brand">{SITE_NAME}</h1>
         <p className="hero-lead">{SITE_TAGLINE}</p>
+        <p className="hero-supporting text-ink-muted mx-auto mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
+          Align outcomes, funded bets, and team shape in a local workspace — then leave with a
+          decision note fit for a board pack.
+        </p>
         <div className="hero-actions">
           <a href="/docs" className="btn-primary">
-            What's included
+            Read the docs
           </a>
           <a href={SITE_REPO_URL} className="btn-secondary" target="_blank" rel="noreferrer">
             View on GitHub →
           </a>
-        </div>
-        <div className="hero-snippets">
-          <div className="hero-snippet" data-testid="template-snippet">
-            <p className="hero-snippet-label">Use this template</p>
-            <pre>
-              <code>{SITE_CREATE_COMMAND}</code>
-            </pre>
-          </div>
-          <div className="hero-snippet" data-testid="hosting-snippet">
-            <p className="hero-snippet-label">Host on Cloudflare</p>
-            <pre>
-              <code>{HOSTING_SNIPPET}</code>
-            </pre>
-            <p className="hero-snippet-hint">
-              <a href="/docs/custom-domains">Custom domains &amp; secrets →</a>
-            </p>
-          </div>
         </div>
       </div>
     </section>
