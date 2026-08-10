@@ -1,8 +1,8 @@
 # Cloudflare hosting: secrets checklist
 
-Companion to **[Custom domains](./custom-domains.md)**. Shared CI/bootstrap tooling lives in [edge-dns](https://github.com/mzworthington/edge-dns) ([reusable Cloudflare CI](https://github.com/mzworthington/edge-dns/blob/main/docs/reusable-cloudflare-ci.md)). This repo keeps thin shims only.
+Shared CI/bootstrap tooling lives in [edge-dns](https://github.com/mzworthington/edge-dns) ([reusable Cloudflare CI](https://github.com/mzworthington/edge-dns/blob/main/docs/reusable-cloudflare-ci.md)). This repo keeps thin shims only.
 
-Real account IDs, zone IDs, API tokens, and hostnames belong in **Bitwarden**, **GitHub Actions secrets/vars**, or a local `.env` — never in committed template sources.
+Real account IDs, zone IDs, API tokens, and hostnames belong in **Bitwarden**, **GitHub Actions secrets/vars**, or a local `.env` — never in committed sources.
 
 ## Bootstrap
 

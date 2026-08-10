@@ -10,45 +10,45 @@ Engineering Directors and executive sponsors must align **outcomes**, **funded b
 
 ## 2. Product thesis
 
-SteerLens is an **interactive board pack**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, export decision notes. It reads and later writes *around* existing systems of record; it does not become one.
+SteerLens is an **interactive board pack**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, export decision notes. It reads and later writes _around_ existing systems of record; it does not become one.
 
 ## 3. Target users
 
-| Persona | Need |
-|---------|------|
+| Persona                                 | Need                                                             |
+| --------------------------------------- | ---------------------------------------------------------------- |
 | Engineering Director / Head of Platform | Align bets to topology; decide start/stop/continue with evidence |
-| CPO / CTO / transformation sponsor | Readable steering view; decision notes without tooling jargon |
-| Staff+/principal (secondary) | Technical mode: refs, imports, overlays, CI validation |
-| Platform engineer (later) | Connect Catalog API; enforce write-back policy |
+| CPO / CTO / transformation sponsor      | Readable steering view; decision notes without tooling jargon    |
+| Staff+/principal (secondary)            | Technical mode: refs, imports, overlays, CI validation           |
+| Platform engineer (later)               | Connect Catalog API; enforce write-back policy                   |
 
 **Non-users (default):** squad members planning sprints - they stay in Jira.
 
 ## 4. Bounded contexts
 
-| Context | Responsibility |
-|---------|----------------|
-| **Investment alignment** | Outcomes, bets, kill criteria, decision notes |
-| **Topology intent** | How teams relate for delivery (not HR reporting lines) |
-| **Evidence** | Leading indicators attached to outcomes/bets (sample in Slice 1; live later) |
-| **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage |
-| **Work execution** (external) | Jira - link/annotate later, never dual backlog |
-| **System architecture** (external) | ArchLens - optional bet → system refs later |
+| Context                            | Responsibility                                                               |
+| ---------------------------------- | ---------------------------------------------------------------------------- |
+| **Investment alignment**           | Outcomes, bets, kill criteria, decision notes                                |
+| **Topology intent**                | How teams relate for delivery (not HR reporting lines)                       |
+| **Evidence**                       | Leading indicators attached to outcomes/bets (sample in Slice 1; live later) |
+| **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                    |
+| **Work execution** (external)      | Jira - link/annotate later, never dual backlog                               |
+| **System architecture** (external) | ArchLens - optional bet → system refs later                                  |
 
 ## 5. Domain glossary
 
-| Term | Definition |
-|------|------------|
-| **Outcome** | Measurable change the organisation wants (e.g. “3× feature delivery”) |
-| **Bet** | Time-boxed investment intended to move an outcome; has success signal and stop rule |
-| **Kill criteria** | Pre-agreed condition that triggers stop or re-scope |
-| **Team** | Delivery group referenced by display name (Slice 1) and optional external ref (later) |
+| Term                | Definition                                                                                                                          |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Outcome**         | Measurable change the organisation wants (e.g. “3× feature delivery”)                                                               |
+| **Bet**             | Time-boxed investment intended to move an outcome; has success signal and stop rule                                                 |
+| **Kill criteria**   | Pre-agreed condition that triggers stop or re-scope                                                                                 |
+| **Team**            | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                               |
 | **Topology intent** | Desired interaction shape: customer-facing, shared platform, coaching/support; modes such as “uses as a service” / “works together” |
-| **Mismatch** | Detectable conflict (e.g. bet funded with no delivering team; platform overloaded) |
-| **Decision note** | One-page start/stop/continue recommendation with rationale and evidence |
-| **SteerSpec** | Canonical YAML/JSON document for a workspace (`steertree.yaml`) |
-| **Workspace** | Local folder containing SteerSpec (+ optional exports) |
-| **Overlay** (later) | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync |
-| **Board pack** | PDF/export for leadership distribution |
+| **Mismatch**        | Detectable conflict (e.g. bet funded with no delivering team; platform overloaded)                                                  |
+| **Decision note**   | One-page start/stop/continue recommendation with rationale and evidence                                                             |
+| **SteerSpec**       | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                     |
+| **Workspace**       | Local folder containing SteerSpec (+ optional exports)                                                                              |
+| **Overlay** (later) | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync                                          |
+| **Board pack**      | PDF/export for leadership distribution                                                                                              |
 
 **Aggregate roots:** `Workspace` (contains SteerSpec document), `DecisionNote`.
 
@@ -134,14 +134,14 @@ Feature: Decision note and board pack
 
 ## 8. Cross-functional acceptance (Slice 1)
 
-| Concern | Criteria |
-|---------|----------|
-| Accessibility | WCAG 2.2 AA for executive flows; keyboard reachable primary actions; sufficient contrast on light editorial theme |
-| Privacy | No network calls required for core flows; no PII beyond team display names the user types |
-| Performance | Open sample workspace &lt; 2s on mid-tier laptop; steering interaction feels instant (&lt; 100ms for local state updates) |
-| Resilience | Autosave or explicit save with clear dirty state; never silently overwrite invalid files |
-| Security | No auth Slice 1; no secrets storage; later connectors use OS/browser OAuth - out of scope here |
-| Critical journeys | Open sample → edit bet → view org shape → create decision note → export PDF |
+| Concern           | Criteria                                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Accessibility     | WCAG 2.2 AA for executive flows; keyboard reachable primary actions; sufficient contrast on light editorial theme         |
+| Privacy           | No network calls required for core flows; no PII beyond team display names the user types                                 |
+| Performance       | Open sample workspace &lt; 2s on mid-tier laptop; steering interaction feels instant (&lt; 100ms for local state updates) |
+| Resilience        | Autosave or explicit save with clear dirty state; never silently overwrite invalid files                                  |
+| Security          | No auth Slice 1; no secrets storage; later connectors use OS/browser OAuth - out of scope here                            |
+| Critical journeys | Open sample → edit bet → view org shape → create decision note → export PDF                                               |
 
 ## 9. Behaviour catalog notes (pre-code)
 

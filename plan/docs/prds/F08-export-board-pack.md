@@ -20,7 +20,7 @@ Download a PDF (or print-to-PDF) board pack with selected sections.
 
 1. Section checklist
 2. Preview thumbnail/panel
-3. Download PDF via print CSS (Slice 1) 
+3. Download PDF via print CSS (Slice 1)
 4. Small link: Technical exports… (disabled or hidden until Slice 2)
 5. Filenames: `steerlens-board-pack-<workspace>-<date>.pdf`
 

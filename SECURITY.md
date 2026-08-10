@@ -8,7 +8,7 @@ Include:
 
 - A clear description and impact
 - Steps to reproduce or a minimal proof of concept
-- Affected area (app, CI, Cloudflare bootstrap)
+- Affected area (app, `@steerlens/core`, CI, Cloudflare bootstrap)
 
 ## Supported versions
 
@@ -16,4 +16,4 @@ Security fixes apply to `main` and the latest release.
 
 ## Scope
 
-This repository is a project template (React SPA + Cloudflare Pages). Reports of interest include XSS in the starter app, secret leakage in workflows/scripts, and supply-chain issues in CI.
+SteerLens is a React SPA + Cloudflare Pages product with a pure SteerSpec domain package. Reports of interest include XSS in the app, secret leakage in workflows/scripts, unsafe SteerSpec parsing, and supply-chain issues in CI.

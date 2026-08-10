@@ -1,6 +1,6 @@
 # Workflows (GitHub Actions)
 
-Five workflows ship in `.github/workflows/`: the automation most greenfield repos put off for months.
+Automation for SteerLens lives under `.github/workflows/`:
 
 | Workflow              | File                    | When it runs                                   | What it does                                                                                                      |
 | --------------------- | ----------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
@@ -18,4 +18,4 @@ schedule  ──► Lighthouse report artifact
 push/PR   ──► CodeQL
 ```
 
-Local equivalents: quality checks in [Setup](/docs/setup); derived outputs via `bin/sync-derived.sh`. Custom hostnames: [Custom domains](/docs/custom-domains).
+Local equivalents: quality checks in [Setup](/docs/setup); derived outputs via `bin/sync-derived.sh`. Hosting secrets: [cloudflare-secrets.md](./cloudflare-secrets.md).

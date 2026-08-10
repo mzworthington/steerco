@@ -4,7 +4,7 @@
 
 ## SteerLens brings investment clarity to engineering leadership - without another planning silo
 
-**London, UK** - Today, Matthew Worthington introduces **SteerLens**, an interactive briefing space for Engineering Directors and executive sponsors who need a clear answer to three questions: *Are we funding the right outcomes? Is the organisation shaped to deliver them? What should we stop?*
+**London, UK** - Today, Matthew Worthington introduces **SteerLens**, an interactive briefing space for Engineering Directors and executive sponsors who need a clear answer to three questions: _Are we funding the right outcomes? Is the organisation shaped to deliver them? What should we stop?_
 
 Most enterprises already have Jira for work, Backstage for services, and Entra or GitHub for people and teams. None of those tools own the **investment contract** - the living link between business outcomes, funded bets, team topology intent, and the evidence that should trigger a stop or re-scope. Leaders end up stitching slide decks by hand. Alignment decays between steering committees.
 

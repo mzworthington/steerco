@@ -1,21 +1,39 @@
-# What's included
+# SteerLens
 
-Everything below ships when you create from the template, not a backlog of “nice to haves.”
+SteerLens is an interactive board pack for Engineering Directors and executive sponsors: align **outcomes**, **funded bets**, and **team shape**, then leave with a decision note — not another backlog.
 
-| You get             | What it is                                                                                                                                                                                                      |
-| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Site**            | Vite + React + TypeScript SPA under `app/`, Tailwind executive theme (stone + ocean) + [`/design-system`](/design-system) showcase, routing, and `bin/init-project.sh` for brand name, slug, and origin.        |
-| **Hosting**         | Cloudflare Pages: Pulumi defines the project (+ optional custom domain), CI builds on `main`, Wrangler deploys `app/dist`. `*.pages.dev` works before DNS is ready. See [Custom domains](/docs/custom-domains). |
-| **Docs**            | Git-backed doc store: Markdown under `docs/` rendered in-app at `/docs`, with no separate docs framework or object storage.                                                                                     |
-| **CI & quality**    | Named toolchain: **Prettier**, **oxlint**, **TypeScript**, **knip**, **Vitest**, **Husky** + **lint-staged** pre-commit, plus **CodeQL** and **Lighthouse CI**; see [Quality](/docs/quality).                   |
-| **Release hygiene** | git-cliff changelog, weekly derived sync (changelog + docs screenshots), Lighthouse CI with report artifacts.                                                                                                   |
-| **Agent-ready**     | Thin `AGENTS.md` → [agent-lifecycle-kit](https://github.com/mzworthington/agent-lifecycle-kit).                                                                                                                 |
+## Problem
+
+Jira holds work, Backstage holds services, and directories hold people. Nothing holds the **investment contract**, so steering meetings re-litigate priorities in slide decks.
+
+## What you get today
+
+| Area             | Status                                                                    |
+| ---------------- | ------------------------------------------------------------------------- |
+| **Product plan** | Specs, PRDs, SteerSpec schema, and executive mockups under `plan/`        |
+| **Domain core**  | `@steerlens/core` — parse, validate, and serialize SteerSpec (YAML)       |
+| **Site**         | Vite + React SPA with Coming Soon gate, in-app docs, and `/design-system` |
+| **Design**       | Executive stone + ocean theme (distinct from ArchLens)                    |
+| **ADRs**         | Accepted decisions under [`docs/ADRs/`](/docs/adrs)                       |
+| **Hosting**      | Cloudflare Pages via Pulumi + Wrangler                                    |
+
+Slice 1 (local executive workspace: open sample/folder, steer, decide, export) is the next product vertical — see `plan/docs/ROADMAP.md`.
+
+## Principles
+
+1. **Executive surface first** — no YAML or provider jargon in the default UI.
+2. **Reference, don’t replace** — never invent competing IdP/catalog Groups.
+3. **Local-first** — full value offline before connectors.
+4. **Git-friendly contract** — SteerSpec is diffable YAML.
+
+## Architecture sketch
 
 ```text
-Browser  →  React site (+ /docs)  →  Cloudflare Pages
-Git      →  docs/*.md (source of truth)
-GitHub   →  CI quality gates → wrangler pages deploy
+Browser  →  React app (+ /docs, /design-system)
+             └─ @steerlens/core (SteerSpec)
+Git      →  docs/*.md · plan/ product specs
+GitHub   →  CI quality gates → Cloudflare Pages
 Pulumi   →  Pages project + optional custom domain
 ```
 
-Next: [Setup](/docs/setup) · [Custom domains](/docs/custom-domains) · [Design system](/docs/design-system) · [Design pack](/docs/design-pack) · [Quality](/docs/quality) · [Workflows](/docs/workflows) · [Architecture](/docs/architecture)
+Next: [Setup](/docs/setup) · [Architecture](/docs/architecture) · [Design system](/design-system) · [Tech stack](/docs/tech-stack) · [Quality](/docs/quality) · [Workflows](/docs/workflows)

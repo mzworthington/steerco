@@ -4,7 +4,7 @@ Pages project + custom **subdomain** hostnames on an existing active zone, plus 
 
 SteerLens ships on the shared `mzworthington.co.uk` zone (owned by [edge-dns](https://github.com/mzworthington/edge-dns)) at **`steerlens.mzworthington.co.uk`**. Zone-level Web Analytics stays off here (`enableWebAnalytics` defaults to `false`) so we do not fight the existing RUM site on that apex.
 
-Real zone/hostname values live in gitignored `Pulumi.<stack>.yaml`, local `.env`, or GitHub Actions vars; see [Custom domains](../../docs/custom-domains.md) and [secrets checklist](../../docs/cloudflare-secrets.md).
+Real zone/hostname values live in gitignored `Pulumi.<stack>.yaml`, local `.env`, or GitHub Actions vars; see [secrets checklist](../../docs/cloudflare-secrets.md).
 
 | Resource | Purpose |
 |----------|---------|

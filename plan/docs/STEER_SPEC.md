@@ -27,7 +27,7 @@ spec:
     - id: out_delivery
       title: 3× feature delivery
       summary: Year-on-year increase in features reaching customers
-      status: on_track   # on_track | at_risk | achieved | abandoned
+      status: on_track # on_track | at_risk | achieved | abandoned
       metrics:
         - id: met_delivery_rate
           title: Delivery rate
@@ -42,13 +42,13 @@ spec:
       title: Shared platform golden paths
       successSignal: New services reach production via the golden path within one week
       killCriteria: Fewer than two product teams adopt the path after two quarters
-      status: on_track   # proposed | on_track | at_risk | stop_ready | stopped | done
+      status: on_track # proposed | on_track | at_risk | stop_ready | stopped | done
       fundedTeamIds: [team_platform, team_checkout]
   teams:
     - id: team_checkout
       displayName: Customer checkout teams
-      role: customer_facing   # customer_facing | shared_platform | coaching_support
-      provenance: local       # local | backstage | github | entra | catalog_file
+      role: customer_facing # customer_facing | shared_platform | coaching_support
+      provenance: local # local | backstage | github | entra | catalog_file
       externalRefs: []
     - id: team_platform
       displayName: Shared platform
@@ -58,11 +58,11 @@ spec:
   relationships:
     - fromTeamId: team_checkout
       toTeamId: team_platform
-      mode: uses_as_service   # uses_as_service | works_together | coaching
+      mode: uses_as_service # uses_as_service | works_together | coaching
   decisionNotes:
     - id: dec_obs_stop
       betId: bet_obs
-      recommendation: stop    # start | continue | stop | rescope
+      recommendation: stop # start | continue | stop | rescope
       title: Stop Observability unification?
       why: Spend and coordination cost rose without improving delivery rate
       measured: []
@@ -71,7 +71,7 @@ spec:
   evidence:
     - id: ev_1
       metricId: met_delivery_rate
-      source: sample          # sample | manual | github | other
+      source: sample # sample | manual | github | other
       note: Sample data for Slice 1 demos
 ```
 
@@ -83,21 +83,21 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 
 ## Mismatch rules (core)
 
-| Code | When |
-|------|------|
-| `bet_without_team` | Bet has empty `fundedTeamIds` |
-| `bet_without_kill_criteria` | Missing kill criteria |
-| `platform_overload` | Shared platform has dependents above threshold (default 8) |
-| `team_without_bet` | Customer-facing team funds zero bets (warning) |
-| `orphan_outcome` | Outcome with zero bets |
+| Code                        | When                                                       |
+| --------------------------- | ---------------------------------------------------------- |
+| `bet_without_team`          | Bet has empty `fundedTeamIds`                              |
+| `bet_without_kill_criteria` | Missing kill criteria                                      |
+| `platform_overload`         | Shared platform has dependents above threshold (default 8) |
+| `team_without_bet`          | Customer-facing team funds zero bets (warning)             |
+| `orphan_outcome`            | Outcome with zero bets                                     |
 
 ## Mapping to foreign shapes (later)
 
-| Foreign | Direction | Notes |
-|---------|-----------|-------|
-| Backstage `Group` | In | Map to `teams[]` + `externalRefs`; set `provenance` |
-| Backstage Group YAML | Out | **Only** if `provenance: catalog_file` and user opts in |
-| SteerBet overlay | Out | Always OK - SteerLens-owned kind |
-| GitHub team | In | `externalRefs: [{ system: github, id: org/team }]` |
-| Entra group | In | `externalRefs: [{ system: entra, id: objectId }]` |
-| ArchLens entityRef | Out/In | Optional `bets[].systemRefs[]` (field reserved, unused Slice 1) |
+| Foreign              | Direction | Notes                                                           |
+| -------------------- | --------- | --------------------------------------------------------------- |
+| Backstage `Group`    | In        | Map to `teams[]` + `externalRefs`; set `provenance`             |
+| Backstage Group YAML | Out       | **Only** if `provenance: catalog_file` and user opts in         |
+| SteerBet overlay     | Out       | Always OK - SteerLens-owned kind                                |
+| GitHub team          | In        | `externalRefs: [{ system: github, id: org/team }]`              |
+| Entra group          | In        | `externalRefs: [{ system: entra, id: objectId }]`               |
+| ArchLens entityRef   | Out/In    | Optional `bets[].systemRefs[]` (field reserved, unused Slice 1) |

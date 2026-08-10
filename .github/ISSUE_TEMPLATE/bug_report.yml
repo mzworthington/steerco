@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a problem with the template or generated project
+description: Report a problem with SteerLens
 labels: [bug]
 body:
   - type: dropdown

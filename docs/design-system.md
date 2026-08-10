@@ -2,7 +2,7 @@
 
 SteerLens executive theme is a **light editorial** board-pack language: warm stone paper, deep ocean accent, serif titles. It is deliberately distinct from ArchLens’s dark cyan drafting chrome.
 
-Live showcase: [`/design-system`](/design-system). Vector sources: [Design pack](/docs/design-pack).
+In-app home: [`/design-system`](/design-system) (not under `/docs`). Vector sources: [Design pack](/docs/design-pack).
 
 Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … `04`. Mark direction: sketch `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (evolved from v16 reticle).
 
