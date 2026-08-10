@@ -1,0 +1,16 @@
+dist
+node_modules
+app/dist
+app/node_modules
+pnpm-lock.yaml
+app/pnpm-lock.yaml
+infra/cloudflare/pnpm-lock.yaml
+infra/cloudflare/bin
+lighthouse-report
+app/lighthouse-report
+.lighthouseci
+app/.lighthouseci
+CHANGELOG.md
+docs/screenshots
+*.png
+*.gif

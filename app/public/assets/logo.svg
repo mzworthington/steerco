@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="React Cloudflare Template mark">
+  <defs>
+    <linearGradient id="pageFace" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f7f9fb"/>
+      <stop offset="100%" stop-color="#eef2f6"/>
+    </linearGradient>
+    <linearGradient id="accentBar" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d9488"/>
+      <stop offset="100%" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Soft coastal field -->
+  <rect width="500" height="500" rx="72" fill="#f7f9fb"/>
+
+  <!-- Drafting grid -->
+  <g stroke="#0b1220" stroke-opacity="0.06" stroke-width="1.5">
+    <path d="M80 0 V500 M160 0 V500 M240 0 V500 M320 0 V500 M400 0 V500"/>
+    <path d="M0 80 H500 M0 160 H500 M0 240 H500 M0 320 H500 M0 400 H500"/>
+  </g>
+
+  <!-- Back page -->
+  <rect x="148" y="108" width="248" height="292" rx="28"
+        fill="#eef2f6" stroke="#0b1220" stroke-opacity="0.12" stroke-width="3"
+        transform="rotate(-7 272 254)"/>
+
+  <!-- Mid page -->
+  <rect x="148" y="118" width="248" height="292" rx="28"
+        fill="#f7f9fb" stroke="#0b1220" stroke-opacity="0.16" stroke-width="3"
+        transform="rotate(-3.5 272 264)"/>
+
+  <!-- Front page -->
+  <rect x="148" y="128" width="248" height="292" rx="28"
+        fill="url(#pageFace)" stroke="#0b1220" stroke-opacity="0.22" stroke-width="3.5"/>
+
+  <!-- Accent rail (deploy strip) -->
+  <path d="M148 156
+           A28 28 0 0 1 176 128
+           H176
+           V420
+           H176
+           A28 28 0 0 1 148 392
+           Z"
+        fill="url(#accentBar)"/>
+
+  <!-- Content lines on front page -->
+  <g stroke="#0b1220" stroke-opacity="0.18" stroke-width="8" stroke-linecap="round">
+    <line x1="204" y1="188" x2="348" y2="188"/>
+    <line x1="204" y1="224" x2="320" y2="224"/>
+    <line x1="204" y1="260" x2="336" y2="260"/>
+  </g>
+
+  <!-- Launch chevron -->
+  <path d="M286 318 L320 352 L286 386"
+        fill="none" stroke="#0f766e" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="262" cy="352" r="10" fill="#0f766e"/>
+</svg>
