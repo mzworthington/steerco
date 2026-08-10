@@ -18,7 +18,7 @@ Before starting work, read:
 ## Project notes
 
 - App code and pnpm workspace live under `app/` — run `cd app && pnpm …`.
-- Tailwind coastal-ink UI: tokens + recipes in `app/src/index.css`, showcase at `/design-system`, assets in `design-pack/`; rebrand for your product.
+- Tailwind executive theme (stone + ocean): tokens + recipes in `app/src/index.css`, showcase at `/design-system`, assets in `design-pack/`.
 - Docs are Markdown under `docs/`, rendered in-app (not a separate docs framework).
 - Hosting is Cloudflare Pages via Pulumi + Wrangler (no R2/catalog).
 - Before handover: run pre-commit checks (`cd app && pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build`).

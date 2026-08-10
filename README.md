@@ -21,9 +21,7 @@ TODO: add product-specific docs as you go.
 
 ## Design
 
-Starter UI tokens and assets live in `design-pack/` and `app/src/index.css`.
-
-TODO: rebrand marks and tokens for this product.
+Starter UI tokens and assets live in `design-pack/` and `app/src/index.css` (executive stone + ocean theme; showcase at `/design-system`).
 
 ## License
 

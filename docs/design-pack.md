@@ -1,16 +1,20 @@
 # Design pack & brand assets
 
-Coastal-ink favicon, logos, and social-share art ship under `design-pack/` (vector sources + README) and `app/public/` (Vite-served copies).
+SteerLens favicon, logos, and social-share art ship under `design-pack/` (vector sources + README) and `app/public/` (Vite-served copies). Preferred mark: reticle + northeast arrow (exploration v16).
 
 | Asset        | Path                                        | Use                                  |
 | ------------ | ------------------------------------------- | ------------------------------------ |
 | Favicon      | `/favicon.svg`, `/favicon.png`              | Browser tab                          |
 | Logo (light) | `/assets/logo.svg`                          | Nav brand mark                       |
-| Logo (dark)  | `/assets/logo-dark.svg`                     | Dark surfaces                        |
+| Logo (dark)  | `/assets/logo-dark.svg`                     | Dark / ink surfaces                  |
 | Social share | `/assets/social-share.png`                  | `og:image` / Twitter card (1200×630) |
 | Apple touch  | `/icons/apple-touch-icon.png`               | iOS home screen                      |
 | PWA icons    | `/icons/pwa-192x192.png`, `pwa-512x512.png` | Optional install icons               |
 
-`bin/init-project.sh --name … --origin https://…` rewrites title, description, canonical, and Open Graph / Twitter meta to match your brand. After changing the mark SVGs, regenerate PNGs with `rsvg-convert` — see `design-pack/README.md` in the repo root.
+After changing mark SVGs, regenerate rasters:
 
-Tokens and named recipes are documented in [Design system](/docs/design-system); live swatches at [`/design-system`](/design-system). Keep SVG fills and CSS variables in `app/src/index.css` aligned when you rebrand.
+```bash
+bin/sync-design-pack.sh   # requires librsvg: brew install librsvg
+```
+
+Tokens and named recipes: [Design system](/docs/design-system); live swatches: [`/design-system`](/design-system). Keep SVG strokes/fills and CSS variables in `app/src/index.css` aligned when the palette shifts. Logo lockup remains provisional until the exploration set is finalized.

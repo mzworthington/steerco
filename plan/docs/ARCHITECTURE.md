@@ -104,7 +104,7 @@ ELSE
 
 - Route-level split: `/` executive shell vs `/technical/*` (feature-flagged until Slice 2)
 - State: React local state + core documents; avoid leaking Zod types into every component - view models for executive copy
-- Theming: CSS variables (`--vl-ink`, `--vl-paper`, `--vl-accent`); no shared ArchLens tokens
+- Theming: executive stone + ocean in `app/src/index.css` (`--color-*` + aliases `--vl-ink`, `--vl-paper`, `--vl-accent`); no shared ArchLens tokens
 
 ## 8. Security architecture (evolution)
 
