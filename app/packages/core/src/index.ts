@@ -4,6 +4,14 @@ export {
 } from './domain/steerSpec/parseSteerSpecYaml';
 export { serializeSteerSpec } from './domain/steerSpec/serializeSteerSpec';
 export {
+  diffSteerSpec,
+  steerSpecHasPendingChanges,
+  type SteerSpecChangeKind,
+  type SteerSpecDiff,
+  type SteerSpecDiffSection,
+  type SteerSpecEntityChange,
+} from './domain/steerSpec/diffSteerSpec';
+export {
   INTERACTION_MODES,
   TEAM_ROLES,
   steerSpecSchema,

@@ -144,3 +144,11 @@ spec:
       metricId: met_promise_hit
       source: sample
       note: Synthetic sample data for Slice 1 · connect systems later for live evidence
+    - id: ev_cycle
+      metricId: met_cycle_days
+      source: sample
+      note: Illustrative cycle-time reading from the Northwind sample
+    - id: ev_wait
+      metricId: met_shared_wait
+      source: sample
+      note: Shared-service wait — sample bottleneck signal for two bets

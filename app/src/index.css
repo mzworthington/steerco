@@ -581,6 +581,22 @@
     @apply cursor-default opacity-45;
   }
 
+  .workspace-pending {
+    @apply text-ink-muted hover:bg-stone hover:text-ink mt-4 inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors;
+  }
+
+  .workspace-pending-dirty {
+    @apply text-amber bg-amber/10 hover:bg-amber/15;
+  }
+
+  .workspace-pending-active {
+    @apply bg-ocean-soft text-ocean;
+  }
+
+  .workspace-pending-badge {
+    @apply text-amber text-lg leading-none;
+  }
+
   .workspace-sidebar-note {
     @apply text-ink-muted mt-auto pt-6 text-xs leading-relaxed;
   }
@@ -1113,7 +1129,7 @@
   }
 
   .decision-notes-list-item-active {
-    @apply border-ocean bg-foam/40;
+    @apply border-ocean bg-ocean-soft;
   }
 
   .decision-notes-list-title {
@@ -1125,20 +1141,20 @@
   }
 
   .decision-note-editor-top {
-    @apply grid gap-4 sm:grid-cols-[1fr_auto];
+    @apply grid gap-4 sm:grid-cols-[minmax(0,1fr)_12rem];
   }
 
   .decision-notes-field {
-    @apply text-ink flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+    @apply text-ink flex flex-col gap-1.5 text-xs font-semibold tracking-wide uppercase;
 
     input,
     select,
     textarea {
-      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean w-full rounded-lg border bg-white px-3 py-2.5 text-sm font-normal tracking-normal normal-case outline-none;
     }
 
     textarea {
-      @apply min-h-24 resize-y;
+      @apply min-h-24 resize-y leading-relaxed;
     }
   }
 
@@ -1146,12 +1162,16 @@
     @apply min-w-0;
   }
 
-  .decision-note-badge {
-    @apply text-xs font-semibold tracking-wide uppercase;
+  .decision-note-callout {
+    @apply border-line rounded-xl border bg-white px-4 py-3;
+  }
+
+  .decision-note-callout-label {
+    @apply font-display mt-1 text-2xl font-semibold tracking-tight;
   }
 
   .decision-note-section {
-    @apply space-y-3;
+    @apply border-line/70 space-y-3 border-t pt-5;
   }
 
   .decision-notes-helper {
@@ -1163,11 +1183,11 @@
   }
 
   .decision-notes-suggestion {
-    @apply border-line text-ink hover:border-ocean bg-foam/50 rounded-full border px-3 py-1 text-xs font-medium tracking-normal normal-case;
+    @apply border-line text-ink hover:border-ocean bg-ocean-soft rounded-full border px-3 py-1 text-xs font-medium tracking-normal normal-case;
   }
 
   .decision-notes-teams {
-    @apply flex flex-col gap-2;
+    @apply m-0 flex flex-col gap-2 border-0 p-0;
   }
 
   .decision-notes-team {
@@ -1194,11 +1214,185 @@
     @apply text-ink-muted text-sm;
   }
 
+  .workspace-diff-page {
+    @apply max-w-3xl;
+  }
+
+  .workspace-diff-title {
+    @apply text-ink mt-2 text-3xl font-semibold tracking-tight;
+  }
+
+  .workspace-diff-lead {
+    @apply text-ink-muted mt-3 max-w-2xl text-base leading-relaxed;
+  }
+
+  .workspace-diff-summary {
+    @apply text-ink mt-4 text-sm font-semibold;
+  }
+
+  .workspace-diff-empty {
+    @apply border-line mt-8 rounded-xl border border-dashed bg-white px-6 py-10 text-center;
+  }
+
+  .workspace-diff-empty-title {
+    @apply text-ink text-lg font-semibold;
+  }
+
+  .workspace-diff-empty-body {
+    @apply text-ink-muted mt-2 text-sm;
+  }
+
+  .workspace-diff-sections {
+    @apply mt-8 space-y-8;
+  }
+
+  .workspace-diff-section-title {
+    @apply text-ink text-sm font-semibold tracking-wide uppercase;
+  }
+
+  .workspace-diff-list {
+    @apply mt-3 space-y-2;
+  }
+
+  .workspace-diff-item {
+    @apply border-line flex flex-col gap-1 rounded-lg border bg-white px-4 py-3 sm:flex-row sm:items-baseline sm:gap-3;
+  }
+
+  .workspace-diff-kind {
+    @apply text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .workspace-diff-item-added .workspace-diff-kind {
+    @apply text-emerald-800;
+  }
+
+  .workspace-diff-item-modified .workspace-diff-kind {
+    @apply text-amber;
+  }
+
+  .workspace-diff-item-deleted .workspace-diff-kind {
+    @apply text-coral;
+  }
+
+  .workspace-diff-label {
+    @apply text-ink text-sm font-medium;
+  }
+
+  .workspace-diff-detail {
+    @apply text-ink-muted text-sm;
+  }
+
+  .workspace-diff-hint {
+    @apply text-ink-muted mt-8 text-sm leading-relaxed;
+  }
+
+  .workspace-diff-flash {
+    @apply mt-4 text-sm font-medium text-emerald-800;
+  }
+
+  .workspace-diff-actions {
+    @apply mt-6 flex flex-wrap gap-3;
+  }
+
+  .evidence-page {
+    @apply mx-auto max-w-5xl;
+  }
+
+  .evidence-title {
+    @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight sm:text-4xl;
+  }
+
+  .evidence-framing {
+    @apply text-ink-muted mt-3 max-w-2xl text-base leading-relaxed;
+  }
+
+  .evidence-banner {
+    @apply border-amber/30 bg-amber/10 text-amber mt-5 inline-flex rounded-lg border px-3 py-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .evidence-empty {
+    @apply text-ink-muted mt-8 text-sm;
+  }
+
+  .evidence-grid {
+    @apply mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .evidence-card {
+    @apply border-line flex flex-col rounded-xl border bg-white px-5 py-5;
+  }
+
+  .evidence-card-source {
+    @apply text-ink-muted text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .evidence-card-learning {
+    @apply text-ink mt-3 text-sm leading-relaxed font-medium;
+  }
+
+  .evidence-card-value {
+    @apply text-ocean font-display mt-4 text-4xl font-semibold tracking-tight;
+  }
+
+  .evidence-card-title {
+    @apply text-ink mt-2 text-sm font-semibold;
+  }
+
+  .evidence-card-outcome {
+    @apply text-ink-muted mt-1 text-xs;
+  }
+
+  .evidence-card-note {
+    @apply text-ink-muted mt-3 text-xs leading-relaxed;
+  }
+
+  .evidence-card-actions {
+    @apply mt-auto flex flex-wrap gap-2 pt-5;
+  }
+
+  .evidence-card-edit {
+    @apply mt-4 space-y-3;
+  }
+
+  .evidence-card-field {
+    @apply text-ink flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+
+    input {
+      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+    }
+  }
+
+  .evidence-card-edit-actions {
+    @apply flex flex-wrap justify-end gap-2;
+  }
+
+  .evidence-feedback {
+    @apply mt-6;
+  }
+
+  .evidence-error {
+    @apply text-sm font-medium text-red-700;
+  }
+
+  .evidence-saved {
+    @apply text-sm font-medium text-emerald-800;
+  }
+
+  .evidence-footer {
+    @apply border-line bg-paper-soft mt-10 flex flex-wrap items-center justify-between gap-4 rounded-xl border px-5 py-4;
+  }
+
+  .evidence-footer-note {
+    @apply text-ink-muted max-w-xl text-sm leading-relaxed;
+  }
+
   @media print {
     .workspace-sidebar,
     .decision-notes-list,
     .decision-notes-actions,
-    .decision-notes-suggestions {
+    .decision-notes-suggestions,
+    .evidence-footer,
+    .evidence-card-actions {
       display: none !important;
     }
 

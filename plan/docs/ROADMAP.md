@@ -34,7 +34,7 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 | Evidence (sample/manual) | [F06](./prds/F06-evidence.md)              |
 | Decision note            | [F07](./prds/F07-decision-note.md)         |
 | Export board pack        | [F08](./prds/F08-export-board-pack.md)     |
-| SteerSpec persistence    | [F09](./prds/F09-steerspec-persistence.md) |
+| SteerSpec persistence    | [F09](./prds/F09-steerspec-persistence.md) — includes pending-draft diff / revert / accept (disk Save still open) |
 
 **Exit criteria:** Playwright critical journey green; axe clean on executive routes; schema validates sample; Invest/Work/Adapt board-pack outline present; platform overload copy references load/flow (not HR headcount).
 
@@ -45,7 +45,7 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 | Theme                 | Commitments                                                                                                                                                                                                                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **EDGE / LVT**        | Bet ↔ MoS link (`metricIds` / `primaryMetricId`); optional `reviewDate` / horizon; `fundingStance` (`explore` \| `exploit` \| `sustain`); optional `kind` (`opportunity` \| `capability`); soft WIP mismatch for stream teams                                                                                 |
-| **Team Topologies**   | Four types + three modes are canonical in v1alpha1; `relationships[].expectedUntil` / effective windows for collaboration/facilitation; optional member edit UX; retarget + extend mismatches (`bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, …); platform as _grouping_ deferred to Slice 3 |
+| **Team Topologies**   | Four types + three modes are canonical in v1alpha1; `relationships[].expectedUntil` / effective windows for collaboration/facilitation; optional member edit UX; retarget + extend mismatches (`bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, …); platform / value-stream _groupings_ (domain org) deferred to Slice 3 |
 | **Capacity**          | `teams[].members[]` with job title + `ftePercent` (schema landed); richer edit/mismatch cues; **dated capacity windows** toward [F13](./prds/F13-topology-timeline.md)                                                                                                                                        |
 | **Topology timeline** | Additive temporal fields for member/relationship effective windows (+ optional `topologyEvents[]`); projection “as of” date (UI in Slice 3 — [F13](./prds/F13-topology-timeline.md))                                                                                                                          |
 | **Governance**        | Decision notes prefer MoS ids in `measured`; steering “next review” from bet horizons                                                                                                                                                                                                                         |
@@ -68,7 +68,7 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 - Optional ArchLens `systemRefs` on bets
 - CI check action for SteerSpec mismatches (incl. Slice 1.5 codes)
 - Optional Backstage overlay `SteerBet` kind docs
-- **Team Topologies 2e:** `groupings[]` (`platform` \| `value_stream`) + fractal membership; org view zoom grouping → members
+- **Team Topologies 2e groupings:** organise teams under **value stream groupings** (shared business domain / value stream — TT’s term for “domain” org shape) and **platform groupings** (shared platform purpose); SteerSpec `groupings[]` (`platform` \| `value_stream`) + fractal membership; org view zoom grouping → member teams
 - **Topology timeline ([F13](./prds/F13-topology-timeline.md)):** visualise capacity increases/decreases and relationship spans over time; scrub “as of” date to project org shape + mismatches
 - **EDGE:** optional `initiatives[]` under bets (thin narrative slices — never dual backlog)
 - Optional WIP / relative value rank UI; capability vs opportunity mix hint on steering
@@ -90,7 +90,7 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 | ----------------------------------------- | ------------------------------------------------------------------------ |
 | EDGE LVT + MoS + incremental funding      | 1 (copy), 1.5 (schema), 3 (initiatives / rank)                           |
 | EDGE lightweight governance (start/stop)  | 1 (F07/F08), 1.5 (MoS-measured)                                          |
-| Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (groupings + F13 timeline) |
+| Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (value-stream / platform groupings + F13 timeline) |
 | Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (fractal zoom + timeline) |
 | Topology evolution over time              | 1.5 (schema), 3 ([F13](./prds/F13-topology-timeline.md) view)            |
 | Full rationale                            | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)           |

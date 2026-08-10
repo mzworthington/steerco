@@ -4,9 +4,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { takeDecisionNoteMeasured } from '../application/decisionNoteSeed';
 import { openWorkspaceFromYaml } from '../application/openWorkspace';
 import { WorkspaceSessionProvider, sessionWithBaseline } from '../workspace/WorkspaceSession';
-import { DecisionNotesPage } from './DecisionNotesPage';
+import { EvidencePage } from './EvidencePage';
 
 const setLocation = vi.fn();
 
@@ -14,7 +15,7 @@ vi.mock('wouter', async () => {
   const actual = await vi.importActual<typeof import('wouter')>('wouter');
   return {
     ...actual,
-    useLocation: () => ['/workspace/decisions', setLocation] as const,
+    useLocation: () => ['/workspace/evidence', setLocation] as const,
     Link: ({
       href,
       children,
@@ -37,10 +38,10 @@ const fixtureDir = path.resolve(
 );
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
-function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
+function seedSession(spec: Parameters<typeof sessionWithBaseline>[0]) {
   sessionStorage.setItem(
     'steerlens.workspace-session',
-    JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
+    JSON.stringify(sessionWithBaseline(spec, 'sample', 'sample')),
   );
 }
 
@@ -50,53 +51,41 @@ afterEach(() => {
   sessionStorage.clear();
 });
 
-describe('DecisionNotesPage', () => {
-  it('shows the sample stop note and MoS helper copy', () => {
+describe('EvidencePage', () => {
+  it('shows sample banner and promise hit learning cue', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
-
     seedSession(opened.value);
 
     render(
       <WorkspaceSessionProvider>
-        <DecisionNotesPage />
+        <EvidencePage />
       </WorkspaceSessionProvider>,
     );
 
-    expect(screen.getByTestId('decision-notes-page')).toBeTruthy();
-    expect(screen.getByDisplayValue(/stop loyalty ledger unification/i)).toBeTruthy();
-    expect(screen.getByText(/prefer measures of success/i)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /promise hit rate/i })).toBeTruthy();
+    expect(screen.getByTestId('evidence-page')).toBeTruthy();
+    expect(screen.getByTestId('evidence-sample-banner').textContent).toMatch(/sample data/i);
+    expect(screen.getByText(/climbing, still short of the target band/i)).toBeTruthy();
+    expect(screen.getByText('91%')).toBeTruthy();
   });
 
-  it('saves measured bullet edits into the session', async () => {
+  it('stashes all measured lines and navigates to decision notes', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
-
     seedSession(opened.value);
 
     render(
       <WorkspaceSessionProvider>
-        <DecisionNotesPage />
+        <EvidencePage />
       </WorkspaceSessionProvider>,
     );
 
-    const measured = screen.getByLabelText('Measured bullets');
-    await user.clear(measured);
-    await user.type(measured, 'Promise hit rate still flat\nShared wait time up');
-    await user.click(screen.getByRole('button', { name: 'Save' }));
-
-    expect(screen.getByText(/saved decision note/i)).toBeTruthy();
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
-    const parsed = JSON.parse(stored ?? '{}') as {
-      spec: { spec: { decisionNotes: Array<{ measured: string[] }> } };
-    };
-    expect(parsed.spec.spec.decisionNotes[0]?.measured).toEqual([
-      'Promise hit rate still flat',
-      'Shared wait time up',
-    ]);
+    await user.click(screen.getByTestId('evidence-use-all'));
+    expect(setLocation).toHaveBeenCalledWith('/workspace/decisions');
+    const lines = takeDecisionNoteMeasured();
+    expect(lines?.some((line) => /promise hit rate/i.test(line))).toBe(true);
   });
 });

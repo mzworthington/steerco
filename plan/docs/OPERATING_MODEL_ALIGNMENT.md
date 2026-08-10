@@ -211,7 +211,7 @@ From [teamtopologies.com/book](https://teamtopologies.com/book), the [Sep 2025 n
 | **Cognitive load as a design principle**               | Surface load drivers (dependencies, bet thrash, platform fan-in); calm mismatches, not vanity org polish                   |
 | **Organisations as ecosystems, not machines**          | Prefer flourishing / flow language over efficiency-centralisation language in exec copy                                    |
 | **Platform = platform grouping**                       | A “platform” may be many teams with a shared purpose—not one box. Schema/UI must allow platform _groupings_                |
-| **Value stream grouping**                              | Optional grouping of stream-aligned teams around a common value stream / outcome                                           |
+| **Value stream grouping**                              | Optional grouping of stream-aligned teams around a common value stream / business domain (TT term for “teams under a domain”) |
 | **Fractal design**                                     | Same patterns at multiple zoom levels (e.g. stream-aligned teams _inside_ a platform grouping)                             |
 | **Evolutionary, not static**                           | Interaction modes and roles change over time; support history via SteerSpec/git, not one-shot “reorg done”                 |
 | **Whole-organisation / multi-portfolio applicability** | Keep language business+tech; avoid “IT reorg tool” framing                                                                 |
@@ -248,7 +248,7 @@ Suggested mismatch/warnings:
 
 ### B4. Groupings (2e schema implication)
 
-Model platforms (and later value streams) as **groupings**, not only leaf teams:
+Model platforms and value streams as **groupings**, not only leaf teams. In Team Topologies 2e, “organise teams under a domain” maps to a **value stream grouping** (stream-aligned teams sharing a value stream / business domain); a multi-team platform maps to a **platform grouping**.
 
 ```yaml
 # Illustrative — not yet in v1alpha1
@@ -256,14 +256,21 @@ groupings:
   - id: grp_fulfilil_platform
     kind: platform # platform | value_stream
     title: Fulfilment platform
-    memberTeamIds: [team_fulfilil_api, team_multil_data]
+    memberTeamIds: [team_fulfilil_api, team_fulfilil_data]
+  - id: grp_checkout_value_stream
+    kind: value_stream
+    title: Checkout # business domain / value stream label in exec UI
+    memberTeamIds: [team_checkout_web, team_checkout_api]
 teams:
   - id: team_fulfilil_api
-    role: shared_platform # or stream_aligned inside a platform (fractal)
+    role: platform # or stream_aligned inside a platform (fractal)
     groupingId: grp_fulfilil_platform
+  - id: team_checkout_web
+    role: stream_aligned
+    groupingId: grp_checkout_value_stream
 ```
 
-Executive UI: one “Fulfilment platform” zone that can expand to member teams. Avoid forcing every platform into a single team card.
+Executive UI: one “Checkout” (value stream) or “Fulfilment platform” zone that expands to member teams. Avoid forcing every platform or domain into a single team card.
 
 ### B5. Cognitive load signals (productised mismatches)
 
@@ -351,7 +358,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ### C3. Later (Slice 3+)
 
-- [ ] `groupings[]` with `kind: platform | value_stream` and `memberTeamIds`
+- [ ] `groupings[]` with `kind: platform | value_stream` and `memberTeamIds` — value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
 - [ ] Optional `initiatives[]` under bets
 - [ ] WIP / rank UI for value-based prioritization
 - [ ] Fractal zoom on org view (grouping → members)
@@ -372,7 +379,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 | `bets`                               | Bets                        | Funded work streams for stream/platform teams |
 | `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
 | `teams` + `role`                     | Delivery capacity           | Team types (incl. complicated subsystem)      |
-| `groupings` (future)                 | —                           | Platform / value-stream groupings (fractal)   |
+| `groupings` (future)                 | —                           | Platform + value-stream groupings (domain org; fractal) |
 | `relationships` + `mode`             | How we work                 | Interaction modes                             |
 | Capacity / topology windows (future) | Delivery capacity over time | Shape evolves; collaboration time-boxed       |
 | `topologyEvents` (future)            | What changed in the period  | Evidence for adapt / load response            |
