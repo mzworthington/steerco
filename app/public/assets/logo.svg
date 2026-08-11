@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="SteerLens mark">
-  <!-- Arrow only. East-facing, origin-centered, vertical symmetry, then rotate −45°. Rounded tip. -->
-  <g transform="translate(250 250) rotate(-45)">
+  <!-- Arrow only. Rotate about optical centre (not bbox); scale to ~78% fill. -->
+  <g transform="translate(250 250) scale(1.508064) rotate(-45) translate(17.3702 0)">
     <path fill="#041c38"
           d="M 117.98 -15.16
              A 18 18 0 0 1 117.98 15.16

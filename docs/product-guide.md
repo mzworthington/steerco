@@ -17,7 +17,7 @@ Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Archite
 ## Open a workspace
 
 1. Go to [Workspace](/workspace).
-2. Choose **Start from sample** to explore with example outcomes and bets, or **Open folder** to load a folder that already contains a SteerSpec (`steertree.yaml`).
+2. Choose **Open folder** for an existing SteerSpec, **Create new file** for a blank `steertree.yaml`, or **Start from sample** to explore with example outcomes and bets.
 3. You land on **Steering overview**. No account is required.
 
 Recent workspaces appear on the home screen for quick return. Edits live in the browser until you **Save** (write back to the folder when the browser allows it, otherwise download).

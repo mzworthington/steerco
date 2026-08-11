@@ -6,6 +6,7 @@ SteerLens favicon, logos, and social-share art ship under `design-pack/` (vector
 
 - **Square** (favicon, app icons, nav): arrow only (`mark.svg` / `favicon.svg`).
 - **Wide lockup** (social, brand moments): two circles + arrow (`mark-lockup.svg`).
+- **Geometry**: rotate about the arrow’s optical centre; square marks ~78% fill; lockup on a shared centre line with 120u centre rhythm, artboard trimmed to ink.
 
 Sketch reference: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png`.
 

@@ -19,11 +19,11 @@ Styling source of truth: executive mockups `plan/mockups/steerlens-exec-01` … 
 
 Motif: **two circles + northeast arrowhead** (scooped base). Still provisional as a lockup, but this is the working direction.
 
-| Use                                          | Asset                      | Rule                                                 |
-| -------------------------------------------- | -------------------------- | ---------------------------------------------------- |
-| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only**                                       |
-| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Circles + arrow** (main logo, header, Coming Soon) |
-| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field                              |
+| Use                                          | Asset                      | Rule                                              |
+| -------------------------------------------- | -------------------------- | ------------------------------------------------- |
+| Square (favicon, PWA, apple-touch, nav icon) | `mark.svg` / `favicon.svg` | **Arrow only** · optical centre · ~78% fill       |
+| Wide / social / brand lockup                 | `mark-lockup.svg`          | **Circles + arrow** · shared centre · 120u rhythm |
+| Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field (same geometry as square) |
 
 Do not put the full circles+arrow motif in a tight square — it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
 
