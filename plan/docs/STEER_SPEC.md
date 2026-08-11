@@ -13,7 +13,9 @@ Executive UI never shows this document by default; Technical mode and git review
 5. Versioned with `apiVersion` + `kind` for migrations.
 6. **Team Topologies is canonical** for team types and interaction modes ([key concepts](https://teamtopologies.com/key-concepts)).
 
-Operating-model evolution (EDGE LVT fields, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+Operating-model evolution (full EDGE toolkit beyond LVT, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+
+`kind: SteerTree` is the Lean Value Tree **spine** of the EDGE investment contract. EDGE teachings beyond the tree (product mindset / Product Blueprint, Tech@Core, Periodic Value Review, Integrated Backlogs, MoS fitness framing, six principles) map onto existing fields today (`metrics`, `fundingStance`, `kind`, `reviewDate`, `decisionNotes`) and optional later surfaces — they are first-class product intent even when not separate SteerSpec kinds.
 
 ## Team Topologies in SteerSpec
 

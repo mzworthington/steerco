@@ -1,7 +1,7 @@
 # PRD F07 - Decision note
 
 **Slice:** 1 · **Mockup:** `steerlens-exec-03-decision-note.png`  
-**Frameworks:** EDGE lightweight governance — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE Periodic Value Review (PVR) / lightweight governance — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
 
@@ -9,7 +9,7 @@ Steering committees need a one-page recommendation, not a slide archaeology dig.
 
 ## Goal
 
-Author start / continue / stop / re-scope notes with why, measured, who is affected, next step — the lightweight governance artifact that closes the invest/adapt loop.
+Author start / continue / stop / re-scope notes with why, measured, who is affected, next step — the **Periodic Value Review** artifact that closes the invest/adapt loop (double down or defund without stage-gate theatre).
 
 ## User stories
 
@@ -24,7 +24,7 @@ Author start / continue / stop / re-scope notes with why, measured, who is affec
 3. Link optional bet
 4. Persist under `spec.decisionNotes`
 5. Actions: Save, Export PDF (F08), Share with board (same as export Slice 1)
-6. Helper copy: measured lines should prefer outcome MoS / evidence language over activity counts
+6. Helper copy: measured lines should prefer outcome MoS / evidence language over activity counts; frame the note as a value review decision (Technical mode may say PVR)
 
 **Slice 1.5:** optional structured MoS / metric id references in `measured` (keep free-text bullets for narrative).
 

@@ -1,7 +1,7 @@
 # PRD F04 - Bet detail
 
 **Slice:** 1 · **Mockup:** `steerlens-exec-06-bet-detail.png`  
-**Frameworks:** EDGE Bet (success signal + kill criteria; incremental funding later) — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE Bet (success signal + kill criteria; incremental funding / PVR; funding stance = Integrated Backlog mix; capability = Tech@Core) — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
 
@@ -26,7 +26,7 @@ Edit one bet as a briefing: success signal, kill criteria, funded teams, status 
 4. Save + Back to steering
 5. Validation: kill criteria required; warn if no funded teams
 
-**Slice 1.5:** editable MoS link (`metricIds` / `primaryMetricId`); optional review date / horizon; optional funding stance (`explore` / `exploit` / `sustain`); optional opportunity vs capability kind.
+**Slice 1.5:** editable MoS link (`metricIds` / `primaryMetricId`); optional review date / horizon (PVR checkpoint); optional funding stance (`explore` / `exploit` / `sustain` — Integrated Backlog mix cue); optional opportunity vs capability kind (Tech@Core revitalize when capability).
 
 **Slice 3:** optional **flow overlay** — which teams sit on this bet’s path of change as of a date (funded stream-aligned teams plus related platform / complicated-subsystem / enabling interactions). Intent for steering, not a delivery plan or Gantt. Shares as-of projection with [F03](./F03-how-work-is-organised.md) / [F13](./F13-topology-timeline.md).
 
