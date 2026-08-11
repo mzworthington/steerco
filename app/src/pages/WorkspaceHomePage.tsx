@@ -148,7 +148,7 @@ export function WorkspaceHomePage() {
       const binding = await loadWorkspaceDirectoryBinding(entry.id);
       if (!binding) {
         setError(
-          'Re-open that workspace with Open folder — the browser no longer has a saved folder handle.',
+          'Re-open that workspace with Open folder - the browser no longer has a saved folder handle.',
         );
         return;
       }

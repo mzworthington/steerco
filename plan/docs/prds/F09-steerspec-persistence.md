@@ -37,4 +37,4 @@ Security: no secret fields · Resilience: atomic write where FS allows (`createW
 
 ## Backlog
 
-- [x] **IndexedDB directory handles** — store `FileSystemDirectoryHandle` (and file name) so folder Save survives tab refresh without re-open; re-prompt for permission when the browser requires it. Implemented via `workspaceDirectoryStore` (IndexedDB `steerlens-workspace`).
+- [x] **IndexedDB directory handles** - store `FileSystemDirectoryHandle` (and file name) so folder Save survives tab refresh without re-open; re-prompt for permission when the browser requires it. Implemented via `workspaceDirectoryStore` (IndexedDB `steerlens-workspace`).

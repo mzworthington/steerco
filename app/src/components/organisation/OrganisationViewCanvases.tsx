@@ -149,7 +149,7 @@ export function OrganisationDomainZoom({ focus }: OrganisationDomainZoomProps) {
           Leaves this domain
         </h3>
         <p className="organisation-flow-band-hint">
-          Connections to teams outside the domain — keep these visible so cognitive load and
+          Connections to teams outside the domain - keep these visible so cognitive load and
           handoffs stay honest.
         </p>
         {focus.externalEdges.length === 0 ? (

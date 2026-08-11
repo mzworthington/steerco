@@ -1,4 +1,4 @@
-# Logo pack — shipped (current)
+# Logo pack - shipped (current)
 
 Review sheet for the **current** SteerLens mark in `design-pack/`, laid out like the counterchange exploration pack for side-by-side comparison.
 

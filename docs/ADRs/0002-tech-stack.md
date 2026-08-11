@@ -8,7 +8,7 @@ deciders: ['SteerLens']
 
 ## Context and Problem Statement
 
-SteerLens needs a stack that supports a local-first SPA, a strict SteerSpec domain model, and later OAuth connectors — while staying familiar to the ArchLens / Cloudflare portfolio without sharing UI chrome.
+SteerLens needs a stack that supports a local-first SPA, a strict SteerSpec domain model, and later OAuth connectors - while staying familiar to the ArchLens / Cloudflare portfolio without sharing UI chrome.
 
 ## Decision Drivers
 

@@ -2,7 +2,7 @@
 
 Shared CI/bootstrap tooling lives in [edge-dns](https://github.com/mzworthington/edge-dns) ([reusable Cloudflare CI](https://github.com/mzworthington/edge-dns/blob/main/docs/reusable-cloudflare-ci.md)). This repo keeps thin shims only.
 
-Real account IDs, zone IDs, API tokens, and hostnames belong in **Bitwarden**, **GitHub Actions secrets/vars**, or a local `.env` — never in committed sources.
+Real account IDs, zone IDs, API tokens, and hostnames belong in **Bitwarden**, **GitHub Actions secrets/vars**, or a local `.env` - never in committed sources.
 
 ## Bootstrap
 
@@ -10,7 +10,7 @@ Real account IDs, zone IDs, API tokens, and hostnames belong in **Bitwarden**, *
 export BWS_ACCESS_TOKEN="..."
 export BWS_PROJECT_ID="..."
 
-# Site identity (or use a gitignored .env — see .env.example)
+# Site identity (or use a gitignored .env - see .env.example)
 export PULUMI_STACK=prod
 export DOMAIN=mzworthington.co.uk
 export PAGES_HOSTNAMES=steerlens.mzworthington.co.uk

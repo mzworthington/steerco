@@ -15,7 +15,7 @@ SteerSpec is the versionable investment contract for a workspace: outcomes, bets
 - Hard to reverse: identity and cross-links are the public shape of SteerSpec
 - Diff-friendly, git-readable names executives and engineers can both recognise
 - Clear split between a **person** (human) and a **member** (seat / capacity line on a team)
-- One workspace file is already the isolation boundary — no extra namespace layer
+- One workspace file is already the isolation boundary - no extra namespace layer
 - Keep SteerSpec intent + references; foreign directories stay on `externalRefs`
 
 ## Considered Options
@@ -53,7 +53,7 @@ The document envelope remains `kind: SteerTree` with `metadata.name` for the wor
 - Textual form: `[<kind>:]<name>` (kind optional only when the field’s target kind is fixed by context).
 - Canonical stored / serialised refs are **complete and lowercased** (e.g. `team:storefront`, `person:casey-morales`).
 - No namespace segment. The SteerTree document is the sole scope.
-- Link fields are kinded refs by domain name: `outcome`, `fundedTeams`, `from`, `to`, `person`, metric links, and so on — not opaque foreign-key tokens.
+- Link fields are kinded refs by domain name: `outcome`, `fundedTeams`, `from`, `to`, `person`, metric links, and so on - not opaque foreign-key tokens.
 
 ### Person vs Member
 
@@ -74,13 +74,13 @@ The document envelope remains `kind: SteerTree` with `metadata.name` for the wor
 
 ```mermaid
 flowchart TB
-  subgraph workspace [SteerTree workspace — no namespace]
+  subgraph workspace [SteerTree workspace - no namespace]
     O[Outcome name]
     M[Metric name]
     B[Bet name]
     T[Team name]
     P[Person name]
-    S[Member name — seat]
+    S[Member name - seat]
     O --> M
     B -->|outcome ref| O
     B -->|fundedTeams refs| T

@@ -12,7 +12,7 @@ export type EvidenceCard = {
   current: number | null;
   target: number | null;
   displayValue: string;
-  /** Learning cue — shown before / above the figure framing. */
+  /** Learning cue - shown before / above the figure framing. */
   learning: string;
   measuredLine: string;
   source: EvidenceSourceKind;
@@ -45,7 +45,7 @@ export function presentEvidence(spec: SteerSpec): EvidenceModel {
       const unit = metric.unit ?? null;
       const current = typeof metric.current === 'number' ? metric.current : null;
       const target = typeof metric.target === 'number' ? metric.target : null;
-      const displayValue = current === null ? '—' : formatMeasureNumber(current, unit ?? undefined);
+      const displayValue = current === null ? '-' : formatMeasureNumber(current, unit ?? undefined);
       const learning =
         metric.interpretation?.trim() ||
         buildLearning({ title: metric.title, current, target, unit });
@@ -67,7 +67,7 @@ export function presentEvidence(spec: SteerSpec): EvidenceModel {
         evidenceNote: evidence?.note?.trim() || null,
         textAlternative: [
           metric.title,
-          displayValue === '—' ? 'no current value' : `current ${displayValue}`,
+          displayValue === '-' ? 'no current value' : `current ${displayValue}`,
           learning,
         ].join('. '),
       });
@@ -76,7 +76,7 @@ export function presentEvidence(spec: SteerSpec): EvidenceModel {
 
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
-    framingLine: 'What we learned from the numbers — lead with the cue, not the vanity figure.',
+    framingLine: 'What we learned from the numbers - lead with the cue, not the vanity figure.',
     sampleBanner: 'Sample data · connect systems later',
     cards,
     allMeasuredLines: cards.map((card) => card.measuredLine),

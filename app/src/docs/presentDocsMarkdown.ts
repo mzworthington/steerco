@@ -50,7 +50,7 @@ export function splitDocsMarkdown(markdown: string): SplitDocsMarkdown {
   };
 }
 
-/** Body only — strips frontmatter so GFM does not turn --- into thematic breaks. */
+/** Body only - strips frontmatter so GFM does not turn --- into thematic breaks. */
 export function presentDocsMarkdown(markdown: string): string {
   return splitDocsMarkdown(markdown).body;
 }

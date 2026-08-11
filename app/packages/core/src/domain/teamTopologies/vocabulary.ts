@@ -69,11 +69,11 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     topologyName: 'Stream-aligned',
     zoneTitle: 'Stream-aligned teams',
     purpose:
-      'Aligned to a flow of work from a segment of the business domain — they own outcomes end-to-end (“you build it, you run it”).',
+      'Aligned to a flow of work from a segment of the business domain - they own outcomes end-to-end (“you build it, you run it”).',
     teaching:
       'Stream-aligned teams deliver customer value along a value stream. Platforms and specialists exist to accelerate them, not to own their outcomes.',
     shape: 'rounded_horizontal',
-    shapeTeaching: 'Horizontal rounded rectangle — end-to-end flow of change toward the customer.',
+    shapeTeaching: 'Horizontal rounded rectangle - end-to-end flow of change toward the customer.',
   },
   platform: {
     topologyName: 'Platform',
@@ -81,30 +81,30 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     purpose:
       'A grouping of team types that provide a compelling internal product so stream-aligned teams can move faster with less cognitive load.',
     teaching:
-      'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams — not an org chart silo. Scope may be organisation-wide, one vertical, or a single team.',
+      'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams - not an org chart silo. Scope may be organisation-wide, one vertical, or a single team.',
     shape: 'square_dotted',
     shapeTeaching:
-      'Square corners with a dotted border — platform as a grouping boundary, not a single silo box.',
+      'Square corners with a dotted border - platform as a grouping boundary, not a single silo box.',
   },
   enabling: {
     topologyName: 'Enabling',
     zoneTitle: 'Enabling teams',
     purpose:
-      'Helps stream-aligned teams overcome obstacles and detect missing capabilities — then moves on rather than becoming a permanent delivery owner.',
+      'Helps stream-aligned teams overcome obstacles and detect missing capabilities - then moves on rather than becoming a permanent delivery owner.',
     teaching:
       'Enabling teams facilitate and coach across one or many streams. Facilitation is temporary and focused; they should not absorb long-term delivery ownership.',
     shape: 'rounded_vertical',
-    shapeTeaching: 'Vertical rounded rectangle — temporary uplift beside stream-aligned teams.',
+    shapeTeaching: 'Vertical rounded rectangle - temporary uplift beside stream-aligned teams.',
   },
   complicated_subsystem: {
     topologyName: 'Complicated subsystem',
     zoneTitle: 'Complicated subsystem',
     purpose:
-      'Where significant mathematics, calculation, or deep technical expertise is needed — a specialist team that reduces load on stream-aligned teams.',
+      'Where significant mathematics, calculation, or deep technical expertise is needed - a specialist team that reduces load on stream-aligned teams.',
     teaching:
       'Use sparingly. Place in a stream (not inside another team). Interaction mode shows how embedded they are with stream-aligned teams.',
     shape: 'octagon',
-    shapeTeaching: 'Octagon — rare specialty that would otherwise overload stream-aligned teams.',
+    shapeTeaching: 'Octagon - rare specialty that would otherwise overload stream-aligned teams.',
   },
 };
 
@@ -115,22 +115,22 @@ export const INTERACTION_MODE_COPY: Record<InteractionMode, InteractionModeCopy>
     teaching:
       'One team provides; another consumes with clear boundaries and minimal coordination cost.',
     shape: 'triangle',
-    shapeTeaching: 'Triangle — the point faces the consumer of the service.',
+    shapeTeaching: 'Triangle - the point faces the consumer of the service.',
   },
   collaboration: {
     modeName: 'Collaboration',
     sentenceVerb: 'collaborates with',
     teaching:
-      'Working closely together for a defined period to discover new APIs, practices, or technologies — high bandwidth, high cost; time-box it.',
+      'Working closely together for a defined period to discover new APIs, practices, or technologies - high bandwidth, high cost; time-box it.',
     shape: 'parallelogram',
-    shapeTeaching: 'Parallelogram — high-bandwidth discovery; keep it time-boxed.',
+    shapeTeaching: 'Parallelogram - high-bandwidth discovery; keep it time-boxed.',
   },
   facilitation: {
     modeName: 'Facilitation',
     sentenceVerb: 'facilitates',
-    teaching: 'One team helps and mentors another — temporary, focused enablement.',
+    teaching: 'One team helps and mentors another - temporary, focused enablement.',
     shape: 'circle',
-    shapeTeaching: 'Circle — temporary coaching and capability uplift.',
+    shapeTeaching: 'Circle - temporary coaching and capability uplift.',
   },
 };
 
@@ -155,7 +155,7 @@ export function normalizeInteractionMode(value: string): InteractionMode | strin
   return LEGACY_INTERACTION_MODE_ALIASES[value] ?? value;
 }
 
-/** Who a platform accelerates — org-wide, one vertical/domain, or one stream team. */
+/** Who a platform accelerates - org-wide, one vertical/domain, or one stream team. */
 export const PLATFORM_SCOPES = ['organisation', 'vertical', 'team'] as const;
 
 export type PlatformScope = (typeof PLATFORM_SCOPES)[number];
@@ -187,6 +187,6 @@ export type GroupingKind = (typeof GROUPING_KINDS)[number];
 export const GROUPING_KIND_COPY: Record<GroupingKind, { label: string; teaching: string }> = {
   platform: {
     label: 'Platform grouping',
-    teaching: 'Teams that share a platform purpose — a compelling internal product.',
+    teaching: 'Teams that share a platform purpose - a compelling internal product.',
   },
 };

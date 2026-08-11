@@ -1,6 +1,6 @@
 # Product guide
 
-How to use SteerLens as a **steering workspace**: open a session, align investment and team shape, write a decision, and export a board pack — without signing in or touching YAML.
+How to use SteerLens as a **steering workspace**: open a session, align investment and team shape, write a decision, and export a board pack - without signing in or touching YAML.
 
 Everything in Slice 1 stays on this device until you choose to connect systems later.
 
@@ -10,7 +10,7 @@ Everything in Slice 1 stays on this device until you choose to connect systems l
 | --------------------------------------- | -------------------------------------------------------------------------- |
 | Product Owner / CPO / Head of Product   | Own outcomes and funded bets; decide start / stop / continue with evidence |
 | Engineering Director / Head of Platform | Align team shape to bets; partner on start / stop / continue with evidence |
-| CTO or transformation sponsor           | Read a steering view and take a decision note — no tooling jargon          |
+| CTO or transformation sponsor           | Read a steering view and take a decision note - no tooling jargon          |
 | Staff+ (optional)                       | Later slices add a technical mode; the default UI stays executive          |
 
 Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Architecture diagrams stay in ArchLens. SteerLens holds the **investment contract**.
@@ -31,7 +31,7 @@ SteerLens is organised around how leadership already steers (EDGE’s invest / w
 | ---------- | ---------------------------- | ------------------------------------------------------------------------ |
 | **Invest** | Steering, Outcomes, Evidence | Are we funding the right bets for the outcomes we care about?            |
 | **Work**   | How work is organised        | Is team shape set up for fast flow of value?                             |
-| **Adapt**  | Decision notes, Export       | What should we start, stop, continue, or re-scope — and can we share it? |
+| **Adapt**  | Decision notes, Export       | What should we start, stop, continue, or re-scope - and can we share it? |
 
 ## EDGE beyond the Lean Value Tree
 
@@ -39,11 +39,11 @@ The Lean Value Tree (vision → outcomes + Measures of Success → bets) is the 
 
 | Teaching                        | In SteerLens                                                                                                                                                              |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product mindset**             | Long-lived teams fund continuous value — not temporary project theatre. A lightweight Product Blueprint (later) can name the customer problem without heavy requirements. |
+| **Product mindset**             | Long-lived teams fund continuous value - not temporary project theatre. A lightweight Product Blueprint (later) can name the customer problem without heavy requirements. |
 | **Tech@Core**                   | Capability bets and (later) architecture / radar refs treat tech debt and core systems as business investments, not a cost centre.                                        |
-| **Periodic Value Review (PVR)** | Decision notes + bet review dates: look at the data, double down or defund — no stage-gate bureaucracy. Executives see “value review”; staff+ may see PVR.                |
-| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain) and later mix cues cross-prioritise strategic work with BAU and capability — without SteerLens owning Jira.                  |
-| **Measures of Success**         | Customer-value fitness function tied to outcomes and bets — leading indicators that fund work, not vanity dashboards.                                                     |
+| **Periodic Value Review (PVR)** | Decision notes + bet review dates: look at the data, double down or defund - no stage-gate bureaucracy. Executives see “value review”; staff+ may see PVR.                |
+| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain) and later mix cues cross-prioritise strategic work with BAU and capability - without SteerLens owning Jira.                  |
+| **Measures of Success**         | Customer-value fitness function tied to outcomes and bets - leading indicators that fund work, not vanity dashboards.                                                     |
 | **Six principles**              | Outcome-based strategy; value-based prioritization; lightweight governance; adaptive learning; autonomous teams; decisions close to the work.                             |
 
 Full framework backlog: planning docs under `plan/docs/OPERATING_MODEL_ALIGNMENT.md`.
@@ -56,7 +56,7 @@ Portfolio view of **outcomes** and the **bets** funded against them: status, ali
 
 ### Outcomes
 
-Asks “are we getting the outcome?” Each outcome carries **Measures of Success** (leading indicators that shape funding — not a metrics warehouse) and the bets meant to move them.
+Asks “are we getting the outcome?” Each outcome carries **Measures of Success** (leading indicators that shape funding - not a metrics warehouse) and the bets meant to move them.
 
 ### Bet detail
 
@@ -64,20 +64,20 @@ Open a bet to edit success signal, kill criteria, linked measures, and which tea
 
 ### Evidence
 
-Sample or manually entered signals attached to outcomes and bets. Use this to ground a decision note in what was measured — not to replace your BI stack.
+Sample or manually entered signals attached to outcomes and bets. Use this to ground a decision note in what was measured - not to replace your BI stack.
 
 ### How work is organised
 
 Topology **intent** for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)):
 
-- **Four team types** — stream-aligned (the delivery spine), platform, enabling, complicated subsystem
-- **Three interaction modes** — X-as-a-Service, Collaboration, Facilitation
+- **Four team types** - stream-aligned (the delivery spine), platform, enabling, complicated subsystem
+- **Three interaction modes** - X-as-a-Service, Collaboration, Facilitation
 
-Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams — not four flat department columns — with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems nested inside streams; and enabling teams supporting many streams. Mismatch cues (for example platform overload) are calm prompts about flow — not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period.
+Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams - not four flat department columns - with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems nested inside streams; and enabling teams supporting many streams. Mismatch cues (for example platform overload) are calm prompts about flow - not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period.
 
 ### Decision notes
 
-One-page recommendations: start / stop / continue / re-scope, with why, what was measured, who is affected, and the next step. This is **Periodic Value Review** in practice — lightweight governance to rebalance the portfolio, not a PMO ticket.
+One-page recommendations: start / stop / continue / re-scope, with why, what was measured, who is affected, and the next step. This is **Periodic Value Review** in practice - lightweight governance to rebalance the portfolio, not a PMO ticket.
 
 ### Export
 
@@ -92,13 +92,13 @@ The sidebar shows whether the draft differs from what you opened. Review the dif
 | Term                   | Meaning                                                                            |
 | ---------------------- | ---------------------------------------------------------------------------------- |
 | **Outcome**            | Measurable change the organisation wants                                           |
-| **Measure of Success** | Leading indicator in the customer-value fitness function — shapes and funds work   |
+| **Measure of Success** | Leading indicator in the customer-value fitness function - shapes and funds work   |
 | **Bet**                | Time-boxed investment intended to move an outcome                                  |
 | **Kill criteria**      | Pre-agreed condition that triggers stop or re-scope                                |
-| **Value review (PVR)** | Frequent, data-informed start / stop / continue decision — not annual stage-gate   |
+| **Value review (PVR)** | Frequent, data-informed start / stop / continue decision - not annual stage-gate   |
 | **Product mindset**    | Long-lived teams delivering continuous value (vs temporary project teams)          |
 | **Tech@Core**          | Technology as the business engine; tech debt is an investment concern              |
-| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work — SteerLens cues the mix    |
+| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work - SteerLens cues the mix    |
 | **Topology intent**    | Desired team types, groupings, and interaction modes for fast flow (point-in-time) |
 | **Decision note**      | Start / stop / continue / re-scope recommendation with rationale                   |
 | **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`)                   |

@@ -127,7 +127,7 @@ export type OrganisationStreamOption = {
   domainTitle: string | null;
 };
 
-/** Zoomed-out flow-of-change lane — names only, no capacity detail (LVT overlay later). */
+/** Zoomed-out flow-of-change lane - names only, no capacity detail (LVT overlay later). */
 export type OrganisationOverviewLane = {
   id: string;
   title: string;
@@ -160,7 +160,7 @@ export type OrganisationDomainFocus = {
 };
 
 export type PresentOrganisationOptions = {
-  /** ISO date — project members and relationships as of this day. */
+  /** ISO date - project members and relationships as of this day. */
   asOf?: string | null;
   /** `auto` uses flow when streams or platform groupings exist. */
   layout?: OrganisationLayout | 'auto';
@@ -366,7 +366,7 @@ export function presentOrganisation(
 
   const teachingByView: Record<OrganisationViewMode, string> = {
     flow_of_change:
-      'Zoomed-out flow of change (left → right). Streams are the spine; platforms and enabling sit as support. Detail and people are hidden — Lean Value Tree overlay comes later.',
+      'Zoomed-out flow of change (left → right). Streams are the spine; platforms and enabling sit as support. Detail and people are hidden - Lean Value Tree overlay comes later.',
     as_is:
       layout === 'flow'
         ? 'As-is team shape for the selected day: streams, capacity, and interaction modes. Stream-aligned teams ideally own one stream; complicated subsystems sit in a stream; enabling facilitates one or many.'
@@ -378,13 +378,13 @@ export function presentOrganisation(
 
   return {
     workspaceTitle: projected.metadata.title ?? humanizeName(projected.metadata.name),
-    lead: 'Topology intent for fast flow of value — not an HR reporting chart.',
+    lead: 'Topology intent for fast flow of value - not an HR reporting chart.',
     teachingLine: teachingByView[viewMode],
     interactionTeaching:
-      'Only three interaction modes — and three shapes: X-as-a-Service (triangle), Collaboration (parallelogram), Facilitation (circle). Interaction mode shows how embedded support teams are.',
+      'Only three interaction modes - and three shapes: X-as-a-Service (triangle), Collaboration (parallelogram), Facilitation (circle). Interaction mode shows how embedded support teams are.',
     pointInTimeLine: asOf
       ? `Point in time: ${asOf}. Relationships and capacity will change as goals change.`
-      : 'This map is a point in time — pick a date to project capacity and relationships as of that day.',
+      : 'This map is a point in time - pick a date to project capacity and relationships as of that day.',
     asOf,
     layout,
     viewMode,
@@ -475,7 +475,7 @@ function buildDomainFocus(input: {
     internalEdges,
     externalEdges,
     externalTeams,
-    lead: `Domain “${domain.title}” — streams inside the vertical, with edges that leave the domain called out.`,
+    lead: `Domain “${domain.title}” - streams inside the vertical, with edges that leave the domain called out.`,
   };
 }
 function buildFlowModel(input: {
@@ -616,7 +616,7 @@ function presentTeamCard(
   const memberCount = members.length;
   const capacityLabel =
     memberCount === 0
-      ? 'No people yet — add or drag someone here'
+      ? 'No people yet - add or drag someone here'
       : `${memberCount} ${memberCount === 1 ? 'person' : 'people'} · ${formatFte(fteTotal)} FTE`;
   const platformScope = team.platformScope ?? null;
   const streamIds = team.streamIds ?? [];
@@ -695,7 +695,7 @@ function resolveTeamStreamIds(
     if (!firstStreamId) {
       return {
         ok: false,
-        error: 'That domain has no streams yet — add a stream before placing a team in it.',
+        error: 'That domain has no streams yet - add a stream before placing a team in it.',
       };
     }
     if (needsStream) {

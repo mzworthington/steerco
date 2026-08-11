@@ -58,7 +58,7 @@ describe('createNewWorkspaceFile', () => {
     });
 
     // Without injecting pickDirectory and without showDirectoryPicker, falls through to download.
-    // In jsdom there is no showDirectoryPicker — so this path should run.
+    // In jsdom there is no showDirectoryPicker - so this path should run.
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.method).toBe('download');

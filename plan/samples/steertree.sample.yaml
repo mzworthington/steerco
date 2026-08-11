@@ -5,7 +5,7 @@ metadata:
   title: Northwind Q3 alignment
   description: >
     Synthetic ~289-person retailer demo (~269 FTE across 37 teams,
-    6 domains). Not a real programme — sized to exercise flow-of-change, as-is, and domain zoom.
+    6 domains). Not a real programme - sized to exercise flow-of-change, as-is, and domain zoom.
 spec:
   vision: Ship customer promises in days, not weeks, without burning out store and digital teams
   outcomes:
@@ -2098,7 +2098,7 @@ spec:
     - id: ev_wait
       metricId: met_shared_wait
       source: sample
-      note: Shared-service wait — sample bottleneck signal for two bets
+      note: Shared-service wait - sample bottleneck signal for two bets
     - id: ev_pos
       metricId: met_pos_uptime
       source: sample

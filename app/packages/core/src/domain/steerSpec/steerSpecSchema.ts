@@ -80,7 +80,7 @@ const betSchema = z
     status: statusBetSchema,
     fundedTeamIds: z.array(z.string()).default([]),
     systemRefs: z.array(z.string()).default([]),
-    /** Measure-of-Success links — metric ids this bet is judged against. */
+    /** Measure-of-Success links - metric ids this bet is judged against. */
     metricIds: z.array(z.string()).default([]),
     primaryMetricId: z.string().nullable().optional(),
     /** ISO date (YYYY-MM-DD preferred) for the next funding review. */
@@ -105,13 +105,13 @@ const teamMemberSchema = z
   .object({
     id: z.string().min(1),
     displayName: z.string().min(1),
-    /** Coarse discipline for mix / capacity advice — not the Team Topologies team type. */
+    /** Coarse discipline for mix / capacity advice - not the Team Topologies team type. */
     discipline: memberDisciplineSchema,
     /** Free-text job title for board packs and diffs. */
     title: z.string().min(1),
     /** Allocation to this team as a percentage of one FTE (0–100). */
     ftePercent: z.number().min(0).max(100),
-    /** ISO date capacity window — when this allocation starts/ends. */
+    /** ISO date capacity window - when this allocation starts/ends. */
     effectiveFrom: z.string().optional(),
     effectiveUntil: z.string().optional(),
   })
@@ -142,7 +142,7 @@ const teamSchema = z
     provenance: provenanceSchema,
     externalRefs: z.array(externalRefSchema).default([]),
     members: z.array(teamMemberSchema).default([]),
-    /** Who this platform accelerates — meaningful when role is platform. */
+    /** Who this platform accelerates - meaningful when role is platform. */
     platformScope: platformScopeSchema.optional(),
     /**
      * Streams this team belongs to.
@@ -170,7 +170,7 @@ const relationshipSchema = z
     toTeamId: z.string().min(1),
     /** Team Topologies interaction mode. */
     mode: interactionModeSchema,
-    /** ISO date — time-box for collaboration/facilitation; expected to end. */
+    /** ISO date - time-box for collaboration/facilitation; expected to end. */
     expectedUntil: z.string().optional(),
     effectiveFrom: z.string().optional(),
     effectiveUntil: z.string().optional(),
@@ -185,7 +185,7 @@ const decisionNoteSchema = z
     title: z.string().min(1),
     why: z.string().min(1),
     measured: z.array(z.string()).default([]),
-    /** Structured Measure-of-Success refs — metric ids this decision cites. */
+    /** Structured Measure-of-Success refs - metric ids this decision cites. */
     measuredMetricIds: z.array(z.string()).default([]),
     affectedTeamIds: z.array(z.string()).default([]),
     nextStep: z.string().min(1),
@@ -200,7 +200,7 @@ const topologyEventSchema = z
     kind: topologyEventKindSchema,
     summary: z.string().min(1),
     teamIds: z.array(z.string()).default([]),
-    /** `fromTeamId::toTeamId` — links back to the relationship this event describes. */
+    /** `fromTeamId::toTeamId` - links back to the relationship this event describes. */
     relationshipKey: z.string().optional(),
   })
   .strict();
@@ -231,7 +231,7 @@ const specSchema = z
     outcomes: z.array(outcomeSchema),
     bets: z.array(betSchema),
     teams: z.array(teamSchema),
-    /** Flow of change slices — stream-aligned teams ideally align to one. */
+    /** Flow of change slices - stream-aligned teams ideally align to one. */
     streams: z.array(streamSchema).default([]),
     /** Optional groupings of streams (vertical / bounded context). */
     domains: z.array(domainSchema).default([]),

@@ -22,7 +22,7 @@ export function DesignSystemPage() {
         <p className="eyebrow">Executive · stone &amp; ocean</p>
         <h1>Design system</h1>
         <p>
-          Light editorial language for SteerLens — board-pack calm, deep ocean accent, serif titles.
+          Light editorial language for SteerLens - board-pack calm, deep ocean accent, serif titles.
           Tokens live in{' '}
           <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             app/src/index.css
@@ -75,7 +75,7 @@ function IdentityPanel() {
         <p>
           Product name as a hero-level serif signal. Motif is two circles + a northeast arrowhead;
           square surfaces (nav, favicon, app icons) use the arrow alone. First viewport: brand, one
-          headline, one lead line, one CTA group — not a dashboard of cards.
+          headline, one lead line, one CTA group - not a dashboard of cards.
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div className="surface flex items-center gap-4">
@@ -112,7 +112,7 @@ function IdentityPanel() {
       <section className="ds-section">
         <h2>Typography</h2>
         <p>
-          Fraunces for editorial titles and the wordmark; Plus Jakarta Sans for UI and body — not
+          Fraunces for editorial titles and the wordmark; Plus Jakarta Sans for UI and body - not
           Inter or Roboto.
         </p>
         <div className="type-stack">
@@ -124,7 +124,7 @@ function IdentityPanel() {
             <p className="eyebrow">Body · Plus Jakarta Sans</p>
             <p className="type-sample-body mt-2">
               Strategy, team shape, and evidence stay aligned. Status, confidence, and next steps
-              read at board-pack density — generous whitespace, clear hierarchy.
+              read at board-pack density - generous whitespace, clear hierarchy.
             </p>
           </div>
           <div>
@@ -287,7 +287,7 @@ function ComponentsPanel() {
 
       <section className="ds-section">
         <h2>Status</h2>
-        <p>Executive status language from the mockups — ocean, amber, coral, signal.</p>
+        <p>Executive status language from the mockups - ocean, amber, coral, signal.</p>
         <div className="status-row">
           <span className="status-on-track">
             <span className="status-dot bg-ocean" aria-hidden />

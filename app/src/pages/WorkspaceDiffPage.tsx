@@ -73,7 +73,7 @@ export function WorkspaceDiffPage() {
         <p className="eyebrow">Pending draft changes</p>
         <h1 className="workspace-diff-title">What changed</h1>
         <p className="workspace-diff-lead">
-          Compare this session’s working SteerSpec to the last opened or saved baseline — then
+          Compare this session’s working SteerSpec to the last opened or saved baseline - then
           revert or save.
         </p>
         <p className="workspace-diff-summary" data-testid="workspace-diff-summary">

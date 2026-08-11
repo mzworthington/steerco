@@ -4,7 +4,7 @@ import { SITE_DESCRIPTION, SITE_NAME } from '../siteConfig';
 
 export function ComingSoonPage() {
   useEffect(() => {
-    document.title = `${SITE_NAME} — Coming Soon`;
+    document.title = `${SITE_NAME} - Coming Soon`;
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute('content', SITE_DESCRIPTION);
   }, []);

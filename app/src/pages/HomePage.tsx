@@ -19,7 +19,7 @@ export function HomePage() {
         <h1 className="hero-brand">{SITE_NAME}</h1>
         <p className="hero-lead">{SITE_TAGLINE}</p>
         <p className="hero-supporting text-ink-muted mx-auto mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
-          Align outcomes, funded bets, and team shape in a local workspace — then leave with a
+          Align outcomes, funded bets, and team shape in a local workspace - then leave with a
           decision note fit for a board pack.
         </p>
         <div className="hero-actions">

@@ -92,7 +92,7 @@ export function EvidencePage() {
       </header>
 
       {model.cards.length === 0 ? (
-        <p className="evidence-empty">No measures of success yet — add them on Outcomes.</p>
+        <p className="evidence-empty">No measures of success yet - add them on Outcomes.</p>
       ) : (
         <ul className="evidence-grid">
           {model.cards.map((card) => {
@@ -180,7 +180,7 @@ export function EvidencePage() {
       {model.cards.length > 0 ? (
         <footer className="evidence-footer">
           <p className="evidence-footer-note">
-            These readings stay on this device. Live connectors land later — until then, treat
+            These readings stay on this device. Live connectors land later - until then, treat
             sample figures as illustrative.
           </p>
           <button

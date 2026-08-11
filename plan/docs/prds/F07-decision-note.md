@@ -1,7 +1,7 @@
 # PRD F07 - Decision note
 
 **Slice:** 1 · **Mockup:** `steerlens-exec-03-decision-note.png`  
-**Frameworks:** EDGE Periodic Value Review (PVR) / lightweight governance — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE Periodic Value Review (PVR) / lightweight governance - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
 
@@ -9,7 +9,7 @@ Steering committees need a one-page recommendation, not a slide archaeology dig.
 
 ## Goal
 
-Author start / continue / stop / re-scope notes with why, measured, who is affected, next step — the **Periodic Value Review** artifact that closes the invest/adapt loop (double down or defund without stage-gate theatre).
+Author start / continue / stop / re-scope notes with why, measured, who is affected, next step - the **Periodic Value Review** artifact that closes the invest/adapt loop (double down or defund without stage-gate theatre).
 
 ## User stories
 

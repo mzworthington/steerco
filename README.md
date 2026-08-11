@@ -1,10 +1,10 @@
 # SteerLens
 
-SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned — and decide what to start, stop, or continue.
+SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned - and decide what to start, stop, or continue.
 
 ## Overview
 
-Jira plans work. Backstage catalogs systems. Directories catalog people. SteerLens holds the **investment contract**: outcomes, funded bets, topology intent, and decision notes — as a local-first board pack, not another system of record.
+Jira plans work. Backstage catalogs systems. Directories catalog people. SteerLens holds the **investment contract**: outcomes, funded bets, topology intent, and decision notes - as a local-first board pack, not another system of record.
 
 Product planning lives under [`plan/`](./plan/). Implementation is under [`app/`](./app/) (`@steerlens/app` + `@steerlens/core`). Architecture decisions: [`docs/ADRs/`](./docs/ADRs/).
 

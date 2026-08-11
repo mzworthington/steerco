@@ -119,7 +119,7 @@ export function DecisionNotesPage() {
         <p className="eyebrow">Decision note · for board review</p>
         <h1 className="decision-notes-title">Decision notes</h1>
         <p className="decision-notes-lead">
-          One-page start / continue / stop / re-scope recommendations — lightweight governance, not
+          One-page start / continue / stop / re-scope recommendations - lightweight governance, not
           a slide archaeology dig.
         </p>
       </header>

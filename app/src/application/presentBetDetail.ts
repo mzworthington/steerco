@@ -293,7 +293,7 @@ function presentBetDeliveryTeams(
     if (inboundServiceCount >= DEFAULT_PLATFORM_OVERLOAD_THRESHOLD) {
       cues.push({
         kind: 'overloaded',
-        label: `${inboundServiceCount} teams use this as a service — cognitive-load and flow risk`,
+        label: `${inboundServiceCount} teams use this as a service - cognitive-load and flow risk`,
       });
     } else if (inboundServiceCount >= MANY_DEPENDENTS_THRESHOLD) {
       cues.push({
@@ -413,7 +413,7 @@ function presentBetFlowOverlay(
     asOf,
     lead: asOf
       ? `Who sits on this bet’s flow of change as of ${asOf}.`
-      : 'Who sits on this bet’s flow of change — funded streams plus related platform, enabling, and subsystem interactions.',
+      : 'Who sits on this bet’s flow of change - funded streams plus related platform, enabling, and subsystem interactions.',
     participants,
     edges,
   };
@@ -444,7 +444,7 @@ export function validateBetDetailDraft(draft: BetDetailDraft): BetDetailValidati
   if (draft.fundedTeamIds.length === 0) {
     warnings.push({
       field: 'fundedTeamIds',
-      message: 'No funded teams yet — assign who delivers this bet when you can.',
+      message: 'No funded teams yet - assign who delivers this bet when you can.',
     });
   }
   const hasMosLink = draft.metricIds.length > 0 || Boolean(draft.primaryMetricId);
@@ -452,7 +452,7 @@ export function validateBetDetailDraft(draft: BetDetailDraft): BetDetailValidati
     warnings.push({
       field: 'metricIds',
       message:
-        'This bet is active but has no linked Measure of Success — steering conversations need a number to point at.',
+        'This bet is active but has no linked Measure of Success - steering conversations need a number to point at.',
     });
   }
 

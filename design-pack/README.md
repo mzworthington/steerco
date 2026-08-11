@@ -1,6 +1,6 @@
 # Design pack
 
-SteerLens brand assets — circles + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
+SteerLens brand assets - circles + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
 
 Live swatches: `/docs/design-system`. Written guide: `docs/design-system.md`.
 
@@ -32,10 +32,10 @@ Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v
 
 | File | Purpose |
 | --- | --- |
-| `mark.svg` / `mark.png` | Light square logo — arrow only (500×500) |
-| `mark-dark.svg` / `mark-dark.png` | Dark square logo — arrow only (500×500) |
+| `mark.svg` / `mark.png` | Light square logo - arrow only (500×500) |
+| `mark-dark.svg` / `mark-dark.png` | Dark square logo - arrow only (500×500) |
 | `mark-lockup.svg` / `mark-lockup.png` | Wide circles + arrow motif |
-| `favicon.svg` / `favicon.png` | Tab icon — arrow only |
+| `favicon.svg` / `favicon.png` | Tab icon - arrow only |
 | `grid.svg` | Repeatable paper grid tile |
 | `social-share.svg` / `social-share.png` | Open Graph / Twitter card (1200×630) |
 

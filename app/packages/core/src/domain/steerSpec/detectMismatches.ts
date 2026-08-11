@@ -17,9 +17,9 @@ export type SteerMismatchCode =
   | 'stream_aligned_multi_stream'
   | 'css_without_stream';
 
-/** Bet statuses considered "active" — funded and being steered, not just proposed or closed out. */
+/** Bet statuses considered "active" - funded and being steered, not just proposed or closed out. */
 const ACTIVE_BET_STATUSES = new Set(['on_track', 'at_risk', 'stop_ready']);
-/** Bet statuses that count toward work-in-progress — active plus proposed-but-not-yet-started. */
+/** Bet statuses that count toward work-in-progress - active plus proposed-but-not-yet-started. */
 const WIP_BET_STATUSES = new Set(['proposed', 'on_track', 'at_risk', 'stop_ready']);
 /** Interaction modes expected to be temporary and therefore worth time-boxing. */
 const TIME_BOXABLE_MODES = new Set(['collaboration', 'facilitation']);
@@ -74,7 +74,7 @@ export function detectSteerSpecMismatches(
         code: 'bet_without_mos_link',
         severity: 'warning',
         title: 'Bet without a Measure of Success link',
-        headline: `“${bet.title}” is active but has no linked metric — steering conversations need a number to point at.`,
+        headline: `“${bet.title}” is active but has no linked metric - steering conversations need a number to point at.`,
         relatedBetIds: [bet.id],
       });
     }
@@ -116,7 +116,7 @@ export function detectSteerSpecMismatches(
         code: 'platform_overload',
         severity: 'warning',
         title: 'Platform under heavy load',
-        headline: `“${team.displayName}” has ${dependents.length} teams using it as a service — a cognitive-load and flow risk for those dependents, not a headcount problem.`,
+        headline: `“${team.displayName}” has ${dependents.length} teams using it as a service - a cognitive-load and flow risk for those dependents, not a headcount problem.`,
         relatedTeamIds: [team.id, ...dependents.map((item) => item.fromTeamId)],
       });
     }
@@ -130,7 +130,7 @@ export function detectSteerSpecMismatches(
       code: 'collab_without_end',
       severity: 'warning',
       title: 'Time-boxed interaction without an end date',
-      headline: `“${from?.displayName ?? relationship.fromTeamId}” → “${to?.displayName ?? relationship.toTeamId}” (${relationship.mode}) has no expectedUntil — collaboration and facilitation are meant to be temporary.`,
+      headline: `“${from?.displayName ?? relationship.fromTeamId}” → “${to?.displayName ?? relationship.toTeamId}” (${relationship.mode}) has no expectedUntil - collaboration and facilitation are meant to be temporary.`,
       relatedTeamIds: [relationship.fromTeamId, relationship.toTeamId],
     });
   }
@@ -145,7 +145,7 @@ export function detectSteerSpecMismatches(
         code: 'stream_bet_wip',
         severity: 'warning',
         title: 'Stream-aligned team stretched across too many active bets',
-        headline: `“${team.displayName}” is funded on ${activeBets.length} active bets at once — a work-in-progress risk, not a headcount problem.`,
+        headline: `“${team.displayName}” is funded on ${activeBets.length} active bets at once - a work-in-progress risk, not a headcount problem.`,
         relatedTeamIds: [team.id],
         relatedBetIds: activeBets.map((bet) => bet.id),
       });
@@ -160,7 +160,7 @@ export function detectSteerSpecMismatches(
         code: 'enabling_owns_delivery',
         severity: 'warning',
         title: 'Enabling team carrying sole delivery ownership',
-        headline: `“${soleTeam.displayName}” is the only funded team on “${bet.title}” — enabling teams should coach delivery, not own it long-term.`,
+        headline: `“${soleTeam.displayName}” is the only funded team on “${bet.title}” - enabling teams should coach delivery, not own it long-term.`,
         relatedTeamIds: [soleTeam.id],
         relatedBetIds: [bet.id],
       });
@@ -176,7 +176,7 @@ export function detectSteerSpecMismatches(
         code: 'stream_missing_product',
         severity: 'warning',
         title: 'Stream team without product capacity',
-        headline: `“${team.displayName}” has members recorded but no product discipline FTE — discovery and outcome framing may stall.`,
+        headline: `“${team.displayName}” has members recorded but no product discipline FTE - discovery and outcome framing may stall.`,
         relatedTeamIds: [team.id],
       });
     }
@@ -190,7 +190,7 @@ export function detectSteerSpecMismatches(
           code: 'stream_aligned_without_stream',
           severity: 'warning',
           title: 'Stream-aligned team without a stream',
-          headline: `“${team.displayName}” is stream-aligned but not assigned to a stream — ideally one team owns one flow of change end-to-end.`,
+          headline: `“${team.displayName}” is stream-aligned but not assigned to a stream - ideally one team owns one flow of change end-to-end.`,
           relatedTeamIds: [team.id],
         });
       } else if (streamIds.length > 1) {
@@ -198,7 +198,7 @@ export function detectSteerSpecMismatches(
           code: 'stream_aligned_multi_stream',
           severity: 'warning',
           title: 'Stream-aligned team across multiple streams',
-          headline: `“${team.displayName}” is aligned to ${streamIds.length} streams — allowed to model reality, but ideal is one stream per stream-aligned team to protect cognitive load and flow.`,
+          headline: `“${team.displayName}” is aligned to ${streamIds.length} streams - allowed to model reality, but ideal is one stream per stream-aligned team to protect cognitive load and flow.`,
           relatedTeamIds: [team.id],
         });
       }
@@ -208,7 +208,7 @@ export function detectSteerSpecMismatches(
         code: 'css_without_stream',
         severity: 'warning',
         title: 'Complicated subsystem outside a stream',
-        headline: `“${team.displayName}” is a complicated subsystem with no stream — place it in a stream and use interaction modes (X-as-a-Service / Collaboration) to show how embedded it is.`,
+        headline: `“${team.displayName}” is a complicated subsystem with no stream - place it in a stream and use interaction modes (X-as-a-Service / Collaboration) to show how embedded it is.`,
         relatedTeamIds: [team.id],
       });
     }

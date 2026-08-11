@@ -79,7 +79,7 @@ function hrefForSlug(slug: string): string {
   return slug === '' ? '/docs' : `/docs/${slug}`;
 }
 
-/** Sidebar groups — Product first; build docs are secondary. */
+/** Sidebar groups - Product first; build docs are secondary. */
 export function docsNavSections(): DocNavSection[] {
   const productEntries: DocNavEntry[] = [
     { href: '/docs', title: 'Overview' },

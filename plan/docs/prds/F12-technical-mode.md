@@ -1,7 +1,7 @@
 # PRD F12 - Technical mode
 
 **Slice:** 2+ · **Mockups:** `technical/steerlens-01-steer-tree.png`, `technical/steerlens-02-topology-fitness.png`  
-**Frameworks:** EDGE + Team Topologies vocabulary bridge for staff+ — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE + Team Topologies vocabulary bridge for staff+ - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
 
@@ -9,7 +9,7 @@ Staff+ engineers need refs, provenance, and write-back policy without forcing ex
 
 ## Goal
 
-Secondary surface for SteerSpec detail, topology fitness with policy panel, and advanced exports — including explicit Goal / MoS / stream-aligned / platform grouping aliases **and** EDGE-beyond-LVT terms (PVR, Product Blueprint, Tech@Core, Integrated Backlog, six principles) without changing executive chrome.
+Secondary surface for SteerSpec detail, topology fitness with policy panel, and advanced exports - including explicit Goal / MoS / stream-aligned / platform grouping aliases **and** EDGE-beyond-LVT terms (PVR, Product Blueprint, Tech@Core, Integrated Backlog, six principles) without changing executive chrome.
 
 ## User stories
 

@@ -196,7 +196,7 @@ export function OrganisationPage() {
       {model.empty ? (
         <div className="organisation-empty" data-testid="organisation-empty">
           <p className="organisation-empty-lead">
-            Add the teams that deliver your bets — names, Team Topologies type, and domain.
+            Add the teams that deliver your bets - names, Team Topologies type, and domain.
           </p>
           <p className="organisation-empty-tip">
             Tip: Stick to the four fundamental shapes. Platform teams accelerate stream-aligned

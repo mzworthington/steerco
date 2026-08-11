@@ -1,8 +1,8 @@
 # SteerLens
 
-**Investment alignment for product leaders** — a board-pack you can interact with.
+**Investment alignment for product leaders** - a board-pack you can interact with.
 
-SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned — and decide what to start, stop, or continue. It is intentionally **not** Jira, not an org directory, and not a service catalog.
+SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned - and decide what to start, stop, or continue. It is intentionally **not** Jira, not an org directory, and not a service catalog.
 
 | Related                               | Role                                                           |
 | ------------------------------------- | -------------------------------------------------------------- |
@@ -36,13 +36,13 @@ Canonical ADRs: [`docs/ADRs/`](../docs/ADRs/) (tech stack, local-first, suite re
 
 ## Slice direction (summary)
 
-- **Slice 1** — Local only; open a folder; edit SteerSpec; export a board pack; EDGE/TT copy & Invest/Work/Adapt pack (no schema break)
-- **Slice 1.5** — Additive SteerSpec for MoS links, funding review cues, TT roles/time-boxes, richer mismatches
-- **Slice 2+** — Auth and connectors (Backstage / GitHub / Entra); Technical mode vocabulary bridge
-- **Slice 3** — Groupings / initiatives / suite links (ArchLens, CI)
+- **Slice 1** - Local only; open a folder; edit SteerSpec; export a board pack; EDGE/TT copy & Invest/Work/Adapt pack (no schema break)
+- **Slice 1.5** - Additive SteerSpec for MoS links, funding review cues, TT roles/time-boxes, richer mismatches
+- **Slice 2+** - Auth and connectors (Backstage / GitHub / Entra); Technical mode vocabulary bridge
+- **Slice 3** - Groupings / initiatives / suite links (ArchLens, CI)
 
 Full roadmap: [docs/ROADMAP.md](./docs/ROADMAP.md). Framework backlog: [docs/OPERATING_MODEL_ALIGNMENT.md](./docs/OPERATING_MODEL_ALIGNMENT.md).
 
 ## One-liner
 
-> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerLens contracts how outcomes, bets, topology intent, and evidence stay aligned — and when to stop.
+> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerLens contracts how outcomes, bets, topology intent, and evidence stay aligned - and when to stop.

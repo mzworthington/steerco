@@ -293,7 +293,7 @@ export function BetDetailPage() {
           </h2>
           <p className="bet-detail-teams-lead">
             Teams grouped by domain. Interaction modes and load cues show how each team sits in the
-            topology — not just who is funded.
+            topology - not just who is funded.
           </p>
           <fieldset className="bet-detail-teams" data-testid="bet-who-delivers">
             <legend className="sr-only">Funded teams by domain</legend>

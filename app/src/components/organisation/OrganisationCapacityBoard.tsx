@@ -141,7 +141,7 @@ export function OrganisationCapacityBoard({
       <div className="organisation-capacity-intro">
         <p className="organisation-capacity-lead">
           Drag people between Team Topologies shapes to reallocate capacity. Click a person to tune
-          FTE, title, and dates — or add someone directly onto a team.
+          FTE, title, and dates - or add someone directly onto a team.
         </p>
       </div>
 
@@ -172,7 +172,7 @@ export function OrganisationCapacityBoard({
                   ) : null}
                   <p className="organisation-flow-band-hint">
                     {band.kind === 'stream'
-                      ? 'Stream — stream-aligned teams ideally own this flow end-to-end'
+                      ? 'Stream - stream-aligned teams ideally own this flow end-to-end'
                       : 'Teams not yet assigned to a stream'}
                   </p>
                   <div className="organisation-flow-team-row">
@@ -219,7 +219,7 @@ export function OrganisationCapacityBoard({
                   Enabling
                 </h3>
                 <p className="organisation-flow-band-hint">
-                  Facilitation across one or many streams — temporary capability uplift
+                  Facilitation across one or many streams - temporary capability uplift
                 </p>
                 <ul className="organisation-flow-enabling-list">
                   {flow.enabling.map((item) => (

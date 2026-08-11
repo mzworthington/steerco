@@ -51,7 +51,7 @@ export type OutcomeMetricEditResult = { ok: true; value: SteerSpec } | { ok: fal
 export function presentOutcomes(spec: SteerSpec): OutcomesModel {
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
-    framingLine: 'Measures of success for this outcome — not a status dashboard.',
+    framingLine: 'Measures of success for this outcome - not a status dashboard.',
     outcomes: spec.spec.outcomes.map((outcome) => {
       const outcomeBets = spec.spec.bets.filter((bet) => bet.outcomeId === outcome.id);
       return {
@@ -173,13 +173,13 @@ function presentMeasure(
   const current = typeof metric.current === 'number' ? metric.current : null;
   const baseline = typeof metric.baseline === 'number' ? metric.baseline : null;
   const target = typeof metric.target === 'number' ? metric.target : null;
-  const displayValue = current === null ? '—' : formatMeasureNumber(current, unit ?? undefined);
+  const displayValue = current === null ? '-' : formatMeasureNumber(current, unit ?? undefined);
   const interpretation =
     metric.interpretation?.trim() ||
     buildInterpretation({ title: metric.title, current, baseline, target, unit });
   const textAlternative = [
     metric.title,
-    displayValue === '—' ? 'no current value' : `current ${displayValue}`,
+    displayValue === '-' ? 'no current value' : `current ${displayValue}`,
     target === null ? null : `target ${formatMeasureNumber(target, unit ?? undefined)}`,
     interpretation,
   ]

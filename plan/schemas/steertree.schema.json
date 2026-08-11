@@ -59,7 +59,7 @@
           "type": "array",
           "items": { "$ref": "#/$defs/topologyEvent" },
           "default": [],
-          "description": "Timeline of capacity and relationship changes — Slice 1.5"
+          "description": "Timeline of capacity and relationship changes - Slice 1.5"
         }
       }
     }
@@ -91,7 +91,7 @@
         "title": {
           "type": "string",
           "minLength": 1,
-          "description": "Free-text job title for board packs and diffs — not the Team Topologies team type"
+          "description": "Free-text job title for board packs and diffs - not the Team Topologies team type"
         },
         "ftePercent": {
           "type": "number",
@@ -101,11 +101,11 @@
         },
         "effectiveFrom": {
           "type": "string",
-          "description": "ISO date this allocation starts — Slice 1.5"
+          "description": "ISO date this allocation starts - Slice 1.5"
         },
         "effectiveUntil": {
           "type": "string",
-          "description": "ISO date this allocation ends — Slice 1.5"
+          "description": "ISO date this allocation ends - Slice 1.5"
         }
       }
     },
@@ -202,7 +202,7 @@
           "type": "array",
           "items": { "type": "string" },
           "default": [],
-          "description": "Measure-of-Success links — metric ids this bet is judged against"
+          "description": "Measure-of-Success links - metric ids this bet is judged against"
         },
         "primaryMetricId": {
           "type": ["string", "null"],
@@ -238,7 +238,7 @@
           "type": "array",
           "items": { "$ref": "#/$defs/teamMember" },
           "default": [],
-          "description": "Optional roster with disciplines, job titles, and FTE allocation — steering capacity signal, not an HR system of record"
+          "description": "Optional roster with disciplines, job titles, and FTE allocation - steering capacity signal, not an HR system of record"
         }
       }
     },
@@ -264,15 +264,15 @@
         "mode": { "$ref": "#/$defs/interactionMode" },
         "expectedUntil": {
           "type": "string",
-          "description": "ISO date time-box for collaboration/facilitation — Slice 1.5"
+          "description": "ISO date time-box for collaboration/facilitation - Slice 1.5"
         },
         "effectiveFrom": {
           "type": "string",
-          "description": "ISO date this relationship starts — Slice 1.5"
+          "description": "ISO date this relationship starts - Slice 1.5"
         },
         "effectiveUntil": {
           "type": "string",
-          "description": "ISO date this relationship ends — Slice 1.5"
+          "description": "ISO date this relationship ends - Slice 1.5"
         }
       }
     },
@@ -295,7 +295,7 @@
           "type": "array",
           "items": { "type": "string" },
           "default": [],
-          "description": "Structured Measure-of-Success refs — metric ids this decision cites"
+          "description": "Structured Measure-of-Success refs - metric ids this decision cites"
         },
         "affectedTeamIds": {
           "type": "array",
@@ -335,7 +335,7 @@
         },
         "relationshipKey": {
           "type": "string",
-          "description": "fromTeamId::toTeamId — links back to the relationship this event describes"
+          "description": "fromTeamId::toTeamId - links back to the relationship this event describes"
         }
       }
     }

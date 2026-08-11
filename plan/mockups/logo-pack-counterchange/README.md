@@ -1,4 +1,4 @@
-# Logo pack — counterchange disc
+# Logo pack - counterchange disc
 
 Partner exploration mark (Aug 2026) and vector alternatives for SteerLens review.
 
@@ -11,18 +11,18 @@ Shipped brand today (for comparison): [`../../../design-pack/`](../../../design-
 
 ### What it is doing well
 
-- **Counterchange** (black-on-white / white-on-black across a hard horizon) is a strong, memorable device — reads as “above / below the line,” which fits steering, decision cutovers, and board-pack clarity.
+- **Counterchange** (black-on-white / white-on-black across a hard horizon) is a strong, memorable device - reads as “above / below the line,” which fits steering, decision cutovers, and board-pack clarity.
 - The **circular container** gives an app-icon and favicon silhouette without extra chrome.
 - The motif is **abstract enough** to avoid looking like a generic SaaS play-button, while still suggesting direction.
-- High contrast works in mono; colour is not load-bearing (good — colour stays free).
+- High contrast works in mono; colour is not load-bearing (good - colour stays free).
 
 ### What feels unresolved
 
-1. **Asymmetry of language** — the upper blade is a hard triangle; the lower blade is a scooped drop. That contrast can look intentional (sail + keel) or unfinished, depending on size. At 16–24px the curve collapses and the mark reads as “uneven.”
-2. **Directional ambiguity** — pixel trace shows the upper tip bearing ~2 o’clock and the lower tip at ~6 o’clock. Together they can read as bird / paper-plane / split arrow. “Steer” is present but not immediate.
-3. **Optical join** — the shared base on the horizon is the brand idea; any gap, anti-alias fringing, or off-centre bottom tip weakens it. The source PNG’s lower tip sits slightly left of centre.
-4. **Pure black / pure white** — fine for a mockup; in product UI it will clash with ink (`#041c38`) and paper (`#f7f5f3`). Treat mono as a construction drawing, not the shipping colourway.
-5. **No wordmark path yet** — the disc is complete as a *mark*. “Wider logo” should not mean stretching the disc.
+1. **Asymmetry of language** - the upper blade is a hard triangle; the lower blade is a scooped drop. That contrast can look intentional (sail + keel) or unfinished, depending on size. At 16–24px the curve collapses and the mark reads as “uneven.”
+2. **Directional ambiguity** - pixel trace shows the upper tip bearing ~2 o’clock and the lower tip at ~6 o’clock. Together they can read as bird / paper-plane / split arrow. “Steer” is present but not immediate.
+3. **Optical join** - the shared base on the horizon is the brand idea; any gap, anti-alias fringing, or off-centre bottom tip weakens it. The source PNG’s lower tip sits slightly left of centre.
+4. **Pure black / pure white** - fine for a mockup; in product UI it will clash with ink (`#041c38`) and paper (`#f7f5f3`). Treat mono as a construction drawing, not the shipping colourway.
+5. **No wordmark path yet** - the disc is complete as a *mark*. “Wider logo” should not mean stretching the disc.
 
 ### Is a wider logo necessary?
 
@@ -47,7 +47,7 @@ Recommendation: keep one refined circular mark; pair it with a horizontal lockup
 | C | Decide: keep mixed language **or** harmonise | `02` keeps triangle + scoop; `03`/`04` remove the accident |
 | D | Offer a clearer east-pointing chevron | `05` tests a stronger “steer” read |
 | E | Chunk geometry for favicon | `12` thickens blades so 16px still counterchanges |
-| F | Recolour with product tokens | `09`–`11` — ink / ocean / paper, not #000/#fff |
+| F | Recolour with product tokens | `09`–`11` - ink / ocean / paper, not #000/#fff |
 | G | Add wordmark lockups, don’t stretch the mark | `07`, `08`, optional `13` |
 
 ---
@@ -58,7 +58,7 @@ Recommendation: keep one refined circular mark; pair it with a horizontal lockup
 | --- | --- |
 | `00-source-partner.png` | Original partner mockup |
 | `01-faithful.svg` | Clean vector of the mockup (mono) |
-| `02-refined.svg` | **Primary candidate** — same idea, fixed join / centring / curves |
+| `02-refined.svg` | **Primary candidate** - same idea, fixed join / centring / curves |
 | `03-harmonized-straight.svg` | Both blades triangular |
 | `04-harmonized-curved.svg` | Both blades scooped (sail/lens) |
 | `05-steer-chevron.svg` | Counterchange chevron pointing east |

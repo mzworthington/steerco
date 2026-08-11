@@ -3,7 +3,7 @@ import { steerSpecSchema, type SteerSpec } from '@steerlens/core';
 export const BLANK_WORKSPACE_LABEL = 'New workspace';
 
 /**
- * Minimal valid SteerSpec for a fresh local file — empty outcomes/bets/teams.
+ * Minimal valid SteerSpec for a fresh local file - empty outcomes/bets/teams.
  */
 export function createBlankSteerSpec(options?: { name?: string; title?: string }): SteerSpec {
   const name = options?.name?.trim() || 'new-workspace';

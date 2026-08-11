@@ -30,7 +30,7 @@ Chosen option: **Option B**. Slice 1 is **local only**:
 - Persist `steertree.yaml` on disk
 - No accounts, no cloud sync, no mandatory network
 
-Auth arrives in Slice 2 **with** the first live connector — not before.
+Auth arrives in Slice 2 **with** the first live connector - not before.
 
 ### Consequences
 

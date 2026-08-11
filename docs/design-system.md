@@ -25,7 +25,7 @@ Motif: **two circles + northeast arrowhead** (scooped base). Still provisional a
 | Wide / social / brand lockup                 | `mark-lockup.svg`          | **Circles + arrow** · shared centre · 120u rhythm |
 | Dark square surfaces                         | `mark-dark.svg`            | Arrow only on ink field (same geometry as square) |
 
-Do not put the full circles+arrow motif in a tight square — it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
+Do not put the full circles+arrow motif in a tight square - it reads cramped. Prefer arrow alone, then pair with the Fraunces wordmark in the UI.
 
 Explorations: `mockups/logo-explorations/` (v16 reticle ancestry + dots-arrow sketch).
 
@@ -77,7 +77,7 @@ Showcase-only classes (`.ds-*`, `.token-*`, `.asset-*`) stay on `/docs/design-sy
 ## Visual rules
 
 - No purple gradients, no dark-cyber default, no YAML in executive chrome.
-- Distinct fonts — not Inter / Roboto / system-only stacks.
+- Distinct fonts - not Inter / Roboto / system-only stacks.
 - Cards only when they carry interaction; prefer whitespace over chrome.
 - Square logos = arrow only; wide brand moments may use circles + arrow.
 - Keep SVG fills in `design-pack/` aligned when tokens change.

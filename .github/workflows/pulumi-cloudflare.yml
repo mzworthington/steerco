@@ -1,6 +1,6 @@
 name: Pulumi Cloudflare
 
-# Thin caller — preview/apply live in edge-dns.
+# Thin caller - preview/apply live in edge-dns.
 # See: https://github.com/mzworthington/edge-dns/blob/main/docs/reusable-cloudflare-ci.md
 #
 # Create GitHub Environment "pulumi-prod" with required reviewers for the apply gate.

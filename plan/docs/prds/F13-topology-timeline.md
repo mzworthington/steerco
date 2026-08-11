@@ -1,11 +1,11 @@
 # PRD F13 - Topology timeline
 
 **Slice:** 1.5 (schema) → 3 (timeline view + org as-of)  
-**Frameworks:** Team Topologies (shape evolves; collaboration is time-boxed; cognitive load changes with capacity and interaction modes; flow-of-change is a snapshot in time) — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md) · [key concepts](https://teamtopologies.com/key-concepts)
+**Frameworks:** Team Topologies (shape evolves; collaboration is time-boxed; cognitive load changes with capacity and interaction modes; flow-of-change is a snapshot in time) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md) · [key concepts](https://teamtopologies.com/key-concepts)
 
 ## Problem
 
-Leaders see today’s topology snapshot but cannot answer: _when did capacity grow or shrink, when did interactions change, and did load get better or worse?_ Without a timeline — and without an **as-of** control on the team view — stop/start decisions lack the “before / after” evidence that Team Topologies assumes when shape evolves.
+Leaders see today’s topology snapshot but cannot answer: _when did capacity grow or shrink, when did interactions change, and did load get better or worse?_ Without a timeline - and without an **as-of** control on the team view - stop/start decisions lack the “before / after” evidence that Team Topologies assumes when shape evolves.
 
 ## Goal
 
@@ -22,23 +22,23 @@ Record and visualise **capacity changes** (members / FTE%) and **relationship ch
 
 ## Requirements
 
-### Schema (Slice 1.5 — additive) — landed
+### Schema (Slice 1.5 - additive) - landed
 
 1. Member effective windows: `teams[].members[]` gain optional `effectiveFrom` / `effectiveUntil` (ISO date) and optional `ftePercent` changes via dated events **or** multiple member records with windows (prefer dated `capacityEvents` if clearer in design).
 2. Relationship windows: `relationships[]` gain optional `effectiveFrom` / `effectiveUntil` (extends `expectedUntil` for Collaboration/Facilitation; applies to all modes for history).
-3. Optional `topologyEvents[]` ledger (append-only friendly) for narrative-friendly diffs: capacity up/down, relationship added/ended/mode-changed, team type change — with `at`, `teamIds`, `relationshipRef`, `summary`.
+3. Optional `topologyEvents[]` ledger (append-only friendly) for narrative-friendly diffs: capacity up/down, relationship added/ended/mode-changed, team type change - with `at`, `teamIds`, `relationshipRef`, `summary`.
 4. Current org view remains the **as-of today** (or selected date) projection of the ledger + windows.
-5. No HR identity sync required — display names and FTE% only.
+5. No HR identity sync required - display names and FTE% only.
 
-### Org view as-of (Slice 3 — with [F03](./F03-how-work-is-organised.md))
+### Org view as-of (Slice 3 - with [F03](./F03-how-work-is-organised.md))
 
 1. Date control on How work is organised: org shape + mismatches recompute **as of** selected date (default today).
 2. Projection includes groupings membership, platform scope, CSS `within` nest, and enabling fan-out when those fields exist.
-3. Teaching copy: “This map is a point in time — relationships will change as goals change.”
+3. Teaching copy: “This map is a point in time - relationships will change as goals change.”
 
-### Timeline view (Slice 3 — UI)
+### Timeline view (Slice 3 - UI)
 
-1. New surface (or F03 mode): **Topology timeline** — horizontal time axis over the steering period (and prior periods if recorded).
+1. New surface (or F03 mode): **Topology timeline** - horizontal time axis over the steering period (and prior periods if recorded).
 2. Lanes (or swimlanes) per value stream / team type zone or per team; markers for capacity deltas and relationship spans.
 3. Relationship spans drawn as bands/edges with mode colour + label (X-as-a-Service / Collaboration / Facilitation).
 4. Capacity increases/decreases as signed markers or step chart of total FTE per team.

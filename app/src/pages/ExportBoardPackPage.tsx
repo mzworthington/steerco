@@ -107,7 +107,7 @@ export function ExportBoardPackPage() {
               </fieldset>
             ))}
             <p className="export-config-note">
-              Print to PDF keeps everything on this device — no account required.
+              Print to PDF keeps everything on this device - no account required.
             </p>
           </div>
 
@@ -166,7 +166,7 @@ export function ExportBoardPackPage() {
                     <ul>
                       {outcome.bets.map((bet) => (
                         <li key={bet.id}>
-                          <strong>{bet.title}</strong> — {bet.status}. {bet.metricCue}
+                          <strong>{bet.title}</strong> - {bet.status}. {bet.metricCue}
                         </li>
                       ))}
                     </ul>
@@ -178,7 +178,7 @@ export function ExportBoardPackPage() {
             {preview.outcomes ? (
               <section className="export-preview-section" data-testid="export-section-outcomes">
                 <p className="export-preview-pillar">Invest</p>
-                <h3>Outcomes — measures of success</h3>
+                <h3>Outcomes - measures of success</h3>
                 {preview.outcomes.map((outcome) => (
                   <div key={outcome.id} className="export-preview-block">
                     <h4>{outcome.title}</h4>
@@ -208,7 +208,7 @@ export function ExportBoardPackPage() {
                   .map((zone) => (
                     <div key={zone.role} className="export-preview-block">
                       <h4>
-                        {zone.topologyName} — {zone.title}
+                        {zone.topologyName} - {zone.title}
                       </h4>
                       <ul>
                         {zone.teams.map((team) => (
@@ -266,7 +266,7 @@ export function ExportBoardPackPage() {
                 <ul>
                   {preview.evidence.map((card) => (
                     <li key={card.metricId}>
-                      <strong>{card.title}</strong> {card.displayValue} — {card.learning}
+                      <strong>{card.title}</strong> {card.displayValue} - {card.learning}
                     </li>
                   ))}
                 </ul>

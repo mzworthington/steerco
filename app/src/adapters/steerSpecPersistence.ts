@@ -28,7 +28,7 @@ export async function saveSteerSpecToPersistence(
   if (!validated.success) {
     return {
       ok: false,
-      error: 'This workspace is not valid SteerSpec — fix errors before saving.',
+      error: 'This workspace is not valid SteerSpec - fix errors before saving.',
     };
   }
 

@@ -38,4 +38,4 @@ Executive (default) mockups use a **light editorial** board-pack language. Techn
 | --- | --- |
 | [mockups/logo-explorations/](../mockups/logo-explorations/) | Earlier aperture / reticle / team-node sketches |
 | [mockups/logo-pack-shipped/](../mockups/logo-pack-shipped/) | Current design-pack mark review sheet (circles + arrow) |
-| [mockups/logo-pack-counterchange/](../mockups/logo-pack-counterchange/) | Partner counterchange-disc pack — analysis, refinements, colourways, lockups |
+| [mockups/logo-pack-counterchange/](../mockups/logo-pack-counterchange/) | Partner counterchange-disc pack - analysis, refinements, colourways, lockups |

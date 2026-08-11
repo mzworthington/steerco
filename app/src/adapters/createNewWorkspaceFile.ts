@@ -26,7 +26,7 @@ export type CreateNewWorkspaceFileResult =
   | { ok: false; error: string; cancelled?: boolean };
 
 /**
- * Create a new steertree.yaml — prefer writing into a chosen folder,
+ * Create a new steertree.yaml - prefer writing into a chosen folder,
  * otherwise download a blank file and open it as a download-backed session.
  */
 export async function createNewWorkspaceFile(options?: {

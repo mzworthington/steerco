@@ -76,7 +76,7 @@ Orchestrate use cases; still framework-agnostic:
 | `PrintBoardPackExporter`   | `window.print` / print CSS                            |
 | `SampleWorkspaceLoader`    | Bundled sample YAML                                   |
 
-**Done:** IndexedDB persistence for FS Access directory handles so Save-to-folder can survive refresh (permission re-prompt when required) — [ROADMAP.md](./ROADMAP.md) · [F09](./prds/F09-steerspec-persistence.md) · `app/src/adapters/workspaceDirectoryStore.ts`.
+**Done:** IndexedDB persistence for FS Access directory handles so Save-to-folder can survive refresh (permission re-prompt when required) - [ROADMAP.md](./ROADMAP.md) · [F09](./prds/F09-steerspec-persistence.md) · `app/src/adapters/workspaceDirectoryStore.ts`.
 
 ### Slice 2+
 

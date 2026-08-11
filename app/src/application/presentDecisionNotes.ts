@@ -74,7 +74,7 @@ export function presentDecisionNotes(spec: SteerSpec): DecisionNotesModel {
         ? metric.interpretation.trim()
         : [metric.title, metric.current != null ? `current ${metric.current}` : null]
             .filter(Boolean)
-            .join(' — ');
+            .join(' - ');
       return { id: metric.id, title: metric.title, suggestion: `${metric.title}: ${cue}` };
     }),
   );

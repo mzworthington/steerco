@@ -167,7 +167,7 @@ export function OrganisationTeamEditorModal({
     }
     setError(null);
     if (mode === 'create') {
-      setNotice('Team added — attach relationships below.');
+      setNotice('Team added - attach relationships below.');
       onCreated?.(result.teamId);
       return;
     }

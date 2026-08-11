@@ -18,7 +18,7 @@ Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Com
 
 | Path                    | Role                                                        |
 | ----------------------- | ----------------------------------------------------------- |
-| `app/`                  | pnpm workspace — SPA (`@steerlens/app`) + `@steerlens/core` |
+| `app/`                  | pnpm workspace - SPA (`@steerlens/app`) + `@steerlens/core` |
 | `docs/`                 | Product & ops Markdown (rendered at `/docs`)                |
 | `plan/`                 | Product specs, PRDs, SteerSpec schema/sample, mockups       |
 | `app/src/siteConfig.ts` | Public name, origin, and SEO copy                           |

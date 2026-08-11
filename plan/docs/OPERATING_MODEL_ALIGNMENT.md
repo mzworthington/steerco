@@ -1,9 +1,9 @@
-# Operating model alignment — EDGE + Team Topologies
+# Operating model alignment - EDGE + Team Topologies
 
 **Status:** Living product backlog notes (not an ADR)  
 **Audience:** Product, design, engineering  
 **Captured:** 2026-08-10  
-**Purpose:** Preserve how SteerLens should build on [EDGE](https://www.thoughtworks.com/content/dam/thoughtworks/documents/books/bk_EDGE_en.pdf) — a **holistic value-driven operating model** (Lean Value Tree **plus** product mindset, Tech@Core, PVR, integrated backlogs, MoS, and six principles) — and [Team Topologies](https://teamtopologies.com/book) (esp. 2nd edition), so Slice work does not lose the intent.
+**Purpose:** Preserve how SteerLens should build on [EDGE](https://www.thoughtworks.com/content/dam/thoughtworks/documents/books/bk_EDGE_en.pdf) - a **holistic value-driven operating model** (Lean Value Tree **plus** product mindset, Tech@Core, PVR, integrated backlogs, MoS, and six principles) - and [Team Topologies](https://teamtopologies.com/book) (esp. 2nd edition), so Slice work does not lose the intent.
 
 SteerLens stays an **investment contract + topology intent** surface. It does **not** become Jira, an HR org chart, a tech-radar product, or a full portfolio PMO.
 
@@ -11,7 +11,7 @@ SteerLens stays an **investment contract + topology intent** surface. It does **
 
 ## Sources
 
-### EDGE — Value-Driven Digital Transformation
+### EDGE - Value-Driven Digital Transformation
 
 Jim Highsmith, Linda Luu, David Robinson (Addison-Wesley / ThoughtWorks).
 
@@ -43,27 +43,27 @@ Matthew Skelton, Manuel Pais (IT Revolution). Subtitle: _Organizing Business and
 
 ## How the two frameworks meet in SteerLens
 
-EDGE shifts organisations from traditional, efficiency-focused planning to **adaptive, value-driven execution**. The Lean Value Tree is the strategy spine; EDGE also supplies product mindset, Tech@Core, Periodic Value Review, integrated backlogs, Measures of Success, and six operating principles. Team Topologies answers **how we organise for fast flow of value**. SteerLens is the steering workspace that keeps both contracts versionable — with a board pack as the shareable export.
+EDGE shifts organisations from traditional, efficiency-focused planning to **adaptive, value-driven execution**. The Lean Value Tree is the strategy spine; EDGE also supplies product mindset, Tech@Core, Periodic Value Review, integrated backlogs, Measures of Success, and six operating principles. Team Topologies answers **how we organise for fast flow of value**. SteerLens is the steering workspace that keeps both contracts versionable - with a board pack as the shareable export.
 
 ```mermaid
 flowchart TB
-  subgraph edge [EDGE — invest and adapt]
+  subgraph edge [EDGE - invest and adapt]
     vision[Vision]
     goals[Goals / Outcomes + MoS]
     bets[Bets]
-    initiatives[Initiatives — thin slices]
-    decide[Decision notes — start / continue / stop / rescope]
+    initiatives[Initiatives - thin slices]
+    decide[Decision notes - start / continue / stop / rescope]
     vision --> goals --> bets --> initiatives
     initiatives --> decide
     decide --> bets
     decide --> goals
   end
 
-  subgraph tt [Team Topologies — work together]
+  subgraph tt [Team Topologies - work together]
     stream[Stream-aligned / customer-facing]
     platform[Platform grouping]
     enabling[Enabling / coaching]
-    subsystem[Complicated subsystem — later]
+    subsystem[Complicated subsystem - later]
     modes[Interaction modes: XaaS / collaborate / facilitate]
     stream --- modes
     platform --- modes
@@ -82,13 +82,13 @@ flowchart TB
 | How should we work together?  | How work is organised (zones + relationships)   | Full TT types, modes, groupings, cognitive-load signals                      |
 | How can we adapt fast enough? | Kill criteria, evidence, decision notes         | Named Periodic Value Review (PVR) cadence; stop-ready; learn-before-number   |
 
-**One-line thesis:** SteerLens is the lightweight operating surface for EDGE’s full value-driven model (not LVT alone) and Team Topologies’ topology intent: a versionable investment contract, product/tech fitness cues, PVR-style start/stop decisions, and fast-flow org shape—without becoming the system of record for work.
+**One-line thesis:** SteerLens is the lightweight operating surface for EDGE’s full value-driven model (not LVT alone) and Team Topologies’ topology intent: a versionable investment contract, product/tech fitness cues, PVR-style start/stop decisions, and fast-flow org shape-without becoming the system of record for work.
 
 ---
 
-## Part A — EDGE alignments (capture all)
+## Part A - EDGE alignments (capture all)
 
-EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Lean Value Tree it supplies product mindset & Product Blueprint, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles. SteerLens must treat those teachings as first-class product intent—even when a teaching maps to copy, mismatches, and lightweight schema cues rather than a full submodule.
+EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Lean Value Tree it supplies product mindset & Product Blueprint, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles. SteerLens must treat those teachings as first-class product intent-even when a teaching maps to copy, mismatches, and lightweight schema cues rather than a full submodule.
 
 ### A0. Already aligned
 
@@ -142,7 +142,7 @@ EDGE tree: **Vision → Goals → Bets → Initiatives**.
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | UI words                  | Keep `Outcome` and `Bet` for executives                                                                                      |
 | Glossary / Technical mode | Map Outcome ≈ Goal; Bet ≈ Bet; optional Initiative ≈ thin slice under a bet                                                  |
-| Schema (later)            | Optional `initiatives[]` with `betId`, title, successSignal — **not** a Jira backlog (one sentence + optional external link) |
+| Schema (later)            | Optional `initiatives[]` with `betId`, title, successSignal - **not** a Jira backlog (one sentence + optional external link) |
 
 Without initiatives, “delivery” only appears as funded teams (topology), not value slicing.
 
@@ -153,18 +153,18 @@ EDGE MoS shape work and fund decisions; they are the **customer-value fitness fu
 | Action              | Detail                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------- |
 | Require MoS         | Each outcome ≥1 MoS with baseline / current / target / interpretation                             |
-| Leading vs lagging  | Prefer leading indicators that steer bets; lagging outcomes validate — label both in Technical mode |
+| Leading vs lagging  | Prefer leading indicators that steer bets; lagging outcomes validate - label both in Technical mode |
 | Bet ↔ MoS           | Bet detail shows which MoS the bet is meant to move (beyond free-text success signal)             |
 | Mismatch            | `bet_without_mos_link` (or weak link)                                                             |
 | Decision notes / PVR | Prefer measured lines that cite MoS ids                                                          |
-| Copy cue            | “These measures define what we’re willing to pay for—not a status dashboard.”                     |
+| Copy cue            | “These measures define what we’re willing to pay for-not a status dashboard.”                     |
 
 ### A3. Customer value (fitness) vs ROI (constraint)
 
 | Action           | Detail                                                                                  |
 | ---------------- | --------------------------------------------------------------------------------------- |
 | Primary framing  | Outcomes stay customer-external                                                         |
-| Secondary        | Optional `investmentGuardrails` (budget band, capacity) on bets — never the hero metric |
+| Secondary        | Optional `investmentGuardrails` (budget band, capacity) on bets - never the hero metric |
 | Steering summary | Lead with outcome movement and stop-ready bets; cost quiet if shown                     |
 
 ### A4. “How we invest” as a steering ritual
@@ -214,12 +214,12 @@ Do **not** build a PMO workflow engine; keep PVR as a named ritual on top of dec
 
 ### A8. Product mindset & Product Blueprint
 
-EDGE shifts from a **project** mindset (temporary teams; on-time/on-budget) to a **product** mindset (long-lived teams; continuous value). The **Product Blueprint** is a lightweight definition of a product: core elements, LVT linkage, and customer problems solved—without heavy upfront requirements.
+EDGE shifts from a **project** mindset (temporary teams; on-time/on-budget) to a **product** mindset (long-lived teams; continuous value). The **Product Blueprint** is a lightweight definition of a product: core elements, LVT linkage, and customer problems solved-without heavy upfront requirements.
 
 | Action                         | Detail                                                                                          |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- |
 | Teaching copy                  | Executive empty states / glossary: products outlive projects; topology funds products, not Gantt |
-| Optional schema (later)        | `products[]` or bet/outcome `productBlueprint`: problem, customers, LVT links, non-goals — few fields |
+| Optional schema (later)        | `products[]` or bet/outcome `productBlueprint`: problem, customers, LVT links, non-goals - few fields |
 | Linkage                        | Blueprint points at outcomes/MoS/bets; never a requirements PRD dump                            |
 | Topology join                  | Stream-aligned teams own products end-to-end (Team Topologies); enabling/platform support them  |
 | Out of product-blueprint scope | Sprint roadmaps, feature catalogs, dual backlog                                                  |
@@ -231,26 +231,26 @@ EDGE treats technology as the **core engine of the business**, not a back-office
 | Action                      | Detail                                                                                                 |
 | --------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Capability bets             | Prefer `kind: capability` + MoS when revitalising core systems (debt paydown must move a fitness measure) |
-| Copy / steering cues        | “Tech debt is a business bet—or it isn’t funded”                                                       |
-| ArchLens suite link (later) | Optional `systemRefs` on bets for architecture risk — Tech@Core evidence, not a second canvas in-chrome |
-| Tech Radar                  | Optional external radar _reference_ / link in Technical mode or evidence — **do not** build a radar UI |
+| Copy / steering cues        | “Tech debt is a business bet-or it isn’t funded”                                                       |
+| ArchLens suite link (later) | Optional `systemRefs` on bets for architecture risk - Tech@Core evidence, not a second canvas in-chrome |
+| Tech Radar                  | Optional external radar _reference_ / link in Technical mode or evidence - **do not** build a radar UI |
 | Mismatch ideas (later)      | Capability bet with no MoS; sustain-only portfolio with rising risk evidence                           |
 
 ### A10. Integrated Backlogs (steering mix, not Jira)
 
-A common failure mode is funding only innovation while ignoring BAU, maintenance, and capability building. EDGE’s **Integrated Backlog** cross-prioritises strategic (LVT-derived) work with BAU, maintenance, and capability using **relative value and effort**—without collapsing into a single execution tool.
+A common failure mode is funding only innovation while ignoring BAU, maintenance, and capability building. EDGE’s **Integrated Backlog** cross-prioritises strategic (LVT-derived) work with BAU, maintenance, and capability using **relative value and effort**-without collapsing into a single execution tool.
 
 | Action                    | Detail                                                                                         |
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
 | Funding stance            | Keep `explore` \| `exploit` \| `sustain` as the exec-facing mix signal                         |
-| Portfolio mix hint (later)| Steering shows approximate mix of opportunity vs capability vs sustain — calm cue, not finance |
+| Portfolio mix hint (later)| Steering shows approximate mix of opportunity vs capability vs sustain - calm cue, not finance |
 | Relative value rank       | Optional rank / value-vs-effort on bets for value-based prioritization                         |
-| External work links       | Later: annotate Jira (or similar) refs — **never** import/own the execution backlog            |
-| Explicit non-goal         | Full BAU vs strategic finance / ROI accounting (EDGE Ch.7 numbers) — guardrails only if shown  |
+| External work links       | Later: annotate Jira (or similar) refs - **never** import/own the execution backlog            |
+| Explicit non-goal         | Full BAU vs strategic finance / ROI accounting (EDGE Ch.7 numbers) - guardrails only if shown  |
 
 ### A11. Six core EDGE principles (cultural OS)
 
-Tools fail without the principles. SteerLens should make these visible in docs, Technical mode, and calm UX cues—not as a poster wall in the executive hero.
+Tools fail without the principles. SteerLens should make these visible in docs, Technical mode, and calm UX cues-not as a poster wall in the executive hero.
 
 | Principle                                   | SteerLens expression                                                              |
 | ------------------------------------------- | --------------------------------------------------------------------------------- |
@@ -263,11 +263,11 @@ Tools fail without the principles. SteerLens should make these visible in docs, 
 
 ### A12. Explicitly out of scope from EDGE
 
-- Full BAU vs strategic portfolio **finance** accounting (EDGE Ch.7 spreadsheets) — stance/mix cues only
+- Full BAU vs strategic portfolio **finance** accounting (EDGE Ch.7 spreadsheets) - stance/mix cues only
 - Building a Tech Radar product or tech-debt inventory system (refs + capability bets only)
-- Prescriptive scaling ceremony — stay principle-led
-- Replacing delivery tooling / owning integrated execution backlogs — stop at the investment contract
-- Heavy Product Blueprint / requirements documentation — keep blueprint lightweight or omit
+- Prescriptive scaling ceremony - stay principle-led
+- Replacing delivery tooling / owning integrated execution backlogs - stop at the investment contract
+- Heavy Product Blueprint / requirements documentation - keep blueprint lightweight or omit
 
 ### A13. EDGE priority order
 
@@ -275,16 +275,16 @@ Tools fail without the principles. SteerLens should make these visible in docs, 
 2. Name and ritualise **PVR** on review dates + stop-ready + decision notes
 3. Incremental-funding cues on bets (horizon, explore/exploit/sustain, WIP)
 4. Explicit LVT + **six principles** + Product / Tech@Core vocabulary in docs/glossary/Technical mode
-5. Product Blueprint (lightweight) linked to LVT — when product-vs-project confusion shows up
+5. Product Blueprint (lightweight) linked to LVT - when product-vs-project confusion shows up
 6. Integrated backlog **mix / relative value** cues (not Jira)
 7. Optional initiatives under bets
-8. Board pack structured on EDGE’s three questions (Invest / Work / Adapt) — keep
+8. Board pack structured on EDGE’s three questions (Invest / Work / Adapt) - keep
 9. Tech@Core: capability-bet cues + optional ArchLens / radar refs
 10. Capability vs opportunity portfolio mix (polish)
 
 ---
 
-## Part B — Team Topologies alignments (esp. 2nd edition)
+## Part B - Team Topologies alignments (esp. 2nd edition)
 
 ### B0. Already aligned
 
@@ -307,10 +307,10 @@ From [teamtopologies.com/book](https://teamtopologies.com/book), the [Sep 2025 n
 
 | 2e theme                                               | Meaning for SteerLens                                                                                                      |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| **Clearly articulated intent and purpose**             | Topology and bets are _intent_ artifacts leaders evolve—not a frozen org chart export                                      |
+| **Clearly articulated intent and purpose**             | Topology and bets are _intent_ artifacts leaders evolve-not a frozen org chart export                                      |
 | **Cognitive load as a design principle**               | Surface load drivers (dependencies, bet thrash, platform fan-in); calm mismatches, not vanity org polish                   |
 | **Organisations as ecosystems, not machines**          | Prefer flourishing / flow language over efficiency-centralisation language in exec copy                                    |
-| **Platform = platform grouping**                       | A “platform” may be many teams with a shared purpose—not one box. Schema/UI must allow platform _groupings_                |
+| **Platform = platform grouping**                       | A “platform” may be many teams with a shared purpose-not one box. Schema/UI must allow platform _groupings_                |
 | **Value stream grouping**                              | Optional grouping of stream-aligned teams around a common value stream / business domain (TT term for “teams under a domain”) |
 | **Fractal design**                                     | Same patterns at multiple zoom levels (e.g. stream-aligned teams _inside_ a platform grouping)                             |
 | **Evolutionary, not static**                           | Interaction modes and roles change over time; support history via SteerSpec/git, not one-shot “reorg done”                 |
@@ -330,7 +330,7 @@ Current SteerSpec has three roles. TT has **four** fundamental types:
 | Platform (grouping)   | `platform`              | Support **platform grouping** later (parent grouping + member teams)                                                                        |
 | Enabling              | `enabling`              | Facilitation mode default; temporary boost, not permanent owner                                                                             |
 | Complicated subsystem | `complicated_subsystem` | Specialist expertise that would overload stream-aligned teams                                                                               |
-| Complicated subsystem | _Missing_               | Add `complicated_subsystem` (exec: “Specialist subsystem”) — rare, high-complexity domain owned by specialists so stream teams stay focused |
+| Complicated subsystem | _Missing_               | Add `complicated_subsystem` (exec: “Specialist subsystem”) - rare, high-complexity domain owned by specialists so stream teams stay focused |
 
 ### B3. Three interaction modes (language + semantics)
 
@@ -348,12 +348,12 @@ Suggested mismatch/warnings:
 
 ### B4. Groupings, scope, and flow-of-change layout (2e)
 
-Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams inside value stream groupings**; platform, enabling, and complicated-subsystem teams are scoped support for that flow — not peer columns of equal weight.
+Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams inside value stream groupings**; platform, enabling, and complicated-subsystem teams are scoped support for that flow - not peer columns of equal weight.
 
 In Team Topologies 2e, “organise teams under a domain” maps to a **value stream grouping**; a multi-team platform maps to a **platform grouping**. Platforms also have an **audience scope**: organisation-wide, vertical (one value stream), or dedicated to a single stream-aligned team. Complicated-subsystem teams nest **inside** a value stream (team-within-a-team). Enabling teams **fan out** via facilitation to many streams.
 
 ```yaml
-# Illustrative — not yet in v1alpha1
+# Illustrative - not yet in v1alpha1
 groupings:
   - name: fulfilment-platform
     kind: platform # platform | value_stream
@@ -387,9 +387,9 @@ relationships:
     expectedUntil: '2026-12-31'
 ```
 
-**Executive UI (scale layout):** a **flow-of-change canvas** — value streams left-to-right toward the customer; stream-aligned teams as the primary bands; platforms drawn by scope (org / vertical / team); complicated subsystem nested inside its stream; enabling teams beside the streams they facilitate. Four type zones remain a **teaching / filter** layer (empty state, glossary, Technical mode), not the only layout at scale.
+**Executive UI (scale layout):** a **flow-of-change canvas** - value streams left-to-right toward the customer; stream-aligned teams as the primary bands; platforms drawn by scope (org / vertical / team); complicated subsystem nested inside its stream; enabling teams beside the streams they facilitate. Four type zones remain a **teaching / filter** layer (empty state, glossary, Technical mode), not the only layout at scale.
 
-**Bet / project overlay:** on bet detail (and optionally steering), show which teams sit on the flow for that bet as of a date — funded streams plus related platform / CSS / enabling edges — without becoming a delivery Gantt.
+**Bet / project overlay:** on bet detail (and optionally steering), show which teams sit on the flow for that bet as of a date - funded streams plus related platform / CSS / enabling edges - without becoming a delivery Gantt.
 
 **Point-in-time:** org view projects teams, members, relationships, and mismatches **as of** a selected date (default today); deep history stays on the [F13](./prds/F13-topology-timeline.md) timeline.
 
@@ -401,12 +401,12 @@ Do **not** build a full psychometric survey in Slice 1. Do encode **steering-vis
 
 | Signal                           | Idea                                                                                          |
 | -------------------------------- | --------------------------------------------------------------------------------------------- |
-| Platform fan-in                  | Existing `platform_overload` — retarget copy to cognitive load / flow, not “too many friends” |
+| Platform fan-in                  | Existing `platform_overload` - retarget copy to cognitive load / flow, not “too many friends” |
 | Bet thrash                       | Stream team funded on many active bets                                                        |
 | Collaboration tax                | Too many concurrent `works_together` edges                                                    |
 | Missing enablement               | At-risk stream teams with no enabling relationship                                            |
 | Fractal overload                 | Platform grouping with too many internal members _and_ external dependents                    |
-| Size heuristic (later, optional) | Soft warning near Dunbar trust boundary for a single team — never hard HR enforcement         |
+| Size heuristic (later, optional) | Soft warning near Dunbar trust boundary for a single team - never hard HR enforcement         |
 
 Decision-note prompt: “What load are we removing for stream-aligned teams?”
 
@@ -417,13 +417,13 @@ Team Topologies optimises **flow of value**; EDGE defines **what value is**. Joi
 - Stream-aligned teams should map cleanly to bets that move customer MoS
 - Platform groupings judged by whether dependents move MoS faster / with less coordination cost
 - Stop/rescope when topology intent cannot deliver the MoS (not when a project plan slips)
-- Bet detail can overlay **who is in the flow** for that funded work (stream + scoped supports) alongside MoS — still intent, not a project plan
+- Bet detail can overlay **who is in the flow** for that funded work (stream + scoped supports) alongside MoS - still intent, not a project plan
 
 ### B7. Copy and empty states (F03)
 
 Empty / teaching states should reflect 2e language without trademark overload:
 
-- Four **purposes** of teams, not “departments” — stream-aligned is the core of delivery flow
+- Four **purposes** of teams, not “departments” - stream-aligned is the core of delivery flow
 - Relationships as **how work flows**, not reporting lines
 - Platform exists to **reduce load** on stream-aligned teams; scope may be org, vertical, or single-team
 - Enabling coaches many teams; complicated subsystem nests inside a stream when specialty would overload it
@@ -451,11 +451,11 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ---
 
-## Part C — Combined backlog (do not lose)
+## Part C - Combined backlog (do not lose)
 
 **Slice commitments:** checklist items below are scheduled in [ROADMAP.md](./ROADMAP.md) (Slice 1 copy → Slice 1.5 schema → Slice 3 groupings/initiatives). Tick here when implemented in product; keep rationale sections above.
 
-### C1. Near-term (Slice 1 — copy / presentation)
+### C1. Near-term (Slice 1 - copy / presentation)
 
 - [x] Document LVT mapping in [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) glossary (Outcome ≈ Goal; MoS; Initiative reserved)
 - [x] Document TT mapping in glossary (roles ↔ types; modes ↔ interactions; platform grouping note)
@@ -469,12 +469,12 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] Name decision notes / review cadence as **Periodic Value Review (PVR)** in product guide and F07/F02 copy (executive-safe: “value review”, Technical mode: PVR)
 - [x] Technical mode / glossary: six EDGE principles + product-vs-project teaching
 
-### C2. Schema / core (Slice 1.5 — additive)
+### C2. Schema / core (Slice 1.5 - additive)
 
 - [x] Canonical Team Topologies team types (`stream_aligned` \| `platform` \| `enabling` \| `complicated_subsystem`) + legacy alias parse
 - [x] Canonical interaction modes (`x_as_a_service` \| `collaboration` \| `facilitation`) + legacy alias parse
 - [x] `teams[].members[]` with `discipline` + job `title` + `ftePercent` (capacity / mix signal)
-- [x] Discipline-mix mismatches / advice (e.g. stream-aligned team missing product FTE) — soft capacity cues, not staffing policy
+- [x] Discipline-mix mismatches / advice (e.g. stream-aligned team missing product FTE) - soft capacity cues, not staffing policy
 - [x] `bets[].metricIds[]` or `primaryMetricId`
 - [x] `bets[].reviewDate` / `horizon`
 - [x] `bets[].fundingStance`: `explore` \| `exploit` \| `sustain`
@@ -488,27 +488,27 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ### C3. Later (Slice 3+)
 
-- [x] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) — value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
+- [x] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) - value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
 - [x] `platformScope` on platform teams and platform groupings: `organisation | vertical | team` (who the platform accelerates)
 - [x] Complicated-subsystem nest: optional `within` (team ref to stream-aligned parent) and/or membership in a value-stream grouping for team-within-team layout
 - [x] Enabling one-to-many: present facilitation fan-out as expected; keep `enabling_owns_delivery` mismatch
-- [x] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) — type zones remain teaching/filter
-- [x] **As-of date on org view** — project teams / members / relationships / mismatches at selected date (default today)
-- [x] Bet / project **flow overlay** — funded teams + related interactions for that bet as of date ([F04](./prds/F04-bet-detail.md))
+- [x] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) - type zones remain teaching/filter
+- [x] **As-of date on org view** - project teams / members / relationships / mismatches at selected date (default today)
+- [x] Bet / project **flow overlay** - funded teams + related interactions for that bet as of date ([F04](./prds/F04-bet-detail.md))
 - [ ] Optional `initiatives[]` under bets
 - [ ] WIP / rank UI for value-based prioritization (Integrated Backlog relative value)
-- [ ] Portfolio mix hint: opportunity vs capability vs sustain (Integrated Backlog stance mix — not finance)
+- [ ] Portfolio mix hint: opportunity vs capability vs sustain (Integrated Backlog stance mix - not finance)
 - [ ] Optional lightweight **Product Blueprint** (`products[]` or blueprint fields linked to outcomes/bets)
 - [ ] Tech@Core cues: capability-bet revitalize copy; optional ArchLens `systemRefs`; optional external Tech Radar link (no radar UI)
 - [ ] MoS leading vs lagging label (Technical mode / schema docs)
 - [ ] Fractal zoom on org view (grouping → members)
-- [ ] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** — capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
+- [ ] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** - capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
 - [ ] ArchLens `systemRefs` on bets stay optional (suite link, not TT)
 - [ ] Narrative tie-in: AI gains without topology redesign stall in bottlenecks (press / docs only until evidence exists)
 
 ---
 
-## Part D — SteerSpec vocabulary bridge
+## Part D - SteerSpec vocabulary bridge
 
 | SteerSpec (exec)                     | EDGE                        | Team Topologies                               |
 | ------------------------------------ | --------------------------- | --------------------------------------------- |
@@ -517,20 +517,20 @@ Empty / teaching states should reflect 2e language without trademark overload:
 | `outcomes` + `metrics`               | Goals + Measures of Success (fitness function) | Value definition that flow should serve |
 | `bets`                               | Bets (product / Tech@Core investments) | Funded work streams for stream/platform teams |
 | `bets[].fundingStance`               | Integrated Backlog mix cue (explore/exploit/sustain) | Capacity focus                     |
-| `bets[].kind`                        | Opportunity vs capability (Tech@Core revitalize) | —                                       |
-| `bets[].reviewDate` / `horizon`      | PVR / incremental funding checkpoint | —                                       |
+| `bets[].kind`                        | Opportunity vs capability (Tech@Core revitalize) | -                                       |
+| `bets[].reviewDate` / `horizon`      | PVR / incremental funding checkpoint | -                                       |
 | `products` / blueprint (future)      | Product Blueprint           | Stream-aligned product ownership              |
 | `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
 | `teams` + `role`                     | Delivery capacity / product teams | Team types (incl. complicated subsystem) |
-| `groupings` (future)                 | —                           | Platform + value-stream groupings (domain org; fractal) |
-| `platformScope` / CSS `within` (future) | —                        | Platform audience; complicated subsystem nest |
+| `groupings` (future)                 | -                           | Platform + value-stream groupings (domain org; fractal) |
+| `platformScope` / CSS `within` (future) | -                        | Platform audience; complicated subsystem nest |
 | Flow-of-change + as-of (future UI)   | Who delivers this bet when  | Point-in-time topology intent                 |
 | `relationships` + `mode`             | How we work                 | Interaction modes                             |
 | Capacity / topology windows          | Delivery capacity over time | Shape evolves; collaboration time-boxed       |
 | `topologyEvents`                     | What changed in the period  | Evidence for adapt / load response            |
 | `decisionNotes`                      | Lightweight governance / PVR decision record | Response to flow/load signals        |
 | `evidence`                           | Feedback for adapt / PVR    | Learning that changes funding or shape        |
-| Optional radar / ArchLens refs       | Tech@Core sensing           | —                                             |
+| Optional radar / ArchLens refs       | Tech@Core sensing           | -                                             |
 | Mismatches                           | Portfolio smells            | Cognitive-load / interaction smells           |
 | Docs: six principles                 | Cultural OS for EDGE tools  | Complements fast-flow culture                 |
 
@@ -538,9 +538,9 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ## Related product docs
 
-- [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) — domain glossary and principles
-- [STEER_SPEC.md](./STEER_SPEC.md) — canonical contract
-- [ROADMAP.md](./ROADMAP.md) — slices
+- [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) - domain glossary and principles
+- [STEER_SPEC.md](./STEER_SPEC.md) - canonical contract
+- [ROADMAP.md](./ROADMAP.md) - slices
 - [F02](./prds/F02-steering-overview.md) · [F03](./prds/F03-how-work-is-organised.md) · [F04](./prds/F04-bet-detail.md) · [F05](./prds/F05-outcomes.md) · [F06](./prds/F06-evidence.md) · [F07](./prds/F07-decision-note.md) · [F08](./prds/F08-export-board-pack.md)
 
-When a checklist item graduates into committed Slice work, add or amend a PRD and tick it here—do not delete the rationale sections above.
+When a checklist item graduates into committed Slice work, add or amend a PRD and tick it here-do not delete the rationale sections above.
