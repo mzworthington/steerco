@@ -9,13 +9,13 @@ Staff+ engineers need refs, provenance, and write-back policy without forcing ex
 
 ## Goal
 
-Secondary surface for SteerSpec detail, topology fitness with policy panel, and advanced exports — including explicit Goal / MoS / stream-aligned / platform grouping aliases without changing executive chrome.
+Secondary surface for SteerSpec detail, topology fitness with policy panel, and advanced exports — including explicit Goal / MoS / stream-aligned / platform grouping aliases **and** EDGE-beyond-LVT terms (PVR, Product Blueprint, Tech@Core, Integrated Backlog, six principles) without changing executive chrome.
 
 ## User stories
 
 - As a principal engineer, I inspect external refs and provenance.
 - As a platform engineer, I confirm Group YAML write-back is blocked for Entra-backed teams.
-- As a staff engineer, I see how SteerSpec fields map to EDGE LVT and Team Topologies types/modes.
+- As a staff engineer, I see how SteerSpec fields map to the full EDGE toolkit (not LVT alone) and Team Topologies types/modes.
 
 ## Requirements
 
@@ -23,7 +23,10 @@ Secondary surface for SteerSpec detail, topology fitness with policy panel, and 
 2. Steer tree with ids/refs
 3. Write-back policy panel (readouts)
 4. Does not replace executive screens; deep-link back
-5. Compact vocabulary bridge (Goal≈Outcome, MoS≈metrics, stream-aligned≈customer-facing, platform grouping note, interaction mode aliases)
+5. Compact vocabulary bridge:
+   - LVT: Goal≈Outcome, MoS≈metrics, Initiative reserved
+   - Beyond LVT: PVR≈decision notes + review dates; Product Blueprint (future); Tech@Core≈capability bets + optional radar/ArchLens refs; Integrated Backlog≈fundingStance / mix cues; six EDGE principles listed
+   - TT: stream-aligned≈customer-facing legacy, platform grouping note, interaction mode aliases
 6. Topology fitness view highlights mismatches including load/flow and (from Slice 1.5) MoS-link / collab time-box codes
 
 ## Acceptance

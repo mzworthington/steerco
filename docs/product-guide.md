@@ -24,13 +24,28 @@ Recent workspaces appear on the home screen for quick return. Edits live in the 
 
 ## The three questions
 
-SteerLens is organised around how leadership already steers:
+SteerLens is organised around how leadership already steers (EDGE’s invest / work / adapt loop):
 
 | Question   | Where in the app             | Intent                                                                   |
 | ---------- | ---------------------------- | ------------------------------------------------------------------------ |
 | **Invest** | Steering, Outcomes, Evidence | Are we funding the right bets for the outcomes we care about?            |
 | **Work**   | How work is organised        | Is team shape set up for fast flow of value?                             |
 | **Adapt**  | Decision notes, Export       | What should we start, stop, continue, or re-scope — and can we share it? |
+
+## EDGE beyond the Lean Value Tree
+
+The Lean Value Tree (vision → outcomes + Measures of Success → bets) is the spine. EDGE also expects:
+
+| Teaching                        | In SteerLens                                                                                                                                                              |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Product mindset**             | Long-lived teams fund continuous value — not temporary project theatre. A lightweight Product Blueprint (later) can name the customer problem without heavy requirements. |
+| **Tech@Core**                   | Capability bets and (later) architecture / radar refs treat tech debt and core systems as business investments, not a cost centre.                                        |
+| **Periodic Value Review (PVR)** | Decision notes + bet review dates: look at the data, double down or defund — no stage-gate bureaucracy. Executives see “value review”; staff+ may see PVR.                |
+| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain) and later mix cues cross-prioritise strategic work with BAU and capability — without SteerLens owning Jira.                  |
+| **Measures of Success**         | Customer-value fitness function tied to outcomes and bets — leading indicators that fund work, not vanity dashboards.                                                     |
+| **Six principles**              | Outcome-based strategy; value-based prioritization; lightweight governance; adaptive learning; autonomous teams; decisions close to the work.                             |
+
+Full framework backlog: planning docs under `plan/docs/OPERATING_MODEL_ALIGNMENT.md`.
 
 ## Screen by screen
 
@@ -61,7 +76,7 @@ Platforms exist to reduce cognitive load so stream-aligned teams can go faster. 
 
 ### Decision notes
 
-One-page recommendations: start / stop / continue / re-scope, with why, what was measured, who is affected, and the next step. This is lightweight governance, not a PMO ticket.
+One-page recommendations: start / stop / continue / re-scope, with why, what was measured, who is affected, and the next step. This is **Periodic Value Review** in practice — lightweight governance to rebalance the portfolio, not a PMO ticket.
 
 ### Export
 
@@ -76,9 +91,13 @@ The sidebar shows whether the draft differs from what you opened. Review the dif
 | Term                   | Meaning                                                                            |
 | ---------------------- | ---------------------------------------------------------------------------------- |
 | **Outcome**            | Measurable change the organisation wants                                           |
-| **Measure of Success** | Leading indicator that shapes and funds work toward an outcome                     |
+| **Measure of Success** | Leading indicator in the customer-value fitness function — shapes and funds work   |
 | **Bet**                | Time-boxed investment intended to move an outcome                                  |
 | **Kill criteria**      | Pre-agreed condition that triggers stop or re-scope                                |
+| **Value review (PVR)** | Frequent, data-informed start / stop / continue decision — not annual stage-gate   |
+| **Product mindset**    | Long-lived teams delivering continuous value (vs temporary project teams)          |
+| **Tech@Core**          | Technology as the business engine; tech debt is an investment concern              |
+| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work — SteerLens cues the mix    |
 | **Topology intent**    | Desired team types, groupings, and interaction modes for fast flow (point-in-time) |
 | **Decision note**      | Start / stop / continue / re-scope recommendation with rationale                   |
 | **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`)                   |
