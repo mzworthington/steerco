@@ -1,6 +1,6 @@
 # SteerLens
 
-SteerLens is a **steering workspace** for Engineering Directors and executive sponsors: align **outcomes**, **funded bets**, and **team shape**, then leave with a **decision note** — and export a board pack when you need to share it.
+SteerLens is a **steering workspace** for product owners, product executives, and Engineering Directors: align **outcomes**, **funded bets**, and **team shape**, then leave with a **decision note** — and export a board pack when you need to share it.
 
 ## The problem
 
@@ -35,4 +35,4 @@ The Lean Value Tree is the strategy spine; the other EDGE teachings keep investm
 
 ## For builders
 
-Setup, architecture, CI, and ADRs live under **Build & ops** in the sidebar. They support the product; they are not the starting point for leaders.
+Setup, architecture, CI, and ADRs live under **Build & ops** in the sidebar. They support the product; they are not the starting point for product leaders.

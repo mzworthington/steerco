@@ -12,7 +12,7 @@ Open or create a local workspace in under one minute.
 
 ## User stories
 
-- As an Engineering Director, I can start from a sample so I can explore the product immediately.
+- As a Product Owner, I can start from a sample so I can explore the product immediately.
 - As a Director, I can open a folder with `steertree.yaml` so my real narrative persists on disk.
 - As a Director, I understand that no account is required.
 

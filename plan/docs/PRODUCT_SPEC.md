@@ -6,7 +6,7 @@
 
 ## 1. Problem
 
-Engineering Directors and executive sponsors must align **outcomes**, **funded bets**, and **team shape**, then act on evidence. Today that alignment lives in slide decks. Jira holds work; Backstage holds services; Entra/GitHub hold people. Nothing holds the investment contract - so steering meetings re-litigate priorities without a shared, versionable source of truth.
+Product owners, product executives, and Engineering Directors must align **outcomes**, **funded bets**, and **team shape**, then act on evidence. Today that alignment lives in slide decks. Jira holds work; Backstage holds services; Entra/GitHub hold people. Nothing holds the investment contract - so steering meetings re-litigate priorities without a shared, versionable source of truth.
 
 ## 2. Product thesis
 
@@ -23,8 +23,9 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 | Persona                                 | Need                                                             |
 | --------------------------------------- | ---------------------------------------------------------------- |
-| Engineering Director / Head of Platform | Align bets to topology; decide start/stop/continue with evidence |
-| CPO / CTO / transformation sponsor      | Readable steering view; decision notes without tooling jargon    |
+| Product Owner / CPO / Head of Product   | Own outcomes and funded bets; decide start/stop/continue         |
+| Engineering Director / Head of Platform | Align team shape to bets; partner on start/stop/continue         |
+| CTO / transformation sponsor            | Readable steering view; decision notes without tooling jargon    |
 | Staff+/principal (secondary)            | Technical mode: refs, imports, overlays, CI validation           |
 | Platform engineer (later)               | Connect Catalog API; enforce write-back policy                   |
 

@@ -1,8 +1,8 @@
 # SteerLens
 
-**Investment alignment for engineering leaders** — a board-pack you can interact with.
+**Investment alignment for product leaders** — a board-pack you can interact with.
 
-SteerLens helps Engineering Directors and non-technical executives keep **strategy, team shape, and evidence** aligned — and decide what to start, stop, or continue. It is intentionally **not** Jira, not an org directory, and not a service catalog.
+SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned — and decide what to start, stop, or continue. It is intentionally **not** Jira, not an org directory, and not a service catalog.
 
 | Related                               | Role                                                           |
 | ------------------------------------- | -------------------------------------------------------------- |

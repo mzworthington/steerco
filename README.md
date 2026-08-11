@@ -1,6 +1,6 @@
 # SteerLens
 
-SteerLens helps Engineering Directors and non-technical executives keep **strategy, team shape, and evidence** aligned — and decide what to start, stop, or continue.
+SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned — and decide what to start, stop, or continue.
 
 ## Overview
 

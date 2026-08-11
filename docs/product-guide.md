@@ -6,11 +6,12 @@ Everything in Slice 1 stays on this device until you choose to connect systems l
 
 ## Who it is for
 
-| Role                                    | What you do here                                                                  |
-| --------------------------------------- | --------------------------------------------------------------------------------- |
-| Engineering Director / Head of Platform | Align bets to outcomes and topology; decide start / stop / continue with evidence |
-| CPO, CTO, or transformation sponsor     | Read a steering view and take a decision note — no tooling jargon                 |
-| Staff+ (optional)                       | Later slices add a technical mode; the default UI stays executive                 |
+| Role                                    | What you do here                                                           |
+| --------------------------------------- | -------------------------------------------------------------------------- |
+| Product Owner / CPO / Head of Product   | Own outcomes and funded bets; decide start / stop / continue with evidence |
+| Engineering Director / Head of Platform | Align team shape to bets; partner on start / stop / continue with evidence |
+| CTO or transformation sponsor           | Read a steering view and take a decision note — no tooling jargon          |
+| Staff+ (optional)                       | Later slices add a technical mode; the default UI stays executive          |
 
 Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Architecture diagrams stay in ArchLens. SteerLens holds the **investment contract**.
 

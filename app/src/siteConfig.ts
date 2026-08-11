@@ -2,9 +2,9 @@
 export const SITE_SLUG = 'steerlens';
 export const SITE_NAME = 'SteerLens';
 export const SITE_DESCRIPTION =
-  'SteerLens helps Engineering Directors and non-technical executives keep strategy, team shape, and evidence aligned — and decide what to start, stop, or continue.';
+  'SteerLens helps product owners, product executives, and Engineering Directors keep strategy, team shape, and evidence aligned — and decide what to start, stop, or continue.';
 export const SITE_TAGLINE =
-  'Investment clarity for engineering leaders — without another planning silo.';
+  'Investment clarity for product leaders — without another planning silo.';
 /** Public site origin (no trailing slash). Used for canonical/SEO when enabled. */
 export const SITE_ORIGIN = 'https://steerlens.mzworthington.co.uk';
 /** GitHub repository for this product. */
