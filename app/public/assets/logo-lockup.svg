@@ -1,13 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 332 200" role="img" aria-label="SteerLens lockup mark">
-  <!-- Two circles + NE arrow (rounded tip). Gutters: 28 between dots, 20 to arrow; arrow 0.8× at cy 92. -->
-  <circle cx="66" cy="100" r="38" fill="#041c38"/>
-  <circle cx="170" cy="100" r="38" fill="#041c38"/>
-  <g transform="translate(276.65 92) rotate(-45)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 309.4 82.6" role="img" aria-label="SteerLens lockup mark">
+  <!-- Circles + arrow on a shared centre line; even 120u centre rhythm; artboard trimmed to ink. -->
+  <circle cx="38" cy="38" r="38" fill="#041c38"/>
+  <circle cx="158" cy="38" r="38" fill="#041c38"/>
+  <g transform="translate(278 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
     <path fill="#041c38"
-          d="M 34.87 -4.48
-             A 5.32 5.32 0 0 1 34.87 4.48
-             L -38.4 30.4
-             Q -14.4 0 -38.4 -30.4
+          d="M 117.98 -15.16
+             A 18 18 0 0 1 117.98 15.16
+             L -130 102
+             Q -48 0 -130 -102
              Z"/>
   </g>
 </svg>

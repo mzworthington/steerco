@@ -215,8 +215,8 @@ function AssetsPanel() {
           <img
             src="/assets/logo-lockup.svg"
             alt=""
-            width={280}
-            height={88}
+            width={310}
+            height={83}
             className="h-14 w-auto"
           />
           <figcaption>logo-lockup.svg · circles + arrow (wide)</figcaption>

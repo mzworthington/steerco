@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'wouter';
+import { createNewWorkspaceFile } from '../adapters/createNewWorkspaceFile';
 import { loadSampleWorkspace, SAMPLE_WORKSPACE_LABEL } from '../adapters/sampleWorkspaceLoader';
 import {
   openWorkspaceFromDirectoryHandle,
@@ -14,6 +15,7 @@ import {
   ensureDirectoryWritePermission,
   loadWorkspaceDirectoryBinding,
 } from '../adapters/workspaceDirectoryStore';
+import { BLANK_WORKSPACE_LABEL } from '../application/createBlankWorkspace';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 function formatOpenedAt(iso: string): string {
@@ -59,6 +61,38 @@ export function WorkspaceHomePage() {
       }),
     );
     setLocation('/workspace/steering');
+  }
+
+  async function createNewFile() {
+    setError(null);
+    setBusy(true);
+    try {
+      const created = await createNewWorkspaceFile();
+      if ('cancelled' in created && created.cancelled) {
+        return;
+      }
+      if (!created.ok) {
+        setError(created.error);
+        return;
+      }
+      const title = created.value.metadata.title ?? created.value.metadata.name;
+      openSession({
+        spec: created.value,
+        source: created.method === 'directory' ? 'folder' : 'file',
+        label: created.label || BLANK_WORKSPACE_LABEL,
+        persistence: created.persistence,
+      });
+      setRecent(
+        rememberRecentWorkspace({
+          id: `file:${created.value.metadata.name}`,
+          title,
+          kind: 'file',
+        }),
+      );
+      setLocation('/workspace/steering');
+    } finally {
+      setBusy(false);
+    }
   }
 
   async function openFolder() {
@@ -195,7 +229,16 @@ export function WorkspaceHomePage() {
           ) : null}
           <button
             type="button"
-            className={session ? 'btn-tertiary' : 'btn-secondary'}
+            className="btn-secondary"
+            data-testid="workspace-create-file"
+            onClick={() => void createNewFile()}
+            disabled={busy}
+          >
+            Create new file
+          </button>
+          <button
+            type="button"
+            className="btn-tertiary"
             onClick={() => void startFromSample()}
             disabled={busy}
           >
