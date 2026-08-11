@@ -76,8 +76,9 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 - Optional ArchLens `systemRefs` on bets
 - CI check action for SteerSpec mismatches (incl. Slice 1.5 codes)
 - Optional Backstage overlay `SteerBet` kind docs
-- **Team Topologies 2e groupings:** organise teams under **value stream groupings** (shared business domain / value stream — TT’s term for “domain” org shape) and **platform groupings** (shared platform purpose); SteerSpec `groupings[]` (`platform` \| `value_stream`) + fractal membership; org view zoom grouping → member teams
-- **Topology timeline ([F13](./prds/F13-topology-timeline.md)):** visualise capacity increases/decreases and relationship spans over time; scrub “as of” date to project org shape + mismatches
+- **Team Topologies scale layout ([F03](./prds/F03-how-work-is-organised.md)):** stream-aligned teams as the spine inside **value stream groupings**; **platform groupings** with `platformScope` (`organisation` \| `vertical` \| `team`); complicated subsystem nest (`within` / team-within-team); enabling one-to-many facilitation; org view **flow-of-change canvas** (type zones remain teaching/filter)
+- **As-of on org view + topology timeline ([F13](./prds/F13-topology-timeline.md)):** lightweight date control on How work is organised; deep-dive timeline for capacity deltas + relationship spans; shared projection of org shape + mismatches
+- **Bet flow overlay ([F04](./prds/F04-bet-detail.md)):** funded teams + related interactions for a bet as of date (intent, not a Gantt)
 - **EDGE:** optional `initiatives[]` under bets (thin narrative slices — never dual backlog)
 - Optional WIP / relative value rank UI; capability vs opportunity mix hint on steering
 
@@ -98,7 +99,7 @@ SteerLens delivers an **investment contract** (EDGE Lean Value Tree) and **topol
 | ----------------------------------------- | ------------------------------------------------------------------------ |
 | EDGE LVT + MoS + incremental funding      | 1 (copy), 1.5 (schema), 3 (initiatives / rank)                           |
 | EDGE lightweight governance (start/stop)  | 1 (F07/F08), 1.5 (MoS-measured)                                          |
-| Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (value-stream / platform groupings + F13 timeline) |
-| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (fractal zoom + timeline) |
-| Topology evolution over time              | 1.5 (schema), 3 ([F13](./prds/F13-topology-timeline.md) view)            |
+| Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (flow-of-change + groupings + platform scope + CSS nest) |
+| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (fractal zoom + bet flow overlay + timeline) |
+| Topology evolution over time              | 1.5 (schema), 3 (F03 as-of + [F13](./prds/F13-topology-timeline.md) view) |
 | Full rationale                            | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)           |
