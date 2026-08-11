@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type MouseEvent } from 'react';
 import { Link, useLocation, useParams } from 'wouter';
 import type { BetKind, FundingStance } from '@steerlens/core';
 import {
+  applyAddInitiative,
   applyBetDetailDraft,
   betDetailFundingStanceOptions,
   betDetailKindOptions,
@@ -33,6 +34,7 @@ function draftFromModel(model: BetDetailModel): BetDetailDraft {
     horizon: model.horizon,
     fundingStance: model.fundingStance,
     kind: model.kind,
+    systemRefsText: model.systemRefsText,
   };
 }
 
@@ -52,7 +54,8 @@ function draftsEqual(a: BetDetailDraft, b: BetDetailDraft): boolean {
     a.reviewDate === b.reviewDate &&
     a.horizon === b.horizon &&
     a.fundingStance === b.fundingStance &&
-    a.kind === b.kind
+    a.kind === b.kind &&
+    a.systemRefsText === b.systemRefsText
   );
 }
 
@@ -64,6 +67,12 @@ export function BetDetailPage() {
   const [formError, setFormError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState(false);
+  const [initiativeDraft, setInitiativeDraft] = useState({
+    title: '',
+    successSignal: '',
+    externalUrl: '',
+  });
+  const [initiativeError, setInitiativeError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!session) {
@@ -207,6 +216,19 @@ export function BetDetailPage() {
           {model.outcome ? (
             <p className="bet-detail-outcome">
               Outcome · <span>{model.outcome.title}</span>
+            </p>
+          ) : null}
+          {model.techAtCoreCue ? (
+            <p className="bet-detail-tech-core" data-testid="bet-tech-at-core">
+              {model.techAtCoreCue}
+            </p>
+          ) : null}
+          {model.techRadarUrl ? (
+            <p className="bet-detail-radar">
+              Tech radar ·{' '}
+              <a href={model.techRadarUrl} target="_blank" rel="noreferrer">
+                {model.techRadarUrl}
+              </a>
             </p>
           ) : null}
         </div>
@@ -520,6 +542,109 @@ export function BetDetailPage() {
                 onChange={(event) => updateDraft({ ...draft, horizon: event.target.value })}
               />
             </label>
+          </div>
+        </section>
+
+        <section
+          className="bet-detail-card"
+          aria-labelledby="bet-system-refs-heading"
+          data-testid="bet-system-refs"
+        >
+          <h2 id="bet-system-refs-heading" className="bet-detail-card-title">
+            Architecture refs (ArchLens)
+          </h2>
+          <p className="bet-detail-teams-lead">
+            Optional entityRefs linking this bet to systems or components. One per line or
+            comma-separated.
+          </p>
+          <label className="bet-detail-field">
+            <span className="sr-only">System refs</span>
+            <textarea
+              className="bet-detail-textarea"
+              rows={3}
+              value={draft.systemRefsText}
+              onChange={(event) => updateDraft({ ...draft, systemRefsText: event.target.value })}
+              placeholder="component:default/fulfilil"
+            />
+          </label>
+        </section>
+
+        <section
+          className="bet-detail-card"
+          aria-labelledby="bet-initiatives-heading"
+          data-testid="bet-initiatives"
+        >
+          <h2 id="bet-initiatives-heading" className="bet-detail-card-title">
+            Initiatives
+          </h2>
+          <p className="bet-detail-teams-lead">
+            Thin narrative slices toward the Measure of Success - never a dual backlog.
+          </p>
+          {model.initiatives.length === 0 ? (
+            <p className="bet-detail-mos-empty">No initiatives on this bet yet.</p>
+          ) : (
+            <ul className="bet-detail-initiative-list">
+              {model.initiatives.map((item) => (
+                <li key={item.id}>
+                  <strong>{item.title}</strong>
+                  <span>{item.successSignal}</span>
+                  {item.externalUrl ? (
+                    <a href={item.externalUrl} target="_blank" rel="noreferrer">
+                      Tracker
+                    </a>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="bet-detail-initiative-form">
+            <label className="bet-detail-inline-field">
+              <span>New initiative title</span>
+              <input
+                type="text"
+                value={initiativeDraft.title}
+                onChange={(event) =>
+                  setInitiativeDraft({ ...initiativeDraft, title: event.target.value })
+                }
+              />
+            </label>
+            <label className="bet-detail-inline-field">
+              <span>Success signal</span>
+              <input
+                type="text"
+                value={initiativeDraft.successSignal}
+                onChange={(event) =>
+                  setInitiativeDraft({ ...initiativeDraft, successSignal: event.target.value })
+                }
+              />
+            </label>
+            <label className="bet-detail-inline-field">
+              <span>External tracker URL (optional)</span>
+              <input
+                type="url"
+                value={initiativeDraft.externalUrl}
+                onChange={(event) =>
+                  setInitiativeDraft({ ...initiativeDraft, externalUrl: event.target.value })
+                }
+              />
+            </label>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => {
+                const applied = applyAddInitiative(session.spec, model.id, initiativeDraft);
+                if (!applied.ok) {
+                  setInitiativeError(applied.error);
+                  return;
+                }
+                setSession({ ...session, spec: applied.value });
+                setInitiativeDraft({ title: '', successSignal: '', externalUrl: '' });
+                setInitiativeError(null);
+              }}
+            >
+              Add initiative
+            </button>
+            {initiativeError ? <p className="bet-detail-error">{initiativeError}</p> : null}
           </div>
         </section>
       </div>

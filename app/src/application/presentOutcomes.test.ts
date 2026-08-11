@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from './openWorkspace';
 import {
   applyOutcomeMetricEdit,
+  applyProductDraft,
   presentOutcomes,
   validateOutcomeMetricEdit,
 } from './presentOutcomes';
@@ -47,6 +48,30 @@ describe('presentOutcomes', () => {
     );
     expect(outcome?.measures[1]?.claimedByBets.map((bet) => bet.id)).toEqual(['bet_fulfilil']);
     expect(outcome?.measures[2]?.claimedByBets.map((bet) => bet.id)).toEqual(['bet_fulfilil']);
+    expect(model.products.some((product) => product.title === 'Customer promises')).toBe(true);
+    expect(model.products[0]?.betLinks.map((bet) => bet.id)).toEqual(
+      expect.arrayContaining(['bet_pickup', 'bet_fulfilil']),
+    );
+  });
+
+  it('adds a lightweight product brief', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyProductDraft(opened.value, {
+      title: 'Store tools',
+      problem: 'Associates lack trustworthy stock and staffing cues',
+      customers: 'Store teams',
+      nonGoals: 'HR payroll',
+      outcomeIds: ['out_store'],
+      betIds: ['bet_pos_resilience'],
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    expect(applied.value.spec.products.some((product) => product.title === 'Store tools')).toBe(
+      true,
+    );
   });
 });
 

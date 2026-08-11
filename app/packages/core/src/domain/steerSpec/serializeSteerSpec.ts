@@ -19,6 +19,9 @@ export function serializeSteerSpec(doc: SteerSpec): string {
       decisionNotes: doc.spec.decisionNotes,
       evidence: doc.spec.evidence,
       topologyEvents: doc.spec.topologyEvents,
+      initiatives: doc.spec.initiatives,
+      products: doc.spec.products,
+      ...(doc.spec.techRadarUrl ? { techRadarUrl: doc.spec.techRadarUrl } : {}),
     },
   };
 

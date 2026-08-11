@@ -15,7 +15,7 @@ Executive UI never shows this document by default; Technical mode and git review
 
 Operating-model evolution (full EDGE toolkit beyond LVT, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
 
-`kind: SteerTree` is the Lean Value Tree **spine** of the EDGE investment contract. EDGE teachings beyond the tree (product mindset / Product Blueprint, Tech@Core, Periodic Value Review, Integrated Backlogs, MoS fitness framing, six principles) map onto existing fields today (`metrics`, `fundingStance`, `kind`, `reviewDate`, `decisionNotes`) and optional later surfaces - they are first-class product intent even when not separate SteerSpec kinds.
+`kind: SteerTree` is the Lean Value Tree **spine** of the EDGE investment contract. EDGE teachings beyond the tree (product mindset / Product brief, Tech@Core, Periodic Value Review, Integrated Backlogs, MoS fitness framing, six principles) map onto existing fields today (`metrics`, `fundingStance`, `kind`, `reviewDate`, `decisionNotes`) and optional later surfaces - they are first-class product intent even when not separate SteerSpec kinds.
 
 ## Team Topologies in SteerSpec
 
@@ -145,7 +145,7 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 
 Landed Slice 1.5 additive fields: `bets[].metricIds`/`primaryMetricId` (MoS links), `bets[].reviewDate`/`horizon` (review cadence), `bets[].fundingStance`/`kind`, `relationships[].expectedUntil`/`effectiveFrom`/`effectiveUntil`, `teams[].members[].discipline` (mix signal), `teams[].members[].effectiveFrom`/`effectiveUntil`, `decisionNotes[].measuredMetricIds`, and `spec.topologyEvents[]` ([F13](./prds/F13-topology-timeline.md)). `discipline` is required when a member is listed; temporal windows and MoS links remain optional with empty/undefined defaults so older Slice 1 fixtures still parse after migration.
 
-Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`withinTeamId`~~ landed then refined - **streams** + **domains** are first-class; teams use `streamIds[]` (ideal: one stream per stream-aligned team); complicated subsystems sit in a stream (not under a team); platform `groupings[]` remain. Soft mismatches advise when reality breaks the ideal. Remaining: optional `initiatives[]`. UI: flow-of-change + as-of + bet flow overlay landed; F13 timeline deep-dive still open. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md) · [F03](./prds/F03-how-work-is-organised.md).
+Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`withinTeamId`~~ landed then refined - **streams** + **domains** are first-class; teams use `streamIds[]` (ideal: one stream per stream-aligned team); complicated subsystems sit in a stream (not under a team); platform `groupings[]` remain. Soft mismatches advise when reality breaks the ideal. Remaining: optional `initiatives[]`. UI: flow-of-change + as-of + bet flow overlay + F13 timeline deep-dive landed. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md) · [F03](./prds/F03-how-work-is-organised.md).
 
 ## Mapping to foreign shapes (later)
 

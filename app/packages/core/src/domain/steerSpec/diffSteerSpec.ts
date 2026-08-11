@@ -12,7 +12,9 @@ export type SteerSpecDiffSection =
   | 'groupings'
   | 'relationships'
   | 'decisionNotes'
-  | 'evidence';
+  | 'evidence'
+  | 'initiatives'
+  | 'products';
 
 export type SteerSpecChangeKind = 'added' | 'modified' | 'deleted';
 
@@ -125,6 +127,32 @@ export function diffSteerSpec(baseline: SteerSpec, working: SteerSpec): SteerSpe
     (item) => item.id,
     (item) => item.note?.trim() || item.id,
   );
+  diffById(
+    changes,
+    'initiatives',
+    baseline.spec.initiatives ?? [],
+    working.spec.initiatives ?? [],
+    (item) => item.id,
+    (item) => item.title,
+  );
+  diffById(
+    changes,
+    'products',
+    baseline.spec.products ?? [],
+    working.spec.products ?? [],
+    (item) => item.id,
+    (item) => item.title,
+  );
+
+  if ((baseline.spec.techRadarUrl ?? '') !== (working.spec.techRadarUrl ?? '')) {
+    changes.push({
+      kind: 'modified',
+      section: 'metadata',
+      id: 'techRadarUrl',
+      label: 'Tech radar URL',
+      detail: working.spec.techRadarUrl?.trim() || '(cleared)',
+    });
+  }
 
   const baselineRels = new Map(
     baseline.spec.relationships.map((rel) => [relationshipKey(rel), rel] as const),

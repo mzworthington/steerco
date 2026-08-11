@@ -28,6 +28,8 @@ export function createBlankSteerSpec(options?: { name?: string; title?: string }
       decisionNotes: [],
       evidence: [],
       topologyEvents: [],
+      initiatives: [],
+      products: [],
     },
   });
   if (!parsed.success) {

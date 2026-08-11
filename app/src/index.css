@@ -772,6 +772,18 @@
 
   .steering-mismatch {
     @apply text-ink-muted mt-2 text-sm;
+
+    a {
+      @apply text-ocean hover:underline;
+    }
+  }
+
+  .steering-portfolio-mix {
+    @apply text-ink-muted mt-2 text-sm font-medium;
+  }
+
+  .steering-rank-error {
+    @apply text-coral mt-4 text-sm font-medium;
   }
 
   .steering-decisions {
@@ -803,7 +815,15 @@
   }
 
   .steering-bet-card {
-    @apply border-line hover:border-ocean/40 flex items-start justify-between gap-6 rounded-xl border bg-white px-5 py-4 transition-colors;
+    @apply border-line flex items-start justify-between gap-6 rounded-xl border bg-white px-5 py-4;
+  }
+
+  .steering-bet-main {
+    @apply min-w-0 flex-1;
+  }
+
+  .steering-bet-link {
+    @apply hover:border-ocean/40 block rounded-lg transition-colors;
   }
 
   .steering-bet-title {
@@ -812,6 +832,22 @@
 
   .steering-bet-cue {
     @apply text-ink-muted mt-1 max-w-xl text-sm leading-relaxed;
+  }
+
+  .steering-bet-rank {
+    @apply mt-3 flex flex-wrap items-center gap-2 text-xs;
+  }
+
+  .steering-bet-rank-label {
+    @apply text-ink-muted font-medium;
+  }
+
+  .steering-bet-rank-input {
+    @apply border-line text-ink w-16 rounded-md border bg-white px-2 py-1 text-sm tabular-nums;
+  }
+
+  .steering-bet-rank-btn {
+    @apply border-line text-ink-muted hover:border-ocean hover:text-ocean rounded-md border bg-white px-2 py-1 text-[10px] leading-none;
   }
 
   .bet-detail {
@@ -844,6 +880,42 @@
     span {
       @apply text-ink font-medium;
     }
+  }
+
+  .bet-detail-tech-core {
+    @apply text-ocean mt-3 max-w-2xl text-sm leading-relaxed font-medium;
+  }
+
+  .bet-detail-radar {
+    @apply text-ink-muted mt-2 text-sm;
+
+    a {
+      @apply text-ocean break-all hover:underline;
+    }
+  }
+
+  .bet-detail-initiative-list {
+    @apply mt-3 space-y-3 text-sm;
+
+    li {
+      @apply border-line/70 flex flex-col gap-1 border-b pb-3;
+    }
+
+    strong {
+      @apply text-ink;
+    }
+
+    span {
+      @apply text-ink-muted;
+    }
+
+    a {
+      @apply text-ocean w-fit hover:underline;
+    }
+  }
+
+  .bet-detail-initiative-form {
+    @apply mt-4 grid gap-3 sm:grid-cols-2;
   }
 
   .bet-detail-status-select {
@@ -992,7 +1064,7 @@
   }
 
   .outcomes-page {
-    @apply mx-auto max-w-4xl;
+    @apply mx-auto max-w-5xl;
   }
 
   .outcomes-header {
@@ -1005,6 +1077,150 @@
 
   .outcomes-framing {
     @apply text-ink-muted mt-3 text-base leading-relaxed;
+  }
+
+  .value-tree {
+    @apply border-line mt-10 rounded-2xl border bg-white px-5 py-6;
+  }
+
+  .value-tree--dense {
+    @apply mt-6 rounded-xl px-4 py-4;
+  }
+
+  .value-tree-header {
+    @apply flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between;
+  }
+
+  .value-tree-title {
+    @apply font-display text-ink mt-2 text-2xl font-semibold tracking-tight;
+  }
+
+  .value-tree--dense .value-tree-title {
+    @apply text-xl;
+  }
+
+  .value-tree-lead {
+    @apply text-ink-muted mt-2 max-w-xl text-sm leading-relaxed;
+  }
+
+  .value-tree-orient {
+    @apply border-line inline-flex rounded-full border p-1;
+  }
+
+  .value-tree-orient-btn {
+    @apply text-ink-muted rounded-full px-3 py-1.5 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .value-tree-orient-btn.is-active {
+    @apply bg-ocean text-white;
+  }
+
+  .value-tree-vision {
+    @apply border-line bg-paper-soft text-ink mt-5 rounded-xl border px-4 py-3 text-sm leading-relaxed;
+  }
+
+  .value-tree-vision-label {
+    @apply text-ink-muted mr-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .value-tree-canvas {
+    @apply border-line mt-4 overflow-x-auto rounded-xl border bg-white px-3 py-3;
+  }
+
+  .value-tree-outline {
+    @apply border-line mt-4 rounded-xl border px-4 py-3;
+  }
+
+  .value-tree-outline summary {
+    @apply text-ink cursor-pointer text-sm font-semibold;
+  }
+
+  .value-tree-outline-list {
+    @apply text-ink mt-3 list-decimal space-y-3 pl-5 text-sm;
+  }
+
+  .value-tree-outline-list ol {
+    @apply text-ink-muted mt-2 list-[lower-alpha] space-y-1 pl-5;
+  }
+
+  .value-tree-outline-list ol ol {
+    @apply list-[lower-roman];
+  }
+
+  .value-tree-outline-outcome {
+    @apply text-ink font-semibold;
+  }
+
+  .value-tree-outline-bet {
+    @apply text-ink;
+  }
+
+  .value-tree-outline-empty {
+    @apply text-ink-muted mt-1 text-sm;
+  }
+
+  .outcomes-list-intro {
+    @apply mb-8 max-w-2xl;
+  }
+
+  .outcomes-list-intro-copy {
+    @apply text-ink-muted mt-2 text-sm leading-relaxed;
+  }
+
+  .outcomes-products {
+    @apply border-line/80 mt-10 border-b pb-10;
+  }
+
+  .outcomes-product-list {
+    @apply mt-6 grid gap-4 md:grid-cols-2;
+  }
+
+  .outcomes-product-card {
+    @apply border-line rounded-xl border bg-white px-5 py-4;
+  }
+
+  .outcomes-product-title {
+    @apply text-ink text-base font-semibold;
+  }
+
+  .outcomes-product-problem {
+    @apply text-ink-muted mt-2 text-sm leading-relaxed;
+  }
+
+  .outcomes-product-meta {
+    @apply text-ink-muted mt-2 text-xs leading-relaxed;
+
+    a {
+      @apply text-ocean hover:underline;
+    }
+  }
+
+  .outcomes-product-edit {
+    @apply border-line bg-paper-soft mt-6 grid gap-3 rounded-xl border px-4 py-4 sm:grid-cols-2;
+  }
+
+  .outcomes-product-links {
+    @apply border-line m-0 rounded-lg border bg-white px-3 py-3 sm:col-span-2;
+  }
+
+  .outcomes-product-links legend {
+    @apply text-ink-muted mb-2 px-1 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .outcomes-product-link-list {
+    @apply flex max-h-48 flex-col gap-2 overflow-y-auto;
+  }
+
+  .outcomes-product-link {
+    @apply text-ink flex items-start gap-2 text-sm font-normal tracking-normal normal-case;
+  }
+
+  .outcomes-product-link-meta {
+    @apply text-ink-muted;
+  }
+
+  .outcomes-product-edit-actions {
+    @apply sm:col-span-2;
   }
 
   .outcomes-list {
@@ -1246,6 +1462,125 @@
 
   .organisation-as-of {
     @apply mt-4 inline-flex max-w-xs flex-col gap-1 text-sm;
+  }
+
+  .organisation-timeline {
+    @apply mt-8 flex flex-col gap-6;
+  }
+
+  .organisation-timeline-lead {
+    @apply text-ink-muted text-sm leading-relaxed;
+  }
+
+  .organisation-timeline-chart {
+    @apply border-line relative overflow-hidden rounded-xl border bg-white px-5 py-6;
+  }
+
+  .organisation-timeline-axis {
+    @apply text-ink-muted mb-6 flex justify-between text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-timeline-asof {
+    @apply bg-ocean pointer-events-none absolute top-10 bottom-4 z-10 w-px;
+    transform: translateX(-50%);
+  }
+
+  .organisation-timeline-asof-label {
+    @apply bg-ocean absolute top-0 left-1/2 -translate-x-1/2 rounded px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-white uppercase;
+  }
+
+  .organisation-timeline-section {
+    @apply relative mt-6;
+  }
+
+  .organisation-timeline-section-title {
+    @apply text-sm font-semibold;
+  }
+
+  .organisation-timeline-track {
+    @apply border-line relative mt-3 h-10 rounded-md border border-dashed bg-stone-50;
+  }
+
+  .organisation-timeline-track--capacity {
+    @apply h-12;
+  }
+
+  .organisation-timeline-marker {
+    @apply absolute top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center;
+  }
+
+  .organisation-timeline-marker-delta {
+    @apply rounded px-1.5 py-0.5 text-[11px] font-semibold whitespace-nowrap;
+  }
+
+  .organisation-timeline-marker--up .organisation-timeline-marker-delta {
+    @apply bg-emerald-100 text-emerald-900;
+  }
+
+  .organisation-timeline-marker--down .organisation-timeline-marker-delta {
+    @apply bg-rose-100 text-rose-900;
+  }
+
+  .organisation-timeline-bands {
+    @apply mt-3 flex list-none flex-col gap-3 p-0;
+  }
+
+  .organisation-timeline-band-row {
+    @apply flex flex-col gap-2;
+  }
+
+  .organisation-timeline-band-meta {
+    @apply text-ink flex items-start gap-2 text-sm;
+  }
+
+  .organisation-timeline-band-window {
+    @apply text-ink-muted;
+  }
+
+  .organisation-timeline-band {
+    @apply absolute top-1/2 flex h-7 -translate-y-1/2 items-center overflow-hidden rounded-md px-2 text-xs font-semibold text-white;
+  }
+
+  .organisation-timeline-band--x_as_a_service {
+    @apply bg-ocean/80;
+  }
+
+  .organisation-timeline-band--collaboration {
+    @apply bg-amber-700/85;
+  }
+
+  .organisation-timeline-band--facilitation {
+    @apply bg-teal-800/85;
+  }
+
+  .organisation-timeline-band-label {
+    @apply truncate;
+  }
+
+  .organisation-timeline-events {
+    @apply border-line rounded-xl border bg-white px-5 py-5;
+  }
+
+  .organisation-timeline-events-lead {
+    @apply text-ink-muted mt-1 text-sm;
+  }
+
+  .organisation-timeline-table {
+    @apply mt-4 w-full border-collapse text-left text-sm;
+  }
+
+  .organisation-timeline-table th {
+    @apply text-ink-muted border-line border-b pb-2 font-semibold;
+  }
+
+  .organisation-timeline-table td {
+    @apply border-line border-b py-2 align-top;
+  }
+
+  .sr-only {
+    @apply absolute h-px w-px overflow-hidden border-0 p-0;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .organisation-view-switch {
@@ -1641,6 +1976,50 @@
     @apply mt-10;
   }
 
+  .organisation-flow-graph {
+    @apply mt-4 flex flex-col gap-4;
+  }
+
+  .organisation-flow-graph-toolbar {
+    @apply flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between;
+  }
+
+  .organisation-flow-graph-filter {
+    @apply max-w-xs;
+  }
+
+  .organisation-flow-graph-lead {
+    @apply text-ink-muted text-sm leading-relaxed sm:max-w-md sm:text-right;
+  }
+
+  .organisation-flow-graph-legend {
+    @apply text-ink-muted flex flex-wrap gap-4 text-xs;
+  }
+
+  .organisation-flow-graph-canvas {
+    @apply border-line overflow-x-auto rounded-xl border bg-white px-4 py-4;
+  }
+
+  .organisation-flow-graph-canvas .docs-mermaid {
+    @apply min-w-full;
+  }
+
+  .organisation-flow-graph-details {
+    @apply border-line rounded-xl border bg-white px-4 py-3;
+  }
+
+  .organisation-flow-graph-details summary {
+    @apply text-ink cursor-pointer text-sm font-semibold;
+  }
+
+  .organisation-flow-graph-list {
+    @apply mt-4 flex flex-col gap-5;
+  }
+
+  .organisation-flow-graph-list-title {
+    @apply text-ink mb-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
   .organisation-section-title {
     @apply text-ink text-sm font-semibold tracking-wide uppercase;
   }
@@ -1810,6 +2189,26 @@
 
   .decision-notes-teams {
     @apply m-0 flex flex-col gap-2 border-0 p-0;
+  }
+
+  .decision-notes-affected-meta {
+    @apply text-ink-muted mb-3 text-sm;
+  }
+
+  .decision-notes-team-search {
+    @apply mb-4;
+  }
+
+  .decision-notes-team-groups {
+    @apply flex max-h-80 flex-col gap-4 overflow-y-auto pr-1;
+  }
+
+  .decision-notes-team-group {
+    @apply border-line m-0 rounded-xl border bg-white px-4 py-3;
+  }
+
+  .decision-notes-team-group-title {
+    @apply text-ink mb-2 px-1 text-xs font-semibold tracking-wide uppercase;
   }
 
   .decision-notes-metrics-legend {
@@ -2174,6 +2573,197 @@
 
   .export-decision-note {
     @apply border-line bg-paper-soft/60 rounded-lg border px-4 py-3;
+  }
+
+  /* Technical mode - denser stone+ocean, not cyber */
+  .technical-page {
+    @apply mx-auto max-w-5xl;
+  }
+
+  .technical-header {
+    @apply max-w-3xl;
+  }
+
+  .technical-crumb {
+    @apply text-ink-muted mb-2 text-xs font-medium;
+
+    a {
+      @apply text-ocean hover:underline;
+    }
+  }
+
+  .technical-title {
+    @apply font-display text-ink text-2xl font-semibold tracking-tight sm:text-3xl;
+  }
+
+  .technical-lead {
+    @apply text-ink-muted mt-3 text-sm leading-relaxed;
+  }
+
+  .technical-meta {
+    @apply text-ink-muted mt-2 text-xs leading-relaxed;
+
+    a,
+    code {
+      @apply text-ocean;
+    }
+
+    a {
+      @apply break-all hover:underline;
+    }
+  }
+
+  .technical-exec-links {
+    @apply mt-4 flex flex-wrap gap-4 text-sm font-medium;
+
+    a {
+      @apply text-ocean hover:underline;
+    }
+  }
+
+  .technical-hub-list {
+    @apply mt-8 grid gap-3 sm:grid-cols-2;
+  }
+
+  .technical-hub-card {
+    @apply border-line hover:border-ocean/50 block rounded-lg border bg-white px-4 py-4 transition-colors;
+  }
+
+  .technical-hub-card-title {
+    @apply text-ink text-sm font-semibold;
+  }
+
+  .technical-hub-card-desc {
+    @apply text-ink-muted mt-2 text-xs leading-relaxed;
+  }
+
+  .technical-section {
+    @apply mt-10;
+  }
+
+  .technical-section-title {
+    @apply font-display text-ink text-lg font-semibold tracking-tight;
+  }
+
+  .technical-table-wrap {
+    @apply border-line mt-3 overflow-x-auto rounded-lg border;
+  }
+
+  .technical-table {
+    @apply w-full min-w-[40rem] border-collapse text-left text-xs;
+
+    th {
+      @apply border-line bg-paper-soft text-ink-muted border-b px-3 py-2 font-semibold tracking-wide uppercase;
+    }
+
+    td {
+      @apply border-line/70 text-ink border-b px-3 py-2 align-top leading-relaxed;
+    }
+
+    code {
+      @apply text-ocean font-mono text-[11px] break-all;
+    }
+
+    a {
+      @apply text-ocean font-medium hover:underline;
+    }
+  }
+
+  .technical-muted {
+    @apply text-ink-muted;
+  }
+
+  .technical-empty {
+    @apply text-ink-muted mt-3 text-sm;
+  }
+
+  .technical-mismatch-list {
+    @apply mt-3 space-y-3;
+  }
+
+  .technical-mismatch {
+    @apply border-line rounded-lg border bg-white px-4 py-3;
+  }
+
+  .technical-mismatch[data-severity='error'] {
+    @apply border-coral/40;
+  }
+
+  .technical-mismatch-head {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .technical-mismatch-severity {
+    @apply text-ink-muted text-[10px] font-semibold tracking-wide uppercase;
+  }
+
+  .technical-mismatch-code {
+    @apply text-ocean font-mono text-[11px];
+  }
+
+  .technical-mismatch-title {
+    @apply text-ink mt-2 text-sm font-semibold;
+  }
+
+  .technical-mismatch-headline {
+    @apply text-ink-muted mt-1 text-xs leading-relaxed;
+  }
+
+  .technical-deep-link {
+    @apply text-ocean mt-2 inline-block text-xs font-medium hover:underline;
+  }
+
+  .technical-banner {
+    @apply border-amber/40 bg-amber/10 text-ink mt-6 rounded-lg border px-4 py-3 text-sm leading-relaxed;
+
+    code {
+      @apply font-mono text-xs;
+    }
+  }
+
+  .technical-field {
+    @apply text-ink mt-4 flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+
+    input[type='file'],
+    textarea {
+      @apply border-line text-ink rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case;
+    }
+  }
+
+  .technical-textarea {
+    @apply min-h-48 w-full font-mono;
+  }
+
+  .technical-actions {
+    @apply mt-4 flex flex-wrap gap-3;
+  }
+
+  .technical-feedback {
+    @apply mt-6 space-y-2;
+  }
+
+  .technical-error {
+    @apply text-sm font-medium text-red-700;
+  }
+
+  .technical-saved {
+    @apply text-sm font-medium text-emerald-800;
+  }
+
+  .technical-principle-list {
+    @apply mt-3 space-y-2 text-sm;
+
+    li {
+      @apply flex flex-col gap-0.5;
+    }
+
+    strong {
+      @apply text-ink;
+    }
+
+    span {
+      @apply text-ink-muted text-xs;
+    }
   }
 
   @media print {

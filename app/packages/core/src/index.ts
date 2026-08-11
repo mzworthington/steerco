@@ -37,6 +37,9 @@ export {
   type TeamTopologyType,
   type TopologyEvent,
   type TopologyEventKind,
+  type Initiative,
+  type Product,
+  type Provenance,
 } from './domain/steerSpec/steerSpecSchema';
 export { DISCIPLINE_COPY, type DisciplineCopy } from './domain/capacity/disciplines';
 export {
@@ -66,3 +69,31 @@ export {
   projectSteerSpecAsOf,
   type EffectiveWindow,
 } from './domain/steerSpec/projectSteerSpecAsOf';
+export {
+  buildTopologyTimeline,
+  type TopologyTimeline,
+  type TopologyTimelineCapacityDelta,
+  type TopologyTimelineListEvent,
+  type TopologyTimelineRelationshipSpan,
+} from './domain/steerSpec/buildTopologyTimeline';
+export {
+  evaluateWriteBackPolicy,
+  summariseWriteBackPolicy,
+  type WriteBackArtifact,
+  type WriteBackDecision,
+} from './domain/steerSpec/writeBackPolicy';
+export {
+  parseCatalogFile,
+  proposeTeamCatalogMerge,
+  applyTeamCatalogMerge,
+  type CatalogImportTeam,
+  type CatalogMergeAction,
+  type CatalogMergePlan,
+  type CatalogMergeRow,
+  type ParseCatalogResult,
+} from './domain/steerSpec/catalogImport';
+export {
+  checkSteerSpecYaml,
+  checkSteerSpecDocument,
+  type SteerSpecCheckResult,
+} from './domain/steerSpec/checkSteerSpec';

@@ -18,6 +18,7 @@ import {
   type TeamRole,
   type TeamShapeGeometry,
 } from '@steerlens/core';
+import { presentTopologyTimeline, type TopologyTimelineModel } from './presentTopologyTimeline';
 
 export type OrganisationTeamRole = TeamRole;
 export type OrganisationInteractionMode = InteractionMode;
@@ -51,6 +52,8 @@ export type OrganisationTeamCard = {
   platformScopeLabel: string | null;
   streamIds: string[];
   streamTitles: string[];
+  /** Domain / vertical title when the team sits in a stream that belongs to a domain. */
+  domainTitle: string | null;
   /** Enabling: stream-aligned (or other) teams this team facilitates. */
   facilitatesLabels: string[];
 };
@@ -112,7 +115,7 @@ export type OrganisationFlowModel = {
 export type OrganisationLayout = 'zones' | 'flow';
 
 /** Executive view modes on How work is organised. */
-export type OrganisationViewMode = 'flow_of_change' | 'as_is' | 'domain';
+export type OrganisationViewMode = 'flow_of_change' | 'as_is' | 'domain' | 'timeline';
 
 export type OrganisationDomainOption = {
   id: string;
@@ -187,6 +190,7 @@ export type OrganisationModel = {
   streamOptions: OrganisationStreamOption[];
   domainFocus: OrganisationDomainFocus | null;
   relationships: OrganisationRelationship[];
+  timeline: TopologyTimelineModel;
   overloadBanner: string | null;
   mismatches: SteerMismatch[];
 };
@@ -284,7 +288,13 @@ export function presentOrganisation(
       teams: teams
         .filter((team) => team.role === role)
         .map((team) =>
-          presentTeamCard(team, copy, streamTitleById, facilitatesByTeamId.get(team.id) ?? []),
+          presentTeamCard(
+            team,
+            copy,
+            streamTitleById,
+            domainTitleByStreamId,
+            facilitatesByTeamId.get(team.id) ?? [],
+          ),
         ),
     };
   });
@@ -374,6 +384,8 @@ export function presentOrganisation(
     domain:
       domainFocus?.lead ??
       'Zoom into a domain to see its streams and highlight connections that leave the domain.',
+    timeline:
+      'Deep-dive history: capacity up/down markers and interaction spans. Scrub as-of to project the same shape the as-is and domain views use.',
   };
 
   return {
@@ -396,6 +408,7 @@ export function presentOrganisation(
     streamOptions,
     domainFocus,
     relationships,
+    timeline: presentTopologyTimeline(spec, { asOf }),
     overloadBanner: overload?.headline ?? null,
     mismatches,
   };
@@ -609,6 +622,7 @@ function presentTeamCard(
   team: SteerSpec['spec']['teams'][number],
   copy: (typeof TOPOLOGY_TYPE_COPY)[TeamRole],
   streamTitleById: Map<string, string>,
+  domainTitleByStreamId: Map<string, string>,
   facilitatesLabels: string[],
 ): OrganisationTeamCard {
   const members = team.members ?? [];
@@ -620,6 +634,9 @@ function presentTeamCard(
       : `${memberCount} ${memberCount === 1 ? 'person' : 'people'} · ${formatFte(fteTotal)} FTE`;
   const platformScope = team.platformScope ?? null;
   const streamIds = team.streamIds ?? [];
+  const domainTitle =
+    streamIds.map((id) => domainTitleByStreamId.get(id)).find(Boolean) ??
+    (team.role === 'platform' || team.role === 'enabling' ? 'Shared support' : null);
 
   return {
     id: team.id,
@@ -636,6 +653,7 @@ function presentTeamCard(
     platformScopeLabel: platformScope ? PLATFORM_SCOPE_COPY[platformScope].label : null,
     streamIds,
     streamTitles: streamIds.map((id) => streamTitleById.get(id) ?? id),
+    domainTitle,
     facilitatesLabels,
     members: members.map((member) => ({
       id: member.id,

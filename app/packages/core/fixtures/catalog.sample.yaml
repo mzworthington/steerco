@@ -1,0 +1,18 @@
+# Sample catalog import for SteerLens Technical mode demos.
+# Provider-backed refs only - SteerLens never creates directory groups.
+teams:
+  - id: team_storefront
+    displayName: Storefront experience
+    role: stream_aligned
+    system: backstage
+    externalId: group:default/storefront
+  - id: team_new_platform
+    displayName: Edge messaging platform
+    role: platform
+    system: backstage
+    externalId: group:default/edge-messaging
+  - id: team_identity
+    displayName: Identity platform
+    role: platform
+    system: entra
+    externalId: aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee

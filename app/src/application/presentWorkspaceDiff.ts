@@ -18,6 +18,8 @@ const SECTION_LABELS: Record<SteerSpecDiffSection, string> = {
   relationships: 'Relationships',
   decisionNotes: 'Decision notes',
   evidence: 'Evidence',
+  initiatives: 'Initiatives',
+  products: 'Products',
 };
 
 const KIND_LABELS = {

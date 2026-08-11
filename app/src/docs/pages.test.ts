@@ -31,7 +31,9 @@ describe('docs navigation', () => {
       '/docs',
       '/docs/product-guide',
     ]);
-    expect(sections[1]!.entries[0]!.href).toBe('/docs/setup');
+    expect(sections[1]!.entries.map((entry) => entry.href)).toEqual(
+      expect.arrayContaining(['/docs/setup', '/docs/steerbets-overlay']),
+    );
   });
 
   it('registers the product guide', () => {

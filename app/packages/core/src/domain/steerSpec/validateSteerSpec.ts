@@ -22,6 +22,27 @@ export function validateSteerSpecReferences(doc: SteerSpec): string | null {
     }
   }
 
+  const betIds = new Set(doc.spec.bets.map((bet) => bet.id));
+
+  for (const initiative of doc.spec.initiatives ?? []) {
+    if (!betIds.has(initiative.betId)) {
+      return `Initiative "${initiative.id}" references unknown bet "${initiative.betId}"`;
+    }
+  }
+
+  for (const product of doc.spec.products ?? []) {
+    for (const outcomeId of product.outcomeIds) {
+      if (!outcomeIds.has(outcomeId)) {
+        return `Product "${product.id}" references unknown outcome "${outcomeId}"`;
+      }
+    }
+    for (const betId of product.betIds) {
+      if (!betIds.has(betId)) {
+        return `Product "${product.id}" references unknown bet "${betId}"`;
+      }
+    }
+  }
+
   for (const team of doc.spec.teams) {
     for (const streamId of team.streamIds ?? []) {
       if (!streamIds.has(streamId)) {

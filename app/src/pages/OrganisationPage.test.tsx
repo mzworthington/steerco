@@ -11,6 +11,12 @@ import { OrganisationPage } from './OrganisationPage';
 
 const setLocation = vi.fn();
 
+vi.mock('../components/MermaidPreview', () => ({
+  MermaidPreview: ({ code }: { code: string }) => (
+    <div data-testid="organisation-mermaid">{code}</div>
+  ),
+}));
+
 vi.mock('wouter', async () => {
   const actual = await vi.importActual<typeof import('wouter')>('wouter');
   return {
@@ -82,6 +88,9 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-flow-overview')).toBeTruthy();
     expect(screen.getByTestId('organisation-lvt-placeholder')).toBeTruthy();
     expect(screen.queryByTestId('organisation-as-of')).toBeNull();
+    expect(screen.getByTestId('organisation-flow-graph')).toBeTruthy();
+    expect(await screen.findByTestId('organisation-mermaid')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-domain')).toBeTruthy();
     expect(
       screen.getByText(/storefront experience uses as a service fulfilment platform/i),
     ).toBeTruthy();
@@ -97,6 +106,13 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-domain-select')).toBeTruthy();
     expect(screen.getByTestId('organisation-domain-external-edges')).toBeTruthy();
     expect(screen.getAllByText(/out of domain/i).length).toBeGreaterThan(0);
+
+    await user.click(screen.getByRole('tab', { name: /^timeline$/i }));
+    expect(screen.getByTestId('organisation-timeline')).toBeTruthy();
+    expect(screen.getByTestId('organisation-timeline-chart')).toBeTruthy();
+    expect(screen.getByTestId('organisation-timeline-events')).toBeTruthy();
+    expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
+    expect(screen.getByText(/dated events/i)).toBeTruthy();
   });
 
   it('surfaces operating-model mismatches', () => {

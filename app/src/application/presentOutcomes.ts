@@ -35,10 +35,23 @@ export type OutcomesSection = {
   bets: OutcomesBetRow[];
 };
 
+export type OutcomesProductCard = {
+  id: string;
+  title: string;
+  problem: string;
+  customers: string | null;
+  nonGoals: string | null;
+  outcomeIds: string[];
+  outcomeTitles: string[];
+  betIds: string[];
+  betLinks: Array<{ id: string; title: string }>;
+};
+
 export type OutcomesModel = {
   workspaceTitle: string;
   framingLine: string;
   outcomes: OutcomesSection[];
+  products: OutcomesProductCard[];
 };
 
 export type OutcomeMetricEditInput = {
@@ -48,7 +61,22 @@ export type OutcomeMetricEditInput = {
 
 export type OutcomeMetricEditResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
 
+export type ProductDraft = {
+  id?: string;
+  title: string;
+  problem: string;
+  customers: string;
+  nonGoals: string;
+  outcomeIds: string[];
+  betIds: string[];
+};
+
+export type ApplyProductResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
+
 export function presentOutcomes(spec: SteerSpec): OutcomesModel {
+  const outcomeTitleById = new Map(spec.spec.outcomes.map((item) => [item.id, item.title]));
+  const betTitleById = new Map(spec.spec.bets.map((item) => [item.id, item.title]));
+
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     framingLine: 'Measures of success for this outcome - not a status dashboard.',
@@ -74,6 +102,24 @@ export function presentOutcomes(spec: SteerSpec): OutcomesModel {
         }),
       };
     }),
+    products: (spec.spec.products ?? []).map((product) => ({
+      id: product.id,
+      title: product.title,
+      problem: product.problem,
+      customers: product.customers?.trim() || null,
+      nonGoals: product.nonGoals?.trim() || null,
+      outcomeIds: [...product.outcomeIds],
+      outcomeTitles: product.outcomeIds
+        .map((id) => outcomeTitleById.get(id))
+        .filter((title): title is string => Boolean(title)),
+      betIds: [...product.betIds],
+      betLinks: product.betIds
+        .map((id) => {
+          const title = betTitleById.get(id);
+          return title ? { id, title } : null;
+        })
+        .filter((link): link is { id: string; title: string } => Boolean(link)),
+    })),
   };
 }
 
@@ -89,6 +135,84 @@ export function validateOutcomeMetricEdit(
     return { ok: false, error: 'Target value must be a number, or left blank.' };
   }
   return { ok: true, current: current.value, target: target.value };
+}
+
+/** Add or update a lightweight product brief (product mindset, not requirements). */
+export function applyProductDraft(spec: SteerSpec, draft: ProductDraft): ApplyProductResult {
+  const title = draft.title.trim();
+  const problem = draft.problem.trim();
+  if (!title) {
+    return { ok: false, error: 'Give the product brief a short title.' };
+  }
+  if (!problem) {
+    return { ok: false, error: 'Describe the customer problem this product addresses.' };
+  }
+
+  const knownOutcomes = new Set(spec.spec.outcomes.map((item) => item.id));
+  const knownBets = new Set(spec.spec.bets.map((item) => item.id));
+  const outcomeIds = draft.outcomeIds.filter((id) => knownOutcomes.has(id));
+  const betIds = draft.betIds.filter((id) => knownBets.has(id));
+  const customers = draft.customers.trim() || undefined;
+  const nonGoals = draft.nonGoals.trim() || undefined;
+  const products = [...(spec.spec.products ?? [])];
+  const existingIndex = draft.id ? products.findIndex((item) => item.id === draft.id) : -1;
+
+  if (existingIndex >= 0) {
+    const current = products[existingIndex];
+    if (!current) {
+      return { ok: false, error: 'That product brief is not in the open workspace.' };
+    }
+    products[existingIndex] = {
+      ...current,
+      title,
+      problem,
+      customers,
+      nonGoals,
+      outcomeIds,
+      betIds,
+    };
+  } else {
+    const id =
+      draft.id?.trim() ||
+      uniqueProductId(
+        title,
+        products.map((item) => item.id),
+      );
+    products.push({
+      id,
+      title,
+      problem,
+      customers,
+      nonGoals,
+      outcomeIds,
+      betIds,
+    });
+  }
+
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        products,
+      },
+    },
+  };
+}
+
+function uniqueProductId(seed: string, existing: string[]): string {
+  const base =
+    'prod_' +
+    seed
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_|_$/g, '')
+      .slice(0, 24);
+  if (!existing.includes(base)) return base || `prod_${existing.length + 1}`;
+  let n = 2;
+  while (existing.includes(`${base}_${n}`)) n += 1;
+  return `${base}_${n}`;
 }
 
 export function applyOutcomeMetricEdit(

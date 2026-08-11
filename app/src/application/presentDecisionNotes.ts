@@ -33,6 +33,17 @@ export type DecisionNoteCard = {
   nextStep: string;
 };
 
+export type DecisionNoteTeamOption = {
+  id: string;
+  displayName: string;
+};
+
+export type DecisionNoteTeamGroup = {
+  id: string;
+  title: string;
+  teams: DecisionNoteTeamOption[];
+};
+
 export type DecisionNotesModel = {
   workspaceTitle: string;
   helperMeasured: string;
@@ -40,7 +51,10 @@ export type DecisionNotesModel = {
   metricOptions: DecisionNoteMetricOption[];
   notes: DecisionNoteCard[];
   bets: Array<{ id: string; title: string }>;
-  teams: Array<{ id: string; displayName: string }>;
+  /** Flat team list (legacy / quick lookup). Prefer `teamGroups` for pickers. */
+  teams: DecisionNoteTeamOption[];
+  /** Teams grouped by domain (or Shared support / Ungrouped). */
+  teamGroups: DecisionNoteTeamGroup[];
 };
 
 export type DecisionNoteValidation = { ok: true } | { ok: false; error: string };
@@ -79,6 +93,11 @@ export function presentDecisionNotes(spec: SteerSpec): DecisionNotesModel {
     }),
   );
 
+  const teams = spec.spec.teams.map((team) => ({
+    id: team.id,
+    displayName: team.displayName,
+  }));
+
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     helperMeasured:
@@ -103,8 +122,67 @@ export function presentDecisionNotes(spec: SteerSpec): DecisionNotesModel {
       };
     }),
     bets: spec.spec.bets.map((bet) => ({ id: bet.id, title: bet.title })),
-    teams: spec.spec.teams.map((team) => ({ id: team.id, displayName: team.displayName })),
+    teams,
+    teamGroups: groupTeamsByDomain(spec),
   };
+}
+
+/** Group teams under domains via stream membership; shared platforms/enablers get their own bucket. */
+function groupTeamsByDomain(spec: SteerSpec): DecisionNoteTeamGroup[] {
+  const domainTitleByStreamId = new Map<string, string>();
+  for (const domain of spec.spec.domains ?? []) {
+    for (const streamId of domain.memberStreamIds) {
+      if (!domainTitleByStreamId.has(streamId)) {
+        domainTitleByStreamId.set(streamId, domain.title);
+      }
+    }
+  }
+
+  const buckets = new Map<string, DecisionNoteTeamGroup>();
+
+  const ensure = (id: string, title: string): DecisionNoteTeamGroup => {
+    const existing = buckets.get(id);
+    if (existing) return existing;
+    const created: DecisionNoteTeamGroup = { id, title, teams: [] };
+    buckets.set(id, created);
+    return created;
+  };
+
+  for (const team of spec.spec.teams) {
+    const option = { id: team.id, displayName: team.displayName };
+    const streamIds = team.streamIds ?? [];
+    const domainTitle = streamIds
+      .map((streamId) => domainTitleByStreamId.get(streamId))
+      .find(Boolean);
+
+    if (domainTitle) {
+      ensure(`domain:${domainTitle}`, domainTitle).teams.push(option);
+      continue;
+    }
+
+    if (team.role === 'platform' || team.role === 'enabling') {
+      ensure('shared-support', 'Shared support').teams.push(option);
+      continue;
+    }
+
+    ensure('ungrouped', 'Ungrouped').teams.push(option);
+  }
+
+  const preferredOrder = (spec.spec.domains ?? []).map((domain) => `domain:${domain.title}`);
+  const rest = ['shared-support', 'ungrouped'];
+  const orderedIds = [
+    ...preferredOrder.filter((id) => buckets.has(id)),
+    ...[...buckets.keys()].filter((id) => !preferredOrder.includes(id) && !rest.includes(id)),
+    ...rest.filter((id) => buckets.has(id)),
+  ];
+
+  return orderedIds
+    .map((id) => buckets.get(id))
+    .filter((group): group is DecisionNoteTeamGroup => Boolean(group))
+    .map((group) => ({
+      ...group,
+      teams: [...group.teams].sort((a, b) => a.displayName.localeCompare(b.displayName)),
+    }));
 }
 
 export function draftFromDecisionNote(

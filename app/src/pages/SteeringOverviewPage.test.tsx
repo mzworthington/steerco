@@ -66,9 +66,12 @@ describe('SteeringOverviewPage', () => {
     expect(screen.getByTestId('steering-overview')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /northwind q3 alignment/i })).toBeTruthy();
     expect(screen.getByText(/one recommended to stop\. five bets funded\./i)).toBeTruthy();
+    expect(screen.getByTestId('steering-portfolio-mix')).toBeTruthy();
+    expect(screen.queryByTestId('steering-wip-mismatches')).toBeNull();
     expect(screen.getAllByText('On track').length).toBeGreaterThan(0);
     expect(screen.getAllByText('At risk').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Stop').length).toBeGreaterThan(0);
     expect(screen.getByRole('link', { name: /loyalty ledger unification/i })).toBeTruthy();
+    expect(screen.getByLabelText(/value rank for same-day pickup/i)).toBeTruthy();
   });
 });

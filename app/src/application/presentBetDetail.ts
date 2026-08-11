@@ -63,6 +63,13 @@ export type BetDetailMetricOption = {
 /** Active bet statuses expected to carry a Measure-of-Success link (Slice 1.5). */
 const ACTIVE_BET_STATUSES = new Set<BetDetailStatus>(['on_track', 'at_risk', 'stop_ready']);
 
+export type BetDetailInitiative = {
+  id: string;
+  title: string;
+  successSignal: string;
+  externalUrl: string | null;
+};
+
 export type BetDetailModel = {
   id: string;
   title: string;
@@ -86,6 +93,11 @@ export type BetDetailModel = {
   horizon: string;
   fundingStance: FundingStance | null;
   kind: BetKind | null;
+  systemRefs: string[];
+  systemRefsText: string;
+  techRadarUrl: string | null;
+  techAtCoreCue: string | null;
+  initiatives: BetDetailInitiative[];
   flowOverlay: BetFlowOverlay | null;
 };
 
@@ -122,6 +134,8 @@ export type BetDetailDraft = {
   horizon: string;
   fundingStance: FundingStance | null;
   kind: BetKind | null;
+  /** Comma or newline separated ArchLens entityRefs. */
+  systemRefsText: string;
 };
 
 export type BetDetailFieldIssue = {
@@ -199,6 +213,16 @@ export function presentBetDetail(
   const fundedTeams = presentBetDeliveryTeams(projected, selectedTeams);
   const fundedTeamGroups = groupBetDeliveryTeams(projected, fundedTeams);
 
+  const systemRefs = [...(bet.systemRefs ?? [])];
+  const initiatives = (spec.spec.initiatives ?? [])
+    .filter((item) => item.betId === bet.id)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      successSignal: item.successSignal,
+      externalUrl: item.externalUrl?.trim() || null,
+    }));
+
   return {
     id: bet.id,
     title: bet.title,
@@ -231,6 +255,14 @@ export function presentBetDetail(
     horizon: bet.horizon ?? '',
     fundingStance: bet.fundingStance ?? null,
     kind: bet.kind ?? null,
+    systemRefs,
+    systemRefsText: systemRefs.join('\n'),
+    techRadarUrl: spec.spec.techRadarUrl?.trim() || null,
+    techAtCoreCue:
+      bet.kind === 'capability'
+        ? 'Tech@Core: this capability bet revitalizes a core system - treat it as a business investment, not a cost centre.'
+        : null,
+    initiatives,
     flowOverlay: presentBetFlowOverlay(projected, bet.fundedTeamIds, asOf),
   };
 }
@@ -504,6 +536,7 @@ export function applyBetDetailDraft(
     horizon: draft.horizon.trim() || undefined,
     fundingStance: draft.fundingStance ?? undefined,
     kind: draft.kind ?? undefined,
+    systemRefs: parseSystemRefsText(draft.systemRefsText),
   };
 
   return {
@@ -516,6 +549,75 @@ export function applyBetDetailDraft(
       },
     },
   };
+}
+
+export type InitiativeDraft = {
+  title: string;
+  successSignal: string;
+  externalUrl: string;
+};
+
+export type ApplyInitiativeResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
+
+/** Add a thin initiative narrative under a bet (never an execution backlog item). */
+export function applyAddInitiative(
+  spec: SteerSpec,
+  betId: string,
+  draft: InitiativeDraft,
+): ApplyInitiativeResult {
+  if (!spec.spec.bets.some((bet) => bet.id === betId)) {
+    return { ok: false, error: 'That bet is not in the open workspace.' };
+  }
+  const title = draft.title.trim();
+  const successSignal = draft.successSignal.trim();
+  if (!title) {
+    return { ok: false, error: 'Give the initiative a short title.' };
+  }
+  if (!successSignal) {
+    return { ok: false, error: 'Describe what success looks like for this slice.' };
+  }
+
+  const id = uniqueId(
+    'init_',
+    title,
+    (spec.spec.initiatives ?? []).map((item) => item.id),
+  );
+  const externalUrl = draft.externalUrl.trim() || undefined;
+
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        initiatives: [
+          ...(spec.spec.initiatives ?? []),
+          { id, betId, title, successSignal, externalUrl },
+        ],
+      },
+    },
+  };
+}
+
+function parseSystemRefsText(raw: string): string[] {
+  return raw
+    .split(/[\n,]+/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+}
+
+function uniqueId(prefix: string, seed: string, existing: string[]): string {
+  const base =
+    prefix +
+    seed
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '_')
+      .replace(/^_|_$/g, '')
+      .slice(0, 24);
+  if (!existing.includes(base)) return base || `${prefix}${existing.length + 1}`;
+  let n = 2;
+  while (existing.includes(`${base}_${n}`)) n += 1;
+  return `${base}_${n}`;
 }
 
 /** All metrics across every outcome in the workspace, for "measures this bet moves" pickers. */

@@ -33,6 +33,15 @@ describe('presentDecisionNotes', () => {
     expect(model.notes[0]?.affectedTeams).toEqual(
       expect.arrayContaining(['Fulfilment platform', 'Storefront experience']),
     );
+    expect(model.teamGroups.length).toBeGreaterThan(1);
+    expect(model.teamGroups.map((group) => group.title)).toEqual(
+      expect.arrayContaining(['Commerce', 'Shared support']),
+    );
+    expect(
+      model.teamGroups
+        .find((group) => group.title === 'Commerce')
+        ?.teams.some((team) => team.displayName === 'Storefront experience'),
+    ).toBe(true);
   });
 });
 

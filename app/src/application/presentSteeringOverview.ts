@@ -1,4 +1,4 @@
-import type { SteerSpec } from '@steerlens/core';
+import { detectSteerSpecMismatches, type SteerSpec } from '@steerlens/core';
 
 export type ExecutiveBetStatus = 'On track' | 'At risk' | 'Stop' | 'Proposed' | 'Done';
 
@@ -8,6 +8,9 @@ export type SteeringBetCard = {
   metricCue: string;
   status: ExecutiveBetStatus;
   statusTone: 'on-track' | 'at-risk' | 'stop' | 'neutral';
+  valueRank: number | null;
+  kind: string | null;
+  fundingStance: string | null;
 };
 
 export type SteeringOutcomeGroup = {
@@ -17,12 +20,22 @@ export type SteeringOutcomeGroup = {
   bets: SteeringBetCard[];
 };
 
+export type SteeringPortfolioMix = {
+  byKind: { opportunity: number; capability: number; unset: number };
+  byFundingStance: { explore: number; exploit: number; sustain: number; unset: number };
+  hint: string;
+};
+
 export type SteeringOverviewModel = {
   workspaceTitle: string;
   periodLabel: string;
   vision: string;
   alignmentSummary: string;
   mismatchSummary: string | null;
+  /** Topology / WIP mismatches from detectSteerSpecMismatches (calm summary). */
+  wipMismatchSummary: string | null;
+  wipMismatchCount: number;
+  portfolioMix: SteeringPortfolioMix;
   decisionNotesSummary: string | null;
   /** Soonest review horizon across funded bets (Slice 1.5). */
   nextReviewSummary: string | null;
@@ -70,9 +83,17 @@ export function presentSteeringOverview(
           metricCue: bet.successSignal,
           status: presented.label,
           statusTone: presented.tone,
+          valueRank: typeof bet.valueRank === 'number' ? bet.valueRank : null,
+          kind: bet.kind ?? null,
+          fundingStance: bet.fundingStance ?? null,
         };
       })
-      .sort((a, b) => STATUS_SORT[a.statusTone] - STATUS_SORT[b.statusTone]),
+      .sort((a, b) => {
+        const rankA = a.valueRank ?? Number.POSITIVE_INFINITY;
+        const rankB = b.valueRank ?? Number.POSITIVE_INFINITY;
+        if (rankA !== rankB) return rankA - rankB;
+        return STATUS_SORT[a.statusTone] - STATUS_SORT[b.statusTone];
+      }),
   }));
 
   const decisionNotes = spec.spec.decisionNotes.map((note) => ({
@@ -81,17 +102,62 @@ export function presentSteeringOverview(
     recommendationLabel: recommendationLabel(note.recommendation),
   }));
 
+  const topologyMismatches = detectSteerSpecMismatches(spec);
+  const portfolioMix = buildPortfolioMix(bets);
+
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
     periodLabel: options?.periodLabel ?? 'Local workspace',
     vision: spec.spec.vision,
     alignmentSummary: buildAlignmentSummary(bets.length, statusCounts.stop),
     mismatchSummary: buildMismatchSummary(statusCounts),
+    wipMismatchSummary: buildWipMismatchSummary(topologyMismatches.length),
+    wipMismatchCount: topologyMismatches.length,
+    portfolioMix,
     decisionNotesSummary: buildDecisionNotesSummary(decisionNotes),
     nextReviewSummary: buildNextReviewSummary(bets),
     decisionNotes,
     outcomes,
     statusCounts,
+  };
+}
+
+export type ApplyBetValueRankResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
+
+/** Persist a relative value rank (lower = higher priority) for a bet. */
+export function applyBetValueRank(
+  spec: SteerSpec,
+  betId: string,
+  valueRank: number | null,
+): ApplyBetValueRankResult {
+  const index = spec.spec.bets.findIndex((bet) => bet.id === betId);
+  if (index < 0) {
+    return { ok: false, error: 'That bet is not in the open workspace.' };
+  }
+  if (valueRank !== null && (!Number.isInteger(valueRank) || valueRank < 1)) {
+    return { ok: false, error: 'Value rank must be a positive whole number, or cleared.' };
+  }
+
+  const current = spec.spec.bets[index];
+  if (!current) {
+    return { ok: false, error: 'That bet is not in the open workspace.' };
+  }
+
+  const nextBets = [...spec.spec.bets];
+  nextBets[index] = {
+    ...current,
+    valueRank: valueRank ?? undefined,
+  };
+
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        bets: nextBets,
+      },
+    },
   };
 }
 
@@ -193,6 +259,46 @@ function buildMismatchSummary(counts: SteeringOverviewModel['statusCounts']): st
     parts.push(counts.stop === 1 ? '1 bet ready to stop' : `${counts.stop} bets ready to stop`);
   }
   return parts.join(' · ');
+}
+
+function buildWipMismatchSummary(count: number): string | null {
+  if (count === 0) return null;
+  return count === 1
+    ? '1 topology cue worth a calm look (Technical → Fitness).'
+    : `${count} topology cues worth a calm look (Technical → Fitness).`;
+}
+
+function buildPortfolioMix(bets: SteerSpec['spec']['bets']): SteeringPortfolioMix {
+  const byKind = { opportunity: 0, capability: 0, unset: 0 };
+  const byFundingStance = { explore: 0, exploit: 0, sustain: 0, unset: 0 };
+
+  for (const bet of bets) {
+    if (bet.kind === 'opportunity') byKind.opportunity += 1;
+    else if (bet.kind === 'capability') byKind.capability += 1;
+    else byKind.unset += 1;
+
+    if (bet.fundingStance === 'explore') byFundingStance.explore += 1;
+    else if (bet.fundingStance === 'exploit') byFundingStance.exploit += 1;
+    else if (bet.fundingStance === 'sustain') byFundingStance.sustain += 1;
+    else byFundingStance.unset += 1;
+  }
+
+  const kindParts = [
+    byKind.opportunity > 0 ? `${byKind.opportunity} opportunity` : null,
+    byKind.capability > 0 ? `${byKind.capability} capability` : null,
+  ].filter(Boolean);
+  const stanceParts = [
+    byFundingStance.explore > 0 ? `${byFundingStance.explore} explore` : null,
+    byFundingStance.exploit > 0 ? `${byFundingStance.exploit} exploit` : null,
+    byFundingStance.sustain > 0 ? `${byFundingStance.sustain} sustain` : null,
+  ].filter(Boolean);
+
+  const hint =
+    kindParts.length === 0 && stanceParts.length === 0
+      ? 'Portfolio mix not set yet.'
+      : `Portfolio mix: ${[...kindParts, ...stanceParts].join(' · ')}.`;
+
+  return { byKind, byFundingStance, hint };
 }
 
 function humanizeName(name: string): string {

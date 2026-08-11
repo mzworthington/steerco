@@ -6,12 +6,12 @@ Everything in Slice 1 stays on this device until you choose to connect systems l
 
 ## Who it is for
 
-| Role                                    | What you do here                                                           |
-| --------------------------------------- | -------------------------------------------------------------------------- |
-| Product Owner / CPO / Head of Product   | Own outcomes and funded bets; decide start / stop / continue with evidence |
-| Engineering Director / Head of Platform | Align team shape to bets; partner on start / stop / continue with evidence |
-| CTO or transformation sponsor           | Read a steering view and take a decision note - no tooling jargon          |
-| Staff+ (optional)                       | Later slices add a technical mode; the default UI stays executive          |
+| Role                                    | What you do here                                                                                 |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Product Owner / CPO / Head of Product   | Own outcomes and funded bets; decide start / stop / continue with evidence                       |
+| Engineering Director / Head of Platform | Align team shape to bets; partner on start / stop / continue with evidence                       |
+| CTO or transformation sponsor           | Read a steering view and take a decision note - no tooling jargon                                |
+| Staff+ (optional)                       | **Technical** mode for refs, fitness, vocabulary, and catalog import; default UI stays executive |
 
 Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Architecture diagrams stay in ArchLens. SteerLens holds the **investment contract**.
 
@@ -39,10 +39,10 @@ The Lean Value Tree (vision → outcomes + Measures of Success → bets) is the 
 
 | Teaching                        | In SteerLens                                                                                                                                                              |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product mindset**             | Long-lived teams fund continuous value - not temporary project theatre. A lightweight Product Blueprint (later) can name the customer problem without heavy requirements. |
-| **Tech@Core**                   | Capability bets and (later) architecture / radar refs treat tech debt and core systems as business investments, not a cost centre.                                        |
+| **Product mindset**             | Long-lived teams fund continuous value - not temporary project theatre. Outcomes page lists lightweight Product briefs (problem + linked outcomes/bets).                  |
+| **Tech@Core**                   | Capability bets, optional ArchLens `systemRefs`, and an optional Tech Radar URL treat core systems as business investments, not a cost centre.                            |
 | **Periodic Value Review (PVR)** | Decision notes + bet review dates: look at the data, double down or defund - no stage-gate bureaucracy. Executives see “value review”; staff+ may see PVR.                |
-| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain) and later mix cues cross-prioritise strategic work with BAU and capability - without SteerLens owning Jira.                  |
+| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain), value rank, and portfolio mix cues cross-prioritise strategic work with BAU and capability - without SteerLens owning Jira. |
 | **Measures of Success**         | Customer-value fitness function tied to outcomes and bets - leading indicators that fund work, not vanity dashboards.                                                     |
 | **Six principles**              | Outcome-based strategy; value-based prioritization; lightweight governance; adaptive learning; autonomous teams; decisions close to the work.                             |
 
@@ -52,15 +52,15 @@ Full framework backlog: planning docs under `plan/docs/OPERATING_MODEL_ALIGNMENT
 
 ### Steering overview
 
-Portfolio view of **outcomes** and the **bets** funded against them: status, alignment cues, and links into detail. Use it to see the whole contract at a glance before drilling in.
+Portfolio view of **outcomes** and the **bets** funded against them: status, alignment cues, portfolio mix (kind + funding stance), calm topology cues, value rank, and links into detail. Use it to see the whole contract at a glance before drilling in.
 
 ### Outcomes
 
-Asks “are we getting the outcome?” Each outcome carries **Measures of Success** (leading indicators that shape funding - not a metrics warehouse) and the bets meant to move them.
+Asks “are we getting the outcome?” Each outcome carries **Measures of Success** (leading indicators that shape funding - not a metrics warehouse) and the bets meant to move them. Optional **Product brief** cards name the customer problem without becoming requirements docs.
 
 ### Bet detail
 
-Open a bet to edit success signal, kill criteria, linked measures, and which teams carry the work. Kill criteria are the pre-agreed stop or re-scope conditions that keep funding incremental.
+Open a bet to edit success signal, kill criteria, linked measures, and which teams carry the work. Kill criteria are the pre-agreed stop or re-scope conditions that keep funding incremental. Capability bets show Tech@Core revitalize copy; you can attach ArchLens system refs, thin initiatives, and follow an optional Tech Radar link.
 
 ### Evidence
 
@@ -73,7 +73,11 @@ Topology **intent** for fast flow ([Team Topologies](https://teamtopologies.com/
 - **Four team types** - stream-aligned (the delivery spine), platform, enabling, complicated subsystem
 - **Three interaction modes** - X-as-a-Service, Collaboration, Facilitation
 
-Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams - not four flat department columns - with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems nested inside streams; and enabling teams supporting many streams. Mismatch cues (for example platform overload) are calm prompts about flow - not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period.
+Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams - not four flat department columns - with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems nested inside streams; and enabling teams supporting many streams. Mismatch cues (for example platform overload) are calm prompts about flow - not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period. Open the **Timeline** view for capacity deltas and interaction spans over the steering period.
+
+### Technical mode
+
+Staff+ surface under **Technical** in the workspace nav: Steer tree (ids / provenance / refs), topology fitness with write-back policy, EDGE/TT vocabulary bridge, and catalog-file import (no OAuth). Executive chrome stays plain language; Technical deep-links back to steering, outcomes, and organisation when useful. Optional [SteerBet overlay](/docs/steerbets-overlay) docs explain Backstage mapping without emitting Groups.
 
 ### Decision notes
 

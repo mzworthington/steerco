@@ -14,7 +14,7 @@ SteerLens is a **steering workspace**: edit strategy and topology intent in plai
 
 It operationalises two complementary models without becoming a PMO or HR tool:
 
-- **EDGE** - holistic value-driven operating model: Lean Value Tree **plus** product mindset / Product Blueprint, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles (vision → outcomes/MoS → bets → optional initiatives)
+- **EDGE** - holistic value-driven operating model: Lean Value Tree **plus** product mindset / Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles (vision → outcomes/MoS → bets → optional initiatives)
 - **Team Topologies** (2e) - topology _intent_ for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
 
 See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice commitments in [ROADMAP.md](./ROADMAP.md).
@@ -51,7 +51,7 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | **Measure of Success (MoS)** | Leading (and validating lagging) indicator in the customer-value fitness function - shapes and funds work toward an outcome (not a vanity KPI or cost/schedule score)                                                                                    |
 | **Bet**                      | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet); may be opportunity or capability (Tech@Core)                                                                                                              |
 | **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) - narrative only; never a dual backlog                                                                                                                                                            |
-| **Product Blueprint**        | Lightweight EDGE product definition: customer problems, core elements, and LVT links - without heavy upfront requirements; supports product mindset over project mindset                                                                                  |
+| **Product brief**        | Lightweight EDGE product definition: customer problems, core elements, and LVT links - without heavy upfront requirements; supports product mindset over project mindset                                                                                  |
 | **Tech@Core**                | EDGE stance that technology is the business engine; strategic tech debt and trend sensing (e.g. Tech Radar refs) are investment concerns - not a back-office cost centre                                                                                |
 | **Periodic Value Review (PVR)** | EDGE lightweight governance ritual: frequent, data-informed portfolio rebalancing (double down or defund) instead of annual stage-gate theatre; SteerLens decision notes are the PVR artifact                                                          |
 | **Integrated Backlog**       | EDGE model for cross-prioritising strategic (LVT) work with BAU, maintenance, and capability building via relative value/effort - SteerLens shows mix/stance cues and never owns the execution backlog                                                  |
@@ -82,10 +82,10 @@ SteerLens builds on two operating-model sources (full backlog and vocabulary bri
 
 | Source                                  | Role in SteerLens                                                                                                                                                  |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals/outcomes + MoS → bets → optional initiatives) **plus** product mindset/Blueprint, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
+| **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals/outcomes + MoS → bets → optional initiatives) **plus** product mindset/brief, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
 | **Team Topologies** 2e (Skelton / Pais) | Topology _intent_ for fast flow: stream-aligned, platform _groupings_, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
 
-Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Outcome / Bet / Measure of Success / value review in the default views; Product Blueprint, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
+Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Outcome / Bet / Measure of Success / value review in the default views; Product brief, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
 
 ## 7. Acceptance scenarios (Gherkin)
 
@@ -199,6 +199,6 @@ Greenfield - no existing tests. Design phase should add:
 - Auto-mutating Entra or GitHub team membership
 - Replacing ArchLens canvas or ChaosLens
 - Multi-user realtime collaboration (revisit after auth)
-- Full BAU vs strategic finance accounting; Tech Radar product; tech-debt inventory DB; heavy Product Blueprint / requirements docs; full cognitive-load assessment instruments
+- Full BAU vs strategic finance accounting; Tech Radar product; tech-debt inventory DB; heavy Product brief / requirements docs; full cognitive-load assessment instruments
 - Proprietary Team Topologies diagram artwork without permission
 - Owning an Integrated Backlog execution system (Jira remains the work SoR)

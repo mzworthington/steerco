@@ -18,7 +18,7 @@ This folder holds **product planning** (specs, PRDs, schema, samples). Implement
 | ------------------------------------------------ | ------------------------------------------ |
 | [docs/PRESS_RELEASE.md](./docs/PRESS_RELEASE.md) | Positioning / launch narrative             |
 | [docs/PRODUCT_SPEC.md](./docs/PRODUCT_SPEC.md)   | Domain glossary, acceptance scenarios, XFN |
-| [docs/OPERATING_MODEL_ALIGNMENT.md](./docs/OPERATING_MODEL_ALIGNMENT.md) | EDGE (LVT **+** Blueprint, Tech@Core, PVR, Integrated Backlogs, MoS, principles) + Team Topologies 2e |
+| [docs/OPERATING_MODEL_ALIGNMENT.md](./docs/OPERATING_MODEL_ALIGNMENT.md) | EDGE (LVT **+** Product brief, Tech@Core, PVR, Integrated Backlogs, MoS, principles) + Team Topologies 2e |
 | [docs/TECH_STACK.md](./docs/TECH_STACK.md)       | Stack notes (see also ADR 0002)            |
 | [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)   | Hexagonal architecture & adapters          |
 | [docs/STEER_SPEC.md](./docs/STEER_SPEC.md)       | Canonical SteerSpec contract               |

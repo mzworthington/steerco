@@ -18,12 +18,15 @@ import {
   OrganisationFlowOverview,
 } from '../components/organisation/OrganisationViewCanvases';
 import { OrganisationTeamEditorModal } from '../components/organisation/OrganisationTeamEditorModal';
+import { OrganisationTopologyTimeline } from '../components/organisation/OrganisationTopologyTimeline';
+import { OrganisationRelationshipGraph } from '../components/organisation/OrganisationRelationshipGraph';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 const VIEW_OPTIONS: Array<{ value: OrganisationViewMode; label: string }> = [
   { value: 'flow_of_change', label: 'Flow of change' },
   { value: 'as_is', label: 'As-is' },
   { value: 'domain', label: 'Domain' },
+  { value: 'timeline', label: 'Timeline' },
 ];
 
 type TeamEditorState =
@@ -76,7 +79,7 @@ export function OrganisationPage() {
   if (!session || !model) return null;
 
   const allTeams = model.zones.flatMap((zone) => zone.teams);
-  const showAsOf = viewMode === 'as_is' || viewMode === 'domain';
+  const showAsOf = viewMode === 'as_is' || viewMode === 'domain' || viewMode === 'timeline';
   const editingTeam =
     teamEditor.open && teamEditor.mode === 'edit'
       ? (allTeams.find((team) => team.id === teamEditor.teamId) ?? null)
@@ -215,6 +218,8 @@ export function OrganisationPage() {
         <p className="organisation-teaching" data-testid="organisation-domain-empty">
           Add a domain that groups streams to use domain zoom.
         </p>
+      ) : viewMode === 'timeline' ? (
+        <OrganisationTopologyTimeline timeline={model.timeline} />
       ) : (
         <OrganisationCapacityBoard
           zones={model.zones}
@@ -271,42 +276,29 @@ export function OrganisationPage() {
         />
       )}
 
-      <section className="organisation-relationships" aria-labelledby="organisation-relationships">
-        <h2 id="organisation-relationships" className="organisation-section-title">
-          How work flows
-        </h2>
-        <p className="organisation-zone-empty">{model.interactionTeaching}</p>
-        <p className="organisation-zone-empty">
-          Edit a team to add or remove interaction modes. The list below is the organisation-wide
-          view.
-        </p>
-        {model.relationships.length === 0 ? (
-          <p className="organisation-zone-empty">No relationships yet.</p>
-        ) : (
-          <ul className="organisation-relationship-list">
-            {model.relationships.map((relationship) => (
-              <li key={`${relationship.fromTeamId}-${relationship.mode}-${relationship.toTeamId}`}>
-                <span className="organisation-relationship-row">
-                  <span
-                    className={`organisation-mode-glyph organisation-mode-glyph--${relationship.shape}`}
-                    aria-hidden="true"
-                  />
-                  <span>
-                    {relationship.sentence}
-                    {relationship.expectedUntil ? (
-                      <span className="organisation-relationship-expected">
-                        {' '}
-                        · expected until {relationship.expectedUntil}
-                      </span>
-                    ) : null}
-                  </span>
-                </span>
-                <span className="organisation-relationship-mode">{relationship.modeLabel}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {viewMode !== 'timeline' ? (
+        <section
+          className="organisation-relationships"
+          aria-labelledby="organisation-relationships"
+        >
+          <h2 id="organisation-relationships" className="organisation-section-title">
+            How work flows
+          </h2>
+          <p className="organisation-zone-empty">{model.interactionTeaching}</p>
+          <p className="organisation-zone-empty">
+            Edit a team to add or remove interaction modes. The graph shows the organisation-wide
+            view; filter by domain when the picture gets noisy.
+          </p>
+          <OrganisationRelationshipGraph
+            relationships={model.relationships}
+            teams={allTeams.map((team) => ({
+              id: team.id,
+              displayName: team.displayName,
+              domainTitle: team.domainTitle,
+            }))}
+          />
+        </section>
+      ) : null}
 
       {(error || savedFlash) && (
         <div className="organisation-feedback" role="status">

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from './openWorkspace';
 import {
+  applyAddInitiative,
   applyBetDetailDraft,
   presentBetDetail,
   validateBetDetailDraft,
@@ -87,6 +88,39 @@ describe('presentBetDetail', () => {
     expect(model.fundingStance).toBe('exploit');
     expect(model.kind).toBe('opportunity');
     expect(model.primaryMetricId).toBe('met_promise_hit');
+    expect(model.initiatives.length).toBeGreaterThan(0);
+  });
+
+  it('surfaces Tech@Core cue, systemRefs, and tech radar for a capability bet', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const model = presentBetDetail(opened.value, 'bet_fulfilil');
+    expect(model).not.toBeNull();
+    if (!model) return;
+
+    expect(model.kind).toBe('capability');
+    expect(model.techAtCoreCue).toMatch(/Tech@Core/i);
+    expect(model.systemRefs).toEqual(expect.arrayContaining(['component:default/fulfilil-spine']));
+    expect(model.techRadarUrl).toBe('https://example.com/tech-radar');
+  });
+
+  it('adds a thin initiative under a bet', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyAddInitiative(opened.value, 'bet_pickup', {
+      title: 'Pilot store cohort',
+      successSignal: 'One cohort completes with under 5% miss',
+      externalUrl: 'https://example.com/tracker/pilot',
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    expect(applied.value.spec.initiatives.some((item) => item.title === 'Pilot store cohort')).toBe(
+      true,
+    );
   });
 
   it('returns null for an unknown bet', () => {
@@ -110,6 +144,7 @@ describe('validateBetDetailDraft', () => {
     horizon: 'Q3 review',
     fundingStance: 'exploit',
     kind: 'opportunity',
+    systemRefsText: '',
   };
 
   it('blocks empty title and empty kill criteria', () => {
@@ -169,6 +204,7 @@ describe('applyBetDetailDraft', () => {
       horizon: 'Q4 review',
       fundingStance: 'explore',
       kind: 'capability',
+      systemRefsText: 'component:default/pickup, system:default/commerce',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
@@ -187,6 +223,7 @@ describe('applyBetDetailDraft', () => {
       horizon: 'Q4 review',
       fundingStance: 'explore',
       kind: 'capability',
+      systemRefs: ['component:default/pickup', 'system:default/commerce'],
     });
   });
 
@@ -207,6 +244,7 @@ describe('applyBetDetailDraft', () => {
       horizon: '',
       fundingStance: null,
       kind: null,
+      systemRefsText: '',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;

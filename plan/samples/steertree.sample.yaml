@@ -8,6 +8,7 @@ metadata:
     6 domains). Not a real programme - sized to exercise flow-of-change, as-is, and domain zoom.
 spec:
   vision: Ship customer promises in days, not weeks, without burning out store and digital teams
+  techRadarUrl: https://example.com/tech-radar
   outcomes:
     - id: out_promise
       title: Reliable customer promises
@@ -54,26 +55,31 @@ spec:
       successSignal: Store pickup promises miss less than five percent of orders
       killCriteria: Hit rate stays flat after one quarter of staffing and routing changes
       status: on_track
-      fundedTeamIds: [team_storefront, team_catalog, team_checkout, team_payments_ux, team_promotions]
+      fundedTeamIds:
+        [team_storefront, team_catalog, team_checkout, team_payments_ux, team_promotions]
       metricIds: [met_promise_hit]
       primaryMetricId: met_promise_hit
       reviewDate: 2026-09-30
       horizon: Q3 review
       fundingStance: exploit
       kind: opportunity
+      valueRank: 1
     - id: bet_fulfilil
       outcomeId: out_promise
       title: Shared fulfilment spine
       successSignal: New channels reuse one fulfilment path within two weeks of launch
       killCriteria: Fewer than two channels adopt the spine after two quarters
       status: at_risk
-      fundedTeamIds: [team_fulfilil, team_warehouse, team_lastmile, team_inventory, team_marketplace]
+      fundedTeamIds:
+        [team_fulfilil, team_warehouse, team_lastmile, team_inventory, team_marketplace]
       metricIds: [met_cycle_days, met_shared_wait]
       primaryMetricId: met_cycle_days
       reviewDate: 2026-10-15
       horizon: Q3 review
       fundingStance: explore
       kind: capability
+      valueRank: 2
+      systemRefs: [component:default/fulfilil-spine, system:default/commerce-platform]
     - id: bet_loyalty
       outcomeId: out_promise
       title: Loyalty ledger unification
@@ -84,6 +90,7 @@ spec:
       metricIds: [met_promise_hit]
       fundingStance: sustain
       kind: opportunity
+      valueRank: 5
     - id: bet_pos_resilience
       outcomeId: out_store
       title: Peak-ready POS
@@ -97,6 +104,8 @@ spec:
       horizon: Q4 review
       fundingStance: exploit
       kind: capability
+      valueRank: 3
+      systemRefs: [component:default/pos]
     - id: bet_insights
       outcomeId: out_promise
       title: Decision-grade customer insight
@@ -110,6 +119,7 @@ spec:
       horizon: Q4 review
       fundingStance: explore
       kind: opportunity
+      valueRank: 4
   teams:
     - id: team_storefront
       displayName: Storefront experience
@@ -128,6 +138,8 @@ spec:
           discipline: engineering
           title: Senior Engineer
           ftePercent: 100
+          effectiveFrom: 2026-04-01
+          effectiveUntil: 2026-09-30
         - id: mem_storefront_pm
           displayName: Casey Morales
           discipline: product
@@ -1847,7 +1859,8 @@ spec:
   domains:
     - id: domain_commerce
       title: Commerce
-      memberStreamIds: [stream_storefront, stream_catalog, stream_checkout, stream_promotions, stream_marketplace]
+      memberStreamIds:
+        [stream_storefront, stream_catalog, stream_checkout, stream_promotions, stream_marketplace]
     - id: domain_fulfilment
       title: Fulfilment
       memberStreamIds: [stream_warehouse, stream_lastmile, stream_inventory]
@@ -1855,7 +1868,7 @@ spec:
       title: Customer
       memberStreamIds: [stream_care, stream_returns, stream_loyalty]
     - id: domain_data
-      title: "Data & insights"
+      title: 'Data & insights'
       memberStreamIds: [stream_analytics, stream_experimentation]
     - id: domain_stores
       title: Stores
@@ -1912,6 +1925,7 @@ spec:
     - fromTeamId: team_enablement
       toTeamId: team_storefront
       mode: facilitation
+      effectiveFrom: 2026-07-01
       expectedUntil: 2026-12-31
     - fromTeamId: team_enablement
       toTeamId: team_catalog
@@ -2104,9 +2118,37 @@ spec:
       source: sample
       note: Synthetic POS uptime for the Stores domain bet
   topologyEvents:
+    - id: evt_storefront_capacity
+      at: 2026-04-01
+      kind: capacity_up
+      summary: Jordan Blake joined Storefront experience for peak delivery (+100% FTE)
+      teamIds: [team_storefront]
     - id: evt_enablement_facilitation
       at: 2026-07-01
       kind: relationship_added
       summary: Ways of working started a time-boxed facilitation partnership with Storefront through Q4
       teamIds: [team_enablement, team_storefront]
       relationshipKey: team_enablement::team_storefront
+    - id: evt_storefront_capacity_down
+      at: 2026-09-30
+      kind: capacity_down
+      summary: Jordan Blake left Storefront experience after the seasonal surge (−100% FTE)
+      teamIds: [team_storefront]
+  initiatives:
+    - id: init_pickup_routing
+      betId: bet_pickup
+      title: Store routing dry-run
+      successSignal: One region completes dry-run with under 5% promise miss
+      externalUrl: https://example.com/tracker/pickup-routing
+    - id: init_fulfilil_spine_cutover
+      betId: bet_fulfilil
+      title: Channel cutover playbook
+      successSignal: Marketplace reuses spine without a dedicated programme team
+  products:
+    - id: product_promises
+      title: Customer promises
+      problem: Shoppers cannot trust delivery and pickup estimates across channels
+      customers: Digital and store shoppers placing multi-channel orders
+      nonGoals: Building a full OMS replacement or owning carrier contracts
+      outcomeIds: [out_promise]
+      betIds: [bet_pickup, bet_fulfilil]

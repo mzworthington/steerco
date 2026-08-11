@@ -78,7 +78,7 @@ flowchart TB
 
 | EDGE question                 | SteerLens surface today                         | Build toward                                                                 |
 | ----------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------- |
-| How should we invest?         | Vision, outcomes, bets, metrics                 | Full EDGE toolkit: LVT + MoS + product blueprint + Tech@Core + backlog mix |
+| How should we invest?         | Vision, outcomes, bets, metrics                 | Full EDGE toolkit: LVT + MoS + product brief + Tech@Core + backlog mix |
 | How should we work together?  | How work is organised (zones + relationships)   | Full TT types, modes, groupings, cognitive-load signals                      |
 | How can we adapt fast enough? | Kill criteria, evidence, decision notes         | Named Periodic Value Review (PVR) cadence; stop-ready; learn-before-number   |
 
@@ -88,7 +88,7 @@ flowchart TB
 
 ## Part A - EDGE alignments (capture all)
 
-EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Lean Value Tree it supplies product mindset & Product Blueprint, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles. SteerLens must treat those teachings as first-class product intent-even when a teaching maps to copy, mismatches, and lightweight schema cues rather than a full submodule.
+EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Lean Value Tree it supplies product mindset & Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles. SteerLens must treat those teachings as first-class product intent-even when a teaching maps to copy, mismatches, and lightweight schema cues rather than a full submodule.
 
 ### A0. Already aligned
 
@@ -107,7 +107,7 @@ EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Le
 | EDGE teaching                         | Meaning                                                                                         | SteerLens today                                      | Build toward (stay investment-contract, not PMO)                                                                 |
 | ------------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **Six core principles**               | Cultural OS that makes the tools work                                                           | Implicit in copy                                     | Explicit principles in glossary / docs / Technical mode; UX reinforces autonomy + value prioritization           |
-| **Product mindset & Product Blueprint** | Long-lived product teams; lightweight product definition linked to LVT                        | Bets + funded teams                                  | Optional Product Blueprint linked to outcomes/bets; teaching copy: product ≠ project                             |
+| **Product mindset & Product brief** | Long-lived product teams; lightweight product definition linked to LVT                        | Bets + funded teams                                  | Optional Product brief linked to outcomes/bets; teaching copy: product ≠ project                             |
 | **Tech@Core**                         | Technology as business engine; strategic tech debt; Tech Radar                                  | Capability bets; ArchLens suite link (later)         | Tech-debt / revitalize cues on capability bets; optional radar _refs_ (not a radar product)                      |
 | **Lightweight governance & PVR**      | Replace stage-gate / annual budget theatre with frequent, data-informed portfolio rebalancing   | Decision notes + bet `reviewDate` / horizon          | Name PVR in product language; steering “next review” ritual; double-down vs defund without bureaucracy           |
 | **Integrated Backlogs**               | Cross-prioritise strategic + BAU + maintenance + capability work with relative value/effort     | `fundingStance` explore/exploit/sustain; no dual backlog | Portfolio mix / stance cues; relative value rank; never own Jira execution backlog                             |
@@ -119,7 +119,7 @@ flowchart TB
   principles[Six EDGE principles]
   subgraph tools [EDGE primary tools]
     lvt[Lean Value Tree]
-    blueprint[Product Blueprint]
+    productBrief[Product brief]
     techcore[Tech@Core]
     pvr[Periodic Value Review]
     backlog[Integrated Backlogs]
@@ -127,7 +127,7 @@ flowchart TB
   end
   principles --> tools
   lvt --> mos
-  blueprint --> lvt
+  productBrief --> lvt
   techcore --> lvt
   backlog --> lvt
   mos --> pvr
@@ -212,17 +212,17 @@ Do **not** build a PMO workflow engine; keep PVR as a named ritual on top of dec
 | Missing `initiatives`            | Add only when value-slice visibility is needed without owning execution |
 | Decision notes                   | Document as the lightweight PVR decision record                         |
 
-### A8. Product mindset & Product Blueprint
+### A8. Product mindset & Product brief
 
-EDGE shifts from a **project** mindset (temporary teams; on-time/on-budget) to a **product** mindset (long-lived teams; continuous value). The **Product Blueprint** is a lightweight definition of a product: core elements, LVT linkage, and customer problems solved-without heavy upfront requirements.
+EDGE shifts from a **project** mindset (temporary teams; on-time/on-budget) to a **product** mindset (long-lived teams; continuous value). The **Product brief** is a lightweight definition of a product: core elements, LVT linkage, and customer problems solved-without heavy upfront requirements.
 
 | Action                         | Detail                                                                                          |
 | ------------------------------ | ----------------------------------------------------------------------------------------------- |
 | Teaching copy                  | Executive empty states / glossary: products outlive projects; topology funds products, not Gantt |
-| Optional schema (later)        | `products[]` or bet/outcome `productBlueprint`: problem, customers, LVT links, non-goals - few fields |
-| Linkage                        | Blueprint points at outcomes/MoS/bets; never a requirements PRD dump                            |
+| Optional schema                | `products[]`: problem, customers, LVT links, non-goals - few fields |
+| Linkage                        | Brief points at outcomes/MoS/bets; never a requirements PRD dump                            |
 | Topology join                  | Stream-aligned teams own products end-to-end (Team Topologies); enabling/platform support them  |
-| Out of product-blueprint scope | Sprint roadmaps, feature catalogs, dual backlog                                                  |
+| Out of product-brief scope | Sprint roadmaps, feature catalogs, dual backlog                                                  |
 
 ### A9. Tech@Core
 
@@ -267,7 +267,7 @@ Tools fail without the principles. SteerLens should make these visible in docs, 
 - Building a Tech Radar product or tech-debt inventory system (refs + capability bets only)
 - Prescriptive scaling ceremony - stay principle-led
 - Replacing delivery tooling / owning integrated execution backlogs - stop at the investment contract
-- Heavy Product Blueprint / requirements documentation - keep blueprint lightweight or omit
+- Heavy product brief / requirements documentation - keep briefs lightweight or omit
 
 ### A13. EDGE priority order
 
@@ -275,7 +275,7 @@ Tools fail without the principles. SteerLens should make these visible in docs, 
 2. Name and ritualise **PVR** on review dates + stop-ready + decision notes
 3. Incremental-funding cues on bets (horizon, explore/exploit/sustain, WIP)
 4. Explicit LVT + **six principles** + Product / Tech@Core vocabulary in docs/glossary/Technical mode
-5. Product Blueprint (lightweight) linked to LVT - when product-vs-project confusion shows up
+5. Product brief (lightweight) linked to LVT - when product-vs-project confusion shows up
 6. Integrated backlog **mix / relative value** cues (not Jira)
 7. Optional initiatives under bets
 8. Board pack structured on EDGE’s three questions (Invest / Work / Adapt) - keep
@@ -447,7 +447,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 7. Org view **flow-of-change** layout (streams as spine) + as-of date; type zones as teaching/filter
 8. Bet flow overlay (funded teams + related interactions as of date)
 9. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
-10. Topology timeline: capacity deltas + relationship spans over time ([F13](./prds/F13-topology-timeline.md))
+10. Topology timeline: capacity deltas + relationship spans over time ([F13](./prds/F13-topology-timeline.md)) — landed (Organisation **Timeline** view)
 
 ---
 
@@ -465,7 +465,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] F03 / steering copy: cognitive load, fast flow, platform reduces load; overload banner wording
 - [x] Elevate stop-ready in steering alignment summary
 - [x] Board pack outline: Invest / Work / Adapt sections ([F08](./prds/F08-export-board-pack.md))
-- [x] Document full EDGE toolkit beyond LVT (principles, Product Blueprint, Tech@Core, PVR, Integrated Backlogs, MoS) in product glossary + in-app docs
+- [x] Document full EDGE toolkit beyond LVT (principles, Product brief, Tech@Core, PVR, Integrated Backlogs, MoS) in product glossary + in-app docs
 - [x] Name decision notes / review cadence as **Periodic Value Review (PVR)** in product guide and F07/F02 copy (executive-safe: “value review”, Technical mode: PVR)
 - [x] Technical mode / glossary: six EDGE principles + product-vs-project teaching
 
@@ -495,16 +495,19 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) - type zones remain teaching/filter
 - [x] **As-of date on org view** - project teams / members / relationships / mismatches at selected date (default today)
 - [x] Bet / project **flow overlay** - funded teams + related interactions for that bet as of date ([F04](./prds/F04-bet-detail.md))
-- [ ] Optional `initiatives[]` under bets
-- [ ] WIP / rank UI for value-based prioritization (Integrated Backlog relative value)
-- [ ] Portfolio mix hint: opportunity vs capability vs sustain (Integrated Backlog stance mix - not finance)
-- [ ] Optional lightweight **Product Blueprint** (`products[]` or blueprint fields linked to outcomes/bets)
-- [ ] Tech@Core cues: capability-bet revitalize copy; optional ArchLens `systemRefs`; optional external Tech Radar link (no radar UI)
+- [x] Optional `initiatives[]` under bets
+- [x] WIP / rank UI for value-based prioritization (Integrated Backlog relative value)
+- [x] Portfolio mix hint: opportunity vs capability vs sustain (Integrated Backlog stance mix - not finance)
+- [x] Optional lightweight **Product brief** (`products[]` linked to outcomes/bets)
+- [x] Tech@Core cues: capability-bet revitalize copy; optional ArchLens `systemRefs`; optional external Tech Radar link (no radar UI)
 - [ ] MoS leading vs lagging label (Technical mode / schema docs)
 - [ ] Fractal zoom on org view (grouping → members)
-- [ ] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** - capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
-- [ ] ArchLens `systemRefs` on bets stay optional (suite link, not TT)
+- [x] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** - capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
+- [x] ArchLens `systemRefs` on bets stay optional (suite link, not TT)
 - [ ] Narrative tie-in: AI gains without topology redesign stall in bottlenecks (press / docs only until evidence exists)
+- [x] Technical mode ([F12](./prds/F12-technical-mode.md)): Steer tree, topology fitness + write-back policy, EDGE/TT vocabulary bridge
+- [x] Catalog-file import & merge ([F11](./prds/F11-import-merge.md)) without OAuth; never proposes Group YAML
+- [ ] Connections / OAuth UI ([F10](./prds/F10-connections.md))
 
 ---
 
@@ -519,7 +522,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 | `bets[].fundingStance`               | Integrated Backlog mix cue (explore/exploit/sustain) | Capacity focus                     |
 | `bets[].kind`                        | Opportunity vs capability (Tech@Core revitalize) | -                                       |
 | `bets[].reviewDate` / `horizon`      | PVR / incremental funding checkpoint | -                                       |
-| `products` / blueprint (future)      | Product Blueprint           | Stream-aligned product ownership              |
+| `products[]`                           | Product brief           | Stream-aligned product ownership              |
 | `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
 | `teams` + `role`                     | Delivery capacity / product teams | Team types (incl. complicated subsystem) |
 | `groupings` (future)                 | -                           | Platform + value-stream groupings (domain org; fractal) |

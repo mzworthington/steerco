@@ -9,7 +9,7 @@ Staff+ engineers need refs, provenance, and write-back policy without forcing ex
 
 ## Goal
 
-Secondary surface for SteerSpec detail, topology fitness with policy panel, and advanced exports - including explicit Goal / MoS / stream-aligned / platform grouping aliases **and** EDGE-beyond-LVT terms (PVR, Product Blueprint, Tech@Core, Integrated Backlog, six principles) without changing executive chrome.
+Secondary surface for SteerSpec detail, topology fitness with policy panel, and advanced exports - including explicit Goal / MoS / stream-aligned / platform grouping aliases **and** EDGE-beyond-LVT terms (PVR, Product brief, Tech@Core, Integrated Backlog, six principles) without changing executive chrome.
 
 ## User stories
 
@@ -25,7 +25,7 @@ Secondary surface for SteerSpec detail, topology fitness with policy panel, and 
 4. Does not replace executive screens; deep-link back
 5. Compact vocabulary bridge:
    - LVT: Goal≈Outcome, MoS≈metrics, Initiative reserved
-   - Beyond LVT: PVR≈decision notes + review dates; Product Blueprint (future); Tech@Core≈capability bets + optional radar/ArchLens refs; Integrated Backlog≈fundingStance / mix cues; six EDGE principles listed
+   - Beyond LVT: PVR≈decision notes + review dates; Product brief (`products[]`); Tech@Core≈capability bets + optional radar/ArchLens refs; Integrated Backlog≈fundingStance / mix cues; six EDGE principles listed
    - TT: stream-aligned≈customer-facing legacy, platform grouping note, interaction mode aliases
 6. Topology fitness view highlights mismatches including load/flow and (from Slice 1.5) MoS-link / collab time-box codes
 

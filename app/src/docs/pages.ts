@@ -5,6 +5,7 @@ import overview from '../../../docs/overview.md?raw';
 import productGuide from '../../../docs/product-guide.md?raw';
 import quality from '../../../docs/quality.md?raw';
 import setup from '../../../docs/setup.md?raw';
+import steerbetsOverlay from '../../../docs/steerbets-overlay.md?raw';
 import techStack from '../../../docs/tech-stack.md?raw';
 import workflows from '../../../docs/workflows.md?raw';
 import adrIndex from '../../../docs/ADRs/README.md?raw';
@@ -61,6 +62,12 @@ const TOP_LEVEL: DocPage[] = [
   { slug: '', title: 'Overview', markdown: overview, section: 'product', nav: false },
   { slug: 'overview', title: 'Overview', markdown: overview, section: 'product', nav: false },
   { slug: 'product-guide', title: 'Product guide', markdown: productGuide, section: 'product' },
+  {
+    slug: 'steerbets-overlay',
+    title: 'SteerBet overlay',
+    markdown: steerbetsOverlay,
+    section: 'build',
+  },
   { slug: 'setup', title: 'Setup', markdown: setup, section: 'build' },
   { slug: 'architecture', title: 'Architecture', markdown: architecture, section: 'build' },
   { slug: 'tech-stack', title: 'Tech stack', markdown: techStack, section: 'build' },

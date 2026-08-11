@@ -67,6 +67,9 @@ jobs:
       - name: Unit tests
         run: pnpm test
 
+      - name: SteerSpec mismatch check
+        run: pnpm --filter @steerlens/core test -- checkSteerSpec
+
   build:
     runs-on: ubuntu-latest
     needs: [quality, unit-tests]

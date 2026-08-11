@@ -37,6 +37,11 @@ const NAV = [
     label: 'Export',
     match: (path: string) => path.startsWith('/workspace/export'),
   },
+  {
+    href: '/workspace/technical',
+    label: 'Technical',
+    match: (path: string) => path.startsWith('/workspace/technical'),
+  },
 ] as const;
 
 export function WorkspaceShell({ children }: { children: ReactNode }) {

@@ -70,6 +70,30 @@ describe('DecisionNotesPage', () => {
     expect(screen.getByRole('button', { name: /promise hit rate/i })).toBeTruthy();
   });
 
+  it('groups affected teams by domain and filters via search', async () => {
+    const user = userEvent.setup({ delay: null });
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <DecisionNotesPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    expect(screen.getByTestId('decision-affected-groups')).toBeTruthy();
+    expect(screen.getByText(/^commerce$/i)).toBeTruthy();
+    expect(screen.getByText(/^shared support$/i)).toBeTruthy();
+    expect(screen.getByTestId('decision-affected-count').textContent).toMatch(/3 teams selected/i);
+
+    await user.type(screen.getByTestId('decision-affected-search'), 'loyalty');
+    expect(screen.getByLabelText(/loyalty experience/i)).toBeTruthy();
+    expect(screen.queryByLabelText(/storefront experience/i)).toBeNull();
+  });
+
   it('saves measured bullet edits into the session', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);

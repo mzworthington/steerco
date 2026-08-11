@@ -16,6 +16,11 @@ import { ExportBoardPackPage } from './pages/ExportBoardPackPage';
 import { OrganisationPage } from './pages/OrganisationPage';
 import { OutcomesPage } from './pages/OutcomesPage';
 import { WorkspaceDiffPage } from './pages/WorkspaceDiffPage';
+import { TechnicalHubPage } from './pages/TechnicalHubPage';
+import { TechnicalTreePage } from './pages/TechnicalTreePage';
+import { TechnicalFitnessPage } from './pages/TechnicalFitnessPage';
+import { TechnicalVocabularyPage } from './pages/TechnicalVocabularyPage';
+import { TechnicalImportPage } from './pages/TechnicalImportPage';
 import { WorkspaceSessionProvider } from './workspace/WorkspaceSession';
 import { WorkspaceShell } from './workspace/WorkspaceShell';
 
@@ -63,6 +68,11 @@ function AppRoutes() {
       <Route path="/workspace/decisions" component={DecisionNotesPage} />
       <Route path="/workspace/diff" component={WorkspaceDiffPage} />
       <Route path="/workspace/export" component={ExportBoardPackPage} />
+      <Route path="/workspace/technical/tree" component={TechnicalTreePage} />
+      <Route path="/workspace/technical/fitness" component={TechnicalFitnessPage} />
+      <Route path="/workspace/technical/vocabulary" component={TechnicalVocabularyPage} />
+      <Route path="/workspace/technical/import" component={TechnicalImportPage} />
+      <Route path="/workspace/technical" component={TechnicalHubPage} />
       <Route path="/workspace/bets/:betId" component={BetDetailPage} />
       <Route path="/design-system">
         <Redirect to="/docs/design-system" />

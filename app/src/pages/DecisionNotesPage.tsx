@@ -17,6 +17,7 @@ export function DecisionNotesPage() {
   const [draft, setDraft] = useState<DecisionNoteDraft | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
+  const [teamQuery, setTeamQuery] = useState('');
   const evidenceSeedApplied = useRef(false);
 
   useEffect(() => {
@@ -60,6 +61,22 @@ export function DecisionNotesPage() {
   }, [session, selectedId, model?.notes.length]);
 
   const recommendationOptions = useMemo(() => decisionRecommendationOptions(), []);
+
+  const filteredTeamGroups = useMemo(() => {
+    if (!model) return [];
+    const query = teamQuery.trim().toLowerCase();
+    if (!query) return model.teamGroups;
+    return model.teamGroups
+      .map((group) => ({
+        ...group,
+        teams: group.teams.filter(
+          (team) =>
+            team.displayName.toLowerCase().includes(query) ||
+            group.title.toLowerCase().includes(query),
+        ),
+      }))
+      .filter((group) => group.teams.length > 0);
+  }, [model, teamQuery]);
 
   if (!session || !model) return null;
 
@@ -331,19 +348,46 @@ export function DecisionNotesPage() {
               <h2 id="decision-affected" className="decision-notes-section-title">
                 Who is affected
               </h2>
-              <fieldset className="decision-notes-teams">
-                <legend className="sr-only">Affected teams</legend>
-                {model.teams.map((team) => (
-                  <label key={team.id} className="decision-notes-team">
-                    <input
-                      type="checkbox"
-                      checked={draft.affectedTeamIds.includes(team.id)}
-                      onChange={() => toggleTeam(team.id)}
-                    />
-                    <span>{team.displayName}</span>
-                  </label>
-                ))}
-              </fieldset>
+              <p className="decision-notes-affected-meta" data-testid="decision-affected-count">
+                {draft.affectedTeamIds.length === 0
+                  ? 'No teams selected'
+                  : `${draft.affectedTeamIds.length} team${draft.affectedTeamIds.length === 1 ? '' : 's'} selected`}
+              </p>
+              <label className="decision-notes-field decision-notes-team-search">
+                <span className="sr-only">Search teams</span>
+                <input
+                  type="search"
+                  value={teamQuery}
+                  onChange={(event) => setTeamQuery(event.target.value)}
+                  placeholder="Search teams or domains"
+                  data-testid="decision-affected-search"
+                />
+              </label>
+              {filteredTeamGroups.length === 0 ? (
+                <p className="decision-notes-empty" data-testid="decision-affected-empty">
+                  No teams match “{teamQuery.trim()}”.
+                </p>
+              ) : (
+                <div className="decision-notes-team-groups" data-testid="decision-affected-groups">
+                  {filteredTeamGroups.map((group) => (
+                    <fieldset key={group.id} className="decision-notes-team-group">
+                      <legend className="decision-notes-team-group-title">{group.title}</legend>
+                      <div className="decision-notes-teams">
+                        {group.teams.map((team) => (
+                          <label key={team.id} className="decision-notes-team">
+                            <input
+                              type="checkbox"
+                              checked={draft.affectedTeamIds.includes(team.id)}
+                              onChange={() => toggleTeam(team.id)}
+                            />
+                            <span>{team.displayName}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+                  ))}
+                </div>
+              )}
             </section>
 
             <section className="decision-note-section" aria-labelledby="decision-next">

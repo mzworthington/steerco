@@ -89,6 +89,8 @@ const betSchema = z
     horizon: z.string().optional(),
     fundingStance: fundingStanceSchema.optional(),
     kind: betKindSchema.optional(),
+    /** Relative value rank within the portfolio (lower = higher priority). */
+    valueRank: z.number().int().positive().optional(),
   })
   .strict();
 
@@ -205,6 +207,31 @@ const topologyEventSchema = z
   })
   .strict();
 
+/** Thin narrative slice under a bet - not an execution backlog item. */
+const initiativeSchema = z
+  .object({
+    id: z.string().min(1),
+    betId: z.string().min(1),
+    title: z.string().min(1),
+    successSignal: z.string().min(1),
+    /** Optional external tracker URL - SteerLens never owns the backlog. */
+    externalUrl: z.string().optional(),
+  })
+  .strict();
+
+/** Lightweight product brief - product mindset, not requirements docs. */
+const productSchema = z
+  .object({
+    id: z.string().min(1),
+    title: z.string().min(1),
+    problem: z.string().min(1),
+    customers: z.string().optional(),
+    nonGoals: z.string().optional(),
+    outcomeIds: z.array(z.string()).default([]),
+    betIds: z.array(z.string()).default([]),
+  })
+  .strict();
+
 const evidenceSchema = z
   .object({
     id: z.string().min(1),
@@ -241,6 +268,12 @@ const specSchema = z
     decisionNotes: z.array(decisionNoteSchema).default([]),
     evidence: z.array(evidenceSchema).default([]),
     topologyEvents: z.array(topologyEventSchema).default([]),
+    /** Thin slices under bets - narrative toward MoS, never a dual backlog. */
+    initiatives: z.array(initiativeSchema).default([]),
+    /** Lightweight product briefs linked to outcomes/bets. */
+    products: z.array(productSchema).default([]),
+    /** Optional external Tech Radar URL (no radar UI in SteerLens). */
+    techRadarUrl: z.string().optional(),
   })
   .strict();
 
@@ -264,6 +297,9 @@ export type Relationship = z.infer<typeof relationshipSchema>;
 export type DecisionNote = z.infer<typeof decisionNoteSchema>;
 export type TopologyEvent = z.infer<typeof topologyEventSchema>;
 export type TopologyEventKind = TopologyEvent['kind'];
+export type Initiative = z.infer<typeof initiativeSchema>;
+export type Product = z.infer<typeof productSchema>;
+export type Provenance = Team['provenance'];
 export type FundingStance = NonNullable<Bet['fundingStance']>;
 export type BetKind = NonNullable<Bet['kind']>;
 export type TeamRole = TeamTopologyType;
