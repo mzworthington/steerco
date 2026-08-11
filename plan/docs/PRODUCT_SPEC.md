@@ -51,7 +51,7 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) — narrative only; never a dual backlog                                                                                                                                                            |
 | **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding)                                                                                                                                                                        |
 | **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                                                     |
-| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned, platform, enabling, complicated subsystem; modes X-as-a-Service / Collaboration / Facilitation; optional members with `discipline` + FTE% as capacity / mix |
+| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned (spine), platform (scoped org / vertical / team), enabling, complicated subsystem (may nest in a stream); modes X-as-a-Service / Collaboration / Facilitation; value-stream / platform groupings; optional members with `discipline` + FTE% as capacity / mix; point-in-time as-of projection |
 | **Mismatch**                 | Detectable conflict (portfolio or topology smell — e.g. unfunded bet; platform overload / cognitive-load proxy)                                                                                                                                           |
 | **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (lightweight governance)                                                                                                                                                  |
 | **SteerSpec**                | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                                                                                                                                           |
@@ -126,7 +126,7 @@ Feature: Steering overview
 Feature: Topology intent
   Scenario: Shape teams in plain language
     Given a workspace
-    When the leader adds customer-facing and shared platform teams
+    When the leader adds stream-aligned and platform teams
     And sets a "uses as a service" relationship
     Then the org-shape view shows the relationship without technical identifiers
 
@@ -134,6 +134,18 @@ Feature: Topology intent
     Given a shared platform team with many dependents
     When the leader opens How work is organised
     Then they see a calm mismatch message about platform load and slower flow
+
+  Scenario: Flow of change at scale (Slice 3)
+    Given many teams across value streams with a nested complicated subsystem and an enabling team
+    When the leader opens How work is organised
+    Then stream-aligned teams appear as the spine of the map
+    And platforms appear by audience scope
+    And the complicated subsystem appears nested in its stream
+
+  Scenario: Point in time on the team view (Slice 3)
+    Given capacity and relationship windows recorded over a steering period
+    When the leader chooses an as-of date on How work is organised
+    Then the projected shape and mismatches match that date
 ```
 
 ### Feature: Decision and export

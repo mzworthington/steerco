@@ -246,31 +246,54 @@ Suggested mismatch/warnings:
 - Enabling team permanently listed as delivery owner of a bet (should facilitate, not own forever)
 - Stream team with no XaaS path to platform capabilities it depends on (hidden handoffs)
 
-### B4. Groupings (2e schema implication)
+### B4. Groupings, scope, and flow-of-change layout (2e)
 
-Model platforms and value streams as **groupings**, not only leaf teams. In Team Topologies 2e, “organise teams under a domain” maps to a **value stream grouping** (stream-aligned teams sharing a value stream / business domain); a multi-team platform maps to a **platform grouping**.
+Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams inside value stream groupings**; platform, enabling, and complicated-subsystem teams are scoped support for that flow — not peer columns of equal weight.
+
+In Team Topologies 2e, “organise teams under a domain” maps to a **value stream grouping**; a multi-team platform maps to a **platform grouping**. Platforms also have an **audience scope**: organisation-wide, vertical (one value stream), or dedicated to a single stream-aligned team. Complicated-subsystem teams nest **inside** a value stream (team-within-a-team). Enabling teams **fan out** via facilitation to many streams.
 
 ```yaml
 # Illustrative — not yet in v1alpha1
 groupings:
-  - id: grp_fulfilil_platform
+  - name: fulfilment-platform
     kind: platform # platform | value_stream
     title: Fulfilment platform
-    memberTeamIds: [team_fulfilil_api, team_fulfilil_data]
-  - id: grp_checkout_value_stream
+    # Audience for platform groupings (also allowed on leaf platform teams)
+    platformScope: organisation # organisation | vertical | team
+    members: [team:fulfilil-api, team:fulfilil-data]
+  - name: checkout
     kind: value_stream
     title: Checkout # business domain / value stream label in exec UI
-    memberTeamIds: [team_checkout_web, team_checkout_api]
+    members: [team:checkout-web, team:checkout-pricing]
 teams:
-  - id: team_fulfilil_api
-    role: platform # or stream_aligned inside a platform (fractal)
-    groupingId: grp_fulfilil_platform
-  - id: team_checkout_web
+  - name: multil-api
+    role: platform
+    platformScope: organisation
+  - name: checkout-web
     role: stream_aligned
-    groupingId: grp_checkout_value_stream
+  - name: checkout-pricing
+    role: complicated_subsystem
+    # Nest CSS inside a stream (team-within-team); grouping membership alone is not enough for layout
+    within: team:checkout-web
+  - name: flow-coaches
+    role: enabling
+relationships:
+  - from: team:checkout-web
+    to: team:fulfilil-api
+    mode: x_as_a_service
+  - from: team:flow-coaches
+    to: team:checkout-web
+    mode: facilitation
+    expectedUntil: '2026-12-31'
 ```
 
-Executive UI: one “Checkout” (value stream) or “Fulfilment platform” zone that expands to member teams. Avoid forcing every platform or domain into a single team card.
+**Executive UI (scale layout):** a **flow-of-change canvas** — value streams left-to-right toward the customer; stream-aligned teams as the primary bands; platforms drawn by scope (org / vertical / team); complicated subsystem nested inside its stream; enabling teams beside the streams they facilitate. Four type zones remain a **teaching / filter** layer (empty state, glossary, Technical mode), not the only layout at scale.
+
+**Bet / project overlay:** on bet detail (and optionally steering), show which teams sit on the flow for that bet as of a date — funded streams plus related platform / CSS / enabling edges — without becoming a delivery Gantt.
+
+**Point-in-time:** org view projects teams, members, relationships, and mismatches **as of** a selected date (default today); deep history stays on the [F13](./prds/F13-topology-timeline.md) timeline.
+
+Do not copy proprietary Team Topologies book diagrams; derive visuals from SteerSpec using our own shapes library (geometry already in core vocabulary).
 
 ### B5. Cognitive load signals (productised mismatches)
 
@@ -294,15 +317,17 @@ Team Topologies optimises **flow of value**; EDGE defines **what value is**. Joi
 - Stream-aligned teams should map cleanly to bets that move customer MoS
 - Platform groupings judged by whether dependents move MoS faster / with less coordination cost
 - Stop/rescope when topology intent cannot deliver the MoS (not when a project plan slips)
+- Bet detail can overlay **who is in the flow** for that funded work (stream + scoped supports) alongside MoS — still intent, not a project plan
 
 ### B7. Copy and empty states (F03)
 
 Empty / teaching states should reflect 2e language without trademark overload:
 
-- Three (then four) **purposes** of teams, not “departments”
+- Four **purposes** of teams, not “departments” — stream-aligned is the core of delivery flow
 - Relationships as **how work flows**, not reporting lines
-- Platform exists to **reduce load** on customer-facing teams
-- Shape **evolves**; today’s map is intent for this steering period
+- Platform exists to **reduce load** on stream-aligned teams; scope may be org, vertical, or single-team
+- Enabling coaches many teams; complicated subsystem nests inside a stream when specialty would overload it
+- Shape **evolves**; the map is a **point-in-time** intent for this steering period (as-of control on the org view)
 
 ### B8. Explicitly out of scope from Team Topologies
 
@@ -317,11 +342,12 @@ Empty / teaching states should reflect 2e language without trademark overload:
 2. Retarget `platform_overload` messaging to load + flow
 3. Time-box collaboration relationships (`expectedUntil`)
 4. Schema: `complicated_subsystem` role
-5. Schema: `groupings` (platform, later value_stream) + fractal membership
+5. Schema: `groupings` (platform + value_stream) + fractal membership; `platformScope`; CSS `within` nest
 6. Soft “one primary bet per stream team” mismatch
-7. Optional cognitive-load proxy strip on org view
-8. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
-9. Topology timeline: capacity deltas + relationship spans over time ([F13](./prds/F13-topology-timeline.md))
+7. Org view **flow-of-change** layout (streams as spine) + as-of date; type zones as teaching/filter
+8. Bet flow overlay (funded teams + related interactions as of date)
+9. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
+10. Topology timeline: capacity deltas + relationship spans over time ([F13](./prds/F13-topology-timeline.md))
 
 ---
 
@@ -359,11 +385,17 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ### C3. Later (Slice 3+)
 
-- [ ] `groupings[]` with `kind: platform | value_stream` and `memberTeamIds` — value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
+- [ ] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) — value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
+- [ ] `platformScope` on platform teams and platform groupings: `organisation | vertical | team` (who the platform accelerates)
+- [ ] Complicated-subsystem nest: optional `within` (team ref to stream-aligned parent) and/or membership in a value-stream grouping for team-within-team layout
+- [ ] Enabling one-to-many: present facilitation fan-out as expected; keep `enabling_owns_delivery` mismatch
+- [ ] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) — type zones remain teaching/filter
+- [ ] **As-of date on org view** — project teams / members / relationships / mismatches at selected date (default today)
+- [ ] Bet / project **flow overlay** — funded teams + related interactions for that bet as of date ([F04](./prds/F04-bet-detail.md))
 - [ ] Optional `initiatives[]` under bets
 - [ ] WIP / rank UI for value-based prioritization
 - [ ] Fractal zoom on org view (grouping → members)
-- [ ] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** — capacity deltas + relationship spans; as-of scrubber
+- [ ] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** — capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
 - [ ] Capability vs opportunity portfolio mix hint
 - [ ] ArchLens `systemRefs` on bets stay optional (suite link, not TT)
 - [ ] Narrative tie-in: AI gains without topology redesign stall in bottlenecks (press / docs only until evidence exists)
@@ -381,9 +413,11 @@ Empty / teaching states should reflect 2e language without trademark overload:
 | `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
 | `teams` + `role`                     | Delivery capacity           | Team types (incl. complicated subsystem)      |
 | `groupings` (future)                 | —                           | Platform + value-stream groupings (domain org; fractal) |
+| `platformScope` / CSS `within` (future) | —                        | Platform audience; complicated subsystem nest |
+| Flow-of-change + as-of (future UI)   | Who delivers this bet when  | Point-in-time topology intent                 |
 | `relationships` + `mode`             | How we work                 | Interaction modes                             |
-| Capacity / topology windows (future) | Delivery capacity over time | Shape evolves; collaboration time-boxed       |
-| `topologyEvents` (future)            | What changed in the period  | Evidence for adapt / load response            |
+| Capacity / topology windows          | Delivery capacity over time | Shape evolves; collaboration time-boxed       |
+| `topologyEvents`                     | What changed in the period  | Evidence for adapt / load response            |
 | `decisionNotes`                      | Lightweight governance      | Response to flow/load signals                 |
 | `evidence`                           | Feedback for adapt          | Learning that changes funding or shape        |
 | Mismatches                           | Portfolio smells            | Cognitive-load / interaction smells           |

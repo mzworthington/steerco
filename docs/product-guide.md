@@ -54,10 +54,10 @@ Sample or manually entered signals attached to outcomes and bets. Use this to gr
 
 Topology **intent** for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)):
 
-- **Four team types** — stream-aligned, platform, enabling, complicated subsystem
+- **Four team types** — stream-aligned (the delivery spine), platform, enabling, complicated subsystem
 - **Three interaction modes** — X-as-a-Service, Collaboration, Facilitation
 
-Platforms exist to reduce cognitive load so stream-aligned teams can go faster. Mismatch cues (for example platform overload) are calm prompts about flow — not HR headcount.
+Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams — not four flat department columns — with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems nested inside streams; and enabling teams supporting many streams. Mismatch cues (for example platform overload) are calm prompts about flow — not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period.
 
 ### Decision notes
 
@@ -73,16 +73,16 @@ The sidebar shows whether the draft differs from what you opened. Review the dif
 
 ## Plain-language glossary
 
-| Term                   | Meaning                                                          |
-| ---------------------- | ---------------------------------------------------------------- |
-| **Outcome**            | Measurable change the organisation wants                         |
-| **Measure of Success** | Leading indicator that shapes and funds work toward an outcome   |
-| **Bet**                | Time-boxed investment intended to move an outcome                |
-| **Kill criteria**      | Pre-agreed condition that triggers stop or re-scope              |
-| **Topology intent**    | Desired team types and interaction modes for fast flow           |
-| **Decision note**      | Start / stop / continue / re-scope recommendation with rationale |
-| **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`) |
-| **Board pack**         | Export for steering distribution                                 |
+| Term                   | Meaning                                                                            |
+| ---------------------- | ---------------------------------------------------------------------------------- |
+| **Outcome**            | Measurable change the organisation wants                                           |
+| **Measure of Success** | Leading indicator that shapes and funds work toward an outcome                     |
+| **Bet**                | Time-boxed investment intended to move an outcome                                  |
+| **Kill criteria**      | Pre-agreed condition that triggers stop or re-scope                                |
+| **Topology intent**    | Desired team types, groupings, and interaction modes for fast flow (point-in-time) |
+| **Decision note**      | Start / stop / continue / re-scope recommendation with rationale                   |
+| **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`)                   |
+| **Board pack**         | Export for steering distribution                                                   |
 
 ## What SteerLens is not
 
