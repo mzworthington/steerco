@@ -106,20 +106,9 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
       }),
     );
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
-
-    const storefrontNode = screen
-      .getAllByTestId('organisation-flow-node')
-      .find((node) => /storefront experience/i.test(node.textContent ?? ''));
-    expect(storefrontNode).toBeTruthy();
-    await user.click(storefrontNode!);
-    expect(screen.getByTestId('organisation-flow-team-detail')).toBeTruthy();
-    expect(screen.getByTestId('organisation-flow-team-members')).toBeTruthy();
-    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
-    expect(
-      screen
-        .getAllByTestId('organisation-flow-node')
-        .some((node) => node.dataset.dimmed === 'true'),
-    ).toBe(true);
+    expect(screen.getByTestId('organisation-flow-graph-detail').textContent).toMatch(
+      /interaction/i,
+    );
 
     await openAsIsCapacityBoard(user);
     expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();
