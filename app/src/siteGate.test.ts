@@ -26,6 +26,7 @@ function memoryStorage(initial: Record<string, string> = {}): Storage {
 }
 
 afterEach(() => {
+  localStorage.removeItem(PREVIEW_STORAGE_KEY);
   sessionStorage.removeItem(PREVIEW_STORAGE_KEY);
 });
 
@@ -40,18 +41,40 @@ describe('isPreviewUnlocked', () => {
     expect(storage.getItem(PREVIEW_STORAGE_KEY)).toBe('1');
   });
 
-  it('accepts preview=true', () => {
+  it('accepts preview=true and preview=yes', () => {
     expect(isPreviewUnlocked('?preview=true', memoryStorage())).toBe(true);
+    expect(isPreviewUnlocked('?preview=yes', memoryStorage())).toBe(true);
   });
 
-  it('stays unlocked from session storage without query', () => {
+  it('stays unlocked from local storage without query', () => {
     const storage = memoryStorage({ [PREVIEW_STORAGE_KEY]: '1' });
     expect(isPreviewUnlocked('', storage)).toBe(true);
   });
 
-  it('locks again when preview=0 and clears storage', () => {
+  it('locks again when preview=no and clears storage', () => {
     const storage = memoryStorage({ [PREVIEW_STORAGE_KEY]: '1' });
-    expect(isPreviewUnlocked('?preview=0', storage)).toBe(false);
+    expect(isPreviewUnlocked('?preview=no', storage)).toBe(false);
     expect(storage.getItem(PREVIEW_STORAGE_KEY)).toBeNull();
+  });
+
+  it('locks again when preview=0 or preview=false and clears storage', () => {
+    const storageZero = memoryStorage({ [PREVIEW_STORAGE_KEY]: '1' });
+    expect(isPreviewUnlocked('?preview=0', storageZero)).toBe(false);
+    expect(storageZero.getItem(PREVIEW_STORAGE_KEY)).toBeNull();
+
+    const storageFalse = memoryStorage({ [PREVIEW_STORAGE_KEY]: '1' });
+    expect(isPreviewUnlocked('?preview=false', storageFalse)).toBe(false);
+    expect(storageFalse.getItem(PREVIEW_STORAGE_KEY)).toBeNull();
+  });
+
+  it('ignores unknown preview values and keeps stored preference', () => {
+    const storage = memoryStorage({ [PREVIEW_STORAGE_KEY]: '1' });
+    expect(isPreviewUnlocked('?preview=maybe', storage)).toBe(true);
+    expect(storage.getItem(PREVIEW_STORAGE_KEY)).toBe('1');
+  });
+
+  it('uses localStorage by default so unlock survives a new session', () => {
+    localStorage.setItem(PREVIEW_STORAGE_KEY, '1');
+    expect(isPreviewUnlocked('')).toBe(true);
   });
 });
