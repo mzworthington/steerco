@@ -1,6 +1,6 @@
 # Feature PRD index
 
-Operating-model commitments (EDGE + Team Topologies): [../OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md) · slices in [../ROADMAP.md](../ROADMAP.md).
+Operating-model commitments (EDGE full toolkit + Team Topologies): [../OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md) · slices in [../ROADMAP.md](../ROADMAP.md).
 
 | ID  | Feature               | Slice      | Doc                                                            |
 | --- | --------------------- | ---------- | -------------------------------------------------------------- |
