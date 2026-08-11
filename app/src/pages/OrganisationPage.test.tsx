@@ -51,9 +51,19 @@ afterEach(() => {
   sessionStorage.clear();
 });
 
-describe('OrganisationPage', () => {
+/** Keyboard delay off — capacity board + DnD make default typing too slow for CI's 5s budget. */
+function setupUser() {
+  return userEvent.setup({ delay: null });
+}
+
+async function openAsIsCapacityBoard(user: ReturnType<typeof setupUser>) {
+  await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
+  expect(await screen.findByTestId('organisation-capacity-board')).toBeTruthy();
+}
+
+describe('OrganisationPage', { timeout: 15_000 }, () => {
   it('defaults to zoomed-out flow of change and can switch to as-is detail', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -77,8 +87,7 @@ describe('OrganisationPage', () => {
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: /prepare decision note/i })).toBeTruthy();
 
-    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
-    expect(screen.getByTestId('organisation-capacity-board')).toBeTruthy();
+    await openAsIsCapacityBoard(user);
     expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();
     expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
     expect(screen.getByTestId('organisation-team-team_pricing')).toBeTruthy();
@@ -116,7 +125,7 @@ describe('OrganisationPage', () => {
   });
 
   it('adds a team by display name into the session', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -158,7 +167,7 @@ describe('OrganisationPage', () => {
   });
 
   it('edits a team and can attach a relationship from the modal', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -171,7 +180,7 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
+    await openAsIsCapacityBoard(user);
     await user.click(screen.getByTestId('organisation-edit-team-team_storefront'));
     const modal = screen.getByTestId('organisation-team-modal');
     expect(modal).toBeTruthy();
@@ -200,7 +209,7 @@ describe('OrganisationPage', () => {
   });
 
   it('adds a person onto a team with quick add', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -213,10 +222,12 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
-    await user.click(screen.getAllByRole('button', { name: 'Add person' })[0]!);
-    await user.type(screen.getByLabelText('Name'), 'Nina Torres');
-    await user.click(screen.getByRole('button', { name: 'Add to team' }));
+    await openAsIsCapacityBoard(user);
+    const teamCard = screen.getByTestId('organisation-team-team_storefront');
+    await user.click(within(teamCard).getByRole('button', { name: 'Add person' }));
+    const quickAdd = await screen.findByTestId('organisation-quick-add');
+    await user.type(within(quickAdd).getByLabelText('Name'), 'Nina Torres');
+    await user.click(within(quickAdd).getByRole('button', { name: 'Add to team' }));
 
     expect(screen.getByText(/nina torres added to the team/i)).toBeTruthy();
     const stored = sessionStorage.getItem('steerlens.workspace-session');
@@ -234,7 +245,7 @@ describe('OrganisationPage', () => {
   });
 
   it('edits allocation for an existing person', async () => {
-    const user = userEvent.setup();
+    const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -247,14 +258,14 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
-    await user.click(
-      screen.getByTestId('organisation-person-mem_storefront_em').querySelector('button')!,
-    );
-    expect(screen.getByTestId('organisation-allocation-editor')).toBeTruthy();
-    await user.clear(screen.getByLabelText('Title'));
-    await user.type(screen.getByLabelText('Title'), 'Interim Lead');
-    await user.click(screen.getByRole('button', { name: 'Save allocation' }));
+    await openAsIsCapacityBoard(user);
+    const person = screen.getByTestId('organisation-person-mem_storefront_em');
+    await user.click(within(person).getByRole('button', { pressed: false }));
+    const editor = await screen.findByTestId('organisation-allocation-editor');
+    const title = within(editor).getByLabelText('Title');
+    await user.clear(title);
+    await user.type(title, 'Interim Lead');
+    await user.click(within(editor).getByRole('button', { name: 'Save allocation' }));
 
     expect(screen.getByText(/allocation updated/i)).toBeTruthy();
     expect(screen.getByDisplayValue('Interim Lead')).toBeTruthy();
