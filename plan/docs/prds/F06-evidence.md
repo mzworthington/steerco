@@ -23,11 +23,13 @@ Show plain-language metric stories from sample/manual evidence; set expectations
 2. Badge/copy: “Sample data · connect systems later”
 3. CTA: Use in decision note (pre-fills `measured[]` with MoS title + interpretation where possible)
 4. Allow manual override of values
+5. CTA: **Add evidence** - create a measure on a goal plus a manual `evidence[]` provenance row (title, current/target, learning cue, optional note)
 
 ## Acceptance
 
 - Sample evidence visible for delivery metrics
 - “Use in decision note” navigates to F07 with measured lines populated
+- “Add evidence” creates a MoS on the chosen goal and shows it on the Evidence page without leaving the app
 
 ## XFN
 

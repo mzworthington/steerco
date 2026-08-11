@@ -10,12 +10,11 @@ Provider-synced teams remain reference-only ([ADR 0005](/docs/adrs/0005-provider
 | --------------------------- | --------------------------------------- | ----------------------------------------- |
 | `bets[].id`                 | `metadata.name`                         | Stable id; kebab or snake as stored       |
 | `bets[].title`              | `metadata.title`                        | Human label                               |
-| `bets[].outcomeId`          | `spec.outcomeRef`                       | Soft link to outcome id in SteerSpec      |
+| `bets[].outcomeId`          | `spec.outcomeRef`                       | Soft link to goal id in SteerSpec         |
 | `bets[].successSignal`      | `spec.successSignal`                    | What “good” looks like                    |
 | `bets[].killCriteria`       | `spec.killCriteria`                     | Pre-agreed stop condition                 |
 | `bets[].status`             | `spec.status`                           | SteerSpec enum as-is                      |
 | `bets[].fundedTeamIds`      | `spec.fundedTeamRefs`                   | SteerSpec team ids, not Group entity refs |
-| `bets[].systemRefs`         | `spec.systemRefs`                       | Optional ArchLens entityRefs              |
 | `bets[].fundingStance`      | `spec.fundingStance`                    | explore / exploit / sustain               |
 | `bets[].kind`               | `spec.kind`                             | opportunity / capability                  |
 | `bets[].valueRank`          | `spec.valueRank`                        | Dense portfolio stack rank (1 = highest)  |
@@ -39,9 +38,6 @@ spec:
   fundedTeamRefs:
     - team_fulfilil
     - team_warehouse
-  systemRefs:
-    - component:default/fulfilil-spine
-    - system:default/commerce-platform
   fundingStance: explore
   kind: capability
   valueRank: 2

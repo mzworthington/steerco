@@ -13,12 +13,12 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 
 ## Slice 1 - Local executive workspace (no auth)
 
-**Goal:** A leader can open a sample or folder, edit outcomes/bets/teams, see mismatches, write a decision note, and export a board pack - fully offline.
+**Goal:** A leader can open a sample or folder, edit goals/bets/teams, see mismatches, write a decision note, and export a board pack - fully offline.
 
 **Operating-model bar (copy + presentation, no schema break):**
 
 - Steering answers EDGE’s three questions in plain language: invest / work / adapt
-- Outcomes present **Measures of Success** as a customer-value fitness function, not a metrics warehouse
+- Goals present **Measures of Success** as a customer-value fitness function, not a metrics warehouse
 - Decision notes and review cadence are the **Periodic Value Review (PVR)** ritual (executive: “value review”)
 - Docs / glossary treat EDGE **beyond LVT** as first-class: product mindset, Tech@Core, Integrated Backlogs, six principles
 - Org shape teaches the **four Team Topologies types** and **three interaction modes**, with platforms reducing cognitive load for faster flow
@@ -32,7 +32,7 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 | Steering overview        | [F02](./prds/F02-steering-overview.md)     |
 | How work is organised    | [F03](./prds/F03-how-work-is-organised.md) |
 | Bet detail               | [F04](./prds/F04-bet-detail.md)            |
-| Outcomes                 | [F05](./prds/F05-outcomes.md)              |
+| Goals                 | [F05](./prds/F05-goals.md)              |
 | Evidence (sample/manual) | [F06](./prds/F06-evidence.md)              |
 | Decision note            | [F07](./prds/F07-decision-note.md)         |
 | Export board pack        | [F08](./prds/F08-export-board-pack.md)     |
@@ -76,7 +76,6 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 
 ## Slice 3 - Portfolio suite links, topology groupings & timeline
 
-- [x] Optional ArchLens `systemRefs` on bets
 - [x] CI check action for SteerSpec mismatches (incl. Slice 1.5 codes)
 - [x] Optional Backstage overlay `SteerBet` kind docs
 - [x] **Team Topologies scale layout ([F03](./prds/F03-how-work-is-organised.md)):** **streams** (flow of change) + optional **domains** (verticals); stream-aligned teams assign via `streamIds` (ideal one; multi allowed with advice); complicated subsystem in a stream (not under a team); platform groupings + `platformScope`; enabling 1→many via facilitation; flow-of-change canvas
@@ -85,8 +84,8 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 - [x] **Bet flow overlay ([F04](./prds/F04-bet-detail.md)):** funded teams + related interactions for a bet as of date (intent, not a Gantt)
 - [x] **EDGE:** optional `initiatives[]` under bets (thin narrative slices - never dual backlog)
 - [x] Optional WIP / relative value rank UI; capability vs opportunity / sustain **portfolio mix** hint (Integrated Backlog stance - not finance)
-- [x] Optional lightweight **Product brief** linked to outcomes/bets
-- [x] **Tech@Core:** capability-bet revitalize cues; optional ArchLens `systemRefs`; optional external Tech Radar link (no radar UI)
+- [x] Optional lightweight **Product brief** linked to goals/bets
+- [x] **Tech@Core:** capability-bet revitalize cues; optional external Tech Radar link (no radar UI)
 
 ## Explicit non-goals (all near-term slices)
 

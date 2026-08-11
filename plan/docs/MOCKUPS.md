@@ -9,7 +9,7 @@ Executive (default) mockups use a **light editorial** board-pack language. Techn
 | 1   | Steering overview     | [steerco-exec-01-steering.png](../mockups/steerco-exec-01-steering.png)             | F02 |
 | 2   | How work is organised | [steerco-exec-02-org-shape.png](../mockups/steerco-exec-02-org-shape.png)           | F03 |
 | 3   | Decision note         | [steerco-exec-03-decision-note.png](../mockups/steerco-exec-03-decision-note.png)   | F07 |
-| 4   | Outcomes              | [steerco-exec-04-outcomes.png](../mockups/steerco-exec-04-outcomes.png)             | F05 |
+| 4   | Goals              | [steerco-exec-04-outcomes.png](../mockups/steerco-exec-04-outcomes.png)             | F05 |
 | 5   | Workspace home        | [steerco-exec-05-workspace-home.png](../mockups/steerco-exec-05-workspace-home.png) | F01 |
 | 6   | Bet detail            | [steerco-exec-06-bet-detail.png](../mockups/steerco-exec-06-bet-detail.png)         | F04 |
 | 7   | Evidence              | [steerco-exec-07-evidence.png](../mockups/steerco-exec-07-evidence.png)             | F06 |

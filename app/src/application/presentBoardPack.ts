@@ -2,11 +2,11 @@ import type { SteerSpec } from '@steerco/core';
 import { presentDecisionNotes, type DecisionNoteCard } from './presentDecisionNotes';
 import { presentEvidence, type EvidenceCard } from './presentEvidence';
 import { presentOrganisation, type OrganisationModel } from './presentOrganisation';
-import { presentOutcomes, type OutcomesSection } from './presentOutcomes';
+import { presentGoals, type GoalSection } from './presentGoals';
 import { presentSteeringOverview, type SteeringOverviewModel } from './presentSteeringOverview';
 
 export type BoardPackSectionId =
-  'steering' | 'outcomes' | 'organisation' | 'decisionNotes' | 'evidence';
+  'steering' | 'goals' | 'organisation' | 'decisionNotes' | 'evidence';
 
 export type BoardPackPillar = 'invest' | 'work' | 'adapt';
 
@@ -33,7 +33,7 @@ export type BoardPackPreview = {
     sections: BoardPackSectionId[];
   }>;
   steering: SteeringOverviewModel | null;
-  outcomes: OutcomesSection[] | null;
+  goals: GoalSection[] | null;
   organisation: Pick<
     OrganisationModel,
     'lead' | 'zones' | 'relationships' | 'overloadBanner'
@@ -60,11 +60,11 @@ const SECTION_OPTIONS: BoardPackSectionOption[] = [
     defaultSelected: true,
   },
   {
-    id: 'outcomes',
-    label: 'Outcomes (MoS)',
+    id: 'goals',
+    label: 'Goals (MoS)',
     pillar: 'invest',
     pillarLabel: 'Invest',
-    description: 'Measures of success for the primary outcome',
+    description: 'Measures of success for the primary goal',
     defaultSelected: true,
   },
   {
@@ -126,7 +126,7 @@ export function buildBoardPackPreview(
   const dateStamp = formatFilenameDate(date);
 
   const steering = selection.steering ? presentSteeringOverview(spec) : null;
-  const outcomes = selection.outcomes ? presentOutcomes(spec).outcomes : null;
+  const goals = selection.goals ? presentGoals(spec).outcomes : null;
   const organisation = selection.organisation
     ? (() => {
         const org = presentOrganisation(spec);
@@ -151,7 +151,7 @@ export function buildBoardPackPreview(
       id: 'invest',
       label: 'Invest',
       question: 'How should we invest?',
-      sectionIds: ['steering', 'outcomes'],
+      sectionIds: ['steering', 'goals'],
     },
     {
       id: 'work',
@@ -183,7 +183,7 @@ export function buildBoardPackPreview(
     filenameBase: `steerco-board-pack-${slug}-${dateStamp}`,
     pillars,
     steering,
-    outcomes,
+    goals,
     organisation,
     decisionNotes,
     evidence,

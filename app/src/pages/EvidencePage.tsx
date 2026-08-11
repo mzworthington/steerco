@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'wouter';
 import { stashDecisionNoteMeasured } from '../application/decisionNoteSeed';
 import {
+  applyAddEvidence,
   applyEvidenceMetricEdit,
   presentEvidence,
   type EvidenceCard,
@@ -13,10 +14,32 @@ type MetricDraft = {
   target: string;
 };
 
+type AddDraft = {
+  outcomeId: string;
+  title: string;
+  unit: string;
+  current: string;
+  target: string;
+  interpretation: string;
+  note: string;
+};
+
 function draftFromCard(card: EvidenceCard): MetricDraft {
   return {
     current: card.current === null ? '' : String(card.current),
     target: card.target === null ? '' : String(card.target),
+  };
+}
+
+function emptyAddDraft(outcomeId: string): AddDraft {
+  return {
+    outcomeId,
+    title: '',
+    unit: '',
+    current: '',
+    target: '',
+    interpretation: '',
+    note: '',
   };
 }
 
@@ -28,6 +51,8 @@ export function EvidencePage() {
     metricId: string;
     draft: MetricDraft;
   } | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [addDraft, setAddDraft] = useState<AddDraft | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
 
@@ -47,12 +72,31 @@ export function EvidencePage() {
 
   if (!session || !model) return null;
 
+  const openAddForm = () => {
+    if (model.outcomeOptions.length === 0) {
+      setError('Add a goal on Goals before recording evidence.');
+      setSavedFlash(null);
+      return;
+    }
+    setAdding(true);
+    setAddDraft(emptyAddDraft(model.outcomeOptions[0]?.id ?? ''));
+    setEditing(null);
+    setError(null);
+    setSavedFlash(null);
+  };
+
+  const closeAddForm = () => {
+    setAdding(false);
+    setAddDraft(null);
+  };
+
   const startEdit = (card: EvidenceCard) => {
     setEditing({
       outcomeId: card.outcomeId,
       metricId: card.metricId,
       draft: draftFromCard(card),
     });
+    closeAddForm();
     setError(null);
     setSavedFlash(null);
   };
@@ -75,6 +119,20 @@ export function EvidencePage() {
     setSavedFlash('Saved measure to this workspace session.');
   };
 
+  const saveAdd = () => {
+    if (!addDraft) return;
+    const applied = applyAddEvidence(session.spec, addDraft);
+    if (!applied.ok) {
+      setError(applied.error);
+      setSavedFlash(null);
+      return;
+    }
+    setSession({ ...session, spec: applied.value });
+    closeAddForm();
+    setError(null);
+    setSavedFlash('Evidence added to this workspace session.');
+  };
+
   const useInDecisionNote = (lines: string[]) => {
     stashDecisionNoteMeasured(lines);
     setLocation('/workspace/decisions');
@@ -83,17 +141,126 @@ export function EvidencePage() {
   return (
     <section className="evidence-page" data-testid="evidence-page">
       <header className="evidence-header">
-        <p className="eyebrow">Evidence · adapt</p>
-        <h1 className="evidence-title">What the numbers say</h1>
+        <div className="evidence-header-top">
+          <div>
+            <p className="eyebrow">Evidence · adapt</p>
+            <h1 className="evidence-title">What the numbers say</h1>
+          </div>
+          <button
+            type="button"
+            className="btn-primary"
+            data-testid="evidence-add-cta"
+            onClick={openAddForm}
+          >
+            Add evidence
+          </button>
+        </div>
         <p className="evidence-framing">{model.framingLine}</p>
         <p className="evidence-banner" data-testid="evidence-sample-banner">
           {model.sampleBanner}
         </p>
       </header>
 
-      {model.cards.length === 0 ? (
-        <p className="evidence-empty">No measures of success yet - add them on Outcomes.</p>
-      ) : (
+      {adding && addDraft ? (
+        <form
+          className="evidence-add-form"
+          data-testid="evidence-add-form"
+          onSubmit={(event) => {
+            event.preventDefault();
+            saveAdd();
+          }}
+        >
+          <h2 className="evidence-add-title">Add a measure</h2>
+          <p className="evidence-add-lead">
+            Attach a reading to a goal. Source is recorded as manual until live connectors exist.
+          </p>
+          <label className="evidence-card-field">
+            <span>Goal</span>
+            <select
+              value={addDraft.outcomeId}
+              onChange={(event) => setAddDraft({ ...addDraft, outcomeId: event.target.value })}
+              required
+            >
+              {model.outcomeOptions.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.title}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="evidence-card-field">
+            <span>Title</span>
+            <input
+              value={addDraft.title}
+              onChange={(event) => setAddDraft({ ...addDraft, title: event.target.value })}
+              required
+              placeholder="Promise hit rate"
+            />
+          </label>
+          <label className="evidence-card-field">
+            <span>Unit</span>
+            <input
+              value={addDraft.unit}
+              onChange={(event) => setAddDraft({ ...addDraft, unit: event.target.value })}
+              placeholder="percent, days, …"
+            />
+          </label>
+          <div className="evidence-add-row">
+            <label className="evidence-card-field">
+              <span>Current</span>
+              <input
+                value={addDraft.current}
+                onChange={(event) => setAddDraft({ ...addDraft, current: event.target.value })}
+                inputMode="decimal"
+              />
+            </label>
+            <label className="evidence-card-field">
+              <span>Target</span>
+              <input
+                value={addDraft.target}
+                onChange={(event) => setAddDraft({ ...addDraft, target: event.target.value })}
+                inputMode="decimal"
+              />
+            </label>
+          </div>
+          <label className="evidence-card-field">
+            <span>What we learned</span>
+            <textarea
+              value={addDraft.interpretation}
+              onChange={(event) => setAddDraft({ ...addDraft, interpretation: event.target.value })}
+              rows={2}
+              placeholder="Plain-language cue for the decision note"
+            />
+          </label>
+          <label className="evidence-card-field">
+            <span>Note</span>
+            <input
+              value={addDraft.note}
+              onChange={(event) => setAddDraft({ ...addDraft, note: event.target.value })}
+              placeholder="Where this reading came from"
+            />
+          </label>
+          <div className="evidence-card-edit-actions">
+            <button type="button" className="btn-tertiary" onClick={closeAddForm}>
+              Cancel
+            </button>
+            <button type="submit" className="btn-primary">
+              Save evidence
+            </button>
+          </div>
+        </form>
+      ) : null}
+
+      {model.cards.length === 0 && !adding ? (
+        <div className="evidence-empty" data-testid="evidence-empty">
+          <p>No measures of success yet.</p>
+          <button type="button" className="btn-primary" onClick={openAddForm}>
+            Add evidence
+          </button>
+        </div>
+      ) : null}
+
+      {model.cards.length > 0 ? (
         <ul className="evidence-grid">
           {model.cards.map((card) => {
             const isEditing =
@@ -106,7 +273,7 @@ export function EvidencePage() {
                   {card.displayValue}
                 </p>
                 <p className="evidence-card-title">{card.title}</p>
-                <p className="evidence-card-outcome">{card.outcomeTitle}</p>
+                <p className="evidence-card-goal">{card.outcomeTitle}</p>
                 {card.evidenceNote ? (
                   <p className="evidence-card-note">{card.evidenceNote}</p>
                 ) : null}
@@ -168,7 +335,7 @@ export function EvidencePage() {
             );
           })}
         </ul>
-      )}
+      ) : null}
 
       {(error || savedFlash) && (
         <div className="evidence-feedback" role="status">

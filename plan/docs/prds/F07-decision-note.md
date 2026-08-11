@@ -24,7 +24,7 @@ Author start / continue / stop / re-scope notes with why, measured, who is affec
 3. Link optional bet
 4. Persist under `spec.decisionNotes`
 5. Actions: Save, Export PDF (F08), Share with board (same as export Slice 1)
-6. Helper copy: measured lines should prefer outcome MoS / evidence language over activity counts; frame the note as a value review decision (Technical mode may say PVR)
+6. Helper copy: measured lines should prefer goal MoS / evidence language over activity counts; frame the note as a value review decision (Technical mode may say PVR)
 
 **Slice 1.5:** optional structured MoS / metric id references in `measured` (keep free-text bullets for narrative).
 

@@ -5,7 +5,7 @@ import {
   type SteeringBetCard,
 } from './presentSteeringOverview';
 
-export type OutcomesMeasure = {
+export type GoalMeasure = {
   id: string;
   title: string;
   unit: string | null;
@@ -18,7 +18,7 @@ export type OutcomesMeasure = {
   claimedByBets: Array<{ id: string; title: string }>;
 };
 
-export type OutcomesBetRow = {
+export type GoalBetRow = {
   id: string;
   title: string;
   progressCue: string;
@@ -26,16 +26,16 @@ export type OutcomesBetRow = {
   statusTone: SteeringBetCard['statusTone'];
 };
 
-export type OutcomesSection = {
+export type GoalSection = {
   id: string;
   title: string;
   summary: string | null;
   statusLabel: string;
-  measures: OutcomesMeasure[];
-  bets: OutcomesBetRow[];
+  measures: GoalMeasure[];
+  bets: GoalBetRow[];
 };
 
-export type OutcomesProductCard = {
+export type GoalProductCard = {
   id: string;
   title: string;
   problem: string;
@@ -47,19 +47,19 @@ export type OutcomesProductCard = {
   betLinks: Array<{ id: string; title: string }>;
 };
 
-export type OutcomesModel = {
+export type GoalsModel = {
   workspaceTitle: string;
   framingLine: string;
-  outcomes: OutcomesSection[];
-  products: OutcomesProductCard[];
+  outcomes: GoalSection[];
+  products: GoalProductCard[];
 };
 
-export type OutcomeMetricEditInput = {
+export type GoalMetricEditInput = {
   current: string;
   target: string;
 };
 
-export type OutcomeMetricEditResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
+export type GoalMetricEditResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
 
 export type ProductDraft = {
   id?: string;
@@ -73,20 +73,20 @@ export type ProductDraft = {
 
 export type ApplyProductResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
 
-export function presentOutcomes(spec: SteerSpec): OutcomesModel {
+export function presentGoals(spec: SteerSpec): GoalsModel {
   const outcomeTitleById = new Map(spec.spec.outcomes.map((item) => [item.id, item.title]));
   const betTitleById = new Map(spec.spec.bets.map((item) => [item.id, item.title]));
 
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
-    framingLine: 'Measures of success for this outcome - not a status dashboard.',
+    framingLine: 'Measures of success for this goal - not a status dashboard.',
     outcomes: spec.spec.outcomes.map((outcome) => {
       const outcomeBets = spec.spec.bets.filter((bet) => bet.outcomeId === outcome.id);
       return {
         id: outcome.id,
         title: outcome.title,
         summary: outcome.summary ?? null,
-        statusLabel: presentOutcomeStatus(outcome.status),
+        statusLabel: presentGoalStatus(outcome.status),
         measures: outcome.metrics.map((metric) =>
           presentMeasure(metric, betsClaimingMetric(outcomeBets, metric.id)),
         ),
@@ -123,8 +123,8 @@ export function presentOutcomes(spec: SteerSpec): OutcomesModel {
   };
 }
 
-export function validateOutcomeMetricEdit(
-  input: OutcomeMetricEditInput,
+export function validateGoalMetricEdit(
+  input: GoalMetricEditInput,
 ): { ok: true; current: number | null; target: number | null } | { ok: false; error: string } {
   const current = parseOptionalNumber(input.current);
   if (!current.ok) {
@@ -215,33 +215,33 @@ function uniqueProductId(seed: string, existing: string[]): string {
   return `${base}_${n}`;
 }
 
-export function applyOutcomeMetricEdit(
+export function applyGoalMetricEdit(
   spec: SteerSpec,
   outcomeId: string,
   metricId: string,
-  input: OutcomeMetricEditInput,
-): OutcomeMetricEditResult {
-  const parsed = validateOutcomeMetricEdit(input);
+  input: GoalMetricEditInput,
+): GoalMetricEditResult {
+  const parsed = validateGoalMetricEdit(input);
   if (!parsed.ok) {
     return { ok: false, error: parsed.error };
   }
 
   const outcomeIndex = spec.spec.outcomes.findIndex((item) => item.id === outcomeId);
   if (outcomeIndex < 0) {
-    return { ok: false, error: 'That outcome is not in the open workspace.' };
+    return { ok: false, error: 'That goal is not in the open workspace.' };
   }
   const outcome = spec.spec.outcomes[outcomeIndex];
   if (!outcome) {
-    return { ok: false, error: 'That outcome is not in the open workspace.' };
+    return { ok: false, error: 'That goal is not in the open workspace.' };
   }
 
   const metricIndex = outcome.metrics.findIndex((item) => item.id === metricId);
   if (metricIndex < 0) {
-    return { ok: false, error: 'That measure is not on this outcome.' };
+    return { ok: false, error: 'That measure is not on this goal.' };
   }
   const metric = outcome.metrics[metricIndex];
   if (!metric) {
-    return { ok: false, error: 'That measure is not on this outcome.' };
+    return { ok: false, error: 'That measure is not on this goal.' };
   }
 
   const nextMetrics = [...outcome.metrics];
@@ -292,7 +292,7 @@ function presentMeasure(
     interpretation?: string;
   },
   claimedByBets: Array<{ id: string; title: string }>,
-): OutcomesMeasure {
+): GoalMeasure {
   const unit = metric.unit ?? null;
   const current = typeof metric.current === 'number' ? metric.current : null;
   const baseline = typeof metric.baseline === 'number' ? metric.baseline : null;
@@ -347,7 +347,7 @@ function buildInterpretation(input: {
   return `Current reading for ${input.title}.`;
 }
 
-function presentOutcomeStatus(status: SteerSpec['spec']['outcomes'][number]['status']): string {
+function presentGoalStatus(status: SteerSpec['spec']['outcomes'][number]['status']): string {
   switch (status) {
     case 'on_track':
       return 'On track';

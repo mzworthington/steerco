@@ -15,7 +15,6 @@ export type TechnicalTreeBet = {
   kind: string | null;
   fundingStance: string | null;
   valueRank: number | null;
-  systemRefs: string[];
   fundedTeamIds: string[];
   metricIds: string[];
   executiveHref: string;
@@ -73,7 +72,6 @@ export function presentTechnicalTree(spec: SteerSpec): TechnicalTreeModel {
       kind: bet.kind ?? null,
       fundingStance: bet.fundingStance ?? null,
       valueRank: typeof bet.valueRank === 'number' ? bet.valueRank : null,
-      systemRefs: [...(bet.systemRefs ?? [])],
       fundedTeamIds: [...bet.fundedTeamIds],
       metricIds: [...(bet.metricIds ?? [])],
       executiveHref: `/workspace/bets/${bet.id}`,

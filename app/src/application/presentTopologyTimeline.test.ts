@@ -13,30 +13,37 @@ const fixtureDir = path.resolve(
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
 describe('presentTopologyTimeline', () => {
-  it('presents capacity markers, relationship bands, and a11y events for the sample', () => {
+  it('presents relationship bands including undated ongoing commitments', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    const model = presentTopologyTimeline(opened.value, { asOf: '2026-08-01' });
+    const model = presentTopologyTimeline(opened.value, {
+      asOf: '2026-08-01',
+      rangeFrom: '2026-01-01',
+      rangeTo: '2026-12-31',
+    });
 
     expect(model.empty).toBe(false);
     expect(model.rangeStart).toBeTruthy();
     expect(model.rangeEnd).toBeTruthy();
     expect(model.asOf).toBe('2026-08-01');
     expect(model.asOfPercent).toEqual(expect.any(Number));
-    expect(model.capacityMarkers.some((marker) => marker.kind === 'capacity_up')).toBe(true);
-    expect(model.capacityMarkers.some((marker) => /Jordan Blake/i.test(marker.label))).toBe(true);
+    expect(model.relationshipBands.length).toBeGreaterThan(5);
+    expect(model.relationshipBands.some((band) => band.openEnded)).toBe(true);
+    expect(
+      model.relationshipBands.some((band) => band.mode === 'x_as_a_service' && band.openEnded),
+    ).toBe(true);
     expect(
       model.relationshipBands.some(
         (band) => band.mode === 'facilitation' && /Ways of working/i.test(band.fromLabel),
       ),
     ).toBe(true);
     expect(model.events.some((event) => event.source === 'ledger')).toBe(true);
-    expect(model.lead).toMatch(/capacity changes/i);
+    expect(model.lead).toMatch(/interaction windows/i);
   });
 
-  it('reports empty when the workspace has no dated topology history', () => {
+  it('treats undated relationships as full-window bands when a range is supplied', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -63,11 +70,19 @@ describe('presentTopologyTimeline', () => {
       },
     };
 
-    const model = presentTopologyTimeline(blank);
-    expect(model.empty).toBe(true);
-    expect(model.capacityMarkers).toEqual([]);
-    expect(model.relationshipBands).toEqual([]);
-    expect(model.events).toEqual([]);
-    expect(model.lead).toMatch(/add member or relationship/i);
+    const withoutRange = presentTopologyTimeline(blank);
+    expect(withoutRange.empty).toBe(true);
+    expect(withoutRange.relationshipBands).toEqual([]);
+    expect(withoutRange.lead).toMatch(/add relationships/i);
+
+    const withRange = presentTopologyTimeline(blank, {
+      rangeFrom: '2026-01-01',
+      rangeTo: '2026-12-31',
+    });
+    expect(withRange.empty).toBe(false);
+    expect(withRange.relationshipBands.length).toBe(blank.spec.relationships.length);
+    expect(withRange.relationshipBands.every((band) => band.openEnded)).toBe(true);
+    expect(withRange.relationshipBands[0]?.startLabel).toBe('ongoing');
+    expect(withRange.relationshipBands[0]?.endLabel).toBe('ongoing');
   });
 });

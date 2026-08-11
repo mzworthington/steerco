@@ -72,7 +72,7 @@ function presentMismatch(mismatch: SteerMismatch): TechnicalFitnessMismatch {
     : mismatch.relatedTeamIds?.length
       ? '/workspace/organisation'
       : mismatch.relatedOutcomeIds?.length
-        ? '/workspace/outcomes'
+        ? '/workspace/goals'
         : '/workspace/steering';
 
   return {

@@ -81,6 +81,8 @@ export type OrganisationRelationship = {
   shapeTeaching: string;
   sentence: string;
   expectedUntil: string | null;
+  effectiveFrom: string | null;
+  effectiveUntil: string | null;
 };
 
 export type OrganisationFlowBand = {
@@ -115,7 +117,7 @@ export type OrganisationFlowModel = {
 export type OrganisationLayout = 'zones' | 'flow';
 
 /** Executive view modes on How work is organised. */
-export type OrganisationViewMode = 'flow_of_change' | 'as_is' | 'domain' | 'timeline';
+export type OrganisationViewMode = 'as_is' | 'timeline';
 
 export type OrganisationDomainOption = {
   id: string;
@@ -130,46 +132,17 @@ export type OrganisationStreamOption = {
   domainTitle: string | null;
 };
 
-/** Zoomed-out flow-of-change lane - names only, no capacity detail (LVT overlay later). */
-export type OrganisationOverviewLane = {
-  id: string;
-  title: string;
-  domainTitle: string | null;
-  streamAlignedLabels: string[];
-  complicatedSubsystemLabels: string[];
-};
-
-export type OrganisationOverview = {
-  cue: string;
-  lvtPlaceholder: string;
-  lanes: OrganisationOverviewLane[];
-  platforms: Array<{ id: string; title: string; scopeLabel: string | null }>;
-  enabling: Array<{ id: string; title: string; facilitatesLabels: string[] }>;
-};
-
-export type OrganisationDomainEdge = OrganisationRelationship & {
-  /** True when one endpoint sits outside the focused domain. */
-  crossesBoundary: boolean;
-};
-
-export type OrganisationDomainFocus = {
-  domainId: string;
-  domainTitle: string;
-  streamBands: OrganisationFlowBand[];
-  internalEdges: OrganisationDomainEdge[];
-  externalEdges: OrganisationDomainEdge[];
-  externalTeams: OrganisationTeamCard[];
-  lead: string;
-};
-
 export type PresentOrganisationOptions = {
   /** ISO date - project members and relationships as of this day. */
   asOf?: string | null;
+  /** Inclusive timeline chart window (also used when asOf is omitted). */
+  rangeFrom?: string | null;
+  rangeTo?: string | null;
   /** `auto` uses flow when streams or platform groupings exist. */
   layout?: OrganisationLayout | 'auto';
   /** Which executive canvas to present. */
   viewMode?: OrganisationViewMode;
-  /** Domain id when viewMode is `domain`. */
+  /** Domain id when filtering as-is capacity. */
   domainId?: string | null;
 };
 
@@ -185,10 +158,8 @@ export type OrganisationModel = {
   empty: boolean;
   zones: OrganisationZone[];
   flow: OrganisationFlowModel | null;
-  overview: OrganisationOverview | null;
   domainOptions: OrganisationDomainOption[];
   streamOptions: OrganisationStreamOption[];
-  domainFocus: OrganisationDomainFocus | null;
   relationships: OrganisationRelationship[];
   timeline: TopologyTimelineModel;
   overloadBanner: string | null;
@@ -218,6 +189,8 @@ export type AddOrganisationRelationshipInput = {
   mode: OrganisationInteractionMode;
   /** ISO date time-box, especially for collaboration/facilitation (Slice 1.5). */
   expectedUntil?: string;
+  /** ISO date the relationship starts - defaults in the UI for collaboration/facilitation. */
+  effectiveFrom?: string;
 };
 
 export type AddOrganisationMemberInput = {
@@ -238,7 +211,9 @@ export function presentOrganisation(
   spec: SteerSpec,
   options: PresentOrganisationOptions = {},
 ): OrganisationModel {
-  const asOf = options.asOf?.trim() || null;
+  const asOf = options.asOf?.trim() || options.rangeTo?.trim() || null;
+  const rangeFrom = options.rangeFrom?.trim() || null;
+  const rangeTo = options.rangeTo?.trim() || null;
   const projected = projectSteerSpecAsOf(spec, asOf);
   const teams = projected.spec.teams.map(normalizeTeam);
   const teamById = new Map(teams.map((team) => [team.id, team]));
@@ -254,6 +229,8 @@ export function presentOrganisation(
   }
 
   const relationshipsRaw = projected.spec.relationships.map(normalizeRelationship);
+  /** Full relationship set (with windows) so the graph can filter by date range. */
+  const relationshipsForGraph = (spec.spec.relationships ?? []).map(normalizeRelationship);
   const facilitatesByTeamId = new Map<string, string[]>();
   for (const relationship of relationshipsRaw) {
     if (relationship.mode !== 'facilitation') continue;
@@ -311,7 +288,7 @@ export function presentOrganisation(
         : 'zones'
       : layoutPreference;
 
-  const flow =
+  const fullFlow =
     layout === 'flow'
       ? buildFlowModel({
           streams,
@@ -323,28 +300,32 @@ export function presentOrganisation(
         })
       : null;
 
-  const relationships: OrganisationRelationship[] = relationshipsRaw.flatMap((relationship) => {
-    const from = teamById.get(relationship.fromTeamId);
-    const to = teamById.get(relationship.toTeamId);
-    if (!from || !to) return [];
-    const modeCopy = INTERACTION_MODE_COPY[relationship.mode];
-    if (!modeCopy) return [];
-    return [
-      {
-        fromTeamId: from.id,
-        toTeamId: to.id,
-        fromLabel: from.displayName,
-        toLabel: to.displayName,
-        mode: relationship.mode,
-        modeLabel: modeCopy.modeName,
-        modeTeaching: modeCopy.teaching,
-        shape: modeCopy.shape,
-        shapeTeaching: modeCopy.shapeTeaching,
-        sentence: `${from.displayName} ${modeCopy.sentenceVerb} ${to.displayName}`,
-        expectedUntil: relationship.expectedUntil ?? null,
-      },
-    ];
-  });
+  const relationships: OrganisationRelationship[] = relationshipsForGraph.flatMap(
+    (relationship) => {
+      const from = teamById.get(relationship.fromTeamId);
+      const to = teamById.get(relationship.toTeamId);
+      if (!from || !to) return [];
+      const modeCopy = INTERACTION_MODE_COPY[relationship.mode];
+      if (!modeCopy) return [];
+      return [
+        {
+          fromTeamId: from.id,
+          toTeamId: to.id,
+          fromLabel: from.displayName,
+          toLabel: to.displayName,
+          mode: relationship.mode,
+          modeLabel: modeCopy.modeName,
+          modeTeaching: modeCopy.teaching,
+          shape: modeCopy.shape,
+          shapeTeaching: modeCopy.shapeTeaching,
+          sentence: `${from.displayName} ${modeCopy.sentenceVerb} ${to.displayName}`,
+          expectedUntil: relationship.expectedUntil ?? null,
+          effectiveFrom: relationship.effectiveFrom ?? null,
+          effectiveUntil: relationship.effectiveUntil ?? null,
+        },
+      ];
+    },
+  );
 
   const viewMode: OrganisationViewMode = options.viewMode ?? 'as_is';
   const domainOptions: OrganisationDomainOption[] = domains.map((domain) => ({
@@ -352,10 +333,14 @@ export function presentOrganisation(
     title: domain.title,
     streamCount: domain.memberStreamIds.length,
   }));
-  const selectedDomainId =
-    options.domainId?.trim() || (viewMode === 'domain' ? (domainOptions[0]?.id ?? null) : null);
+  const selectedDomainId = options.domainId?.trim() || null;
 
-  const overview = flow ? buildOverview(flow) : null;
+  /** As-is capacity board may narrow to one domain. */
+  const flow =
+    fullFlow && viewMode === 'as_is' && selectedDomainId
+      ? filterFlowByDomain(fullFlow, domains, selectedDomainId)
+      : fullFlow;
+
   const streamOptions: OrganisationStreamOption[] = streams.map((stream) => ({
     id: stream.id,
     title: stream.title,
@@ -363,29 +348,11 @@ export function presentOrganisation(
     domainTitle: domainTitleByStreamId.get(stream.id) ?? null,
   }));
 
-  const domainFocus =
-    viewMode === 'domain' && selectedDomainId && flow
-      ? buildDomainFocus({
-          domainId: selectedDomainId,
-          domains,
-          flow,
-          relationships,
-          cardsById,
-        })
-      : null;
-
   const teachingByView: Record<OrganisationViewMode, string> = {
-    flow_of_change:
-      'Zoomed-out flow of change (left → right). Streams are the spine; platforms and enabling sit as support. Detail and people are hidden - Lean Value Tree overlay comes later.',
     as_is:
-      layout === 'flow'
-        ? 'As-is team shape for the selected day: streams, capacity, and interaction modes. Stream-aligned teams ideally own one stream; complicated subsystems sit in a stream; enabling facilitates one or many.'
-        : 'Four Team Topologies shapes: stream-aligned (horizontal), platform (dotted square), enabling (vertical), and complicated subsystem (octagon). Platforms exist to reduce cognitive load so stream-aligned teams can ship faster.',
-    domain:
-      domainFocus?.lead ??
-      'Zoom into a domain to see its streams and highlight connections that leave the domain.',
+      'Select a team on the interaction graph to see people and capacity. Drag someone onto another team node to reallocate. Filter by domain when the picture gets noisy; as-of projects relationships and seats for that day.',
     timeline:
-      'Deep-dive history: capacity up/down markers and interaction spans. Scrub as-of to project the same shape the as-is and domain views use.',
+      'Interaction spans across the selected date window. Relationships without dates are ongoing commitments for the whole window.',
   };
 
   return {
@@ -403,94 +370,29 @@ export function presentOrganisation(
     empty: teams.length === 0,
     zones,
     flow,
-    overview,
     domainOptions,
     streamOptions,
-    domainFocus,
     relationships,
-    timeline: presentTopologyTimeline(spec, { asOf }),
+    timeline: presentTopologyTimeline(spec, { asOf, rangeFrom, rangeTo }),
     overloadBanner: overload?.headline ?? null,
     mismatches,
   };
 }
 
-function buildOverview(flow: OrganisationFlowModel): OrganisationOverview {
-  return {
-    cue: 'Flow of change →',
-    lvtPlaceholder:
-      'Lean Value Tree overlay (outcomes and bets on this flow) will sit here in a later release.',
-    lanes: flow.streams.map((band) => ({
-      id: band.id,
-      title: band.title,
-      domainTitle: band.domainTitle,
-      streamAlignedLabels: band.streamAlignedTeams.map((team) => team.displayName),
-      complicatedSubsystemLabels: band.complicatedSubsystems.map((team) => team.displayName),
-    })),
-    platforms: flow.platforms.map((item) => ({
-      id: item.team.id,
-      title: item.groupingTitle ?? item.team.displayName,
-      scopeLabel: item.scopeLabel,
-    })),
-    enabling: flow.enabling.map((item) => ({
-      id: item.team.id,
-      title: item.team.displayName,
-      facilitatesLabels: item.facilitatesLabels,
-    })),
-  };
-}
-
-function buildDomainFocus(input: {
-  domainId: string;
-  domains: SteerSpec['spec']['domains'];
-  flow: OrganisationFlowModel;
-  relationships: OrganisationRelationship[];
-  cardsById: Map<string, OrganisationTeamCard>;
-}): OrganisationDomainFocus | null {
-  const domain = input.domains.find((item) => item.id === input.domainId);
-  if (!domain) return null;
-
+function filterFlowByDomain(
+  flow: OrganisationFlowModel,
+  domains: SteerSpec['spec']['domains'],
+  domainId: string,
+): OrganisationFlowModel {
+  const domain = domains.find((item) => item.id === domainId);
+  if (!domain) return flow;
   const streamIdSet = new Set(domain.memberStreamIds);
-  const streamBands = input.flow.streams.filter(
-    (band) => band.kind === 'stream' && streamIdSet.has(band.id),
-  );
-  const inDomainTeamIds = new Set(
-    streamBands.flatMap((band) => [
-      ...band.streamAlignedTeams.map((team) => team.id),
-      ...band.complicatedSubsystems.map((team) => team.id),
-    ]),
-  );
-
-  const internalEdges: OrganisationDomainEdge[] = [];
-  const externalEdges: OrganisationDomainEdge[] = [];
-  const externalTeamIds = new Set<string>();
-
-  for (const edge of input.relationships) {
-    const fromIn = inDomainTeamIds.has(edge.fromTeamId);
-    const toIn = inDomainTeamIds.has(edge.toTeamId);
-    if (!fromIn && !toIn) continue;
-    if (fromIn && toIn) {
-      internalEdges.push({ ...edge, crossesBoundary: false });
-      continue;
-    }
-    externalEdges.push({ ...edge, crossesBoundary: true });
-    if (!fromIn) externalTeamIds.add(edge.fromTeamId);
-    if (!toIn) externalTeamIds.add(edge.toTeamId);
-  }
-
-  const externalTeams = [...externalTeamIds]
-    .map((id) => input.cardsById.get(id))
-    .filter((team): team is OrganisationTeamCard => Boolean(team));
-
   return {
-    domainId: domain.id,
-    domainTitle: domain.title,
-    streamBands,
-    internalEdges,
-    externalEdges,
-    externalTeams,
-    lead: `Domain “${domain.title}” - streams inside the vertical, with edges that leave the domain called out.`,
+    ...flow,
+    streams: flow.streams.filter((band) => band.kind === 'stream' && streamIdSet.has(band.id)),
   };
 }
+
 function buildFlowModel(input: {
   streams: SteerSpec['spec']['streams'];
   domains: SteerSpec['spec']['domains'];
@@ -854,6 +756,7 @@ export function applyAddOrganisationRelationship(
             toTeamId: input.toTeamId,
             mode: input.mode,
             expectedUntil: input.expectedUntil?.trim() || undefined,
+            effectiveFrom: input.effectiveFrom?.trim() || undefined,
           },
         ],
       },

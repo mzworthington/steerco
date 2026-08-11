@@ -12,20 +12,16 @@ import {
   presentOrganisation,
   type OrganisationViewMode,
 } from '../application/presentOrganisation';
-import { OrganisationCapacityBoard } from '../components/organisation/OrganisationCapacityBoard';
-import {
-  OrganisationDomainZoom,
-  OrganisationFlowOverview,
-} from '../components/organisation/OrganisationViewCanvases';
 import { OrganisationTeamEditorModal } from '../components/organisation/OrganisationTeamEditorModal';
 import { OrganisationTopologyTimeline } from '../components/organisation/OrganisationTopologyTimeline';
-import { OrganisationRelationshipGraph } from '../components/organisation/OrganisationRelationshipGraph';
+import {
+  OrganisationRelationshipGraph,
+  organisationTodayIsoDate,
+} from '../components/organisation/OrganisationRelationshipGraph';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 const VIEW_OPTIONS: Array<{ value: OrganisationViewMode; label: string }> = [
-  { value: 'flow_of_change', label: 'Flow of change' },
   { value: 'as_is', label: 'As-is' },
-  { value: 'domain', label: 'Domain' },
   { value: 'timeline', label: 'Timeline' },
 ];
 
@@ -39,9 +35,9 @@ export function OrganisationPage() {
   const [, setLocation] = useLocation();
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
-  const [asOf, setAsOf] = useState('');
-  const [viewMode, setViewMode] = useState<OrganisationViewMode>('flow_of_change');
-  const [domainId, setDomainId] = useState('');
+  const [rangeFrom, setRangeFrom] = useState(organisationTodayIsoDate);
+  const [rangeTo, setRangeTo] = useState(organisationTodayIsoDate);
+  const [viewMode, setViewMode] = useState<OrganisationViewMode>('as_is');
   const [teamEditor, setTeamEditor] = useState<TeamEditorState>({ open: false });
   const disciplineOptions = useMemo(() => organisationMemberDisciplineOptions(), []);
 
@@ -55,20 +51,14 @@ export function OrganisationPage() {
     () =>
       session
         ? presentOrganisation(session.spec, {
-            asOf: asOf || null,
+            asOf: rangeTo || null,
+            rangeFrom: rangeFrom || null,
+            rangeTo: rangeTo || null,
             viewMode,
-            domainId: domainId || null,
           })
         : null,
-    [session, asOf, viewMode, domainId],
+    [session, rangeFrom, rangeTo, viewMode],
   );
-
-  useEffect(() => {
-    if (!model) return;
-    if (viewMode === 'domain' && !domainId && model.domainOptions[0]) {
-      setDomainId(model.domainOptions[0].id);
-    }
-  }, [model, viewMode, domainId]);
 
   useEffect(() => {
     if (model) {
@@ -79,7 +69,6 @@ export function OrganisationPage() {
   if (!session || !model) return null;
 
   const allTeams = model.zones.flatMap((zone) => zone.teams);
-  const showAsOf = viewMode === 'as_is' || viewMode === 'domain' || viewMode === 'timeline';
   const editingTeam =
     teamEditor.open && teamEditor.mode === 'edit'
       ? (allTeams.find((team) => team.id === teamEditor.teamId) ?? null)
@@ -135,33 +124,6 @@ export function OrganisationPage() {
             </button>
           ))}
         </div>
-        {viewMode === 'domain' && model.domainOptions.length > 0 ? (
-          <label className="organisation-field organisation-as-of">
-            <span>Domain</span>
-            <select
-              value={domainId || model.domainOptions[0]?.id || ''}
-              onChange={(event) => setDomainId(event.target.value)}
-              data-testid="organisation-domain-select"
-            >
-              {model.domainOptions.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.title} ({option.streamCount} streams)
-                </option>
-              ))}
-            </select>
-          </label>
-        ) : null}
-        {showAsOf ? (
-          <label className="organisation-field organisation-as-of">
-            <span>As of</span>
-            <input
-              type="date"
-              value={asOf}
-              onChange={(event) => setAsOf(event.target.value)}
-              data-testid="organisation-as-of"
-            />
-          </label>
-        ) : null}
       </header>
 
       {model.overloadBanner ? (
@@ -210,73 +172,9 @@ export function OrganisationPage() {
             Add a team
           </button>
         </div>
-      ) : viewMode === 'flow_of_change' && model.overview ? (
-        <OrganisationFlowOverview overview={model.overview} />
-      ) : viewMode === 'domain' && model.domainFocus ? (
-        <OrganisationDomainZoom focus={model.domainFocus} />
-      ) : viewMode === 'domain' && model.domainOptions.length === 0 ? (
-        <p className="organisation-teaching" data-testid="organisation-domain-empty">
-          Add a domain that groups streams to use domain zoom.
-        </p>
       ) : viewMode === 'timeline' ? (
         <OrganisationTopologyTimeline timeline={model.timeline} />
       ) : (
-        <OrganisationCapacityBoard
-          zones={model.zones}
-          flow={model.flow}
-          disciplineOptions={disciplineOptions}
-          onEditTeam={openEditTeam}
-          onQuickAdd={(input) => {
-            const applied = applyAddOrganisationMember(session.spec, input);
-            if (!applied.ok) {
-              setError(applied.error);
-              setSavedFlash(null);
-              return;
-            }
-            setSession({ ...session, spec: applied.value });
-            setError(null);
-            setSavedFlash(`${input.displayName.trim()} added to the team.`);
-          }}
-          onMovePerson={(input) => {
-            const applied = applyMoveOrganisationMember(session.spec, input);
-            if (!applied.ok) {
-              setError(applied.error);
-              setSavedFlash(null);
-              return;
-            }
-            setSession({ ...session, spec: applied.value });
-            setError(null);
-            setSavedFlash('Person moved between teams.');
-          }}
-          onSaveAllocation={(input) => {
-            let nextSpec = session.spec;
-            if (input.fromTeamId !== input.teamId) {
-              const moved = applyMoveOrganisationMember(nextSpec, {
-                memberId: input.memberId,
-                fromTeamId: input.fromTeamId,
-                toTeamId: input.teamId,
-              });
-              if (!moved.ok) {
-                setError(moved.error);
-                setSavedFlash(null);
-                return;
-              }
-              nextSpec = moved.value;
-            }
-            const applied = applyUpdateOrganisationMember(nextSpec, input);
-            if (!applied.ok) {
-              setError(applied.error);
-              setSavedFlash(null);
-              return;
-            }
-            setSession({ ...session, spec: applied.value });
-            setError(null);
-            setSavedFlash('Allocation updated.');
-          }}
-        />
-      )}
-
-      {viewMode !== 'timeline' ? (
         <section
           className="organisation-relationships"
           aria-labelledby="organisation-relationships"
@@ -284,10 +182,9 @@ export function OrganisationPage() {
           <h2 id="organisation-relationships" className="organisation-section-title">
             How work flows
           </h2>
-          <p className="organisation-zone-empty">{model.interactionTeaching}</p>
           <p className="organisation-zone-empty">
-            Edit a team to add or remove interaction modes. The graph shows the organisation-wide
-            view; filter by domain when the picture gets noisy.
+            Interaction graph for the organisation. Select a team for people and capacity; filter by
+            domain when the picture gets noisy.
           </p>
           <OrganisationRelationshipGraph
             relationships={model.relationships}
@@ -305,13 +202,70 @@ export function OrganisationPage() {
                 id: member.id,
                 displayName: member.displayName,
                 title: member.title,
+                discipline: member.discipline,
                 disciplineLabel: member.disciplineLabel,
                 ftePercent: member.ftePercent,
+                initials: member.initials,
+                effectiveFrom: member.effectiveFrom,
+                effectiveUntil: member.effectiveUntil,
               })),
             }))}
+            disciplineOptions={disciplineOptions}
+            rangeFrom={rangeFrom}
+            rangeTo={rangeTo}
+            onRangeFromChange={setRangeFrom}
+            onRangeToChange={setRangeTo}
+            onEditTeam={openEditTeam}
+            onQuickAdd={(input) => {
+              const applied = applyAddOrganisationMember(session.spec, input);
+              if (!applied.ok) {
+                setError(applied.error);
+                setSavedFlash(null);
+                return;
+              }
+              setSession({ ...session, spec: applied.value });
+              setError(null);
+              setSavedFlash(`${input.displayName.trim()} added to the team.`);
+            }}
+            onMovePerson={(input) => {
+              const applied = applyMoveOrganisationMember(session.spec, input);
+              if (!applied.ok) {
+                setError(applied.error);
+                setSavedFlash(null);
+                return;
+              }
+              setSession({ ...session, spec: applied.value });
+              setError(null);
+              setSavedFlash('Person moved between teams.');
+            }}
+            onSaveAllocation={(input) => {
+              let nextSpec = session.spec;
+              if (input.fromTeamId !== input.teamId) {
+                const moved = applyMoveOrganisationMember(nextSpec, {
+                  memberId: input.memberId,
+                  fromTeamId: input.fromTeamId,
+                  toTeamId: input.teamId,
+                });
+                if (!moved.ok) {
+                  setError(moved.error);
+                  setSavedFlash(null);
+                  return;
+                }
+                nextSpec = moved.value;
+              }
+              const applied = applyUpdateOrganisationMember(nextSpec, input);
+              if (!applied.ok) {
+                setError(applied.error);
+                setSavedFlash(null);
+                return;
+              }
+              setSession({ ...session, spec: applied.value });
+              setError(null);
+              setSavedFlash('Allocation updated.');
+            }}
           />
         </section>
-      ) : null}
+      )}
 
       {(error || savedFlash) && (
         <div className="organisation-feedback" role="status">
@@ -385,6 +339,7 @@ export function OrganisationPage() {
             toTeamId,
             mode: input.mode,
             expectedUntil: input.expectedUntil || undefined,
+            effectiveFrom: input.effectiveFrom || undefined,
           });
           if (!applied.ok) return applied;
           setSession({ ...session, spec: applied.value });

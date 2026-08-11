@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { Link, useLocation } from 'wouter';
 import { presentTechnicalTree } from '../application/presentTechnicalTree';
-import { OutcomesValueTree } from '../components/outcomes/OutcomesValueTree';
+import { GoalsValueTree } from '../components/goals/GoalsValueTree';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function TechnicalTreePage() {
@@ -32,7 +32,7 @@ export function TechnicalTreePage() {
         </p>
         <h1 className="technical-title">Steer tree</h1>
         <p className="technical-lead">
-          {model.workspaceTitle} · {model.outcomes.length} outcomes · {model.bets.length} bets ·{' '}
+          {model.workspaceTitle} · {model.outcomes.length} goals · {model.bets.length} bets ·{' '}
           {model.teams.length} teams · {model.initiativeCount} initiatives · {model.productCount}{' '}
           products
         </p>
@@ -46,11 +46,11 @@ export function TechnicalTreePage() {
         ) : null}
       </header>
 
-      <OutcomesValueTree spec={session.spec} dense />
+      <GoalsValueTree spec={session.spec} dense />
 
-      <section className="technical-section" aria-labelledby="tech-outcomes">
-        <h2 id="tech-outcomes" className="technical-section-title">
-          Outcomes
+      <section className="technical-section" aria-labelledby="tech-goals">
+        <h2 id="tech-goals" className="technical-section-title">
+          Goals
         </h2>
         <div className="technical-table-wrap">
           <table className="technical-table">
@@ -69,7 +69,7 @@ export function TechnicalTreePage() {
                     <code>{outcome.id}</code>
                   </td>
                   <td>
-                    <Link href="/workspace/outcomes">{outcome.title}</Link>
+                    <Link href="/workspace/goals">{outcome.title}</Link>
                   </td>
                   <td>
                     <code>{outcome.status}</code>
@@ -97,7 +97,7 @@ export function TechnicalTreePage() {
                 <th scope="col">outcomeId</th>
                 <th scope="col">kind / stance</th>
                 <th scope="col">valueRank</th>
-                <th scope="col">systemRefs</th>
+                <th scope="col">funded teams</th>
               </tr>
             </thead>
             <tbody>
@@ -121,7 +121,7 @@ export function TechnicalTreePage() {
                     <code>{bet.valueRank ?? '—'}</code>
                   </td>
                   <td>
-                    <code>{bet.systemRefs.join(', ') || '—'}</code>
+                    <code>{bet.fundedTeamIds.join(', ') || '—'}</code>
                   </td>
                 </tr>
               ))}

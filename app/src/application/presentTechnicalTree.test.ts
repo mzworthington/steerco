@@ -19,9 +19,9 @@ describe('presentTechnicalTree', () => {
 
     const model = presentTechnicalTree(opened.value);
     expect(model.outcomes.some((item) => item.id === 'out_promise')).toBe(true);
-    expect(model.bets.find((bet) => bet.id === 'bet_fulfilil')?.systemRefs).toEqual(
-      expect.arrayContaining(['component:default/fulfilil-spine']),
-    );
+    expect(
+      model.bets.find((bet) => bet.id === 'bet_fulfilil')?.fundedTeamIds.length,
+    ).toBeGreaterThan(0);
     expect(model.teams.some((team) => team.id === 'team_storefront')).toBe(true);
     expect(model.relationships.length).toBeGreaterThan(0);
     expect(model.techRadarUrl).toBe('https://example.com/tech-radar');

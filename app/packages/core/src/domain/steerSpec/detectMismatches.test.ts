@@ -161,7 +161,6 @@ describe('detectSteerSpecMismatches', () => {
         killCriteria: 'Kill criteria',
         status: 'on_track' as const,
         fundedTeamIds: ['team_storefront'],
-        systemRefs: [],
         metricIds: [],
       },
       {
@@ -172,7 +171,6 @@ describe('detectSteerSpecMismatches', () => {
         killCriteria: 'Kill criteria',
         status: 'proposed' as const,
         fundedTeamIds: ['team_storefront'],
-        systemRefs: [],
         metricIds: [],
       },
     ];

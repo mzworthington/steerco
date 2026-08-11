@@ -9,7 +9,7 @@ Executives confuse HR org charts with delivery topology. Flat “four type zones
 
 ## Goal
 
-Edit and present **topology intent for fast flow of value**: four fundamental team types, three interaction modes, and (at scale) three executive views - zoomed-out **flow of change**, dated **as-is**, and **domain** zoom - over streams, domains, and platform groupings. Capacity (members + FTE%) is a load signal. Shape is **point-in-time intent**, not a reporting chart.
+Edit and present **topology intent for fast flow of value**: four fundamental team types, three interaction modes, and (at scale) executive views - dated **as-is** capacity (with optional domain filter and interaction graph) and **timeline** - over streams, domains, and platform groupings. Capacity (members + FTE%) is a load signal. Shape is **point-in-time intent**, not a reporting chart.
 
 ## User stories
 
@@ -22,8 +22,8 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 - As a Director (Slice 3), I set a platform’s **scope** (organisation / vertical / single team) so layout and load cues match who it accelerates.
 - As a Director (Slice 3), I place a **complicated subsystem** in a stream (not under a team); interaction mode shows how embedded it is.
 - As a coach (Slice 3), I see one **enabling** team facilitating multiple streams without treating that fan-out as an error.
-- As a sponsor (Slice 3), I switch among **Flow of change** (zoomed out), **As-is** (dated detail), and **Domain** zoom (edges leaving the domain highlighted).
-- As a sponsor (Slice 3), I pick an **as-of date** on As-is / Domain and see the projected shape and mismatches for that day.
+- As a sponsor (Slice 3), I switch between **As-is** (dated capacity + interaction graph, optional domain filter) and **Timeline**.
+- As a sponsor (Slice 3), I pick an **as-of date** on As-is / Timeline and see the projected shape and mismatches for that day.
 
 ## Requirements
 
@@ -44,10 +44,9 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 8. SteerSpec `streams[]` + optional `domains[]` (verticals); platform `groupings[]`; teams use `streamIds[]`
 9. `platformScope`: `organisation` | `vertical` | `team` on platform teams and platform groupings
 10. Complicated-subsystem in a stream via `streamIds` - not nested under a team; interaction modes show embedment
-11. Three executive views on How work is organised:
-    - **Flow of change** - zoomed-out L→R spine (names only; LVT overlay later)
-    - **As-is** - detailed capacity + interactions for a selected date (default today)
-    - **Domain** - zoom into a domain; highlight edges that leave the domain
+11. Executive views on How work is organised:
+    - **As-is** - detailed capacity + interaction graph for a selected date (default today); optional domain filter
+    - **Timeline** - capacity and interaction history ([F13](./F13-topology-timeline.md))
 12. Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams)
 13. Derived visual may be exported for board pack Work section - use SteerCo shapes, never proprietary TT book diagrams
 14. Enabling one-to-many facilitation is expected; sole delivery ownership of a bet remains a mismatch (`enabling_owns_delivery`)
@@ -58,10 +57,9 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 - Empty state teaches four topologies and three interaction modes
 - Sample shows member/FTE capacity on stream-aligned and platform teams
 - Overload appears when X-as-a-Service dependents ≥ threshold with load/flow framing
-- Slice 3: sample with ≥2 streams, a domain, a scoped platform, CSS in a stream, and multi-team enabling renders Flow of change (not only four flat zones)
-- Slice 3: As-is / Domain as-of date updates projected shape and mismatches without leaving the page
-- Slice 3: Domain zoom lists internal edges and highlights connections that leave the domain
-
+- Slice 3: sample with ≥2 streams, a domain, a scoped platform, CSS in a stream, and multi-team enabling renders flow layout + interaction graph (not only four flat zones)
+- Slice 3: As-is / Timeline as-of date updates projected shape and mismatches without leaving the page
+- Slice 3: As-is domain filter narrows stream bands while keeping shared platforms and enabling
 ## XFN
 
 A11y: relationships available as list alternative to canvas · Keyboard add-team flow · As-of control labelled; list alternative for projected relationships

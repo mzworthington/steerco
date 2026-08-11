@@ -21,9 +21,14 @@ const NAV = [
     match: (path: string) => path.startsWith('/workspace/steering'),
   },
   {
-    href: '/workspace/outcomes',
-    label: 'Outcomes',
-    match: (path: string) => path.startsWith('/workspace/outcomes'),
+    href: '/workspace/goals',
+    label: 'Goals',
+    match: (path: string) => path.startsWith('/workspace/goals'),
+  },
+  {
+    href: '/workspace/products',
+    label: 'Product briefs',
+    match: (path: string) => path.startsWith('/workspace/products'),
   },
   {
     href: '/workspace/evidence',

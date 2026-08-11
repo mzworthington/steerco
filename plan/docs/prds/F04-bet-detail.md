@@ -15,14 +15,14 @@ Edit one bet as a briefing: success signal, kill criteria, funded teams, status 
 
 - As a Director, I update kill criteria so stop decisions are pre-agreed (supports incremental funding).
 - As a Director, I assign funded teams by picking display names from the workspace.
-- As a Director, I understand which outcome Measure of Success this bet is meant to move (Slice 1: show outcome metrics as context; Slice 1.5: explicit MoS link).
+- As a Director, I understand which goal Measure of Success this bet is meant to move (Slice 1: show goal metrics as context; Slice 1.5: explicit MoS link).
 - As a Director (Slice 3), I see which teams are on this bet’s **flow of change** as of a date - funded streams plus scoped platform / enabling / complicated-subsystem involvement - without opening a project plan.
 
 ## Requirements
 
 1. Fields: title, success signal, kill criteria, funded teams, status
-2. Outcome shown read-only (change outcome = advanced/technical later)
-3. Show outcome MoS / metrics as read-only context (“this bet should move…”)
+2. Goal shown read-only (change goal = advanced/technical later)
+3. Show goal MoS / metrics as read-only context (“this bet should move…”)
 4. Save + Back to steering
 5. Validation: kill criteria required; warn if no funded teams
 
@@ -34,7 +34,7 @@ Edit one bet as a briefing: success signal, kill criteria, funded teams, status 
 
 - Save persists to `steertree.yaml`
 - Invalid empty title blocks save with plain language
-- Sample bet detail shows related outcome metric context
+- Sample bet detail shows related goal metric context
 - Slice 3: flow overlay lists funded streams and related interactions for the selected as-of date
 
 ## XFN

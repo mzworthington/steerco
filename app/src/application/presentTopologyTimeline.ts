@@ -33,6 +33,8 @@ export type TopologyTimelineRelationshipBand = {
   startLabel: string;
   endLabel: string;
   sentence: string;
+  /** True when neither start nor end is dated - treated as ongoing commitment. */
+  openEnded: boolean;
 };
 
 export type TopologyTimelineEventRow = {
@@ -55,6 +57,14 @@ export type TopologyTimelineModel = {
   capacityMarkers: TopologyTimelineCapacityMarker[];
   relationshipBands: TopologyTimelineRelationshipBand[];
   events: TopologyTimelineEventRow[];
+};
+
+export type PresentTopologyTimelineOptions = {
+  asOf?: string | null;
+  /** Inclusive chart window start (defaults to derived history). */
+  rangeFrom?: string | null;
+  /** Inclusive chart window end (defaults to derived history). */
+  rangeTo?: string | null;
 };
 
 const EVENT_KIND_LABEL: Record<TopologyEventKind, string> = {
@@ -81,21 +91,45 @@ function formatSignedFte(delta: number): string {
   return `${sign}${delta}% FTE`;
 }
 
+function resolveChartRange(
+  derivedStart: string | null,
+  derivedEnd: string | null,
+  rangeFrom?: string | null,
+  rangeTo?: string | null,
+): { start: string | null; end: string | null } {
+  const from = rangeFrom?.trim() || null;
+  const to = rangeTo?.trim() || null;
+  let start = from ?? derivedStart;
+  let end = to ?? derivedEnd;
+  if (start && derivedStart && derivedStart < start) start = derivedStart;
+  if (end && derivedEnd && derivedEnd > end) end = derivedEnd;
+  if (start && !end) end = start;
+  if (end && !start) start = end;
+  if (start && end && start > end) {
+    return { start: end, end: start };
+  }
+  return { start, end };
+}
+
 /**
- * Present capacity deltas and relationship spans for the F13 topology timeline.
- * Uses the same date window vocabulary as `projectSteerSpecAsOf` / org as-of.
+ * Present relationship spans (and optional capacity deltas) for the F13 topology timeline.
+ * Undated relationships are open-ended commitments spanning the full chart range.
  */
 export function presentTopologyTimeline(
   spec: SteerSpec,
-  options: { asOf?: string | null } = {},
+  options: PresentTopologyTimelineOptions = {},
 ): TopologyTimelineModel {
   const timeline = buildTopologyTimeline(spec);
   const asOf = options.asOf?.trim() || null;
   const teamLabelById = new Map(
     spec.spec.teams.map((team) => [team.id, team.displayName] as const),
   );
-  const rangeStart = timeline.rangeStart;
-  const rangeEnd = timeline.rangeEnd;
+  const { start: rangeStart, end: rangeEnd } = resolveChartRange(
+    timeline.rangeStart,
+    timeline.rangeEnd,
+    options.rangeFrom,
+    options.rangeTo,
+  );
   const hasRange = Boolean(rangeStart && rangeEnd);
 
   const capacityMarkers: TopologyTimelineCapacityMarker[] =
@@ -118,40 +152,31 @@ export function presentTopologyTimeline(
 
   const relationshipBands: TopologyTimelineRelationshipBand[] =
     hasRange && rangeStart && rangeEnd
-      ? timeline.relationshipSpans
-          .map((span) => ({
-            ...span,
-            mode: normalizeInteractionMode(span.mode) as InteractionMode,
-          }))
-          .filter(
-            (span) =>
-              span.start !== null ||
-              span.end !== null ||
-              span.mode === 'collaboration' ||
-              span.mode === 'facilitation',
-          )
-          .map((span) => {
-            const fromLabel = teamLabelById.get(span.fromTeamId) ?? span.fromTeamId;
-            const toLabel = teamLabelById.get(span.toTeamId) ?? span.toTeamId;
-            const copy = INTERACTION_MODE_COPY[span.mode];
-            const start = span.start ?? rangeStart;
-            const end = span.end ?? rangeEnd;
-            return {
-              key: span.key,
-              fromTeamId: span.fromTeamId,
-              toTeamId: span.toTeamId,
-              fromLabel,
-              toLabel,
-              mode: span.mode,
-              modeLabel: copy.modeName,
-              shape: copy.shape,
-              startPercent: dateToPercent(start, rangeStart, rangeEnd),
-              endPercent: dateToPercent(end, rangeStart, rangeEnd),
-              startLabel: span.start ?? 'open',
-              endLabel: span.end ?? 'open',
-              sentence: `${fromLabel} ${copy.sentenceVerb} ${toLabel}`,
-            };
-          })
+      ? timeline.relationshipSpans.map((span) => {
+          const mode = normalizeInteractionMode(span.mode) as InteractionMode;
+          const fromLabel = teamLabelById.get(span.fromTeamId) ?? span.fromTeamId;
+          const toLabel = teamLabelById.get(span.toTeamId) ?? span.toTeamId;
+          const copy = INTERACTION_MODE_COPY[mode];
+          const openEnded = span.start === null && span.end === null;
+          const start = span.start ?? rangeStart;
+          const end = span.end ?? rangeEnd;
+          return {
+            key: span.key,
+            fromTeamId: span.fromTeamId,
+            toTeamId: span.toTeamId,
+            fromLabel,
+            toLabel,
+            mode,
+            modeLabel: copy.modeName,
+            shape: copy.shape,
+            startPercent: dateToPercent(start, rangeStart, rangeEnd),
+            endPercent: dateToPercent(end, rangeStart, rangeEnd),
+            startLabel: span.start ?? 'ongoing',
+            endLabel: span.end ?? 'ongoing',
+            sentence: `${fromLabel} ${copy.sentenceVerb} ${toLabel}`,
+            openEnded,
+          };
+        })
       : [];
 
   const events: TopologyTimelineEventRow[] = timeline.events.map((event) => ({
@@ -170,10 +195,10 @@ export function presentTopologyTimeline(
     asOf,
     asOfPercent:
       asOf && hasRange && rangeStart && rangeEnd ? dateToPercent(asOf, rangeStart, rangeEnd) : null,
-    empty: capacityMarkers.length === 0 && relationshipBands.length === 0 && events.length === 0,
+    empty: relationshipBands.length === 0 && events.length === 0,
     lead: hasRange
-      ? `Capacity changes and interaction windows from ${rangeStart} to ${rangeEnd}. Scrub as-of to match the organisation projection.`
-      : 'Add member or relationship effective dates (or topology events) to see capacity and interaction history.',
+      ? `Interaction windows from ${rangeStart} to ${rangeEnd}. Relationships without dates span the whole window (ongoing commitment).`
+      : 'Add relationships (or dated topology events) to see interaction history. Undated relationships count as ongoing across the selected date range.',
     capacityMarkers,
     relationshipBands,
     events,

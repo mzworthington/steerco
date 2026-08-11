@@ -19,7 +19,7 @@ SteerCo and ArchLens both serve engineering leadership concerns but different jo
 ## Considered Options
 
 - Option A: One combined “Lens” app with shared chrome
-- Option B: Same portfolio, separate products and themes; optional `systemRefs` later
+- Option B: Same portfolio, separate products and themes; optional data link later
 - Option C: No relationship at all
 
 ## Decision Outcome
@@ -27,7 +27,7 @@ SteerCo and ArchLens both serve engineering leadership concerns but different jo
 Chosen option: **Option B**.
 
 - Same portfolio, separate products and visual languages
-- Optional data link later: `bets[].systemRefs` → ArchLens entityRefs
+- Optional data link later (deep link / ref to ArchLens entities when needed - no reserved SteerSpec field yet)
 - No shared UI component library requirement
 - Marketing may say “Lens family”; apps do not share chrome
 

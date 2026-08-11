@@ -118,7 +118,7 @@ function IdentityPanel() {
         <div className="type-stack">
           <div>
             <p className="eyebrow">Display · Fraunces</p>
-            <p className="type-sample-display mt-2">Are we getting the outcome?</p>
+            <p className="type-sample-display mt-2">Are we getting the goal?</p>
           </div>
           <div>
             <p className="eyebrow">Body · Plus Jakarta Sans</p>

@@ -4,11 +4,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from './openWorkspace';
 import {
-  applyOutcomeMetricEdit,
+  applyGoalMetricEdit,
   applyProductDraft,
-  presentOutcomes,
-  validateOutcomeMetricEdit,
-} from './presentOutcomes';
+  presentGoals,
+  validateGoalMetricEdit,
+} from './presentGoals';
 
 const fixtureDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -16,13 +16,13 @@ const fixtureDir = path.resolve(
 );
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
-describe('presentOutcomes', () => {
+describe('presentGoals', () => {
   it('presents sample MoS heroes and funded bet rows', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    const model = presentOutcomes(opened.value);
+    const model = presentGoals(opened.value);
     expect(model.framingLine).toMatch(/measures of success/i);
     expect(model.outcomes.length).toBeGreaterThanOrEqual(2);
 
@@ -75,22 +75,22 @@ describe('presentOutcomes', () => {
   });
 });
 
-describe('validateOutcomeMetricEdit', () => {
+describe('validateGoalMetricEdit', () => {
   it('rejects non-numeric current values', () => {
-    const result = validateOutcomeMetricEdit({ current: 'abc', target: '95' });
+    const result = validateGoalMetricEdit({ current: 'abc', target: '95' });
     expect(result.ok).toBe(false);
     if (result.ok) return;
     expect(result.error).toMatch(/number/i);
   });
 });
 
-describe('applyOutcomeMetricEdit', () => {
+describe('applyGoalMetricEdit', () => {
   it('updates metric current and target on the SteerSpec', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    const applied = applyOutcomeMetricEdit(opened.value, 'out_promise', 'met_promise_hit', {
+    const applied = applyGoalMetricEdit(opened.value, 'out_promise', 'met_promise_hit', {
       current: '93',
       target: '96',
     });

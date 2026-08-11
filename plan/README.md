@@ -6,7 +6,7 @@ SteerCo helps product owners, product executives, and Engineering Directors keep
 
 | Related                               | Role                                                           |
 | ------------------------------------- | -------------------------------------------------------------- |
-| **SteerCo**                         | Bets, outcomes, topology _intent_, decision notes              |
+| **SteerCo**                         | Bets, goals, topology _intent_, decision notes              |
 | **[ArchLens](https://archlens.dev)**  | Systems architecture risk (separate product & visual language) |
 | **Jira / Backstage / Entra / GitHub** | Systems of record SteerCo _references_ (never replaces)      |
 
@@ -45,4 +45,4 @@ Full roadmap: [docs/ROADMAP.md](./docs/ROADMAP.md). Framework backlog: [docs/OPE
 
 ## One-liner
 
-> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerCo contracts how outcomes, bets, topology intent, and evidence stay aligned - and when to stop.
+> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerCo contracts how goals, bets, topology intent, and evidence stay aligned - and when to stop.

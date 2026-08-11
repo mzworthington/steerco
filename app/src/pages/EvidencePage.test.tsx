@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -87,5 +87,62 @@ describe('EvidencePage', () => {
     expect(setLocation).toHaveBeenCalledWith('/workspace/decisions');
     const lines = takeDecisionNoteMeasured();
     expect(lines?.some((line) => /promise hit rate/i.test(line))).toBe(true);
+  });
+
+  it('adds a new evidence measure onto a goal from the page', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <EvidencePage />
+      </WorkspaceSessionProvider>,
+    );
+
+    await user.click(screen.getByTestId('evidence-add-cta'));
+    const form = screen.getByTestId('evidence-add-form');
+    expect(form).toBeTruthy();
+
+    await user.selectOptions(within(form).getByLabelText(/goal/i), 'out_promise');
+    await user.type(within(form).getByLabelText(/^title$/i), 'Checkout conversion');
+    await user.type(within(form).getByLabelText(/^unit$/i), 'percent');
+    await user.type(within(form).getByLabelText(/^current$/i), '3.2');
+    await user.type(within(form).getByLabelText(/^target$/i), '4');
+    await user.type(within(form).getByLabelText(/what we learned/i), 'Still thin at peak hours.');
+    await user.type(within(form).getByLabelText(/^note$/i), 'From weekly product review sheet');
+    await user.click(within(form).getByRole('button', { name: /save evidence/i }));
+
+    expect(screen.getByText(/evidence added/i)).toBeTruthy();
+    expect(screen.getByText('Checkout conversion')).toBeTruthy();
+    expect(screen.getByText(/still thin at peak hours/i)).toBeTruthy();
+    expect(screen.getByText(/weekly product review sheet/i)).toBeTruthy();
+
+    const stored = sessionStorage.getItem('steerco.workspace-session');
+    const parsed = JSON.parse(stored ?? '{}') as {
+      spec: {
+        spec: {
+          outcomes: Array<{
+            id: string;
+            metrics: Array<{ id: string; title: string; current?: number }>;
+          }>;
+          evidence: Array<{ metricId?: string | null; source: string; note?: string }>;
+        };
+      };
+    };
+    const metric = parsed.spec.spec.outcomes
+      .find((outcome) => outcome.id === 'out_promise')
+      ?.metrics.find((item) => item.title === 'Checkout conversion');
+    expect(metric?.current).toBe(3.2);
+    expect(
+      parsed.spec.spec.evidence.some(
+        (item) =>
+          item.metricId === metric?.id &&
+          item.source === 'manual' &&
+          /weekly product review/i.test(item.note ?? ''),
+      ),
+    ).toBe(true);
   });
 });

@@ -1,3 +1,4 @@
+import { isEffectiveInRange } from '@steerco/core';
 import type { OrganisationInteractionMode, OrganisationRelationship } from './presentOrganisation';
 
 export type OrganisationFlowOrientation = 'TB' | 'LR';
@@ -8,6 +9,7 @@ export type OrganisationFlowGraphMember = {
   title: string;
   disciplineLabel: string;
   ftePercent: number;
+  initials: string;
 };
 
 export type OrganisationFlowGraphTeamMeta = {
@@ -43,6 +45,10 @@ export type OrganisationFlowGraphNode = {
   platformScopeLabel: string | null;
   facilitatesLabels: string[];
   members: OrganisationFlowGraphMember[];
+  /** True when domain filters are active and this team belongs to a selected domain. */
+  inFocusDomain: boolean;
+  /** True when domain filters are active and this team is outside the selected domains. */
+  isExternal: boolean;
   position: { x: number; y: number };
 };
 
@@ -55,6 +61,8 @@ export type OrganisationFlowGraphEdge = {
   modeTeaching: string;
   sentence: string;
   expectedUntil: string | null;
+  /** True when domain filters are active and the edge leaves/enters a selected domain. */
+  crossesBoundary: boolean;
 };
 
 export type OrganisationFlowGraphModel = {
@@ -64,7 +72,10 @@ export type OrganisationFlowGraphModel = {
   domainOptions: OrganisationFlowGraphDomainOption[];
   listGroups: OrganisationFlowGraphListGroup[];
   edgeCount: number;
+  crossDomainEdgeCount: number;
   empty: boolean;
+  /** Domain titles currently focused (empty = organisation-wide). */
+  focusDomainTitles: string[];
   lead: string;
 };
 
@@ -97,29 +108,48 @@ export function presentOrganisationFlowGraph(
   relationships: OrganisationRelationship[],
   teams: OrganisationFlowGraphTeamMeta[],
   options: {
+    /** Multi-select domain focus. Empty / omitted = all domains. */
+    domainTitles?: readonly string[] | null;
+    /** @deprecated Prefer domainTitles. Single-domain shorthand. */
     domainTitle?: string | null;
     orientation?: OrganisationFlowOrientation;
+    /** Inclusive start of the dependency window to show. */
+    rangeFrom?: string | null;
+    /** Inclusive end of the dependency window to show. */
+    rangeTo?: string | null;
   } = {},
 ): OrganisationFlowGraphModel {
-  const domainFilter = options.domainTitle?.trim() || null;
+  const focusDomainTitles = normalizeDomainFilters(options);
   const orientation = options.orientation ?? 'LR';
   const domainByTeamId = new Map(teams.map((team) => [team.id, team.domainTitle] as const));
   const teamById = new Map(teams.map((team) => [team.id, team] as const));
 
-  const filtered = domainFilter
-    ? relationships.filter((rel) => {
-        const fromDomain = domainByTeamId.get(rel.fromTeamId) ?? 'Ungrouped';
-        const toDomain = domainByTeamId.get(rel.toTeamId) ?? 'Ungrouped';
-        return fromDomain === domainFilter || toDomain === domainFilter;
-      })
-    : relationships;
+  const inDateRange = relationships.filter((rel) =>
+    isEffectiveInRange(relationshipWindow(rel), options.rangeFrom, options.rangeTo),
+  );
+
+  const filtered =
+    focusDomainTitles.length === 0
+      ? inDateRange
+      : inDateRange.filter((rel) => {
+          const fromDomain = domainByTeamId.get(rel.fromTeamId) ?? 'Ungrouped';
+          const toDomain = domainByTeamId.get(rel.toTeamId) ?? 'Ungrouped';
+          return focusDomainTitles.includes(fromDomain) || focusDomainTitles.includes(toDomain);
+        });
 
   const domainOptions = uniqueSorted(
     teams.map((team) => team.domainTitle).filter((title) => title.trim().length > 0),
   ).map((title) => ({ title }));
 
   const listGroups = groupRelationshipsByDomain(filtered, domainByTeamId);
-  const { nodes, edges } = layoutInteractionGraph(filtered, teamById, orientation);
+  const { nodes, edges } = layoutInteractionGraph(
+    filtered,
+    teams,
+    teamById,
+    orientation,
+    focusDomainTitles,
+  );
+  const crossDomainEdgeCount = edges.filter((edge) => edge.crossesBoundary).length;
 
   return {
     orientation,
@@ -128,10 +158,17 @@ export function presentOrganisationFlowGraph(
     domainOptions,
     listGroups,
     edgeCount: filtered.length,
-    empty: filtered.length === 0,
-    lead: domainFilter
-      ? `${orientation === 'LR' ? 'Left-to-right' : 'Top-down'} interaction graph focused on ${domainFilter} (${filtered.length} edge${filtered.length === 1 ? '' : 's'}). Select a team or edge for detail.`
-      : `${orientation === 'LR' ? 'Left-to-right' : 'Top-down'} organisation-wide interaction graph (${filtered.length} edge${filtered.length === 1 ? '' : 's'}). Filter by domain when noisy.`,
+    crossDomainEdgeCount,
+    empty: nodes.length === 0,
+    focusDomainTitles,
+    lead: buildLead(
+      orientation,
+      focusDomainTitles,
+      filtered.length,
+      crossDomainEdgeCount,
+      options.rangeFrom,
+      options.rangeTo,
+    ),
   };
 }
 
@@ -172,15 +209,81 @@ export function presentOrganisationFlowFocus(
   };
 }
 
+function normalizeDomainFilters(options: {
+  domainTitles?: readonly string[] | null;
+  domainTitle?: string | null;
+}): string[] {
+  const fromMulti = (options.domainTitles ?? [])
+    .map((title) => title.trim())
+    .filter((title) => title.length > 0);
+  if (fromMulti.length > 0) return uniqueSorted(fromMulti);
+
+  const single = options.domainTitle?.trim() || null;
+  return single ? [single] : [];
+}
+
+function buildLead(
+  orientation: OrganisationFlowOrientation,
+  focusDomainTitles: string[],
+  edgeCount: number,
+  crossDomainEdgeCount: number,
+  rangeFrom?: string | null,
+  rangeTo?: string | null,
+): string {
+  const orient = orientation === 'LR' ? 'Left-to-right' : 'Top-down';
+  const edgePhrase = `${edgeCount} edge${edgeCount === 1 ? '' : 's'}`;
+  const from = rangeFrom?.trim() || null;
+  const to = rangeTo?.trim() || null;
+  const rangePhrase =
+    from && to
+      ? from === to
+        ? ` as of ${from}`
+        : ` active ${from} → ${to}`
+      : from
+        ? ` as of ${from}`
+        : to
+          ? ` as of ${to}`
+          : '';
+  if (focusDomainTitles.length === 0) {
+    return `${orient} organisation-wide interaction graph (${edgePhrase}${rangePhrase}). Filter by domain when noisy.`;
+  }
+  if (focusDomainTitles.length === 1) {
+    return `${orient} interaction graph focused on ${focusDomainTitles[0]} (${edgePhrase}, ${crossDomainEdgeCount} cross-domain${rangePhrase}). Highlighted edges show dependencies on other domains.`;
+  }
+  const labels = focusDomainTitles.join(', ');
+  return `${orient} interaction graph focused on ${focusDomainTitles.length} domains (${labels}; ${edgePhrase}, ${crossDomainEdgeCount} cross-domain${rangePhrase}). Highlighted edges show dependencies on other domains.`;
+}
+
+/** Prefer effectiveUntil; fall back to expectedUntil for time-boxed modes. */
+function relationshipWindow(rel: OrganisationRelationship): {
+  effectiveFrom?: string;
+  effectiveUntil?: string;
+} {
+  return {
+    effectiveFrom: rel.effectiveFrom ?? undefined,
+    effectiveUntil: rel.effectiveUntil ?? rel.expectedUntil ?? undefined,
+  };
+}
+
 function layoutInteractionGraph(
   relationships: OrganisationRelationship[],
+  teams: OrganisationFlowGraphTeamMeta[],
   teamById: Map<string, OrganisationFlowGraphTeamMeta>,
   orientation: OrganisationFlowOrientation,
+  focusDomainTitles: string[],
 ): { nodes: OrganisationFlowGraphNode[]; edges: OrganisationFlowGraphEdge[] } {
+  const focusActive = focusDomainTitles.length > 0;
   const involved = new Set<string>();
+
   for (const rel of relationships) {
     involved.add(rel.fromTeamId);
     involved.add(rel.toTeamId);
+  }
+
+  for (const team of teams) {
+    if (!focusActive || focusDomainTitles.includes(team.domainTitle)) {
+      involved.add(team.id);
+    }
   }
 
   const byDomain = new Map<string, string[]>();
@@ -202,6 +305,8 @@ function layoutInteractionGraph(
       const right = teamById.get(b)?.displayName ?? b;
       return left.localeCompare(right);
     });
+    const inFocusDomain = focusActive && focusDomainTitles.includes(domainTitle);
+    const isExternal = focusActive && !focusDomainTitles.includes(domainTitle);
 
     sortedIds.forEach((teamId, index) => {
       const team = teamById.get(teamId);
@@ -219,6 +324,8 @@ function layoutInteractionGraph(
         platformScopeLabel: team?.platformScopeLabel ?? null,
         facilitatesLabels: team?.facilitatesLabels ?? [],
         members: team?.members ?? [],
+        inFocusDomain,
+        isExternal,
         position: { x, y },
       });
     });
@@ -227,16 +334,25 @@ function layoutInteractionGraph(
     domainOffset += span;
   }
 
-  const edges: OrganisationFlowGraphEdge[] = relationships.map((rel) => ({
-    id: `${rel.fromTeamId}-${rel.mode}-${rel.toTeamId}`,
-    source: rel.fromTeamId,
-    target: rel.toTeamId,
-    mode: rel.mode,
-    modeLabel: MODE_EDGE_LABEL[rel.mode],
-    modeTeaching: rel.modeTeaching,
-    sentence: rel.sentence,
-    expectedUntil: rel.expectedUntil,
-  }));
+  const edges: OrganisationFlowGraphEdge[] = relationships.map((rel) => {
+    const fromDomain = teamById.get(rel.fromTeamId)?.domainTitle ?? 'Ungrouped';
+    const toDomain = teamById.get(rel.toTeamId)?.domainTitle ?? 'Ungrouped';
+    const fromInFocus = focusDomainTitles.includes(fromDomain);
+    const toInFocus = focusDomainTitles.includes(toDomain);
+    const crossesBoundary = focusActive && fromInFocus !== toInFocus;
+
+    return {
+      id: `${rel.fromTeamId}-${rel.mode}-${rel.toTeamId}`,
+      source: rel.fromTeamId,
+      target: rel.toTeamId,
+      mode: rel.mode,
+      modeLabel: MODE_EDGE_LABEL[rel.mode],
+      modeTeaching: rel.modeTeaching,
+      sentence: rel.sentence,
+      expectedUntil: rel.expectedUntil,
+      crossesBoundary,
+    };
+  });
 
   return { nodes, edges };
 }

@@ -25,13 +25,13 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
     lvtBridge: [
       {
         term: 'Goal',
-        alias: 'Outcome',
-        note: 'SteerSpec `outcomes[]` - measurable change the organisation wants.',
+        alias: 'outcomes[]',
+        note: 'LVT Goal - measurable change the organisation wants. Schema array remains `outcomes[]` until renamed.',
       },
       {
         term: 'Measure of Success',
         alias: 'MoS / metrics',
-        note: 'Outcome metrics are the customer-value fitness function - not vanity KPIs.',
+        note: 'Goal metrics are the customer-value fitness function - not vanity KPIs.',
       },
       {
         term: 'Initiative',
@@ -48,12 +48,12 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
       {
         term: 'Product brief',
         alias: 'products[]',
-        note: 'Lightweight product mindset: problem, customers, linked outcomes/bets.',
+        note: 'Lightweight product mindset: problem, customers, linked goals/bets.',
       },
       {
         term: 'Tech@Core',
-        alias: 'capability bets + systemRefs / techRadarUrl',
-        note: 'Capability kind revitalizes core systems; ArchLens refs and radar links stay optional.',
+        alias: 'capability bets / techRadarUrl',
+        note: 'Capability kind revitalizes core systems; optional external Tech Radar link.',
       },
       {
         term: 'Integrated Backlog',
@@ -89,7 +89,7 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
       },
     ],
     principles: [
-      { title: 'Outcome-based strategy', note: 'Fund outcomes and bets, not activity.' },
+      { title: 'Outcome-based strategy', note: 'Fund goals and bets, not activity.' },
       { title: 'Value-based prioritization', note: 'Portfolio stack rank and mix cues over FIFO.' },
       {
         title: 'Lightweight governance',

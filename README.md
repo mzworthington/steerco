@@ -4,7 +4,7 @@ SteerCo helps product owners, product executives, and Engineering Directors keep
 
 ## Overview
 
-Jira plans work. Backstage catalogs systems. Directories catalog people. SteerCo holds the **investment contract**: outcomes, funded bets, topology intent, and decision notes - as a local-first board pack, not another system of record.
+Jira plans work. Backstage catalogs systems. Directories catalog people. SteerCo holds the **investment contract**: goals, funded bets, topology intent, and decision notes - as a local-first board pack, not another system of record.
 
 Product planning lives under [`plan/`](./plan/). Implementation is under [`app/`](./app/) (`@steerco/app` + `@steerco/core`). Architecture decisions: [`docs/ADRs/`](./docs/ADRs/).
 

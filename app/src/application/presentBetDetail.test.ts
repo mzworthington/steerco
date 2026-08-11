@@ -18,7 +18,7 @@ const fixtureDir = path.resolve(
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
 describe('presentBetDetail', () => {
-  it('presents a sample bet with outcome MoS context and funded teams', () => {
+  it('presents a sample bet with goal MoS context and funded teams', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -91,7 +91,7 @@ describe('presentBetDetail', () => {
     expect(model.initiatives.length).toBeGreaterThan(0);
   });
 
-  it('surfaces Tech@Core cue, systemRefs, and tech radar for a capability bet', () => {
+  it('surfaces Tech@Core cue and tech radar for a capability bet', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -102,7 +102,6 @@ describe('presentBetDetail', () => {
 
     expect(model.kind).toBe('capability');
     expect(model.techAtCoreCue).toMatch(/Tech@Core/i);
-    expect(model.systemRefs).toEqual(expect.arrayContaining(['component:default/fulfilil-spine']));
     expect(model.techRadarUrl).toBe('https://example.com/tech-radar');
   });
 
@@ -144,7 +143,6 @@ describe('validateBetDetailDraft', () => {
     horizon: 'Q3 review',
     fundingStance: 'exploit',
     kind: 'opportunity',
-    systemRefsText: '',
   };
 
   it('blocks empty title and empty kill criteria', () => {
@@ -187,7 +185,7 @@ describe('validateBetDetailDraft', () => {
 });
 
 describe('applyBetDetailDraft', () => {
-  it('updates the bet in SteerSpec without changing outcome linkage', () => {
+  it('updates the bet in SteerSpec without changing goal linkage', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -204,7 +202,6 @@ describe('applyBetDetailDraft', () => {
       horizon: 'Q4 review',
       fundingStance: 'explore',
       kind: 'capability',
-      systemRefsText: 'component:default/pickup, system:default/commerce',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
@@ -223,7 +220,6 @@ describe('applyBetDetailDraft', () => {
       horizon: 'Q4 review',
       fundingStance: 'explore',
       kind: 'capability',
-      systemRefs: ['component:default/pickup', 'system:default/commerce'],
     });
   });
 
@@ -244,7 +240,6 @@ describe('applyBetDetailDraft', () => {
       horizon: '',
       fundingStance: null,
       kind: null,
-      systemRefsText: '',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;

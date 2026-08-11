@@ -19,8 +19,8 @@ test.describe('Slice 1 critical journey', () => {
     await expect(page.getByTestId('steering-overview')).toBeVisible();
     await expect(page.getByText(/recommended to stop/i)).toBeVisible();
 
-    await page.getByRole('link', { name: /outcomes/i }).click();
-    await expect(page.getByTestId('outcomes-page')).toBeVisible();
+    await page.getByRole('link', { name: /goals/i }).click();
+    await expect(page.getByTestId('goals-page')).toBeVisible();
 
     await page.getByRole('link', { name: /^evidence$/i }).click();
     await expect(page.getByTestId('evidence-page')).toBeVisible();
@@ -46,7 +46,7 @@ test.describe('Slice 1 critical journey', () => {
 
     const routes = [
       '/workspace/steering',
-      '/workspace/outcomes',
+      '/workspace/goals',
       '/workspace/evidence',
       '/workspace/organisation',
       '/workspace/decisions',
@@ -73,8 +73,8 @@ test.describe('Slice 1 critical journey', () => {
 
     await page.getByTestId('nav-drawer-toggle').click();
     await expect(page.getByTestId('nav-drawer-backdrop')).toBeVisible();
-    await page.getByRole('link', { name: /^outcomes$/i }).click();
-    await expect(page.getByTestId('outcomes-page')).toBeVisible();
+    await page.getByRole('link', { name: /^goals$/i }).click();
+    await expect(page.getByTestId('goals-page')).toBeVisible();
     await expect(page.getByTestId('nav-drawer-backdrop')).toHaveCount(0);
   });
 });

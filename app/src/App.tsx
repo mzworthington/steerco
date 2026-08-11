@@ -14,7 +14,8 @@ import { DecisionNotesPage } from './pages/DecisionNotesPage';
 import { EvidencePage } from './pages/EvidencePage';
 import { ExportBoardPackPage } from './pages/ExportBoardPackPage';
 import { OrganisationPage } from './pages/OrganisationPage';
-import { OutcomesPage } from './pages/OutcomesPage';
+import { GoalsPage } from './pages/GoalsPage';
+import { ProductsPage } from './pages/ProductsPage';
 import { WorkspaceDiffPage } from './pages/WorkspaceDiffPage';
 import { TechnicalHubPage } from './pages/TechnicalHubPage';
 import { TechnicalTreePage } from './pages/TechnicalTreePage';
@@ -62,7 +63,11 @@ function AppRoutes() {
       <Route path="/" component={HomePage} />
       <Route path="/workspace" component={WorkspaceHomePage} />
       <Route path="/workspace/steering" component={SteeringOverviewPage} />
-      <Route path="/workspace/outcomes" component={OutcomesPage} />
+      <Route path="/workspace/goals" component={GoalsPage} />
+      <Route path="/workspace/products" component={ProductsPage} />
+      <Route path="/workspace/outcomes">
+        <Redirect to="/workspace/goals" />
+      </Route>
       <Route path="/workspace/evidence" component={EvidencePage} />
       <Route path="/workspace/organisation" component={OrganisationPage} />
       <Route path="/workspace/decisions" component={DecisionNotesPage} />

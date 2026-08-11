@@ -79,7 +79,6 @@ const betSchema = z
     killCriteria: z.string().min(1),
     status: statusBetSchema,
     fundedTeamIds: z.array(z.string()).default([]),
-    systemRefs: z.array(z.string()).default([]),
     /** Measure-of-Success links - metric ids this bet is judged against. */
     metricIds: z.array(z.string()).default([]),
     primaryMetricId: z.string().nullable().optional(),

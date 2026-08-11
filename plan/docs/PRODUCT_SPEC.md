@@ -6,7 +6,7 @@
 
 ## 1. Problem
 
-Product owners, product executives, and Engineering Directors must align **outcomes**, **funded bets**, and **team shape**, then act on evidence. Today that alignment lives in slide decks. Jira holds work; Backstage holds services; Entra/GitHub hold people. Nothing holds the investment contract - so steering meetings re-litigate priorities without a shared, versionable source of truth.
+Product owners, product executives, and Engineering Directors must align **goals**, **funded bets**, and **team shape**, then act on evidence. Today that alignment lives in slide decks. Jira holds work; Backstage holds services; Entra/GitHub hold people. Nothing holds the investment contract - so steering meetings re-litigate priorities without a shared, versionable source of truth.
 
 ## 2. Product thesis
 
@@ -14,7 +14,7 @@ SteerCo is a **steering workspace**: edit strategy and topology intent in plain 
 
 It operationalises two complementary models without becoming a PMO or HR tool:
 
-- **EDGE** - holistic value-driven operating model: Lean Value Tree **plus** product mindset / Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles (vision → outcomes/MoS → bets → optional initiatives)
+- **EDGE** - holistic value-driven operating model: Lean Value Tree **plus** product mindset / Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles (vision → goals/MoS → bets → optional initiatives)
 - **Team Topologies** (2e) - topology _intent_ for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
 
 See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice commitments in [ROADMAP.md](./ROADMAP.md).
@@ -23,7 +23,7 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 | Persona                                 | Need                                                             |
 | --------------------------------------- | ---------------------------------------------------------------- |
-| Product Owner / CPO / Head of Product   | Own outcomes and funded bets; decide start/stop/continue         |
+| Product Owner / CPO / Head of Product   | Own goals and funded bets; decide start/stop/continue         |
 | Engineering Director / Head of Platform | Align team shape to bets; partner on start/stop/continue         |
 | CTO / transformation sponsor            | Readable steering view; decision notes without tooling jargon    |
 | Staff+/principal (secondary)            | Technical mode: refs, imports, overlays, CI validation           |
@@ -35,10 +35,10 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 | Context                            | Responsibility                                                           |
 | ---------------------------------- | ------------------------------------------------------------------------ |
-| **Investment alignment**           | Outcomes, MoS, bets, kill criteria, decision notes / PVR (EDGE toolkit)  |
+| **Investment alignment**           | Goals, MoS, bets, kill criteria, decision notes / PVR (EDGE toolkit)  |
 | **Product & tech fitness**         | Product mindset cues; Tech@Core capability bets (not a radar or debt DB) |
 | **Topology intent**                | How teams relate for fast flow (Team Topologies; not HR reporting lines) |
-| **Evidence**                       | Leading indicators / learning attached to outcomes/bets (sample Slice 1) |
+| **Evidence**                       | Leading indicators / learning attached to goals/bets (sample Slice 1) |
 | **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                |
 | **Work execution** (external)      | Jira - link/annotate later, never dual / owned integrated backlog        |
 | **System architecture** (external) | ArchLens - optional bet → system refs later (Tech@Core evidence)         |
@@ -47,9 +47,9 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 | Term                         | Definition                                                                                                                                                                                                                                                |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Outcome**                  | Measurable change the organisation wants (EDGE Goal); carries Measures of Success                                                                                                                                                                         |
-| **Measure of Success (MoS)** | Leading (and validating lagging) indicator in the customer-value fitness function - shapes and funds work toward an outcome (not a vanity KPI or cost/schedule score)                                                                                    |
-| **Bet**                      | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet); may be opportunity or capability (Tech@Core)                                                                                                              |
+| **Goal**                  | Measurable change the organisation wants (LVT / EDGE Goal); carries Measures of Success. SteerSpec stores these under `outcomes[]` until a schema rename                                                                                                 |
+| **Measure of Success (MoS)** | Leading (and validating lagging) indicator in the customer-value fitness function - shapes and funds work toward a Goal (not a vanity KPI or cost/schedule score)                                                                                    |
+| **Bet**                      | Time-boxed investment intended to move a Goal; has success signal and stop rule (EDGE Bet); may be opportunity or capability (Tech@Core)                                                                                                              |
 | **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) - narrative only; never a dual backlog                                                                                                                                                            |
 | **Product brief**        | Lightweight EDGE product definition: customer problems, core elements, and LVT links - without heavy upfront requirements; supports product mindset over project mindset                                                                                  |
 | **Tech@Core**                | EDGE stance that technology is the business engine; strategic tech debt and trend sensing (e.g. Tech Radar refs) are investment concerns - not a back-office cost centre                                                                                |
@@ -82,10 +82,10 @@ SteerCo builds on two operating-model sources (full backlog and vocabulary bridg
 
 | Source                                  | Role in SteerCo                                                                                                                                                  |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals/outcomes + MoS → bets → optional initiatives) **plus** product mindset/brief, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
+| **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals + MoS → bets → optional initiatives) **plus** product mindset/brief, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
 | **Team Topologies** 2e (Skelton / Pais) | Topology _intent_ for fast flow: stream-aligned, platform _groupings_, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
 
-Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Outcome / Bet / Measure of Success / value review in the default views; Product brief, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
+Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Goal / Bet / Measure of Success / value review in the default views; Product brief, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
 
 ## 7. Acceptance scenarios (Gherkin)
 
@@ -96,7 +96,7 @@ Feature: Open a local workspace
   Scenario: Start from sample
     Given the leader has no prior workspace
     When they choose "Start from sample"
-    Then they see a steering overview with example outcomes and bets
+    Then they see a steering overview with example goals and bets
     And no account or sign-in is required
 
   Scenario: Open existing folder
@@ -118,7 +118,7 @@ Feature: Steering overview
   Scenario: View alignment
     Given a workspace with three bets
     When the leader opens Steering
-    Then they see outcomes, bets, status, and a short alignment summary
+    Then they see goals, bets, status, and a short alignment summary
 
   Scenario: Edit a bet
     Given a bet on the steering view
@@ -142,10 +142,10 @@ Feature: Topology intent
     When the leader opens How work is organised
     Then they see a calm mismatch message about platform load and slower flow
 
-  Scenario: Flow of change at scale (Slice 3)
+  Scenario: Interaction graph at scale (Slice 3)
     Given many teams across value streams with a nested complicated subsystem and an enabling team
     When the leader opens How work is organised
-    Then stream-aligned teams appear as the spine of the map
+    Then stream-aligned teams appear on the capacity board and interaction graph
     And platforms appear by audience scope
     And the complicated subsystem appears nested in its stream
 
@@ -160,7 +160,7 @@ Feature: Topology intent
 ```gherkin
 Feature: Decision note and board pack
   Scenario: Recommend stop
-    Given evidence that a bet is not moving its outcome
+    Given evidence that a bet is not moving its goal
     When the leader creates a decision note recommending Stop
     Then the note includes why, what was measured, who is affected, and next step
 

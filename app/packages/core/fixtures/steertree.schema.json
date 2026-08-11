@@ -17,9 +17,17 @@
       "additionalProperties": false,
       "required": ["name"],
       "properties": {
-        "name": { "type": "string", "minLength": 1, "pattern": "^[a-z0-9][a-z0-9-]*$" },
-        "title": { "type": "string" },
-        "description": { "type": "string" }
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
       }
     },
     "spec": {
@@ -27,37 +35,54 @@
       "additionalProperties": false,
       "required": ["vision", "outcomes", "bets", "teams"],
       "properties": {
-        "vision": { "type": "string", "minLength": 1 },
+        "vision": {
+          "type": "string",
+          "minLength": 1
+        },
         "outcomes": {
           "type": "array",
-          "items": { "$ref": "#/$defs/outcome" }
+          "items": {
+            "$ref": "#/$defs/outcome"
+          }
         },
         "bets": {
           "type": "array",
-          "items": { "$ref": "#/$defs/bet" }
+          "items": {
+            "$ref": "#/$defs/bet"
+          }
         },
         "teams": {
           "type": "array",
-          "items": { "$ref": "#/$defs/team" }
+          "items": {
+            "$ref": "#/$defs/team"
+          }
         },
         "relationships": {
           "type": "array",
-          "items": { "$ref": "#/$defs/relationship" },
+          "items": {
+            "$ref": "#/$defs/relationship"
+          },
           "default": []
         },
         "decisionNotes": {
           "type": "array",
-          "items": { "$ref": "#/$defs/decisionNote" },
+          "items": {
+            "$ref": "#/$defs/decisionNote"
+          },
           "default": []
         },
         "evidence": {
           "type": "array",
-          "items": { "$ref": "#/$defs/evidence" },
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
           "default": []
         },
         "topologyEvents": {
           "type": "array",
-          "items": { "$ref": "#/$defs/topologyEvent" },
+          "items": {
+            "$ref": "#/$defs/topologyEvent"
+          },
           "default": [],
           "description": "Timeline of capacity and relationship changes - Slice 1.5"
         }
@@ -83,8 +108,14 @@
       "additionalProperties": false,
       "required": ["id", "displayName", "discipline", "title", "ftePercent"],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "displayName": { "type": "string", "minLength": 1 },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1
+        },
         "discipline": {
           "$ref": "#/$defs/memberDiscipline"
         },
@@ -151,13 +182,25 @@
       "additionalProperties": false,
       "required": ["id", "title", "status"],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "title": { "type": "string", "minLength": 1 },
-        "summary": { "type": "string" },
-        "status": { "$ref": "#/$defs/statusOutcome" },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/statusOutcome"
+        },
         "metrics": {
           "type": "array",
-          "items": { "$ref": "#/$defs/metric" },
+          "items": {
+            "$ref": "#/$defs/metric"
+          },
           "default": []
         }
       }
@@ -167,13 +210,27 @@
       "additionalProperties": false,
       "required": ["id", "title"],
       "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "unit": { "type": "string" },
-        "current": { "type": ["number", "null"] },
-        "baseline": { "type": ["number", "null"] },
-        "target": { "type": ["number", "null"] },
-        "interpretation": { "type": "string" }
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "current": {
+          "type": ["number", "null"]
+        },
+        "baseline": {
+          "type": ["number", "null"]
+        },
+        "target": {
+          "type": ["number", "null"]
+        },
+        "interpretation": {
+          "type": "string"
+        }
       }
     },
     "bet": {
@@ -181,26 +238,36 @@
       "additionalProperties": false,
       "required": ["id", "outcomeId", "title", "successSignal", "killCriteria", "status"],
       "properties": {
-        "id": { "type": "string" },
-        "outcomeId": { "type": "string" },
-        "title": { "type": "string" },
-        "successSignal": { "type": "string" },
-        "killCriteria": { "type": "string" },
-        "status": { "$ref": "#/$defs/statusBet" },
+        "id": {
+          "type": "string"
+        },
+        "outcomeId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "successSignal": {
+          "type": "string"
+        },
+        "killCriteria": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/statusBet"
+        },
         "fundedTeamIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
-        },
-        "systemRefs": {
-          "type": "array",
-          "items": { "type": "string" },
-          "default": [],
-          "description": "Optional ArchLens entityRefs - unused in Slice 1"
         },
         "metricIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Measure-of-Success links - metric ids this bet is judged against"
         },
@@ -216,8 +283,12 @@
           "type": "string",
           "description": "Free text review horizon, e.g. \"Q3 review\""
         },
-        "fundingStance": { "$ref": "#/$defs/fundingStance" },
-        "kind": { "$ref": "#/$defs/betKind" }
+        "fundingStance": {
+          "$ref": "#/$defs/fundingStance"
+        },
+        "kind": {
+          "$ref": "#/$defs/betKind"
+        }
       }
     },
     "team": {
@@ -225,18 +296,30 @@
       "additionalProperties": false,
       "required": ["id", "displayName", "role", "provenance"],
       "properties": {
-        "id": { "type": "string" },
-        "displayName": { "type": "string" },
-        "role": { "$ref": "#/$defs/teamRole" },
-        "provenance": { "$ref": "#/$defs/provenance" },
+        "id": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/teamRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
         "externalRefs": {
           "type": "array",
-          "items": { "$ref": "#/$defs/externalRef" },
+          "items": {
+            "$ref": "#/$defs/externalRef"
+          },
           "default": []
         },
         "members": {
           "type": "array",
-          "items": { "$ref": "#/$defs/teamMember" },
+          "items": {
+            "$ref": "#/$defs/teamMember"
+          },
           "default": [],
           "description": "Optional roster with disciplines, job titles, and FTE allocation - steering capacity signal, not an HR system of record"
         }
@@ -251,7 +334,9 @@
           "type": "string",
           "enum": ["backstage", "github", "entra", "other"]
         },
-        "id": { "type": "string" }
+        "id": {
+          "type": "string"
+        }
       }
     },
     "relationship": {
@@ -259,9 +344,15 @@
       "additionalProperties": false,
       "required": ["fromTeamId", "toTeamId", "mode"],
       "properties": {
-        "fromTeamId": { "type": "string" },
-        "toTeamId": { "type": "string" },
-        "mode": { "$ref": "#/$defs/interactionMode" },
+        "fromTeamId": {
+          "type": "string"
+        },
+        "toTeamId": {
+          "type": "string"
+        },
+        "mode": {
+          "$ref": "#/$defs/interactionMode"
+        },
         "expectedUntil": {
           "type": "string",
           "description": "ISO date time-box for collaboration/facilitation - Slice 1.5"
@@ -281,28 +372,46 @@
       "additionalProperties": false,
       "required": ["id", "recommendation", "title", "why", "nextStep"],
       "properties": {
-        "id": { "type": "string" },
-        "betId": { "type": ["string", "null"] },
-        "recommendation": { "$ref": "#/$defs/recommendation" },
-        "title": { "type": "string" },
-        "why": { "type": "string" },
+        "id": {
+          "type": "string"
+        },
+        "betId": {
+          "type": ["string", "null"]
+        },
+        "recommendation": {
+          "$ref": "#/$defs/recommendation"
+        },
+        "title": {
+          "type": "string"
+        },
+        "why": {
+          "type": "string"
+        },
         "measured": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         },
         "measuredMetricIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Structured Measure-of-Success refs - metric ids this decision cites"
         },
         "affectedTeamIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         },
-        "nextStep": { "type": "string" }
+        "nextStep": {
+          "type": "string"
+        }
       }
     },
     "evidence": {
@@ -310,13 +419,19 @@
       "additionalProperties": false,
       "required": ["id", "source"],
       "properties": {
-        "id": { "type": "string" },
-        "metricId": { "type": ["string", "null"] },
+        "id": {
+          "type": "string"
+        },
+        "metricId": {
+          "type": ["string", "null"]
+        },
         "source": {
           "type": "string",
           "enum": ["sample", "manual", "github", "other"]
         },
-        "note": { "type": "string" }
+        "note": {
+          "type": "string"
+        }
       }
     },
     "topologyEvent": {
@@ -324,13 +439,27 @@
       "additionalProperties": false,
       "required": ["id", "at", "kind", "summary"],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "at": { "type": "string", "minLength": 1, "description": "ISO date the event occurred" },
-        "kind": { "$ref": "#/$defs/topologyEventKind" },
-        "summary": { "type": "string", "minLength": 1 },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ISO date the event occurred"
+        },
+        "kind": {
+          "$ref": "#/$defs/topologyEventKind"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
         "teamIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         },
         "relationshipKey": {

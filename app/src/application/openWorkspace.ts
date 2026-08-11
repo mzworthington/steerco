@@ -22,7 +22,7 @@ function toPlainLanguageError(detail: string): string {
     return 'This SteerSpec version is not supported yet. SteerCo currently opens steerco.dev/v1alpha1 documents.';
   }
   if (detail.includes('empty')) {
-    return 'That file is empty. Choose a steertree.yaml with outcomes and bets.';
+    return 'That file is empty. Choose a steertree.yaml with goals and bets.';
   }
   return `Could not open this workspace: ${detail}`;
 }

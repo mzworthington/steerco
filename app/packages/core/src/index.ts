@@ -66,6 +66,7 @@ export {
 } from './domain/steerSpec/detectMismatches';
 export {
   isEffectiveOnDate,
+  isEffectiveInRange,
   projectSteerSpecAsOf,
   type EffectiveWindow,
 } from './domain/steerSpec/projectSteerSpecAsOf';

@@ -6,7 +6,7 @@ const LINKS = [
   {
     href: '/workspace/technical/tree',
     title: 'Steer tree',
-    description: 'Ids, provenance, external refs, and systemRefs for outcomes, bets, and teams.',
+    description: 'Ids, provenance, external refs, and funding links for goals, bets, and teams.',
   },
   {
     href: '/workspace/technical/fitness',

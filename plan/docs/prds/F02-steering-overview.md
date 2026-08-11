@@ -9,7 +9,7 @@ Sponsors need one screen that answers “what are we funding and how is it going
 
 ## Goal
 
-Show vision, outcomes, bets, and statuses in a steering workspace - not a backlog. Surface stop-ready / adapt cues so leaders do not only see “green” status.
+Show vision, goals, bets, and statuses in a steering workspace - not a backlog. Surface stop-ready / adapt cues so leaders do not only see “green” status.
 
 ## User stories
 
@@ -22,9 +22,9 @@ Show vision, outcomes, bets, and statuses in a steering workspace - not a backlo
 
 1. Header with workspace title + period label (editable later; static OK Slice 1)
 2. Vision line
-3. Outcome grouping with bets listed beneath (title, one metric / MoS cue, status word)
+3. Goal grouping with bets listed beneath (title, one metric / MoS cue, status word)
 4. Status vocabulary: On track / At risk / Stop (map from SteerSpec enums; treat `stop_ready` as Stop or distinct “Stop ready” - prefer elevating stop-ready in the alignment summary)
-5. Nav to Outcomes, How work is organised, Decision notes, Export
+5. Nav to Goals, How work is organised, Decision notes, Export
 6. Alignment summary should mention stop recommendations and (when available) next review / adapt language - not only funded count
 7. Mismatch count may appear as calm summary text (not alarmist toast spam)
 

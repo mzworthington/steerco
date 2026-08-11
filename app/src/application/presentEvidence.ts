@@ -1,5 +1,9 @@
 import type { SteerSpec } from '@steerco/core';
-import { applyOutcomeMetricEdit, type OutcomeMetricEditInput } from './presentOutcomes';
+import {
+  applyGoalMetricEdit,
+  validateGoalMetricEdit,
+  type GoalMetricEditInput,
+} from './presentGoals';
 
 export type EvidenceSourceKind = 'sample' | 'manual' | 'github' | 'other';
 
@@ -21,15 +25,34 @@ export type EvidenceCard = {
   textAlternative: string;
 };
 
+export type EvidenceOutcomeOption = {
+  id: string;
+  title: string;
+};
+
 export type EvidenceModel = {
   workspaceTitle: string;
   framingLine: string;
   sampleBanner: string;
   cards: EvidenceCard[];
+  outcomeOptions: EvidenceOutcomeOption[];
   allMeasuredLines: string[];
 };
 
-export type EvidenceMetricEditInput = OutcomeMetricEditInput;
+export type EvidenceMetricEditInput = GoalMetricEditInput;
+
+export type AddEvidenceInput = {
+  outcomeId: string;
+  title: string;
+  unit?: string;
+  current: string;
+  target: string;
+  interpretation?: string;
+  note?: string;
+};
+
+export type AddEvidenceResult =
+  { ok: true; value: SteerSpec; metricId: string } | { ok: false; error: string };
 
 export function presentEvidence(spec: SteerSpec): EvidenceModel {
   const evidenceByMetric = new Map(
@@ -79,6 +102,10 @@ export function presentEvidence(spec: SteerSpec): EvidenceModel {
     framingLine: 'What we learned from the numbers - lead with the cue, not the vanity figure.',
     sampleBanner: 'Sample data · connect systems later',
     cards,
+    outcomeOptions: spec.spec.outcomes.map((outcome) => ({
+      id: outcome.id,
+      title: outcome.title,
+    })),
     allMeasuredLines: cards.map((card) => card.measuredLine),
   };
 }
@@ -89,7 +116,114 @@ export function applyEvidenceMetricEdit(
   metricId: string,
   input: EvidenceMetricEditInput,
 ) {
-  return applyOutcomeMetricEdit(spec, outcomeId, metricId, input);
+  return applyGoalMetricEdit(spec, outcomeId, metricId, input);
+}
+
+/** Add a measure of success on a goal plus a manual evidence provenance row. */
+export function applyAddEvidence(spec: SteerSpec, input: AddEvidenceInput): AddEvidenceResult {
+  const title = collapseWhitespace(input.title);
+  if (!title) {
+    return { ok: false, error: 'Give the measure a short title.' };
+  }
+
+  if (spec.spec.outcomes.length === 0) {
+    return { ok: false, error: 'Add a goal on Goals before recording evidence.' };
+  }
+
+  const outcomeIndex = spec.spec.outcomes.findIndex((item) => item.id === input.outcomeId);
+  if (outcomeIndex < 0) {
+    return { ok: false, error: 'That goal is not in the open workspace.' };
+  }
+  const outcome = spec.spec.outcomes[outcomeIndex];
+  if (!outcome) {
+    return { ok: false, error: 'That goal is not in the open workspace.' };
+  }
+
+  const parsed = validateGoalMetricEdit({
+    current: input.current,
+    target: input.target,
+  });
+  if (!parsed.ok) {
+    return { ok: false, error: parsed.error };
+  }
+
+  const unit = collapseWhitespace(input.unit ?? '');
+  const interpretation = collapseWhitespace(input.interpretation ?? '');
+  const note = collapseWhitespace(input.note ?? '');
+  const metricId = uniqueMetricId(spec, title);
+  const evidenceId = uniqueEvidenceId(spec, title);
+
+  const nextMetrics = [
+    ...outcome.metrics,
+    {
+      id: metricId,
+      title,
+      ...(unit ? { unit } : {}),
+      current: parsed.current,
+      target: parsed.target,
+      ...(interpretation ? { interpretation } : {}),
+    },
+  ];
+
+  const nextOutcomes = [...spec.spec.outcomes];
+  nextOutcomes[outcomeIndex] = {
+    ...outcome,
+    metrics: nextMetrics,
+  };
+
+  return {
+    ok: true,
+    metricId,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        outcomes: nextOutcomes,
+        evidence: [
+          ...spec.spec.evidence,
+          {
+            id: evidenceId,
+            metricId,
+            source: 'manual' as const,
+            ...(note ? { note } : {}),
+          },
+        ],
+      },
+    },
+  };
+}
+
+function uniqueMetricId(spec: SteerSpec, title: string): string {
+  const existing = new Set(
+    spec.spec.outcomes.flatMap((outcome) => outcome.metrics.map((metric) => metric.id)),
+  );
+  const base = `met_${slugify(title)}`;
+  if (!existing.has(base)) return base;
+  let index = 2;
+  while (existing.has(`${base}_${index}`)) index += 1;
+  return `${base}_${index}`;
+}
+
+function uniqueEvidenceId(spec: SteerSpec, title: string): string {
+  const existing = new Set(spec.spec.evidence.map((item) => item.id));
+  const base = `ev_${slugify(title)}`;
+  if (!existing.has(base)) return base;
+  let index = 2;
+  while (existing.has(`${base}_${index}`)) index += 1;
+  return `${base}_${index}`;
+}
+
+function slugify(value: string): string {
+  const slug = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 40);
+  return slug || 'measure';
+}
+
+function collapseWhitespace(value: string): string {
+  return value.replace(/\s+/g, ' ').trim();
 }
 
 function sourceLabel(source: EvidenceSourceKind): string {

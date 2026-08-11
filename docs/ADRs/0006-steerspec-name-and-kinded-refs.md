@@ -8,7 +8,7 @@ deciders: ['SteerCo']
 
 ## Context and Problem Statement
 
-SteerSpec is the versionable investment contract for a workspace: outcomes, bets, teams, capacity seats, and decision notes linked together in one `steertree.yaml`. Identity and cross-links are hard to reverse once samples, parsers, and git workflows settle. We need a durable convention that stays human-editable, supports people sitting across teams with time windows and discipline mix, and does not become an HR directory or a multi-file catalog with namespaces.
+SteerSpec is the versionable investment contract for a workspace: goals, bets, teams, capacity seats, and decision notes linked together in one `steertree.yaml`. Identity and cross-links are hard to reverse once samples, parsers, and git workflows settle. We need a durable convention that stays human-editable, supports people sitting across teams with time windows and discipline mix, and does not become an HR directory or a multi-file catalog with namespaces.
 
 ## Decision Drivers
 
@@ -38,8 +38,8 @@ Chosen option: **Option B**.
 
 | Kind       | Meaning                                         |
 | ---------- | ----------------------------------------------- |
-| `Outcome`  | EDGE goal / outcome                             |
-| `Metric`   | Measure of Success under an outcome             |
+| `Outcome`  | LVT Goal (`outcomes[]`)                         |
+| `Metric`   | Measure of Success under a Goal                 |
 | `Bet`      | Funded bet                                      |
 | `Team`     | Topology team                                   |
 | `Person`   | Human identity for cross-team capacity (not HR) |
@@ -75,7 +75,7 @@ The document envelope remains `kind: SteerTree` with `metadata.name` for the wor
 ```mermaid
 flowchart TB
   subgraph workspace [SteerTree workspace - no namespace]
-    O[Outcome name]
+    O[Goal name]
     M[Metric name]
     B[Bet name]
     T[Team name]

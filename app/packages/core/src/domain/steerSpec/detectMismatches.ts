@@ -86,7 +86,7 @@ export function detectSteerSpecMismatches(
       mismatches.push({
         code: 'orphan_outcome',
         severity: 'warning',
-        title: 'Outcome with no bets',
+        title: 'Goal with no bets',
         headline: `“${outcome.title}” has no funded bets yet.`,
         relatedOutcomeIds: [outcome.id],
       });
@@ -176,7 +176,7 @@ export function detectSteerSpecMismatches(
         code: 'stream_missing_product',
         severity: 'warning',
         title: 'Stream team without product capacity',
-        headline: `“${team.displayName}” has members recorded but no product discipline FTE - discovery and outcome framing may stall.`,
+        headline: `“${team.displayName}” has members recorded but no product discipline FTE - discovery and goal framing may stall.`,
         relatedTeamIds: [team.id],
       });
     }

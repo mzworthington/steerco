@@ -40,6 +40,7 @@ export type OrganisationTeamRelationshipDraft = {
   otherTeamId: string;
   mode: OrganisationInteractionMode;
   expectedUntil: string;
+  effectiveFrom: string;
 };
 
 type OrganisationTeamEditorModalProps = {
@@ -65,6 +66,14 @@ type OrganisationTeamEditorModalProps = {
   /** After create, parent can reopen in edit mode with the new team id. */
   onCreated?: (teamId: string) => void;
 };
+
+function todayIsoDate(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 function initialDraft(
   team: OrganisationTeamCard | null,
@@ -111,6 +120,7 @@ export function OrganisationTeamEditorModal({
   const [relOtherTeamId, setRelOtherTeamId] = useState('');
   const [relMode, setRelMode] = useState<OrganisationInteractionMode>('x_as_a_service');
   const [relExpectedUntil, setRelExpectedUntil] = useState('');
+  const [relEffectiveFrom, setRelEffectiveFrom] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
 
@@ -121,6 +131,7 @@ export function OrganisationTeamEditorModal({
     setRelOtherTeamId('');
     setRelMode('x_as_a_service');
     setRelExpectedUntil('');
+    setRelEffectiveFrom('');
     setError(null);
     setNotice(null);
   }, [open, team, domainOptions, streamOptions]);
@@ -185,6 +196,7 @@ export function OrganisationTeamEditorModal({
       otherTeamId: relOtherTeamId,
       mode: relMode,
       expectedUntil: relExpectedUntil,
+      effectiveFrom: TIME_BOXABLE_MODES.has(relMode) ? relEffectiveFrom : '',
     });
     if (!result.ok) {
       setError(result.error);
@@ -195,6 +207,7 @@ export function OrganisationTeamEditorModal({
     setNotice('Relationship saved.');
     setRelOtherTeamId('');
     setRelExpectedUntil('');
+    setRelEffectiveFrom(TIME_BOXABLE_MODES.has(relMode) ? todayIsoDate() : '');
   };
 
   return (
@@ -393,9 +406,14 @@ export function OrganisationTeamEditorModal({
                     <span>Interaction mode</span>
                     <select
                       value={relMode}
-                      onChange={(event) =>
-                        setRelMode(event.target.value as OrganisationInteractionMode)
-                      }
+                      onChange={(event) => {
+                        const next = event.target.value as OrganisationInteractionMode;
+                        setRelMode(next);
+                        if (TIME_BOXABLE_MODES.has(next)) {
+                          setRelEffectiveFrom((current) => current || todayIsoDate());
+                        }
+                      }}
+                      aria-label="Interaction mode"
                     >
                       {MODE_OPTIONS.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -406,11 +424,23 @@ export function OrganisationTeamEditorModal({
                   </label>
                   {TIME_BOXABLE_MODES.has(relMode) ? (
                     <label className="organisation-field">
+                      <span>Start date</span>
+                      <input
+                        type="date"
+                        value={relEffectiveFrom}
+                        onChange={(event) => setRelEffectiveFrom(event.target.value)}
+                        aria-label="Start date"
+                      />
+                    </label>
+                  ) : null}
+                  {TIME_BOXABLE_MODES.has(relMode) ? (
+                    <label className="organisation-field">
                       <span>Expected until</span>
                       <input
                         type="date"
                         value={relExpectedUntil}
                         onChange={(event) => setRelExpectedUntil(event.target.value)}
+                        aria-label="Expected until"
                       />
                     </label>
                   ) : null}

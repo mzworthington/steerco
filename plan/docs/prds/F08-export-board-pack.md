@@ -13,14 +13,14 @@ Download a PDF (or print-to-PDF) board pack with selected sections, structured s
 
 ## User stories
 
-- As a Director, I choose sections (Steering / Invest, Org shape / Work, Outcomes, Decision notes / Adapt).
+- As a Director, I choose sections (Steering / Invest, Org shape / Work, Goals, Decision notes / Adapt).
 - As a Director, I download a pack that looks like the mockup’s calm memo style.
 - As a technical user, I can find advanced exports later without cluttering the default.
 
 ## Requirements
 
 1. Section checklist grouped (labels may stay familiar; grouping reflects Invest / Work / Adapt):
-   - **Invest:** Steering overview, Outcomes (MoS)
+   - **Invest:** Steering overview, Goals (MoS)
    - **Work:** How work is organised (topology intent)
    - **Adapt:** Decision notes, Evidence (optional)
 2. Preview thumbnail/panel

@@ -47,7 +47,7 @@ Pure TypeScript + Zod. No React, no `fetch`, no filesystem.
 
 **Invariants (examples):**
 
-- Every bet belongs to exactly one outcome
+- Every bet belongs to exactly one goal
 - Every bet has non-empty kill criteria before status can be `stop-ready`
 - External refs are optional; displayName is required
 - Provider-sourced teams cannot be marked `fileOwned: true`
@@ -86,7 +86,7 @@ Orchestrate use cases; still framework-agnostic:
 | `BackstageOverlayWriter` | Emit `SteerBet` / overlay YAML only - **no Group YAML** if provider-backed |
 | `GitHubTeamsClient`      | Resolve team refs; optional delivery metrics                               |
 | `EntraGraphClient`       | Resolve group refs - propose-only changes                                  |
-| `ArchLensLink`           | Optional system entityRef on bets                                          |
+| `TechRadarLink`          | Optional external Tech Radar URL on the workspace                          |
 
 ## 6. Write-back policy engine
 

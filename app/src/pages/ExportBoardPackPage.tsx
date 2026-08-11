@@ -175,15 +175,15 @@ export function ExportBoardPackPage() {
               </section>
             ) : null}
 
-            {preview.outcomes ? (
-              <section className="export-preview-section" data-testid="export-section-outcomes">
+            {preview.goals ? (
+              <section className="export-preview-section" data-testid="export-section-goals">
                 <p className="export-preview-pillar">Invest</p>
-                <h3>Outcomes - measures of success</h3>
-                {preview.outcomes.map((outcome) => (
-                  <div key={outcome.id} className="export-preview-block">
-                    <h4>{outcome.title}</h4>
+                <h3>Goals - measures of success</h3>
+                {preview.goals.map((goal) => (
+                  <div key={goal.id} className="export-preview-block">
+                    <h4>{goal.title}</h4>
                     <ul>
-                      {outcome.measures.map((measure) => (
+                      {goal.measures.map((measure) => (
                         <li key={measure.id}>
                           <strong>{measure.title}</strong>: {measure.displayValue}.{' '}
                           {measure.interpretation}

@@ -20,8 +20,8 @@ export function HomePage() {
         <BrandReveal className="items-start" wordmarkAs="h1" wordmarkClassName="hero-brand" />
         <p className="hero-lead">{SITE_TAGLINE}</p>
         <p className="hero-supporting text-ink-muted mx-auto mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
-          Align outcomes, funded bets, and team shape in a local workspace - then leave with a
-          decision note fit for a board pack.
+          Align goals, funded bets, and team shape in a local workspace - then leave with a decision
+          note fit for a board pack.
         </p>
         <div className="hero-actions">
           <a href="/workspace" className="btn-primary">

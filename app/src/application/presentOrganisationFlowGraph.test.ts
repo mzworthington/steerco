@@ -36,6 +36,7 @@ function teamMetaFromOrg() {
         title: member.title,
         disciplineLabel: member.disciplineLabel,
         ftePercent: member.ftePercent,
+        initials: member.initials,
       })),
     })),
   );
@@ -49,6 +50,7 @@ describe('presentOrganisationFlowGraph', () => {
     const graph = presentOrganisationFlowGraph(org.relationships, meta);
     expect(graph.empty).toBe(false);
     expect(graph.nodes.length).toBeGreaterThan(1);
+    expect(graph.nodes.length).toBe(meta.length);
     expect(graph.edges.length).toBeGreaterThan(0);
     expect(graph.edges.some((edge) => /XaaS|Facilitate|Collab/.test(edge.modeLabel))).toBe(true);
     expect(graph.listGroups.length).toBeGreaterThan(1);
@@ -56,14 +58,32 @@ describe('presentOrganisationFlowGraph', () => {
     expect(graph.nodes.some((node) => node.members.length > 0)).toBe(true);
 
     const focused = presentOrganisationFlowGraph(org.relationships, meta, {
-      domainTitle: 'Commerce',
+      domainTitles: ['Commerce'],
     });
     expect(focused.edgeCount).toBeLessThan(graph.edgeCount);
     expect(focused.lead).toMatch(/commerce/i);
+    expect(focused.focusDomainTitles).toEqual(['Commerce']);
+    expect(focused.crossDomainEdgeCount).toBeGreaterThan(0);
+    expect(focused.edges.some((edge) => edge.crossesBoundary)).toBe(true);
+    expect(focused.nodes.some((node) => node.inFocusDomain)).toBe(true);
+    expect(focused.nodes.some((node) => node.isExternal)).toBe(true);
+    expect(
+      focused.nodes.filter((node) => node.isExternal).every((node) => !node.inFocusDomain),
+    ).toBe(true);
+
+    const multi = presentOrganisationFlowGraph(org.relationships, meta, {
+      domainTitles: ['Commerce', 'Customer'],
+    });
+    expect(multi.focusDomainTitles).toEqual(['Commerce', 'Customer']);
+    expect(multi.edgeCount).toBeGreaterThan(focused.edgeCount);
+    expect(multi.lead).toMatch(/2 domains/i);
 
     const tb = presentOrganisationFlowGraph(org.relationships, meta, { orientation: 'TB' });
     expect(tb.orientation).toBe('TB');
     expect(tb.lead).toMatch(/top-down/i);
+    expect(tb.focusDomainTitles).toEqual([]);
+    expect(tb.edges.every((edge) => edge.crossesBoundary === false)).toBe(true);
+    expect(tb.nodes.every((node) => !node.isExternal && !node.inFocusDomain)).toBe(true);
   });
 
   it('marks related nodes and edges when a team is selected', () => {
@@ -79,5 +99,45 @@ describe('presentOrganisationFlowGraph', () => {
     expect(focus.activeNodeIds.length).toBeGreaterThan(1);
     expect(focus.activeEdgeIds.length).toBeGreaterThan(0);
     expect(focus.activeEdgeIds.every((id) => id.includes('team_storefront'))).toBe(true);
+  });
+
+  it('includes cross-domain dependents when a shared platform is selected', () => {
+    const { org, meta } = teamMetaFromOrg();
+    const graph = presentOrganisationFlowGraph(org.relationships, meta);
+    const pricingMl = graph.nodes.find((node) => node.id === 'team_pricing_ml');
+    const pricingEngine = graph.nodes.find((node) => node.id === 'team_pricing');
+    expect(pricingMl?.domainTitle).toBe('Shared support');
+    expect(pricingEngine?.domainTitle).toBe('Commerce');
+    expect(pricingMl && pricingEngine && pricingMl.position.x !== pricingEngine.position.x).toBe(
+      true,
+    );
+
+    const focus = presentOrganisationFlowFocus(graph.edges, {
+      kind: 'team',
+      id: 'team_pricing_ml',
+    });
+    expect(focus.activeNodeIds).toEqual(
+      expect.arrayContaining(['team_pricing_ml', 'team_pricing']),
+    );
+    expect(focus.activeEdgeIds).toContain('team_pricing-x_as_a_service-team_pricing_ml');
+  });
+
+  it('filters edges to dependencies active in the selected date range', () => {
+    const { org, meta } = teamMetaFromOrg();
+    const all = presentOrganisationFlowGraph(org.relationships, meta);
+    const late = presentOrganisationFlowGraph(org.relationships, meta, {
+      rangeFrom: '2027-06-01',
+      rangeTo: '2027-12-31',
+    });
+    expect(late.edgeCount).toBeLessThan(all.edgeCount);
+    expect(late.lead).toMatch(/2027-06-01/);
+    expect(late.edges.length).toBe(late.edgeCount);
+
+    const mid = presentOrganisationFlowGraph(org.relationships, meta, {
+      rangeFrom: '2026-08-01',
+      rangeTo: '2026-08-31',
+    });
+    expect(mid.edgeCount).toBeGreaterThan(0);
+    expect(mid.lead).toMatch(/2026-08-01/);
   });
 });

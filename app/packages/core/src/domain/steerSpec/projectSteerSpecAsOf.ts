@@ -14,6 +14,36 @@ export function isEffectiveOnDate(window: EffectiveWindow, asOf: string): boolea
   return true;
 }
 
+/**
+ * True when the effective window overlaps [rangeFrom, rangeTo] (inclusive).
+ * Empty bounds are open-ended. A single bound behaves like {@link isEffectiveOnDate}.
+ */
+export function isEffectiveInRange(
+  window: EffectiveWindow,
+  rangeFrom?: string | null,
+  rangeTo?: string | null,
+): boolean {
+  const from = rangeFrom?.trim() || null;
+  const to = rangeTo?.trim() || null;
+  if (!from && !to) return true;
+
+  let start = from;
+  let end = to;
+  if (start && end && start > end) {
+    start = to;
+    end = from;
+  }
+
+  if (start && !end) return isEffectiveOnDate(window, start);
+  if (!start && end) return isEffectiveOnDate(window, end);
+
+  const winFrom = window.effectiveFrom?.trim();
+  const winUntil = window.effectiveUntil?.trim();
+  if (winFrom && end && winFrom > end) return false;
+  if (winUntil && start && winUntil < start) return false;
+  return true;
+}
+
 function projectMembers(members: TeamMember[], asOf: string): TeamMember[] {
   return members.filter((member) => isEffectiveOnDate(member, asOf));
 }

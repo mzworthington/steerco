@@ -2,6 +2,7 @@
  * Migrate older Slice 3 shapes into streams / domains / platform groupings.
  * - `groupings` with `kind: value_stream` → `streams[]` + team `streamIds`
  * - `teams[].withinTeamId` → inherit parent’s `streamIds` (CSS lives in a stream, not a team)
+ * - drop retired `bets[].systemRefs` (ArchLens suite link deferred; field removed)
  */
 export function migrateSteerSpecTopologyRaw(raw: unknown): unknown {
   if (!isRecord(raw) || !isRecord(raw.spec)) return raw;
@@ -11,6 +12,11 @@ export function migrateSteerSpecTopologyRaw(raw: unknown): unknown {
   const domains = asObjectArray(spec.domains).map((item) => ({ ...item }));
   const groupingsIn = asObjectArray(spec.groupings);
   const teams = asObjectArray(spec.teams).map((item) => ({ ...item }));
+  const bets = asObjectArray(spec.bets).map((item) => {
+    const next = { ...item };
+    delete next.systemRefs;
+    return next;
+  });
   const existingStreamIds = new Set(
     streams.map((stream) => (typeof stream.id === 'string' ? stream.id : '')).filter(Boolean),
   );
@@ -66,6 +72,7 @@ export function migrateSteerSpecTopologyRaw(raw: unknown): unknown {
       domains,
       groupings: keptGroupings,
       teams,
+      bets,
     },
   };
 }

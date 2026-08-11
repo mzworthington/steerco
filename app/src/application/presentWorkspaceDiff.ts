@@ -9,7 +9,7 @@ import {
 const SECTION_LABELS: Record<SteerSpecDiffSection, string> = {
   vision: 'Vision',
   metadata: 'Workspace',
-  outcomes: 'Outcomes',
+  outcomes: 'Goals',
   bets: 'Bets',
   teams: 'Teams',
   streams: 'Streams',

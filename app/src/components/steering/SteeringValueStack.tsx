@@ -59,7 +59,7 @@ function SortableBetCard({ bet }: { bet: SteeringBetCard }) {
           <span aria-hidden="true">⋮⋮</span>
         </button>
         <div className="steering-bet-main">
-          <p className="steering-bet-outcome">{bet.outcomeTitle}</p>
+          <p className="steering-bet-goal">{bet.outcomeTitle}</p>
           <Link href={`/workspace/bets/${bet.id}`} className="steering-bet-link">
             <h3 className="steering-bet-title">{bet.title}</h3>
             <p className="steering-bet-cue">{bet.metricCue}</p>

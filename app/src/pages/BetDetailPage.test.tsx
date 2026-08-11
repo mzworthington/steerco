@@ -54,7 +54,7 @@ afterEach(() => {
 });
 
 describe('BetDetailPage', () => {
-  it('shows outcome MoS context and saves edits into the session', async () => {
+  it('shows goal MoS context and saves edits into the session', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -73,8 +73,28 @@ describe('BetDetailPage', () => {
     expect(screen.getAllByText('Promise hit rate').length).toBeGreaterThan(0);
     expect(screen.getByLabelText('Kill criteria')).toBeTruthy();
     expect(screen.getByTestId('bet-who-delivers')).toBeTruthy();
+    expect(screen.getByTestId('bet-who-delivers-graph')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /^customer$/i })).toBeTruthy();
     expect(screen.getByLabelText('Fund Care workspace')).toBeChecked();
+    expect(screen.queryByText(/X-as-a-Service/)).toBeNull();
+    expect(screen.queryByTestId('bet-flow-overlay')).toBeNull();
+
+    await user.type(screen.getByTestId('bet-who-delivers-search'), 'care workspace');
+    expect(screen.getByLabelText('Fund Care workspace')).toBeTruthy();
+    expect(screen.queryByLabelText('Fund Loyalty experience')).toBeNull();
+
+    await user.clear(screen.getByTestId('bet-who-delivers-search'));
+    const directDepth = screen.getByTestId('bet-who-delivers-graph').getAttribute('data-depth');
+    expect(directDepth).toBe('direct');
+    await user.click(screen.getByTestId('bet-who-delivers-all-deps'));
+    expect(screen.getByTestId('bet-who-delivers-graph').getAttribute('data-depth')).toBe(
+      'transitive',
+    );
+
+    await user.click(screen.getByTestId('bet-who-delivers-expand'));
+    expect(screen.getByTestId('bet-who-delivers')).toHaveAttribute('data-expanded', 'true');
+    await user.click(screen.getByTestId('bet-who-delivers-expand'));
+    expect(screen.getByTestId('bet-who-delivers')).toHaveAttribute('data-expanded', 'false');
 
     const title = screen.getByLabelText('Bet title');
     await user.clear(title);

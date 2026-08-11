@@ -51,18 +51,17 @@ afterEach(() => {
   sessionStorage.clear();
 });
 
-/** Keyboard delay off — capacity board + DnD make default typing too slow for CI's 5s budget. */
+/** Keyboard delay off — DnD + graph make default typing too slow for CI's 5s budget. */
 function setupUser() {
   return userEvent.setup({ delay: null });
 }
 
-async function openAsIsCapacityBoard(user: ReturnType<typeof setupUser>) {
-  await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
-  expect(await screen.findByTestId('organisation-capacity-board')).toBeTruthy();
+async function selectTeamNode(user: ReturnType<typeof setupUser>, teamId: string) {
+  await user.click(screen.getByTestId(`organisation-flow-select-${teamId}`));
 }
 
 describe('OrganisationPage', { timeout: 15_000 }, () => {
-  it('defaults to zoomed-out flow of change and can switch to as-is detail', async () => {
+  it('defaults to as-is interaction graph with team side panel', async () => {
     const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -79,50 +78,64 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-page')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /how work is organised/i })).toBeTruthy();
     expect(screen.getByTestId('organisation-view-switch')).toBeTruthy();
-    expect(screen.getByTestId('organisation-flow-overview')).toBeTruthy();
-    expect(screen.getByTestId('organisation-lvt-placeholder')).toBeTruthy();
+    expect(screen.queryByRole('tab', { name: /flow of change/i })).toBeNull();
+    expect(screen.queryByTestId('organisation-capacity-board')).toBeNull();
     expect(screen.queryByTestId('organisation-as-of')).toBeNull();
     expect(screen.getByTestId('organisation-flow-graph')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-canvas')).toBeTruthy();
-    expect(screen.queryByTestId('organisation-flow-graph-detail')).toBeNull();
+    expect(screen.getByTestId('organisation-flow-graph-legend')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-detail')).toBeTruthy();
+    expect(screen.getByText(/select a team to see people/i)).toBeTruthy();
+    expect(screen.getByText(/select a team to reveal its dependencies/i)).toBeTruthy();
+    expect(screen.getByText(/one team provides; another consumes/i)).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-domain')).toBeTruthy();
-    expect(screen.getByTestId('organisation-flow-graph-orient')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-range')).toBeTruthy();
+    const today = new Date();
+    const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    expect(screen.getByTestId('organisation-flow-range-from')).toHaveValue(todayIso);
+    expect(screen.getByTestId('organisation-flow-range-to')).toHaveValue(todayIso);
+    expect(screen.queryByTestId('organisation-flow-graph-orient')).toBeNull();
     expect(screen.getByTestId('organisation-flow-expand')).toBeTruthy();
-    expect(
-      screen.getByText(/storefront experience uses as a service fulfilment platform/i),
-    ).toBeTruthy();
+    expect(screen.queryByTestId('organisation-flow-graph-list')).toBeNull();
     expect(screen.getByRole('link', { name: /prepare decision note/i })).toBeTruthy();
+
+    expect(screen.getByTestId('organisation-flow-graph-detail')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-canvas').parentElement).toHaveAttribute(
+      'data-layout',
+      'stack',
+    );
 
     await user.click(screen.getByTestId('organisation-flow-expand'));
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-expanded', 'true');
-    expect(screen.queryByTestId('organisation-flow-graph-list')).toBeNull();
+    expect(screen.getByTestId('organisation-flow-graph-canvas').parentElement).toHaveAttribute(
+      'data-layout',
+      'split',
+    );
     await user.click(screen.getByTestId('organisation-flow-expand'));
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-expanded', 'false');
-
-    const list = screen.getByTestId('organisation-flow-graph-list');
-    await user.click(
-      within(list).getByRole('button', {
-        name: /storefront experience uses as a service fulfilment platform/i,
-      }),
+    expect(screen.getByTestId('organisation-flow-graph-canvas').parentElement).toHaveAttribute(
+      'data-layout',
+      'stack',
     );
+
+    const domainPicker = screen.getByTestId('organisation-flow-graph-domain');
+    expect(within(domainPicker).getByText(/commerce/i)).toBeTruthy();
+    await user.click(within(domainPicker).getByTestId('organisation-domain-option-Commerce'));
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute(
+      'data-domain-focus',
+      'true',
+    );
+
+    await selectTeamNode(user, 'team_storefront');
+    expect(screen.getByTestId('organisation-team-team_storefront')).toBeTruthy();
+    expect(screen.getByTestId('organisation-edit-team-team_storefront')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
-
-    await openAsIsCapacityBoard(user);
-    expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();
-    expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
-    expect(screen.getByTestId('organisation-team-team_pricing')).toBeTruthy();
-
-    await user.click(screen.getByRole('tab', { name: /^domain$/i }));
-    expect(screen.getByTestId('organisation-domain-zoom')).toBeTruthy();
-    expect(screen.getByTestId('organisation-domain-select')).toBeTruthy();
-    expect(screen.getByTestId('organisation-domain-external-edges')).toBeTruthy();
-    expect(screen.getAllByText(/out of domain/i).length).toBeGreaterThan(0);
 
     await user.click(screen.getByRole('tab', { name: /^timeline$/i }));
     expect(screen.getByTestId('organisation-timeline')).toBeTruthy();
     expect(screen.getByTestId('organisation-timeline-chart')).toBeTruthy();
     expect(screen.getByTestId('organisation-timeline-events')).toBeTruthy();
-    expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
+    expect(screen.queryByTestId('organisation-as-of')).toBeNull();
     expect(screen.getByText(/dated events/i)).toBeTruthy();
   });
 
@@ -207,7 +220,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
       </WorkspaceSessionProvider>,
     );
 
-    await openAsIsCapacityBoard(user);
+    await selectTeamNode(user, 'team_storefront');
     await user.click(screen.getByTestId('organisation-edit-team-team_storefront'));
     const modal = screen.getByTestId('organisation-team-modal');
     expect(modal).toBeTruthy();
@@ -235,6 +248,124 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     ).toBe(true);
   });
 
+  it('defaults collaboration start date to today when adding a relationship', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    await selectTeamNode(user, 'team_storefront');
+    await user.click(screen.getByTestId('organisation-edit-team-team_storefront'));
+    const modal = screen.getByTestId('organisation-team-modal');
+
+    await user.selectOptions(within(modal).getByLabelText('Other team'), 'team_observability');
+    await user.selectOptions(within(modal).getByLabelText('Interaction mode'), 'collaboration');
+
+    const today = new Date();
+    const expectedStart = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-');
+    expect(within(modal).getByLabelText('Start date')).toHaveValue(expectedStart);
+
+    await user.type(within(modal).getByLabelText('Expected until'), '2026-12-31');
+    await user.click(within(modal).getByRole('button', { name: 'Add relationship' }));
+
+    expect(screen.getByText(/relationship saved/i)).toBeTruthy();
+    const stored = sessionStorage.getItem('steerco.workspace-session');
+    const parsed = JSON.parse(stored ?? '{}') as {
+      spec: {
+        spec: {
+          relationships: Array<{
+            fromTeamId: string;
+            toTeamId: string;
+            mode: string;
+            effectiveFrom?: string;
+            expectedUntil?: string;
+          }>;
+        };
+      };
+    };
+    expect(
+      parsed.spec.spec.relationships.some(
+        (rel) =>
+          rel.fromTeamId === 'team_storefront' &&
+          rel.toTeamId === 'team_observability' &&
+          rel.mode === 'collaboration' &&
+          rel.effectiveFrom === expectedStart &&
+          rel.expectedUntil === '2026-12-31',
+      ),
+    ).toBe(true);
+  });
+
+  it('defaults facilitation start date to today when adding a relationship', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    await selectTeamNode(user, 'team_storefront');
+    await user.click(screen.getByTestId('organisation-edit-team-team_storefront'));
+    const modal = screen.getByTestId('organisation-team-modal');
+
+    await user.selectOptions(within(modal).getByLabelText('Other team'), 'team_observability');
+    await user.selectOptions(within(modal).getByLabelText('Interaction mode'), 'facilitation');
+
+    const today = new Date();
+    const expectedStart = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-');
+    expect(within(modal).getByLabelText('Start date')).toHaveValue(expectedStart);
+
+    await user.type(within(modal).getByLabelText('Expected until'), '2026-11-30');
+    await user.click(within(modal).getByRole('button', { name: 'Add relationship' }));
+
+    expect(screen.getByText(/relationship saved/i)).toBeTruthy();
+    const stored = sessionStorage.getItem('steerco.workspace-session');
+    const parsed = JSON.parse(stored ?? '{}') as {
+      spec: {
+        spec: {
+          relationships: Array<{
+            fromTeamId: string;
+            toTeamId: string;
+            mode: string;
+            effectiveFrom?: string;
+            expectedUntil?: string;
+          }>;
+        };
+      };
+    };
+    expect(
+      parsed.spec.spec.relationships.some(
+        (rel) =>
+          rel.fromTeamId === 'team_storefront' &&
+          rel.toTeamId === 'team_observability' &&
+          rel.mode === 'facilitation' &&
+          rel.effectiveFrom === expectedStart &&
+          rel.expectedUntil === '2026-11-30',
+      ),
+    ).toBe(true);
+  });
+
   it('adds a person onto a team with quick add', async () => {
     const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
@@ -249,9 +380,9 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
       </WorkspaceSessionProvider>,
     );
 
-    await openAsIsCapacityBoard(user);
-    const teamCard = screen.getByTestId('organisation-team-team_storefront');
-    await user.click(within(teamCard).getByRole('button', { name: 'Add person' }));
+    await selectTeamNode(user, 'team_storefront');
+    const teamPanel = screen.getByTestId('organisation-team-team_storefront');
+    await user.click(within(teamPanel).getByRole('button', { name: 'Add person' }));
     const quickAdd = await screen.findByTestId('organisation-quick-add');
     await user.type(within(quickAdd).getByLabelText('Name'), 'Nina Torres');
     await user.click(within(quickAdd).getByRole('button', { name: 'Add to team' }));
@@ -285,7 +416,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
       </WorkspaceSessionProvider>,
     );
 
-    await openAsIsCapacityBoard(user);
+    await selectTeamNode(user, 'team_storefront');
     const person = screen.getByTestId('organisation-person-mem_storefront_em');
     await user.click(within(person).getByRole('button', { pressed: false }));
     const editor = await screen.findByTestId('organisation-allocation-editor');

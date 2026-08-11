@@ -49,7 +49,7 @@ EDGE shifts organisations from traditional, efficiency-focused planning to **ada
 flowchart TB
   subgraph edge [EDGE - invest and adapt]
     vision[Vision]
-    goals[Goals / Outcomes + MoS]
+    goals[Goals + MoS]
     bets[Bets]
     initiatives[Initiatives - thin slices]
     decide[Decision notes - start / continue / stop / rescope]
@@ -78,7 +78,7 @@ flowchart TB
 
 | EDGE question                 | SteerCo surface today                         | Build toward                                                                 |
 | ----------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------- |
-| How should we invest?         | Vision, outcomes, bets, metrics                 | Full EDGE toolkit: LVT + MoS + product brief + Tech@Core + backlog mix |
+| How should we invest?         | Vision, goals, bets, metrics                 | Full EDGE toolkit: LVT + MoS + product brief + Tech@Core + backlog mix |
 | How should we work together?  | How work is organised (zones + relationships)   | Full TT types, modes, groupings, cognitive-load signals                      |
 | How can we adapt fast enough? | Kill criteria, evidence, decision notes         | Named Periodic Value Review (PVR) cadence; stop-ready; learn-before-number   |
 
@@ -95,10 +95,10 @@ EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Le
 | EDGE idea                                     | SteerCo today                                        |
 | --------------------------------------------- | ------------------------------------------------------ |
 | Operating model between strategy and delivery | Steering workspace / SteerSpec investment contract     |
-| Outcome over output                           | Outcomes + metrics; bets carry success/kill signals    |
-| Value-driven portfolio (LVT)                  | `vision` → `outcomes` → `bets` in `steertree.yaml`     |
+| Goal over output                           | Goals + metrics; bets carry success/kill signals    |
+| Value-driven portfolio (LVT)                  | Product: vision → goals → bets; schema: `vision` → `outcomes` → `bets` |
 | Lightweight governance                        | Decision notes: start / continue / stop / rescope      |
-| Measures of Success (partial)                 | Outcome metrics; bet ↔ MoS links (Slice 1.5)           |
+| Measures of Success (partial)                 | Goal metrics; bet ↔ MoS links (Slice 1.5)           |
 | How we work (partial)                         | Topology zones + relationship modes                    |
 | Adapt fast enough (partial)                   | Kill criteria, `stop_ready`, evidence, mismatches      |
 
@@ -107,12 +107,12 @@ EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Le
 | EDGE teaching                         | Meaning                                                                                         | SteerCo today                                      | Build toward (stay investment-contract, not PMO)                                                                 |
 | ------------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **Six core principles**               | Cultural OS that makes the tools work                                                           | Implicit in copy                                     | Explicit principles in glossary / docs / Technical mode; UX reinforces autonomy + value prioritization           |
-| **Product mindset & Product brief** | Long-lived product teams; lightweight product definition linked to LVT                        | Bets + funded teams                                  | Optional Product brief linked to outcomes/bets; teaching copy: product ≠ project                             |
+| **Product mindset & Product brief** | Long-lived product teams; lightweight product definition linked to LVT                        | Bets + funded teams                                  | Optional Product brief linked to goals/bets; teaching copy: product ≠ project                             |
 | **Tech@Core**                         | Technology as business engine; strategic tech debt; Tech Radar                                  | Capability bets; ArchLens suite link (later)         | Tech-debt / revitalize cues on capability bets; optional radar _refs_ (not a radar product)                      |
 | **Lightweight governance & PVR**      | Replace stage-gate / annual budget theatre with frequent, data-informed portfolio rebalancing   | Decision notes + bet `reviewDate` / horizon          | Name PVR in product language; steering “next review” ritual; double-down vs defund without bureaucracy           |
 | **Integrated Backlogs**               | Cross-prioritise strategic + BAU + maintenance + capability work with relative value/effort     | `fundingStance` explore/exploit/sustain; no dual backlog | Portfolio mix / stance cues; relative value rank; never own Jira execution backlog                             |
-| **Measures of Success (MoS)**         | Customer-value fitness function; leading vs lagging; tied to Goals/Bets                         | Outcomes MoS + bet links                             | Keep deepening: decision notes cite MoS; leading/lagging framing; fitness over efficiency                       |
-| **Lean Value Tree**                   | Vision → Goals → Bets → Initiatives                                                             | Vision / outcomes / bets                             | Optional initiatives; explicit Goal alias in Technical mode                                                      |
+| **Measures of Success (MoS)**         | Customer-value fitness function; leading vs lagging; tied to Goals/Bets                         | Goals MoS + bet links                             | Keep deepening: decision notes cite MoS; leading/lagging framing; fitness over efficiency                       |
+| **Lean Value Tree**                   | Vision → Goals → Bets → Initiatives                                                             | Vision / goals (`outcomes[]`) / bets             | Optional initiatives; Technical mode notes schema `outcomes[]` = Goals                                                      |
 
 ```mermaid
 flowchart TB
@@ -134,14 +134,14 @@ flowchart TB
   pvr -->|start continue stop rescope| lvt
 ```
 
-### A1. Name the LVT ladder (keep exec language plain)
+### A1. Name the LVT ladder
 
 EDGE tree: **Vision → Goals → Bets → Initiatives**.
 
 | Action                    | Detail                                                                                                                       |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| UI words                  | Keep `Outcome` and `Bet` for executives                                                                                      |
-| Glossary / Technical mode | Map Outcome ≈ Goal; Bet ≈ Bet; optional Initiative ≈ thin slice under a bet                                                  |
+| Product / UI words        | Use `Goal` and `Bet` (LVT ladder) - not “Outcome” as the primary label                                                       |
+| Glossary / Technical mode | Goal is canonical; schema field remains `outcomes[]` until migrated; Bet ≈ Bet; optional Initiative ≈ thin slice under a bet |
 | Schema (later)            | Optional `initiatives[]` with `betId`, title, successSignal - **not** a Jira backlog (one sentence + optional external link) |
 
 Without initiatives, “delivery” only appears as funded teams (topology), not value slicing.
@@ -152,8 +152,8 @@ EDGE MoS shape work and fund decisions; they are the **customer-value fitness fu
 
 | Action              | Detail                                                                                            |
 | ------------------- | ------------------------------------------------------------------------------------------------- |
-| Require MoS         | Each outcome ≥1 MoS with baseline / current / target / interpretation                             |
-| Leading vs lagging  | Prefer leading indicators that steer bets; lagging outcomes validate - label both in Technical mode |
+| Require MoS         | Each goal ≥1 MoS with baseline / current / target / interpretation                             |
+| Leading vs lagging  | Prefer leading indicators that steer bets; lagging MoS validate - label both in Technical mode |
 | Bet ↔ MoS           | Bet detail shows which MoS the bet is meant to move (beyond free-text success signal)             |
 | Mismatch            | `bet_without_mos_link` (or weak link)                                                             |
 | Decision notes / PVR | Prefer measured lines that cite MoS ids                                                          |
@@ -163,9 +163,9 @@ EDGE MoS shape work and fund decisions; they are the **customer-value fitness fu
 
 | Action           | Detail                                                                                  |
 | ---------------- | --------------------------------------------------------------------------------------- |
-| Primary framing  | Outcomes stay customer-external                                                         |
+| Primary framing  | Goals stay customer-external                                                         |
 | Secondary        | Optional `investmentGuardrails` (budget band, capacity) on bets - never the hero metric |
-| Steering summary | Lead with outcome movement and stop-ready bets; cost quiet if shown                     |
+| Steering summary | Lead with goal movement and stop-ready bets; cost quiet if shown                     |
 
 ### A4. “How we invest” as a steering ritual
 
@@ -207,7 +207,7 @@ Do **not** build a PMO workflow engine; keep PVR as a named ritual on top of dec
 | Today                            | EDGE-aligned tweak                                                      |
 | -------------------------------- | ----------------------------------------------------------------------- |
 | `kind: SteerTree`                | Keep; document as Lean Value Tree contract (spine of EDGE, not all of EDGE) |
-| `outcomes`                       | Alias “Goals” in Technical mode / schema docs                           |
+| `outcomes`                       | Product language: **Goal**. Schema key remains `outcomes[]` until a migration                           |
 | `successSignal` + `killCriteria` | Keep; kill criteria = pre-agreed stop rule for incremental funding / PVR |
 | Missing `initiatives`            | Add only when value-slice visibility is needed without owning execution |
 | Decision notes                   | Document as the lightweight PVR decision record                         |
@@ -220,7 +220,7 @@ EDGE shifts from a **project** mindset (temporary teams; on-time/on-budget) to a
 | ------------------------------ | ----------------------------------------------------------------------------------------------- |
 | Teaching copy                  | Executive empty states / glossary: products outlive projects; topology funds products, not Gantt |
 | Optional schema                | `products[]`: problem, customers, LVT links, non-goals - few fields |
-| Linkage                        | Brief points at outcomes/MoS/bets; never a requirements PRD dump                            |
+| Linkage                        | Brief points at goals/MoS/bets; never a requirements PRD dump                            |
 | Topology join                  | Stream-aligned teams own products end-to-end (Team Topologies); enabling/platform support them  |
 | Out of product-brief scope | Sprint roadmaps, feature catalogs, dual backlog                                                  |
 
@@ -232,7 +232,7 @@ EDGE treats technology as the **core engine of the business**, not a back-office
 | --------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Capability bets             | Prefer `kind: capability` + MoS when revitalising core systems (debt paydown must move a fitness measure) |
 | Copy / steering cues        | “Tech debt is a business bet-or it isn’t funded”                                                       |
-| ArchLens suite link (later) | Optional `systemRefs` on bets for architecture risk - Tech@Core evidence, not a second canvas in-chrome |
+| ArchLens suite link (later) | Deferred deep link to architecture risk - Tech@Core evidence, not a second canvas in-chrome |
 | Tech Radar                  | Optional external radar _reference_ / link in Technical mode or evidence - **do not** build a radar UI |
 | Mismatch ideas (later)      | Capability bet with no MoS; sustain-only portfolio with rising risk evidence                           |
 
@@ -254,7 +254,7 @@ Tools fail without the principles. SteerCo should make these visible in docs, Te
 
 | Principle                                   | SteerCo expression                                                              |
 | ------------------------------------------- | --------------------------------------------------------------------------------- |
-| **Outcome-based strategy**                  | Outcomes + MoS before output; bets judged by fitness movement                     |
+| **Outcome-based strategy**                  | Goals + MoS before output; bets judged by fitness movement                     |
 | **Value-based prioritization**              | Rank / WIP / stance; do the most valuable work first                              |
 | **Lightweight planning and governance**     | Decision notes + PVR cadence; no stage-gate theatre                               |
 | **Adaptive, learning culture**              | Evidence “what did we learn?”; stop/rescope without stigma                        |
@@ -326,7 +326,7 @@ Current SteerSpec has three roles. TT has **four** fundamental types:
 
 | TT type               | SteerCo today         | Suggested evolution                                                                                                                         |
 | --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Stream-aligned        | `stream_aligned`        | Zone title “Stream-aligned teams”; own outcomes end-to-end                                                                                  |
+| Stream-aligned        | `stream_aligned`        | Zone title “Stream-aligned teams”; own goals end-to-end                                                                                  |
 | Platform (grouping)   | `platform`              | Support **platform grouping** later (parent grouping + member teams)                                                                        |
 | Enabling              | `enabling`              | Facilitation mode default; temporary boost, not permanent owner                                                                             |
 | Complicated subsystem | `complicated_subsystem` | Specialist expertise that would overload stream-aligned teams                                                                               |
@@ -457,10 +457,10 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ### C1. Near-term (Slice 1 - copy / presentation)
 
-- [x] Document LVT mapping in [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) glossary (Outcome ≈ Goal; MoS; Initiative reserved)
+- [x] Document LVT mapping in [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) glossary (Goal is LVT canonical; schema `outcomes[]`; MoS; Initiative reserved)
 - [x] Document TT mapping in glossary (roles ↔ types; modes ↔ interactions; platform grouping note)
 - [x] Commit Slice 1 operating-model bar + Slice 1.5/3 in [ROADMAP.md](./ROADMAP.md); amend PRDs F02–F08, F12
-- [x] MoS framing on outcomes page; bet detail shows related outcome MoS as context
+- [x] MoS framing on Goals page; bet detail shows related Goal MoS as context
 - [x] Decision note helper copy prefers MoS / evidence language
 - [x] F03 / steering copy: cognitive load, fast flow, platform reduces load; overload banner wording
 - [x] Elevate stop-ready in steering alignment summary
@@ -498,12 +498,12 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] Optional `initiatives[]` under bets
 - [x] WIP / rank UI for value-based prioritization (Integrated Backlog relative value)
 - [x] Portfolio mix hint: opportunity vs capability vs sustain (Integrated Backlog stance mix - not finance)
-- [x] Optional lightweight **Product brief** (`products[]` linked to outcomes/bets)
-- [x] Tech@Core cues: capability-bet revitalize copy; optional ArchLens `systemRefs`; optional external Tech Radar link (no radar UI)
+- [x] Optional lightweight **Product brief** (`products[]` linked to goals/bets)
+- [x] Tech@Core cues: capability-bet revitalize copy; optional external Tech Radar link (no radar UI)
 - [ ] MoS leading vs lagging label (Technical mode / schema docs)
 - [ ] Fractal zoom on org view (grouping → members)
 - [x] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** - capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
-- [x] ArchLens `systemRefs` on bets stay optional (suite link, not TT)
+- [ ] ArchLens suite link deferred (no SteerSpec field yet)
 - [ ] Narrative tie-in: AI gains without topology redesign stall in bottlenecks (press / docs only until evidence exists)
 - [x] Technical mode ([F12](./prds/F12-technical-mode.md)): Steer tree, topology fitness + write-back policy, EDGE/TT vocabulary bridge
 - [x] Catalog-file import & merge ([F11](./prds/F11-import-merge.md)) without OAuth; never proposes Group YAML
@@ -533,7 +533,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 | `topologyEvents`                     | What changed in the period  | Evidence for adapt / load response            |
 | `decisionNotes`                      | Lightweight governance / PVR decision record | Response to flow/load signals        |
 | `evidence`                           | Feedback for adapt / PVR    | Learning that changes funding or shape        |
-| Optional radar / ArchLens refs       | Tech@Core sensing           | -                                             |
+| Optional Tech Radar link             | Tech@Core sensing           | -                                             |
 | Mismatches                           | Portfolio smells            | Cognitive-load / interaction smells           |
 | Docs: six principles                 | Cultural OS for EDGE tools  | Complements fast-flow culture                 |
 
@@ -544,6 +544,6 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) - domain glossary and principles
 - [STEER_SPEC.md](./STEER_SPEC.md) - canonical contract
 - [ROADMAP.md](./ROADMAP.md) - slices
-- [F02](./prds/F02-steering-overview.md) · [F03](./prds/F03-how-work-is-organised.md) · [F04](./prds/F04-bet-detail.md) · [F05](./prds/F05-outcomes.md) · [F06](./prds/F06-evidence.md) · [F07](./prds/F07-decision-note.md) · [F08](./prds/F08-export-board-pack.md)
+- [F02](./prds/F02-steering-overview.md) · [F03](./prds/F03-how-work-is-organised.md) · [F04](./prds/F04-bet-detail.md) · [F05](./prds/F05-goals.md) · [F06](./prds/F06-evidence.md) · [F07](./prds/F07-decision-note.md) · [F08](./prds/F08-export-board-pack.md)
 
 When a checklist item graduates into committed Slice work, add or amend a PRD and tick it here-do not delete the rationale sections above.

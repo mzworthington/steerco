@@ -24,8 +24,8 @@ Secondary surface for SteerSpec detail, topology fitness with policy panel, and 
 3. Write-back policy panel (readouts)
 4. Does not replace executive screens; deep-link back
 5. Compact vocabulary bridge:
-   - LVT: Goal≈Outcome, MoS≈metrics, Initiative reserved
-   - Beyond LVT: PVR≈decision notes + review dates; Product brief (`products[]`); Tech@Core≈capability bets + optional radar/ArchLens refs; Integrated Backlog≈fundingStance / mix cues; six EDGE principles listed
+   - LVT: Goal (schema `outcomes[]`), MoS≈metrics, Initiative reserved
+   - Beyond LVT: PVR≈decision notes + review dates; Product brief (`products[]`); Tech@Core≈capability bets + optional radar link; Integrated Backlog≈fundingStance / mix cues; six EDGE principles listed
    - TT: stream-aligned≈customer-facing legacy, platform grouping note, interaction mode aliases
 6. Topology fitness view highlights mismatches including load/flow and (from Slice 1.5) MoS-link / collab time-box codes
 

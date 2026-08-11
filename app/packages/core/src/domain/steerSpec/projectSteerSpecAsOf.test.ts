@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { parseSteerSpecYaml } from './parseSteerSpecYaml';
-import { isEffectiveOnDate, projectSteerSpecAsOf } from './projectSteerSpecAsOf';
+import {
+  isEffectiveInRange,
+  isEffectiveOnDate,
+  projectSteerSpecAsOf,
+} from './projectSteerSpecAsOf';
 
 const minimalDoc = `
 apiVersion: steerco.dev/v1alpha1
@@ -188,5 +192,26 @@ describe('projectSteerSpecAsOf', () => {
     if (!parsed.ok) return;
     expect(projectSteerSpecAsOf(parsed.value, null)).toBe(parsed.value);
     expect(projectSteerSpecAsOf(parsed.value, '  ')).toBe(parsed.value);
+  });
+});
+
+describe('isEffectiveInRange', () => {
+  it('treats open windows as always overlapping', () => {
+    expect(isEffectiveInRange({}, '2026-01-01', '2026-12-31')).toBe(true);
+  });
+
+  it('detects overlap against a closed window', () => {
+    const window = { effectiveFrom: '2026-03-01', effectiveUntil: '2026-05-31' };
+    expect(isEffectiveInRange(window, '2026-01-01', '2026-02-28')).toBe(false);
+    expect(isEffectiveInRange(window, '2026-04-01', '2026-04-30')).toBe(true);
+    expect(isEffectiveInRange(window, '2026-06-01', '2026-07-01')).toBe(false);
+    expect(isEffectiveInRange(window, '2026-05-01', '2026-08-01')).toBe(true);
+  });
+
+  it('falls back to a single as-of day when only one bound is set', () => {
+    const window = { effectiveFrom: '2026-03-01', effectiveUntil: '2026-05-31' };
+    expect(isEffectiveInRange(window, '2026-04-15', null)).toBe(true);
+    expect(isEffectiveInRange(window, null, '2026-02-01')).toBe(false);
+    expect(isEffectiveOnDate(window, '2026-04-15')).toBe(true);
   });
 });

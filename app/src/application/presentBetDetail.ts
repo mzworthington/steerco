@@ -93,8 +93,6 @@ export type BetDetailModel = {
   horizon: string;
   fundingStance: FundingStance | null;
   kind: BetKind | null;
-  systemRefs: string[];
-  systemRefsText: string;
   techRadarUrl: string | null;
   techAtCoreCue: string | null;
   initiatives: BetDetailInitiative[];
@@ -134,8 +132,6 @@ export type BetDetailDraft = {
   horizon: string;
   fundingStance: FundingStance | null;
   kind: BetKind | null;
-  /** Comma or newline separated ArchLens entityRefs. */
-  systemRefsText: string;
 };
 
 export type BetDetailFieldIssue = {
@@ -213,7 +209,6 @@ export function presentBetDetail(
   const fundedTeams = presentBetDeliveryTeams(projected, selectedTeams);
   const fundedTeamGroups = groupBetDeliveryTeams(projected, fundedTeams);
 
-  const systemRefs = [...(bet.systemRefs ?? [])];
   const initiatives = (spec.spec.initiatives ?? [])
     .filter((item) => item.betId === bet.id)
     .map((item) => ({
@@ -255,8 +250,6 @@ export function presentBetDetail(
     horizon: bet.horizon ?? '',
     fundingStance: bet.fundingStance ?? null,
     kind: bet.kind ?? null,
-    systemRefs,
-    systemRefsText: systemRefs.join('\n'),
     techRadarUrl: spec.spec.techRadarUrl?.trim() || null,
     techAtCoreCue:
       bet.kind === 'capability'
@@ -536,7 +529,6 @@ export function applyBetDetailDraft(
     horizon: draft.horizon.trim() || undefined,
     fundingStance: draft.fundingStance ?? undefined,
     kind: draft.kind ?? undefined,
-    systemRefs: parseSystemRefsText(draft.systemRefsText),
   };
 
   return {
@@ -597,13 +589,6 @@ export function applyAddInitiative(
       },
     },
   };
-}
-
-function parseSystemRefsText(raw: string): string[] {
-  return raw
-    .split(/[\n,]+/)
-    .map((part) => part.trim())
-    .filter(Boolean);
 }
 
 function uniqueId(prefix: string, seed: string, existing: string[]): string {

@@ -29,11 +29,10 @@ describe('presentOrganisation', () => {
     expect(model.empty).toBe(false);
     expect(model.layout).toBe('flow');
     expect(model.viewMode).toBe('as_is');
-    expect(model.teachingLine).toMatch(/as-is team shape/i);
-    expect(model.overview?.lanes.map((lane) => lane.title)).toEqual(
+    expect(model.teachingLine).toMatch(/interaction graph/i);
+    expect(model.flow?.streams.map((band) => band.title)).toEqual(
       expect.arrayContaining(['Storefront', 'Catalog']),
     );
-    expect(model.overview?.lvtPlaceholder).toMatch(/lean value tree/i);
     expect(model.zones.map((zone) => zone.role)).toEqual([
       'stream_aligned',
       'platform',
@@ -120,31 +119,38 @@ describe('presentOrganisation', () => {
     expect(after.pointInTimeLine).toMatch(/2026-08-01/);
   });
 
-  it('builds a zoomed-out flow overview and a domain focus with external edges', () => {
+  it('builds flow layout with stream bands for capacity', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    const overviewModel = presentOrganisation(opened.value, { viewMode: 'flow_of_change' });
-    expect(overviewModel.viewMode).toBe('flow_of_change');
-    expect(overviewModel.teachingLine).toMatch(/zoomed-out flow of change/i);
-    expect(overviewModel.overview?.lanes[0]?.streamAlignedLabels).toContain(
+    const model = presentOrganisation(opened.value, { viewMode: 'as_is' });
+    expect(model.viewMode).toBe('as_is');
+    expect(model.teachingLine).toMatch(/interaction graph/i);
+    expect(model.flow?.streams[0]?.streamAlignedTeams.map((team) => team.displayName)).toContain(
       'Storefront experience',
     );
+  });
 
-    const domainModel = presentOrganisation(opened.value, {
-      viewMode: 'domain',
+  it('filters as-is flow streams by domain while keeping shared platforms', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const filtered = presentOrganisation(opened.value, {
+      viewMode: 'as_is',
       domainId: 'domain_commerce',
     });
-    expect(domainModel.domainFocus?.domainTitle).toBe('Commerce');
-    expect(domainModel.domainFocus?.streamBands.length).toBeGreaterThanOrEqual(2);
-    expect(domainModel.domainFocus?.externalEdges.some((edge) => edge.crossesBoundary)).toBe(true);
-    expect(domainModel.domainFocus?.externalTeams.some((team) => team.id === 'team_fulfilil')).toBe(
-      true,
+    expect(filtered.flow?.streams.every((band) => band.domainTitle === 'Commerce')).toBe(true);
+    expect(filtered.flow?.streams.map((band) => band.title)).toEqual(
+      expect.arrayContaining(['Storefront', 'Catalog']),
     );
-    expect(
-      domainModel.domainFocus?.externalTeams.some((team) => team.id === 'team_enablement'),
-    ).toBe(true);
+    expect(filtered.flow?.streams.some((band) => band.title === 'Warehouse')).toBe(false);
+    expect(filtered.flow?.platforms.length).toBeGreaterThan(0);
+    expect(filtered.flow?.enabling.length).toBeGreaterThan(0);
+
+    const all = presentOrganisation(opened.value, { viewMode: 'as_is' });
+    expect(all.flow?.streams.length).toBeGreaterThan(filtered.flow?.streams.length ?? 0);
   });
 
   it('normalizes legacy roles and modes from stored sessions without crashing', () => {
@@ -270,6 +276,7 @@ describe('applyAddOrganisationRelationship', () => {
       toTeamId: 'team_catalog',
       mode: 'collaboration',
       expectedUntil: '2026-12-01',
+      effectiveFrom: '2026-08-11',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
@@ -280,6 +287,7 @@ describe('applyAddOrganisationRelationship', () => {
         item.mode === 'collaboration',
     );
     expect(relationship?.expectedUntil).toBe('2026-12-01');
+    expect(relationship?.effectiveFrom).toBe('2026-08-11');
   });
 });
 

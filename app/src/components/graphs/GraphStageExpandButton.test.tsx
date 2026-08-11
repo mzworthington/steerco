@@ -32,4 +32,13 @@ describe('GraphStageExpandButton', () => {
     render(<GraphStageExpandButton expanded={false} onToggle={() => {}} />);
     expect(screen.queryByTestId('graph-stage-expand')).toBeNull();
   });
+
+  it('renders a primary Full view CTA when requested', () => {
+    stubMatchMedia(true);
+    render(<GraphStageExpandButton expanded={false} onToggle={() => {}} variant="primary" />);
+    const button = screen.getByTestId('graph-stage-expand');
+    expect(button).toBeTruthy();
+    expect(button.className).toContain('graph-stage-expand-btn--primary');
+    expect(button.textContent).toMatch(/full view/i);
+  });
 });

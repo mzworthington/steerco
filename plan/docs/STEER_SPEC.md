@@ -136,7 +136,7 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 | `bet_without_kill_criteria` | Missing kill criteria                                                                                     | 1     |
 | `platform_overload`         | Platform has X-as-a-Service dependents above threshold (default 8); surface as cognitive-load / flow risk | 1     |
 | `team_without_bet`          | Stream-aligned team funds zero bets (warning)                                                             | 1     |
-| `orphan_outcome`            | Outcome with zero bets                                                                                    | 1     |
+| `orphan_outcome`            | Goal with zero bets                                                                                    | 1     |
 | `bet_without_mos_link`      | Bet status `on_track`/`at_risk`/`stop_ready` with empty `metricIds` and no `primaryMetricId` (warning)    | 1.5   |
 | `collab_without_end`        | Relationship `mode: collaboration` or `facilitation` with no `expectedUntil` (warning)                    | 1.5   |
 | `stream_bet_wip`            | Stream-aligned team funded on more than 2 active bets (`proposed`/`on_track`/`at_risk`/`stop_ready`, warning) | 1.5   |
@@ -156,4 +156,4 @@ Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`
 | SteerBet overlay     | Out       | Always OK - SteerCo-owned kind                                |
 | GitHub team          | In        | `externalRefs: [{ system: github, id: org/team }]`              |
 | Entra group          | In        | `externalRefs: [{ system: entra, id: objectId }]`               |
-| ArchLens entityRef   | Out/In    | Optional `bets[].systemRefs[]` (field reserved, unused Slice 1) |
+| ArchLens entityRef   | Out/In    | Deferred - no SteerSpec field yet; suite stays separate products |

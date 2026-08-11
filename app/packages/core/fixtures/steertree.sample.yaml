@@ -5,7 +5,7 @@ metadata:
   title: Northwind Q3 alignment
   description: >
     Synthetic ~289-person retailer demo (~269 FTE across 37 teams,
-    6 domains). Not a real programme - sized to exercise flow-of-change, as-is, and domain zoom.
+    6 domains). Not a real programme - sized to exercise as-is capacity, domain filter, interaction graph, and timeline.
 spec:
   vision: Ship customer promises in days, not weeks, without burning out store and digital teams
   techRadarUrl: https://example.com/tech-radar
@@ -79,7 +79,6 @@ spec:
       fundingStance: explore
       kind: capability
       valueRank: 2
-      systemRefs: [component:default/fulfilil-spine, system:default/commerce-platform]
     - id: bet_loyalty
       outcomeId: out_promise
       title: Loyalty ledger unification
@@ -105,7 +104,6 @@ spec:
       fundingStance: exploit
       kind: capability
       valueRank: 3
-      systemRefs: [component:default/pos]
     - id: bet_insights
       outcomeId: out_promise
       title: Decision-grade customer insight

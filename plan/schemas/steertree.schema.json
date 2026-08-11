@@ -4,7 +4,12 @@
   "title": "SteerTree",
   "type": "object",
   "additionalProperties": false,
-  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
   "properties": {
     "apiVersion": {
       "const": "steerco.dev/v1alpha1"
@@ -15,49 +20,81 @@
     "metadata": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["name"],
+      "required": [
+        "name"
+      ],
       "properties": {
-        "name": { "type": "string", "minLength": 1, "pattern": "^[a-z0-9][a-z0-9-]*$" },
-        "title": { "type": "string" },
-        "description": { "type": "string" }
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
       }
     },
     "spec": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["vision", "outcomes", "bets", "teams"],
+      "required": [
+        "vision",
+        "outcomes",
+        "bets",
+        "teams"
+      ],
       "properties": {
-        "vision": { "type": "string", "minLength": 1 },
+        "vision": {
+          "type": "string",
+          "minLength": 1
+        },
         "outcomes": {
           "type": "array",
-          "items": { "$ref": "#/$defs/outcome" }
+          "items": {
+            "$ref": "#/$defs/outcome"
+          }
         },
         "bets": {
           "type": "array",
-          "items": { "$ref": "#/$defs/bet" }
+          "items": {
+            "$ref": "#/$defs/bet"
+          }
         },
         "teams": {
           "type": "array",
-          "items": { "$ref": "#/$defs/team" }
+          "items": {
+            "$ref": "#/$defs/team"
+          }
         },
         "relationships": {
           "type": "array",
-          "items": { "$ref": "#/$defs/relationship" },
+          "items": {
+            "$ref": "#/$defs/relationship"
+          },
           "default": []
         },
         "decisionNotes": {
           "type": "array",
-          "items": { "$ref": "#/$defs/decisionNote" },
+          "items": {
+            "$ref": "#/$defs/decisionNote"
+          },
           "default": []
         },
         "evidence": {
           "type": "array",
-          "items": { "$ref": "#/$defs/evidence" },
+          "items": {
+            "$ref": "#/$defs/evidence"
+          },
           "default": []
         },
         "topologyEvents": {
           "type": "array",
-          "items": { "$ref": "#/$defs/topologyEvent" },
+          "items": {
+            "$ref": "#/$defs/topologyEvent"
+          },
           "default": [],
           "description": "Timeline of capacity and relationship changes - Slice 1.5"
         }
@@ -67,24 +104,53 @@
   "$defs": {
     "statusOutcome": {
       "type": "string",
-      "enum": ["on_track", "at_risk", "achieved", "abandoned"]
+      "enum": [
+        "on_track",
+        "at_risk",
+        "achieved",
+        "abandoned"
+      ]
     },
     "statusBet": {
       "type": "string",
-      "enum": ["proposed", "on_track", "at_risk", "stop_ready", "stopped", "done"]
+      "enum": [
+        "proposed",
+        "on_track",
+        "at_risk",
+        "stop_ready",
+        "stopped",
+        "done"
+      ]
     },
     "teamRole": {
       "type": "string",
       "description": "Team Topologies team type. Legacy aliases customer_facing, shared_platform, coaching_support are accepted by the parser and normalized on read.",
-      "enum": ["stream_aligned", "platform", "enabling", "complicated_subsystem"]
+      "enum": [
+        "stream_aligned",
+        "platform",
+        "enabling",
+        "complicated_subsystem"
+      ]
     },
     "teamMember": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "displayName", "discipline", "title", "ftePercent"],
+      "required": [
+        "id",
+        "displayName",
+        "discipline",
+        "title",
+        "ftePercent"
+      ],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "displayName": { "type": "string", "minLength": 1 },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1
+        },
         "discipline": {
           "$ref": "#/$defs/memberDiscipline"
         },
@@ -112,28 +178,57 @@
     "memberDiscipline": {
       "type": "string",
       "description": "Coarse discipline for capacity / mix advice. Not an HR job family and not the Team Topologies team type.",
-      "enum": ["engineering", "design", "product", "quality", "leadership", "other"]
+      "enum": [
+        "engineering",
+        "design",
+        "product",
+        "quality",
+        "leadership",
+        "other"
+      ]
     },
     "provenance": {
       "type": "string",
-      "enum": ["local", "backstage", "github", "entra", "catalog_file"]
+      "enum": [
+        "local",
+        "backstage",
+        "github",
+        "entra",
+        "catalog_file"
+      ]
     },
     "interactionMode": {
       "type": "string",
       "description": "Team Topologies interaction mode. Legacy aliases uses_as_service, works_together, coaching are accepted by the parser and normalized on read.",
-      "enum": ["x_as_a_service", "collaboration", "facilitation"]
+      "enum": [
+        "x_as_a_service",
+        "collaboration",
+        "facilitation"
+      ]
     },
     "recommendation": {
       "type": "string",
-      "enum": ["start", "continue", "stop", "rescope"]
+      "enum": [
+        "start",
+        "continue",
+        "stop",
+        "rescope"
+      ]
     },
     "fundingStance": {
       "type": "string",
-      "enum": ["explore", "exploit", "sustain"]
+      "enum": [
+        "explore",
+        "exploit",
+        "sustain"
+      ]
     },
     "betKind": {
       "type": "string",
-      "enum": ["opportunity", "capability"]
+      "enum": [
+        "opportunity",
+        "capability"
+      ]
     },
     "topologyEventKind": {
       "type": "string",
@@ -149,15 +244,31 @@
     "outcome": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "status"],
+      "required": [
+        "id",
+        "title",
+        "status"
+      ],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "title": { "type": "string", "minLength": 1 },
-        "summary": { "type": "string" },
-        "status": { "$ref": "#/$defs/statusOutcome" },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/statusOutcome"
+        },
         "metrics": {
           "type": "array",
-          "items": { "$ref": "#/$defs/metric" },
+          "items": {
+            "$ref": "#/$defs/metric"
+          },
           "default": []
         }
       }
@@ -165,47 +276,93 @@
     "metric": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title"],
+      "required": [
+        "id",
+        "title"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "title": { "type": "string" },
-        "unit": { "type": "string" },
-        "current": { "type": ["number", "null"] },
-        "baseline": { "type": ["number", "null"] },
-        "target": { "type": ["number", "null"] },
-        "interpretation": { "type": "string" }
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "current": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "baseline": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "target": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "interpretation": {
+          "type": "string"
+        }
       }
     },
     "bet": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "outcomeId", "title", "successSignal", "killCriteria", "status"],
+      "required": [
+        "id",
+        "outcomeId",
+        "title",
+        "successSignal",
+        "killCriteria",
+        "status"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "outcomeId": { "type": "string" },
-        "title": { "type": "string" },
-        "successSignal": { "type": "string" },
-        "killCriteria": { "type": "string" },
-        "status": { "$ref": "#/$defs/statusBet" },
+        "id": {
+          "type": "string"
+        },
+        "outcomeId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "successSignal": {
+          "type": "string"
+        },
+        "killCriteria": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/statusBet"
+        },
         "fundedTeamIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
-        },
-        "systemRefs": {
-          "type": "array",
-          "items": { "type": "string" },
-          "default": [],
-          "description": "Optional ArchLens entityRefs - unused in Slice 1"
         },
         "metricIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Measure-of-Success links - metric ids this bet is judged against"
         },
         "primaryMetricId": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "Headline metric id for this bet, if one metric leads"
         },
         "reviewDate": {
@@ -216,27 +373,48 @@
           "type": "string",
           "description": "Free text review horizon, e.g. \"Q3 review\""
         },
-        "fundingStance": { "$ref": "#/$defs/fundingStance" },
-        "kind": { "$ref": "#/$defs/betKind" }
+        "fundingStance": {
+          "$ref": "#/$defs/fundingStance"
+        },
+        "kind": {
+          "$ref": "#/$defs/betKind"
+        }
       }
     },
     "team": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "displayName", "role", "provenance"],
+      "required": [
+        "id",
+        "displayName",
+        "role",
+        "provenance"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "displayName": { "type": "string" },
-        "role": { "$ref": "#/$defs/teamRole" },
-        "provenance": { "$ref": "#/$defs/provenance" },
+        "id": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/teamRole"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
         "externalRefs": {
           "type": "array",
-          "items": { "$ref": "#/$defs/externalRef" },
+          "items": {
+            "$ref": "#/$defs/externalRef"
+          },
           "default": []
         },
         "members": {
           "type": "array",
-          "items": { "$ref": "#/$defs/teamMember" },
+          "items": {
+            "$ref": "#/$defs/teamMember"
+          },
           "default": [],
           "description": "Optional roster with disciplines, job titles, and FTE allocation - steering capacity signal, not an HR system of record"
         }
@@ -245,23 +423,43 @@
     "externalRef": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["system", "id"],
+      "required": [
+        "system",
+        "id"
+      ],
       "properties": {
         "system": {
           "type": "string",
-          "enum": ["backstage", "github", "entra", "other"]
+          "enum": [
+            "backstage",
+            "github",
+            "entra",
+            "other"
+          ]
         },
-        "id": { "type": "string" }
+        "id": {
+          "type": "string"
+        }
       }
     },
     "relationship": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["fromTeamId", "toTeamId", "mode"],
+      "required": [
+        "fromTeamId",
+        "toTeamId",
+        "mode"
+      ],
       "properties": {
-        "fromTeamId": { "type": "string" },
-        "toTeamId": { "type": "string" },
-        "mode": { "$ref": "#/$defs/interactionMode" },
+        "fromTeamId": {
+          "type": "string"
+        },
+        "toTeamId": {
+          "type": "string"
+        },
+        "mode": {
+          "$ref": "#/$defs/interactionMode"
+        },
         "expectedUntil": {
           "type": "string",
           "description": "ISO date time-box for collaboration/facilitation - Slice 1.5"
@@ -279,58 +477,121 @@
     "decisionNote": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "recommendation", "title", "why", "nextStep"],
+      "required": [
+        "id",
+        "recommendation",
+        "title",
+        "why",
+        "nextStep"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "betId": { "type": ["string", "null"] },
-        "recommendation": { "$ref": "#/$defs/recommendation" },
-        "title": { "type": "string" },
-        "why": { "type": "string" },
+        "id": {
+          "type": "string"
+        },
+        "betId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "recommendation": {
+          "$ref": "#/$defs/recommendation"
+        },
+        "title": {
+          "type": "string"
+        },
+        "why": {
+          "type": "string"
+        },
         "measured": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         },
         "measuredMetricIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Structured Measure-of-Success refs - metric ids this decision cites"
         },
         "affectedTeamIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         },
-        "nextStep": { "type": "string" }
+        "nextStep": {
+          "type": "string"
+        }
       }
     },
     "evidence": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "source"],
+      "required": [
+        "id",
+        "source"
+      ],
       "properties": {
-        "id": { "type": "string" },
-        "metricId": { "type": ["string", "null"] },
+        "id": {
+          "type": "string"
+        },
+        "metricId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "source": {
           "type": "string",
-          "enum": ["sample", "manual", "github", "other"]
+          "enum": [
+            "sample",
+            "manual",
+            "github",
+            "other"
+          ]
         },
-        "note": { "type": "string" }
+        "note": {
+          "type": "string"
+        }
       }
     },
     "topologyEvent": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "at", "kind", "summary"],
+      "required": [
+        "id",
+        "at",
+        "kind",
+        "summary"
+      ],
       "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "at": { "type": "string", "minLength": 1, "description": "ISO date the event occurred" },
-        "kind": { "$ref": "#/$defs/topologyEventKind" },
-        "summary": { "type": "string", "minLength": 1 },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "at": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ISO date the event occurred"
+        },
+        "kind": {
+          "$ref": "#/$defs/topologyEventKind"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
         "teamIds": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": []
         },
         "relationshipKey": {
