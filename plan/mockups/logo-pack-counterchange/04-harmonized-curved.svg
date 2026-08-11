@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="SteerLens counterchange mark both blades curved">
+  <defs>
+    <clipPath id="disc">
+      <circle cx="100" cy="100" r="80"/>
+    </clipPath>
+  </defs>
+  <rect width="200" height="200" fill="#0a0a0a"/>
+  <g clip-path="url(#disc)">
+    <rect x="20" y="20" width="160" height="80" fill="#ffffff"/>
+    <rect x="20" y="100" width="160" height="80" fill="#0a0a0a"/>
+    <path fill="#0a0a0a" d="M48 100 L128 100 Q146 78 150 48 Q110 72 48 100 Z"/>
+    <path fill="#ffffff" d="M48 100 L128 100 Q122 124 100 156 Q78 124 48 100 Z"/>
+  </g>
+</svg>

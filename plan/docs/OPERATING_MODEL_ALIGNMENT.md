@@ -488,13 +488,13 @@ Empty / teaching states should reflect 2e language without trademark overload:
 
 ### C3. Later (Slice 3+)
 
-- [ ] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) — value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
-- [ ] `platformScope` on platform teams and platform groupings: `organisation | vertical | team` (who the platform accelerates)
-- [ ] Complicated-subsystem nest: optional `within` (team ref to stream-aligned parent) and/or membership in a value-stream grouping for team-within-team layout
-- [ ] Enabling one-to-many: present facilitation fan-out as expected; keep `enabling_owns_delivery` mismatch
-- [ ] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) — type zones remain teaching/filter
-- [ ] **As-of date on org view** — project teams / members / relationships / mismatches at selected date (default today)
-- [ ] Bet / project **flow overlay** — funded teams + related interactions for that bet as of date ([F04](./prds/F04-bet-detail.md))
+- [x] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) — value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
+- [x] `platformScope` on platform teams and platform groupings: `organisation | vertical | team` (who the platform accelerates)
+- [x] Complicated-subsystem nest: optional `within` (team ref to stream-aligned parent) and/or membership in a value-stream grouping for team-within-team layout
+- [x] Enabling one-to-many: present facilitation fan-out as expected; keep `enabling_owns_delivery` mismatch
+- [x] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) — type zones remain teaching/filter
+- [x] **As-of date on org view** — project teams / members / relationships / mismatches at selected date (default today)
+- [x] Bet / project **flow overlay** — funded teams + related interactions for that bet as of date ([F04](./prds/F04-bet-detail.md))
 - [ ] Optional `initiatives[]` under bets
 - [ ] WIP / rank UI for value-based prioritization (Integrated Backlog relative value)
 - [ ] Portfolio mix hint: opportunity vs capability vs sustain (Integrated Backlog stance mix — not finance)

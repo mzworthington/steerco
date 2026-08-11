@@ -79,9 +79,10 @@ SteerLens delivers an **investment contract** (EDGE value-driven operating model
 - Optional ArchLens `systemRefs` on bets
 - CI check action for SteerSpec mismatches (incl. Slice 1.5 codes)
 - Optional Backstage overlay `SteerBet` kind docs
-- **Team Topologies scale layout ([F03](./prds/F03-how-work-is-organised.md)):** stream-aligned teams as the spine inside **value stream groupings**; **platform groupings** with `platformScope` (`organisation` \| `vertical` \| `team`); complicated subsystem nest (`within` / team-within-team); enabling one-to-many facilitation; org view **flow-of-change canvas** (type zones remain teaching/filter)
-- **As-of on org view + topology timeline ([F13](./prds/F13-topology-timeline.md)):** lightweight date control on How work is organised; deep-dive timeline for capacity deltas + relationship spans; shared projection of org shape + mismatches
-- **Bet flow overlay ([F04](./prds/F04-bet-detail.md)):** funded teams + related interactions for a bet as of date (intent, not a Gantt)
+- [x] **Team Topologies scale layout ([F03](./prds/F03-how-work-is-organised.md)):** **streams** (flow of change) + optional **domains** (verticals); stream-aligned teams assign via `streamIds` (ideal one; multi allowed with advice); complicated subsystem in a stream (not under a team); platform groupings + `platformScope`; enabling 1→many via facilitation; flow-of-change canvas
+- [x] **As-of on org view** ([F13](./prds/F13-topology-timeline.md) projection): lightweight date control on How work is organised; shared member/relationship window projection
+- [ ] **Topology timeline deep-dive ([F13](./prds/F13-topology-timeline.md)):** capacity deltas + relationship spans scrubber
+- [x] **Bet flow overlay ([F04](./prds/F04-bet-detail.md)):** funded teams + related interactions for a bet as of date (intent, not a Gantt)
 - **EDGE:** optional `initiatives[]` under bets (thin narrative slices — never dual backlog)
 - Optional WIP / relative value rank UI; capability vs opportunity / sustain **portfolio mix** hint (Integrated Backlog stance — not finance)
 - Optional lightweight **Product Blueprint** linked to outcomes/bets

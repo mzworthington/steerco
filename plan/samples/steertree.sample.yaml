@@ -3,7 +3,9 @@ kind: SteerTree
 metadata:
   name: northwind-q3-alignment
   title: Northwind Q3 alignment
-  description: Synthetic demo workspace for Slice 1 — fictional retailer, not a real programme
+  description: >
+    Synthetic ~289-person retailer demo (~269 FTE across 37 teams,
+    6 domains). Not a real programme — sized to exercise flow-of-change, as-is, and domain zoom.
 spec:
   vision: Ship customer promises in days, not weeks, without burning out store and digital teams
   outcomes:
@@ -33,6 +35,18 @@ spec:
           baseline: 2.0
           target: 1.0
           interpretation: Bottleneck risk for two bets
+    - id: out_store
+      title: Confident store operations
+      summary: Store teams trust digital tools for stock, staffing, and checkout
+      status: at_risk
+      metrics:
+        - id: met_pos_uptime
+          title: POS uptime
+          unit: percent
+          current: 98.2
+          baseline: 96.0
+          target: 99.5
+          interpretation: Improving, still fragile under peak
   bets:
     - id: bet_pickup
       outcomeId: out_promise
@@ -40,7 +54,7 @@ spec:
       successSignal: Store pickup promises miss less than five percent of orders
       killCriteria: Hit rate stays flat after one quarter of staffing and routing changes
       status: on_track
-      fundedTeamIds: [team_storefront, team_catalog]
+      fundedTeamIds: [team_storefront, team_catalog, team_checkout, team_payments_ux, team_promotions]
       metricIds: [met_promise_hit]
       primaryMetricId: met_promise_hit
       reviewDate: 2026-09-30
@@ -53,7 +67,7 @@ spec:
       successSignal: New channels reuse one fulfilment path within two weeks of launch
       killCriteria: Fewer than two channels adopt the spine after two quarters
       status: at_risk
-      fundedTeamIds: [team_fulfilil, team_storefront]
+      fundedTeamIds: [team_fulfilil, team_warehouse, team_lastmile, team_inventory, team_marketplace]
       metricIds: [met_cycle_days, met_shared_wait]
       primaryMetricId: met_cycle_days
       reviewDate: 2026-10-15
@@ -66,15 +80,42 @@ spec:
       successSignal: Points balance disputes drop by half
       killCriteria: Promise hit rate unchanged after two quarters while programme cost rises
       status: stop_ready
-      fundedTeamIds: [team_fulfilil]
+      fundedTeamIds: [team_loyalty_cx, team_care, team_returns]
       metricIds: [met_promise_hit]
       fundingStance: sustain
+      kind: opportunity
+    - id: bet_pos_resilience
+      outcomeId: out_store
+      title: Peak-ready POS
+      successSignal: No more than one severity-1 POS incident per peak weekend
+      killCriteria: Uptime flat after two peak events despite investment
+      status: on_track
+      fundedTeamIds: [team_pos, team_workforce, team_shelf, team_identity, team_dev_platform]
+      metricIds: [met_pos_uptime]
+      primaryMetricId: met_pos_uptime
+      reviewDate: 2026-11-15
+      horizon: Q4 review
+      fundingStance: exploit
+      kind: capability
+    - id: bet_insights
+      outcomeId: out_promise
+      title: Decision-grade customer insight
+      successSignal: Experiment cycle time under one week for top funnels
+      killCriteria: Insight unused in two consecutive quarterly reviews
+      status: on_track
+      fundedTeamIds: [team_analytics, team_experimentation, team_b2b]
+      metricIds: [met_promise_hit]
+      primaryMetricId: met_promise_hit
+      reviewDate: 2026-12-01
+      horizon: Q4 review
+      fundingStance: explore
       kind: opportunity
   teams:
     - id: team_storefront
       displayName: Storefront experience
       role: stream_aligned
       provenance: local
+      streamIds: [stream_storefront]
       externalRefs: []
       members:
         - id: mem_storefront_em
@@ -92,10 +133,41 @@ spec:
           discipline: product
           title: Product Manager
           ftePercent: 50
+        - id: mem_team_storefront_pad_1
+          displayName: Casey Morales
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_team_storefront_pad_2
+          displayName: Avery Brooks
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_team_storefront_pad_3
+          displayName: Morgan Costa
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_team_storefront_pad_4
+          displayName: Robin Nguyen
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_storefront_pad_5
+          displayName: Noor Shah
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_storefront_pad_6
+          displayName: Sofia Brennan
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
     - id: team_catalog
       displayName: Catalog and discovery
       role: stream_aligned
       provenance: local
+      streamIds: [stream_catalog]
       externalRefs: []
       members:
         - id: mem_catalog_em
@@ -113,10 +185,78 @@ spec:
           discipline: product
           title: Product Manager
           ftePercent: 50
+        - id: mem_team_catalog_pad_1
+          displayName: Sam Okonkwo
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_team_catalog_pad_2
+          displayName: Quinn Singh
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_team_catalog_pad_3
+          displayName: Taylor Khan
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_team_catalog_pad_4
+          displayName: Drew Hughes
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_catalog_pad_5
+          displayName: Elena Bauer
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_catalog_pad_6
+          displayName: Dev Cho
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+    - id: team_pricing
+      displayName: Pricing engine
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_storefront]
+      externalRefs: []
+      members:
+        - id: mem_pricing_ic
+          displayName: Quinn Patel
+          discipline: engineering
+          title: Pricing Specialist
+          ftePercent: 100
+        - id: mem_team_pricing_pad_1
+          displayName: Marcus Costa
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_team_pricing_pad_2
+          displayName: Harper Nguyen
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_team_pricing_pad_3
+          displayName: Lucia Shah
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_team_pricing_pad_4
+          displayName: Chris Brennan
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_pricing_pad_5
+          displayName: Jules Osei
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
     - id: team_fulfilil
       displayName: Fulfilment platform
       role: platform
       provenance: local
+      platformScope: organisation
       externalRefs: []
       members:
         - id: mem_fulfilil_tl
@@ -134,6 +274,51 @@ spec:
           discipline: product
           title: Product Manager
           ftePercent: 50
+        - id: mem_team_fulfilil_pad_1
+          displayName: Jordan Blake
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_2
+          displayName: Riley Ellis
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_team_fulfilil_pad_3
+          displayName: Alex Sato
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_4
+          displayName: Jamie Rossi
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_5
+          displayName: Kai Frost
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_6
+          displayName: Marcus Adeyemi
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_7
+          displayName: Harper Petrov
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_8
+          displayName: Lucia Nair
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_team_fulfilil_pad_9
+          displayName: Chris Rivera
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
     - id: team_enablement
       displayName: Ways of working
       role: enabling
@@ -145,6 +330,1575 @@ spec:
           discipline: other
           title: Delivery Coach
           ftePercent: 100
+        - id: mem_team_enablement_pad_1
+          displayName: Noah Bauer
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_team_enablement_pad_2
+          displayName: Zara Cho
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_team_enablement_pad_3
+          displayName: Owen Tanaka
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_team_enablement_pad_4
+          displayName: Eden Morales
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_checkout
+      displayName: Checkout journey
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_checkout]
+      externalRefs: []
+      members:
+        - id: mem_checkout_1
+          displayName: Dev Vogel
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_checkout_2
+          displayName: Omar Clarke
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_checkout_3
+          displayName: Mira Lopez
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_checkout_4
+          displayName: Sasha Dubois
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_5
+          displayName: Amira Costa
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_6
+          displayName: Leo Okonkwo
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_checkout_7
+          displayName: Maya Singh
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_checkout_8
+          displayName: Hugo Khan
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_9
+          displayName: Cameron Hughes
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_promotions
+      displayName: Offers and promotions
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_promotions]
+      externalRefs: []
+      members:
+        - id: mem_promotions_1
+          displayName: Amira Shah
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_promotions_2
+          displayName: Leo Brennan
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_promotions_3
+          displayName: Maya Osei
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_promotions_4
+          displayName: Hugo Blake
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_promotions_5
+          displayName: Cameron Ellis
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_promotions_6
+          displayName: Phoenix Sato
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_promotions_7
+          displayName: Leslie Rossi
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_promotions_8
+          displayName: Jordan Frost
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_payments_ux
+      displayName: Payments experience
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_checkout]
+      externalRefs: []
+      members:
+        - id: mem_payments_ux_1
+          displayName: Finn Yilmaz
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_payments_ux_2
+          displayName: Lara Novak
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_payments_ux_3
+          displayName: Blake Fernandez
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_payments_ux_4
+          displayName: Rowan Patel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_payments_ux_5
+          displayName: Dana Okafor
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_payments_ux_6
+          displayName: Priya Park
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_payments_ux_7
+          displayName: Sam Anders
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+    - id: team_marketplace
+      displayName: Marketplace seller
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_marketplace]
+      externalRefs: []
+      members:
+        - id: mem_marketplace_1
+          displayName: Remy Frost
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_marketplace_2
+          displayName: Ivy Adeyemi
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_marketplace_3
+          displayName: Finn Petrov
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_marketplace_4
+          displayName: Lara Nair
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_marketplace_5
+          displayName: Blake Rivera
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_marketplace_6
+          displayName: Rowan Berg
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_marketplace_7
+          displayName: Dana Ibrahim
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_marketplace_8
+          displayName: Priya Mendez
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_search_rank
+      displayName: Search ranking
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_catalog]
+      externalRefs: []
+      members:
+        - id: mem_search_rank_1
+          displayName: Alex Rivera
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_search_rank_2
+          displayName: Jamie Berg
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_search_rank_3
+          displayName: Kai Ibrahim
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_search_rank_4
+          displayName: Marcus Mendez
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_search_rank_5
+          displayName: Harper Yilmaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_search_rank_6
+          displayName: Lucia Novak
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+    - id: team_fraud
+      displayName: Fraud signals
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_checkout]
+      externalRefs: []
+      members:
+        - id: mem_fraud_1
+          displayName: Jamie Singh
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_fraud_2
+          displayName: Kai Khan
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_fraud_3
+          displayName: Marcus Hughes
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_fraud_4
+          displayName: Harper Bauer
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_fraud_5
+          displayName: Lucia Cho
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_commerce_data
+      displayName: Commerce data platform
+      role: platform
+      provenance: local
+      platformScope: vertical
+      externalRefs: []
+      members:
+        - id: mem_commerce_data_1
+          displayName: Lucia Rossi
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_commerce_data_2
+          displayName: Chris Frost
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_commerce_data_3
+          displayName: Jules Adeyemi
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_commerce_data_4
+          displayName: Noah Petrov
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_commerce_data_5
+          displayName: Zara Nair
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_commerce_data_6
+          displayName: Owen Rivera
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_commerce_data_7
+          displayName: Eden Berg
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_commerce_data_8
+          displayName: Skyler Ibrahim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_commerce_data_9
+          displayName: Ash Mendez
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_commerce_data_10
+          displayName: Shawn Yilmaz
+          discipline: product
+          title: Product Analyst
+          ftePercent: 100
+    - id: team_warehouse
+      displayName: Warehouse flow
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_warehouse]
+      externalRefs: []
+      members:
+        - id: mem_warehouse_1
+          displayName: Theo Nguyen
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_warehouse_2
+          displayName: Pat Shah
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_warehouse_3
+          displayName: Remy Brennan
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_warehouse_4
+          displayName: Ivy Osei
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_warehouse_5
+          displayName: Finn Blake
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_warehouse_6
+          displayName: Lara Ellis
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_warehouse_7
+          displayName: Blake Sato
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_warehouse_8
+          displayName: Rowan Rossi
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_warehouse_9
+          displayName: Dana Frost
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_warehouse_10
+          displayName: Priya Adeyemi
+          discipline: product
+          title: Product Analyst
+          ftePercent: 100
+    - id: team_lastmile
+      displayName: Last-mile routing
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_lastmile]
+      externalRefs: []
+      members:
+        - id: mem_lastmile_1
+          displayName: Sofia Khan
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_lastmile_2
+          displayName: Nina Hughes
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_lastmile_3
+          displayName: Theo Bauer
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_lastmile_4
+          displayName: Pat Cho
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_lastmile_5
+          displayName: Remy Tanaka
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_lastmile_6
+          displayName: Ivy Morales
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_lastmile_7
+          displayName: Finn Brooks
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_lastmile_8
+          displayName: Lara Costa
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_lastmile_9
+          displayName: Blake Nguyen
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_inventory
+      displayName: Inventory truth
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_inventory]
+      externalRefs: []
+      members:
+        - id: mem_inventory_1
+          displayName: Maya Adeyemi
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_inventory_2
+          displayName: Hugo Petrov
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_inventory_3
+          displayName: Cameron Nair
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_inventory_4
+          displayName: Phoenix Rivera
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_inventory_5
+          displayName: Leslie Berg
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_inventory_6
+          displayName: Jordan Ibrahim
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_inventory_7
+          displayName: Riley Mendez
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_inventory_8
+          displayName: Alex Yilmaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_inventory_9
+          displayName: Jamie Novak
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_routing_engine
+      displayName: Routing engine
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_lastmile]
+      externalRefs: []
+      members:
+        - id: mem_routing_engine_1
+          displayName: Sasha Anders
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_routing_engine_2
+          displayName: Amira Hart
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_routing_engine_3
+          displayName: Leo Keller
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_routing_engine_4
+          displayName: Maya Murphy
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_routing_engine_5
+          displayName: Hugo Ng
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_routing_engine_6
+          displayName: Cameron Walsh
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+    - id: team_forecast
+      displayName: Demand forecast
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_inventory]
+      externalRefs: []
+      members:
+        - id: mem_forecast_1
+          displayName: Kai Okafor
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_forecast_2
+          displayName: Marcus Park
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_forecast_3
+          displayName: Harper Anders
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_forecast_4
+          displayName: Lucia Hart
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_forecast_5
+          displayName: Chris Keller
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_fulfil_messaging
+      displayName: Fulfilment messaging
+      role: platform
+      provenance: local
+      platformScope: vertical
+      externalRefs: []
+      members:
+        - id: mem_fulfil_messaging_1
+          displayName: Owen Brennan
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_fulfil_messaging_2
+          displayName: Eden Osei
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_fulfil_messaging_3
+          displayName: Skyler Blake
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_fulfil_messaging_4
+          displayName: Ash Ellis
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_fulfil_messaging_5
+          displayName: Shawn Sato
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_fulfil_messaging_6
+          displayName: Casey Rossi
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_fulfil_messaging_7
+          displayName: Avery Frost
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+    - id: team_care
+      displayName: Care workspace
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_care]
+      externalRefs: []
+      members:
+        - id: mem_care_1
+          displayName: Robin Kim
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_care_2
+          displayName: Noor Vogel
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_care_3
+          displayName: Sofia Clarke
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_care_4
+          displayName: Nina Lopez
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_care_5
+          displayName: Theo Dubois
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_care_6
+          displayName: Pat Costa
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_care_7
+          displayName: Remy Okonkwo
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_care_8
+          displayName: Ivy Singh
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_care_9
+          displayName: Finn Khan
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_care_10
+          displayName: Lara Hughes
+          discipline: product
+          title: Product Analyst
+          ftePercent: 100
+    - id: team_returns
+      displayName: Returns experience
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_returns]
+      externalRefs: []
+      members:
+        - id: mem_returns_1
+          displayName: Skyler Petrov
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_returns_2
+          displayName: Ash Nair
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_returns_3
+          displayName: Shawn Rivera
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_returns_4
+          displayName: Casey Berg
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_returns_5
+          displayName: Avery Ibrahim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_returns_6
+          displayName: Morgan Mendez
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_returns_7
+          displayName: Robin Yilmaz
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_returns_8
+          displayName: Noor Novak
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_loyalty_cx
+      displayName: Loyalty experience
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_loyalty]
+      externalRefs: []
+      members:
+        - id: mem_loyalty_cx_1
+          displayName: Nina Park
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_loyalty_cx_2
+          displayName: Theo Anders
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_loyalty_cx_3
+          displayName: Pat Hart
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_loyalty_cx_4
+          displayName: Remy Keller
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_loyalty_cx_5
+          displayName: Ivy Murphy
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_loyalty_cx_6
+          displayName: Finn Ng
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_loyalty_cx_7
+          displayName: Lara Walsh
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_loyalty_cx_8
+          displayName: Blake Diaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_care_assist
+      displayName: Care assistants
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_care]
+      externalRefs: []
+      members:
+        - id: mem_care_assist_1
+          displayName: Sam Okonkwo
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_care_assist_2
+          displayName: Quinn Singh
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_care_assist_3
+          displayName: Taylor Khan
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_care_assist_4
+          displayName: Drew Hughes
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_care_assist_5
+          displayName: Elena Bauer
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_analytics
+      displayName: Customer analytics
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_analytics]
+      externalRefs: []
+      members:
+        - id: mem_analytics_1
+          displayName: Maya Adeyemi
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_analytics_2
+          displayName: Hugo Petrov
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_analytics_3
+          displayName: Cameron Nair
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_analytics_4
+          displayName: Phoenix Rivera
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_analytics_5
+          displayName: Leslie Berg
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_analytics_6
+          displayName: Jordan Ibrahim
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_analytics_7
+          displayName: Riley Mendez
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_analytics_8
+          displayName: Alex Yilmaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_analytics_9
+          displayName: Jamie Novak
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_experimentation
+      displayName: Experimentation
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_experimentation]
+      externalRefs: []
+      members:
+        - id: mem_experimentation_1
+          displayName: Noor Berg
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_experimentation_2
+          displayName: Sofia Ibrahim
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_experimentation_3
+          displayName: Nina Mendez
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_experimentation_4
+          displayName: Theo Yilmaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_experimentation_5
+          displayName: Pat Novak
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_experimentation_6
+          displayName: Remy Fernandez
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_experimentation_7
+          displayName: Ivy Patel
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_experimentation_8
+          displayName: Finn Okafor
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_feature_store
+      displayName: Feature store
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_analytics]
+      externalRefs: []
+      members:
+        - id: mem_feature_store_1
+          displayName: Ash Costa
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_feature_store_2
+          displayName: Shawn Okonkwo
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_feature_store_3
+          displayName: Casey Singh
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_feature_store_4
+          displayName: Avery Khan
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_feature_store_5
+          displayName: Morgan Hughes
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_feature_store_6
+          displayName: Robin Bauer
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+    - id: team_pos
+      displayName: Point of sale
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_pos]
+      externalRefs: []
+      members:
+        - id: mem_pos_1
+          displayName: Lara Cho
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_pos_2
+          displayName: Blake Tanaka
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_pos_3
+          displayName: Rowan Morales
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_pos_4
+          displayName: Dana Brooks
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pos_5
+          displayName: Priya Costa
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pos_6
+          displayName: Sam Nguyen
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_pos_7
+          displayName: Quinn Shah
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_pos_8
+          displayName: Taylor Brennan
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pos_9
+          displayName: Drew Osei
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_pos_10
+          displayName: Elena Blake
+          discipline: product
+          title: Product Analyst
+          ftePercent: 100
+    - id: team_workforce
+      displayName: Store workforce tools
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_workforce]
+      externalRefs: []
+      members:
+        - id: mem_workforce_1
+          displayName: Lucia Rossi
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_workforce_2
+          displayName: Chris Frost
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_workforce_3
+          displayName: Jules Adeyemi
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_workforce_4
+          displayName: Noah Petrov
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_workforce_5
+          displayName: Zara Nair
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_workforce_6
+          displayName: Owen Rivera
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_workforce_7
+          displayName: Eden Berg
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_workforce_8
+          displayName: Skyler Ibrahim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_workforce_9
+          displayName: Ash Mendez
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_shelf
+      displayName: Shelf availability
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_pos]
+      externalRefs: []
+      members:
+        - id: mem_shelf_1
+          displayName: Eden Moreau
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_shelf_2
+          displayName: Skyler Ali
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_shelf_3
+          displayName: Ash Chen
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_shelf_4
+          displayName: Shawn Kim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_shelf_5
+          displayName: Casey Vogel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_shelf_6
+          displayName: Avery Clarke
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_shelf_7
+          displayName: Morgan Lopez
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+    - id: team_b2b
+      displayName: B2B ordering
+      role: stream_aligned
+      provenance: local
+      streamIds: [stream_b2b]
+      externalRefs: []
+      members:
+        - id: mem_b2b_1
+          displayName: Pat Silva
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_b2b_2
+          displayName: Remy Quinn
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_b2b_3
+          displayName: Ivy Moreau
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_b2b_4
+          displayName: Finn Ali
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_b2b_5
+          displayName: Lara Chen
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_b2b_6
+          displayName: Blake Kim
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_b2b_7
+          displayName: Rowan Vogel
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_b2b_8
+          displayName: Dana Clarke
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_b2b_9
+          displayName: Priya Lopez
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_b2b_pricing
+      displayName: B2B pricing rules
+      role: complicated_subsystem
+      provenance: local
+      streamIds: [stream_b2b]
+      externalRefs: []
+      members:
+        - id: mem_b2b_pricing_1
+          displayName: Phoenix Tanaka
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_b2b_pricing_2
+          displayName: Leslie Morales
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_b2b_pricing_3
+          displayName: Jordan Brooks
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_b2b_pricing_4
+          displayName: Riley Costa
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_identity
+      displayName: Identity platform
+      role: platform
+      provenance: local
+      platformScope: organisation
+      externalRefs: []
+      members:
+        - id: mem_identity_1
+          displayName: Marcus Costa
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_identity_2
+          displayName: Harper Nguyen
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_identity_3
+          displayName: Lucia Shah
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_identity_4
+          displayName: Chris Brennan
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_identity_5
+          displayName: Jules Osei
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_identity_6
+          displayName: Noah Blake
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_identity_7
+          displayName: Zara Ellis
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_identity_8
+          displayName: Owen Sato
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_identity_9
+          displayName: Eden Rossi
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_identity_10
+          displayName: Skyler Frost
+          discipline: product
+          title: Product Analyst
+          ftePercent: 100
+        - id: mem_identity_11
+          displayName: Ash Adeyemi
+          discipline: engineering
+          title: Staff Engineer
+          ftePercent: 100
+    - id: team_dev_platform
+      displayName: Developer platform
+      role: platform
+      provenance: local
+      platformScope: organisation
+      externalRefs: []
+      members:
+        - id: mem_dev_platform_1
+          displayName: Phoenix Tanaka
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_dev_platform_2
+          displayName: Leslie Morales
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_dev_platform_3
+          displayName: Jordan Brooks
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_dev_platform_4
+          displayName: Riley Costa
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_dev_platform_5
+          displayName: Alex Nguyen
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_dev_platform_6
+          displayName: Jamie Shah
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_dev_platform_7
+          displayName: Kai Brennan
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_dev_platform_8
+          displayName: Marcus Osei
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_dev_platform_9
+          displayName: Harper Blake
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_dev_platform_10
+          displayName: Lucia Ellis
+          discipline: product
+          title: Product Analyst
+          ftePercent: 100
+        - id: mem_dev_platform_11
+          displayName: Chris Sato
+          discipline: engineering
+          title: Staff Engineer
+          ftePercent: 100
+        - id: mem_dev_platform_12
+          displayName: Jules Rossi
+          discipline: design
+          title: UX Researcher
+          ftePercent: 100
+        - id: mem_dev_platform_13
+          displayName: Noah Frost
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_dev_platform_14
+          displayName: Zara Adeyemi
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+    - id: team_observability
+      displayName: Observability platform
+      role: platform
+      provenance: local
+      platformScope: organisation
+      externalRefs: []
+      members:
+        - id: mem_observability_1
+          displayName: Avery Ng
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_observability_2
+          displayName: Morgan Walsh
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_observability_3
+          displayName: Robin Diaz
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_observability_4
+          displayName: Noor Silva
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_observability_5
+          displayName: Sofia Quinn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_observability_6
+          displayName: Nina Moreau
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+        - id: mem_observability_7
+          displayName: Theo Ali
+          discipline: other
+          title: Delivery Lead
+          ftePercent: 100
+        - id: mem_observability_8
+          displayName: Pat Chen
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_observability_9
+          displayName: Remy Kim
+          discipline: engineering
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_pricing_ml
+      displayName: Pricing ML runtime
+      role: platform
+      provenance: local
+      platformScope: team
+      externalRefs: []
+      members:
+        - id: mem_pricing_ml_1
+          displayName: Drew Walsh
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_pricing_ml_2
+          displayName: Elena Diaz
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_pricing_ml_3
+          displayName: Dev Silva
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_pricing_ml_4
+          displayName: Omar Quinn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pricing_ml_5
+          displayName: Mira Moreau
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_security_enable
+      displayName: Security coaching
+      role: enabling
+      provenance: local
+      externalRefs: []
+      members:
+        - id: mem_security_enable_1
+          displayName: Leslie Murphy
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_security_enable_2
+          displayName: Jordan Ng
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_security_enable_3
+          displayName: Riley Walsh
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_security_enable_4
+          displayName: Alex Diaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_security_enable_5
+          displayName: Jamie Silva
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_security_enable_6
+          displayName: Kai Quinn
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+    - id: team_quality_enable
+      displayName: Quality coaching
+      role: enabling
+      provenance: local
+      externalRefs: []
+      members:
+        - id: mem_quality_enable_1
+          displayName: Dana Ali
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_quality_enable_2
+          displayName: Priya Chen
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_quality_enable_3
+          displayName: Sam Kim
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_quality_enable_4
+          displayName: Quinn Vogel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_quality_enable_5
+          displayName: Taylor Clarke
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_architecture_enable
+      displayName: Architecture enablement
+      role: enabling
+      provenance: local
+      externalRefs: []
+      members:
+        - id: mem_architecture_enable_1
+          displayName: Sasha Anders
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_architecture_enable_2
+          displayName: Amira Hart
+          discipline: product
+          title: Product Manager
+          ftePercent: 50
+        - id: mem_architecture_enable_3
+          displayName: Leo Keller
+          discipline: engineering
+          title: Senior Engineer
+          ftePercent: 100
+        - id: mem_architecture_enable_4
+          displayName: Maya Murphy
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_architecture_enable_5
+          displayName: Hugo Ng
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_architecture_enable_6
+          displayName: Cameron Walsh
+          discipline: design
+          title: Product Designer
+          ftePercent: 100
+  streams:
+    - id: stream_storefront
+      title: Storefront
+    - id: stream_catalog
+      title: Catalog
+    - id: stream_checkout
+      title: Checkout
+    - id: stream_promotions
+      title: Promotions
+    - id: stream_warehouse
+      title: Warehouse
+    - id: stream_lastmile
+      title: Last mile
+    - id: stream_inventory
+      title: Inventory
+    - id: stream_care
+      title: Customer care
+    - id: stream_returns
+      title: Returns
+    - id: stream_loyalty
+      title: Loyalty
+    - id: stream_analytics
+      title: Customer analytics
+    - id: stream_experimentation
+      title: Experimentation
+    - id: stream_pos
+      title: In-store POS
+    - id: stream_workforce
+      title: Store workforce
+    - id: stream_b2b
+      title: B2B ordering
+    - id: stream_marketplace
+      title: Marketplace
+  domains:
+    - id: domain_commerce
+      title: Commerce
+      memberStreamIds: [stream_storefront, stream_catalog, stream_checkout, stream_promotions, stream_marketplace]
+    - id: domain_fulfilment
+      title: Fulfilment
+      memberStreamIds: [stream_warehouse, stream_lastmile, stream_inventory]
+    - id: domain_customer
+      title: Customer
+      memberStreamIds: [stream_care, stream_returns, stream_loyalty]
+    - id: domain_data
+      title: "Data & insights"
+      memberStreamIds: [stream_analytics, stream_experimentation]
+    - id: domain_stores
+      title: Stores
+      memberStreamIds: [stream_pos, stream_workforce]
+    - id: domain_b2b
+      title: B2B
+      memberStreamIds: [stream_b2b]
+  groupings:
+    - id: grp_fulfilil_platform
+      kind: platform
+      title: Fulfilment platform
+      platformScope: organisation
+      memberTeamIds: [team_fulfilil]
+    - id: grp_identity_platform
+      kind: platform
+      title: Identity platform
+      platformScope: organisation
+      memberTeamIds: [team_identity]
+    - id: grp_dev_platform
+      kind: platform
+      title: Developer platform
+      platformScope: organisation
+      memberTeamIds: [team_dev_platform]
+    - id: grp_observability_platform
+      kind: platform
+      title: Observability platform
+      platformScope: organisation
+      memberTeamIds: [team_observability]
+    - id: grp_commerce_data
+      kind: platform
+      title: Commerce data platform
+      platformScope: vertical
+      memberTeamIds: [team_commerce_data]
+    - id: grp_fulfil_messaging
+      kind: platform
+      title: Fulfilment messaging
+      platformScope: vertical
+      memberTeamIds: [team_fulfil_messaging]
+    - id: grp_pricing_ml
+      kind: platform
+      title: Pricing ML runtime
+      platformScope: team
+      memberTeamIds: [team_pricing_ml]
   relationships:
     - fromTeamId: team_storefront
       toTeamId: team_fulfilil
@@ -152,10 +1906,172 @@ spec:
     - fromTeamId: team_catalog
       toTeamId: team_fulfilil
       mode: x_as_a_service
+    - fromTeamId: team_storefront
+      toTeamId: team_pricing
+      mode: x_as_a_service
     - fromTeamId: team_enablement
       toTeamId: team_storefront
       mode: facilitation
       expectedUntil: 2026-12-31
+    - fromTeamId: team_enablement
+      toTeamId: team_catalog
+      mode: facilitation
+      expectedUntil: 2026-12-31
+    - fromTeamId: team_checkout
+      toTeamId: team_fulfilil
+      mode: x_as_a_service
+    - fromTeamId: team_warehouse
+      toTeamId: team_fulfilil
+      mode: x_as_a_service
+    - fromTeamId: team_lastmile
+      toTeamId: team_fulfilil
+      mode: x_as_a_service
+    - fromTeamId: team_returns
+      toTeamId: team_fulfilil
+      mode: x_as_a_service
+    - fromTeamId: team_care
+      toTeamId: team_fulfilil
+      mode: x_as_a_service
+    - fromTeamId: team_storefront
+      toTeamId: team_identity
+      mode: x_as_a_service
+    - fromTeamId: team_checkout
+      toTeamId: team_identity
+      mode: x_as_a_service
+    - fromTeamId: team_care
+      toTeamId: team_identity
+      mode: x_as_a_service
+    - fromTeamId: team_loyalty_cx
+      toTeamId: team_identity
+      mode: x_as_a_service
+    - fromTeamId: team_pos
+      toTeamId: team_identity
+      mode: x_as_a_service
+    - fromTeamId: team_b2b
+      toTeamId: team_identity
+      mode: x_as_a_service
+    - fromTeamId: team_storefront
+      toTeamId: team_dev_platform
+      mode: x_as_a_service
+    - fromTeamId: team_catalog
+      toTeamId: team_dev_platform
+      mode: x_as_a_service
+    - fromTeamId: team_checkout
+      toTeamId: team_dev_platform
+      mode: x_as_a_service
+    - fromTeamId: team_warehouse
+      toTeamId: team_dev_platform
+      mode: x_as_a_service
+    - fromTeamId: team_analytics
+      toTeamId: team_dev_platform
+      mode: x_as_a_service
+    - fromTeamId: team_pos
+      toTeamId: team_dev_platform
+      mode: x_as_a_service
+    - fromTeamId: team_fulfilil
+      toTeamId: team_observability
+      mode: x_as_a_service
+    - fromTeamId: team_identity
+      toTeamId: team_observability
+      mode: x_as_a_service
+    - fromTeamId: team_dev_platform
+      toTeamId: team_observability
+      mode: x_as_a_service
+    - fromTeamId: team_storefront
+      toTeamId: team_commerce_data
+      mode: x_as_a_service
+    - fromTeamId: team_catalog
+      toTeamId: team_commerce_data
+      mode: x_as_a_service
+    - fromTeamId: team_promotions
+      toTeamId: team_commerce_data
+      mode: x_as_a_service
+    - fromTeamId: team_marketplace
+      toTeamId: team_commerce_data
+      mode: x_as_a_service
+    - fromTeamId: team_warehouse
+      toTeamId: team_fulfil_messaging
+      mode: x_as_a_service
+    - fromTeamId: team_lastmile
+      toTeamId: team_fulfil_messaging
+      mode: x_as_a_service
+    - fromTeamId: team_pricing
+      toTeamId: team_pricing_ml
+      mode: x_as_a_service
+    - fromTeamId: team_catalog
+      toTeamId: team_search_rank
+      mode: x_as_a_service
+    - fromTeamId: team_checkout
+      toTeamId: team_fraud
+      mode: x_as_a_service
+    - fromTeamId: team_lastmile
+      toTeamId: team_routing_engine
+      mode: collaboration
+      expectedUntil: 2026-12-31
+    - fromTeamId: team_inventory
+      toTeamId: team_forecast
+      mode: x_as_a_service
+    - fromTeamId: team_care
+      toTeamId: team_care_assist
+      mode: collaboration
+      expectedUntil: 2026-11-30
+    - fromTeamId: team_analytics
+      toTeamId: team_feature_store
+      mode: x_as_a_service
+    - fromTeamId: team_b2b
+      toTeamId: team_b2b_pricing
+      mode: x_as_a_service
+    - fromTeamId: team_analytics
+      toTeamId: team_commerce_data
+      mode: collaboration
+      expectedUntil: 2026-10-31
+    - fromTeamId: team_pos
+      toTeamId: team_inventory
+      mode: collaboration
+      expectedUntil: 2026-12-31
+    - fromTeamId: team_shelf
+      toTeamId: team_inventory
+      mode: x_as_a_service
+    - fromTeamId: team_enablement
+      toTeamId: team_checkout
+      mode: facilitation
+      expectedUntil: 2026-12-31
+    - fromTeamId: team_enablement
+      toTeamId: team_warehouse
+      mode: facilitation
+      expectedUntil: 2026-09-30
+    - fromTeamId: team_security_enable
+      toTeamId: team_checkout
+      mode: facilitation
+      expectedUntil: 2026-11-30
+    - fromTeamId: team_security_enable
+      toTeamId: team_identity
+      mode: facilitation
+      expectedUntil: 2026-11-30
+    - fromTeamId: team_security_enable
+      toTeamId: team_pos
+      mode: facilitation
+      expectedUntil: 2026-11-30
+    - fromTeamId: team_quality_enable
+      toTeamId: team_storefront
+      mode: facilitation
+      expectedUntil: 2026-10-31
+    - fromTeamId: team_quality_enable
+      toTeamId: team_returns
+      mode: facilitation
+      expectedUntil: 2026-10-31
+    - fromTeamId: team_architecture_enable
+      toTeamId: team_dev_platform
+      mode: facilitation
+      expectedUntil: 2027-03-31
+    - fromTeamId: team_architecture_enable
+      toTeamId: team_fulfilil
+      mode: facilitation
+      expectedUntil: 2027-03-31
+    - fromTeamId: team_architecture_enable
+      toTeamId: team_commerce_data
+      mode: facilitation
+      expectedUntil: 2027-03-31
   decisionNotes:
     - id: dec_loyalty_stop
       betId: bet_loyalty
@@ -168,13 +2084,13 @@ spec:
         - Promise hit rate unchanged quarter-on-quarter
         - Shared-service wait time increased
       measuredMetricIds: [met_promise_hit, met_shared_wait]
-      affectedTeamIds: [team_fulfilil, team_storefront]
+      affectedTeamIds: [team_fulfilil, team_storefront, team_loyalty_cx]
       nextStep: Pause rollout; keep the existing ledger for two quarters and revisit
   evidence:
     - id: ev_sample
       metricId: met_promise_hit
       source: sample
-      note: Synthetic sample data for Slice 1 · connect systems later for live evidence
+      note: Synthetic sample data for the Northwind scale demo · connect systems later for live evidence
     - id: ev_cycle
       metricId: met_cycle_days
       source: sample
@@ -183,6 +2099,10 @@ spec:
       metricId: met_shared_wait
       source: sample
       note: Shared-service wait — sample bottleneck signal for two bets
+    - id: ev_pos
+      metricId: met_pos_uptime
+      source: sample
+      note: Synthetic POS uptime for the Stores domain bet
   topologyEvents:
     - id: evt_enablement_facilitation
       at: 2026-07-01

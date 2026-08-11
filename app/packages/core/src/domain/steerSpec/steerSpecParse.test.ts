@@ -16,18 +16,44 @@ describe('parseSteerSpecYaml', () => {
     if (!result.ok) return;
 
     expect(result.value.metadata.name).toBe('northwind-q3-alignment');
-    expect(result.value.spec.outcomes.map((o) => o.id)).toEqual(['out_promise']);
-    expect(result.value.spec.bets.map((b) => b.id)).toEqual([
-      'bet_pickup',
-      'bet_fulfilil',
-      'bet_loyalty',
+    expect(result.value.spec.outcomes.map((o) => o.id)).toEqual(
+      expect.arrayContaining(['out_promise', 'out_store']),
+    );
+    expect(result.value.spec.bets.map((b) => b.id)).toEqual(
+      expect.arrayContaining([
+        'bet_pickup',
+        'bet_fulfilil',
+        'bet_loyalty',
+        'bet_pos_resilience',
+        'bet_insights',
+      ]),
+    );
+    expect(result.value.spec.teams.map((t) => t.id)).toEqual(
+      expect.arrayContaining([
+        'team_storefront',
+        'team_catalog',
+        'team_pricing',
+        'team_fulfilil',
+        'team_enablement',
+      ]),
+    );
+    expect(result.value.spec.teams.length).toBeGreaterThan(20);
+    expect(result.value.spec.groupings.map((g) => g.id)).toEqual(
+      expect.arrayContaining(['grp_fulfilil_platform']),
+    );
+    expect(result.value.spec.streams.map((s) => s.id)).toEqual(
+      expect.arrayContaining(['stream_storefront', 'stream_catalog']),
+    );
+    expect(result.value.spec.domains[0]?.memberStreamIds).toEqual(
+      expect.arrayContaining(['stream_storefront', 'stream_catalog']),
+    );
+    expect(result.value.spec.domains.length).toBeGreaterThanOrEqual(5);
+    expect(result.value.spec.teams.find((t) => t.id === 'team_pricing')?.streamIds).toEqual([
+      'stream_storefront',
     ]);
-    expect(result.value.spec.teams.map((t) => t.id)).toEqual([
-      'team_storefront',
-      'team_catalog',
-      'team_fulfilil',
-      'team_enablement',
-    ]);
+    expect(result.value.spec.teams.find((t) => t.id === 'team_fulfilil')?.platformScope).toBe(
+      'organisation',
+    );
     expect(result.value.spec.teams[0]?.members[0]).toMatchObject({
       id: 'mem_storefront_em',
       discipline: 'leadership',

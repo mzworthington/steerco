@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrandMark } from '../components/BrandMark';
+import { BrandReveal } from '../components/BrandReveal';
 import { SITE_DESCRIPTION, SITE_NAME } from '../siteConfig';
 
 export function ComingSoonPage() {
@@ -17,8 +17,7 @@ export function ComingSoonPage() {
     >
       <div className="coming-soon-inner">
         <div className="coming-soon-brand">
-          <BrandMark variant="lockup" className="h-14 w-auto sm:h-16" />
-          <p className="coming-soon-name">{SITE_NAME}</p>
+          <BrandReveal className="items-center text-center" />
         </div>
         <h1 id="coming-soon-heading" className="coming-soon-title">
           Coming Soon

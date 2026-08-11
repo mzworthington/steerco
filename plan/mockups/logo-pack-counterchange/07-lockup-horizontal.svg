@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" role="img" aria-label="SteerLens horizontal lockup">
+  <defs>
+    <clipPath id="disc">
+      <circle cx="80" cy="80" r="64"/>
+    </clipPath>
+  </defs>
+  <rect width="560" height="160" fill="#f7f5f3"/>
+  <g clip-path="url(#disc)">
+    <rect x="16" y="16" width="128" height="64" fill="#ffffff"/>
+    <rect x="16" y="80" width="128" height="64" fill="#041c38"/>
+    <g transform="translate(80 80) scale(0.8) translate(-100 -100)">
+      <path fill="#041c38" d="M48 100 L128 100 L150 48 Z"/>
+      <path fill="#ffffff" d="M48 100 L128 100 Q122 124 100 156 Q78 124 48 100 Z"/>
+    </g>
+  </g>
+  <circle cx="80" cy="80" r="64" fill="none" stroke="#041c38" stroke-width="1" opacity="0.12"/>
+  <text x="172" y="96"
+        font-family="Fraunces, Georgia, serif"
+        font-size="64" font-weight="600" letter-spacing="-1.2"
+        fill="#041c38">SteerLens</text>
+</svg>

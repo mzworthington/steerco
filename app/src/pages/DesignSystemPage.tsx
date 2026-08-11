@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrandMark } from '../components/BrandMark';
+import { BrandReveal } from '../components/BrandReveal';
 import {
   COLOR_TOKENS,
   DESIGN_SYSTEM_SECTIONS,
@@ -90,6 +91,21 @@ function IdentityPanel() {
             <BrandMark variant="lockup" className="h-10 w-auto" />
             <p className="text-ink-muted text-sm">Circles + arrow · header / wide</p>
           </div>
+        </div>
+      </section>
+
+      <section className="ds-section">
+        <h2>Brand reveal</h2>
+        <p>
+          Arrow sweeps left to right; each dot fades in as it passes. After the sweep, SteerLens
+          fades in. Settles on the shipped lockup + name. Honours{' '}
+          <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
+            prefers-reduced-motion
+          </code>
+          .
+        </p>
+        <div className="surface mt-6 flex justify-center py-10">
+          <BrandReveal />
         </div>
       </section>
 

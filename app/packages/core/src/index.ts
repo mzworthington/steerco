@@ -13,17 +13,25 @@ export {
 } from './domain/steerSpec/diffSteerSpec';
 export {
   INTERACTION_MODES,
+  GROUPING_KINDS,
   MEMBER_DISCIPLINES,
+  PLATFORM_SCOPES,
   TEAM_ROLES,
   steerSpecSchema,
   type Bet,
   type BetKind,
   type DecisionNote,
+  type Domain,
   type FundingStance,
+  type Grouping,
+  type GroupingKind,
   type InteractionMode,
   type MemberDiscipline,
+  type PlatformScope,
   type Relationship,
   type SteerSpec,
+  type Stream,
+  type Team,
   type TeamMember,
   type TeamRole,
   type TeamTopologyType,
@@ -32,8 +40,10 @@ export {
 } from './domain/steerSpec/steerSpecSchema';
 export { DISCIPLINE_COPY, type DisciplineCopy } from './domain/capacity/disciplines';
 export {
+  GROUPING_KIND_COPY,
   INTERACTION_MODE_COPY,
   INTERACTION_SHAPE_GEOMETRIES,
+  PLATFORM_SCOPE_COPY,
   TEAM_SHAPE_GEOMETRIES,
   TEAM_TOPOLOGY_TYPES,
   TOPOLOGY_TYPE_COPY,
@@ -51,3 +61,8 @@ export {
   type SteerMismatch,
   type SteerMismatchCode,
 } from './domain/steerSpec/detectMismatches';
+export {
+  isEffectiveOnDate,
+  projectSteerSpecAsOf,
+  type EffectiveWindow,
+} from './domain/steerSpec/projectSteerSpecAsOf';

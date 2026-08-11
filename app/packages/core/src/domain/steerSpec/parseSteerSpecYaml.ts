@@ -1,4 +1,5 @@
 import { parse as parseYaml } from 'yaml';
+import { migrateSteerSpecTopologyRaw } from './migrateSteerSpecTopology';
 import { steerSpecSchema, type SteerSpec } from './steerSpecSchema';
 import { formatSteerSpecIssues, validateSteerSpecReferences } from './validateSteerSpec';
 
@@ -17,7 +18,8 @@ export function parseSteerSpecYaml(text: string): ParseSteerSpecResult {
     return { ok: false, error: 'YAML document is empty' };
   }
 
-  const parsed = steerSpecSchema.safeParse(raw);
+  const migrated = migrateSteerSpecTopologyRaw(raw);
+  const parsed = steerSpecSchema.safeParse(migrated);
   if (!parsed.success) {
     const apiVersionIssue = parsed.error.issues.find((issue) => issue.path.includes('apiVersion'));
     if (apiVersionIssue) {

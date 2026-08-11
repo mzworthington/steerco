@@ -72,6 +72,9 @@ describe('BetDetailPage', () => {
     expect(screen.getByRole('heading', { name: /this bet should move/i })).toBeTruthy();
     expect(screen.getAllByText('Promise hit rate').length).toBeGreaterThan(0);
     expect(screen.getByLabelText('Kill criteria')).toBeTruthy();
+    expect(screen.getByTestId('bet-who-delivers')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /^customer$/i })).toBeTruthy();
+    expect(screen.getByLabelText('Fund Care workspace')).toBeChecked();
 
     const title = screen.getByLabelText('Bet title');
     await user.clear(title);

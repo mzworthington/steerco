@@ -12,7 +12,10 @@ export type SteerMismatchCode =
   | 'collab_without_end'
   | 'stream_bet_wip'
   | 'enabling_owns_delivery'
-  | 'stream_missing_product';
+  | 'stream_missing_product'
+  | 'stream_aligned_without_stream'
+  | 'stream_aligned_multi_stream'
+  | 'css_without_stream';
 
 /** Bet statuses considered "active" — funded and being steered, not just proposed or closed out. */
 const ACTIVE_BET_STATUSES = new Set(['on_track', 'at_risk', 'stop_ready']);
@@ -174,6 +177,38 @@ export function detectSteerSpecMismatches(
         severity: 'warning',
         title: 'Stream team without product capacity',
         headline: `“${team.displayName}” has members recorded but no product discipline FTE — discovery and outcome framing may stall.`,
+        relatedTeamIds: [team.id],
+      });
+    }
+  }
+
+  for (const team of doc.spec.teams) {
+    const streamIds = team.streamIds ?? [];
+    if (team.role === 'stream_aligned') {
+      if (streamIds.length === 0) {
+        mismatches.push({
+          code: 'stream_aligned_without_stream',
+          severity: 'warning',
+          title: 'Stream-aligned team without a stream',
+          headline: `“${team.displayName}” is stream-aligned but not assigned to a stream — ideally one team owns one flow of change end-to-end.`,
+          relatedTeamIds: [team.id],
+        });
+      } else if (streamIds.length > 1) {
+        mismatches.push({
+          code: 'stream_aligned_multi_stream',
+          severity: 'warning',
+          title: 'Stream-aligned team across multiple streams',
+          headline: `“${team.displayName}” is aligned to ${streamIds.length} streams — allowed to model reality, but ideal is one stream per stream-aligned team to protect cognitive load and flow.`,
+          relatedTeamIds: [team.id],
+        });
+      }
+    }
+    if (team.role === 'complicated_subsystem' && streamIds.length === 0) {
+      mismatches.push({
+        code: 'css_without_stream',
+        severity: 'warning',
+        title: 'Complicated subsystem outside a stream',
+        headline: `“${team.displayName}” is a complicated subsystem with no stream — place it in a stream and use interaction modes (X-as-a-Service / Collaboration) to show how embedded it is.`,
         relatedTeamIds: [team.id],
       });
     }

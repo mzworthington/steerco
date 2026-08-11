@@ -33,9 +33,16 @@ describe('presentBetDetail', () => {
     expect(model.outcome?.measures.length).toBeGreaterThan(0);
     expect(model.outcome?.measures[0]?.title).toBe('Promise hit rate');
     expect(
-      model.fundedTeams.filter((team) => team.selected).map((team) => team.displayName),
-    ).toEqual(['Fulfilment platform']);
+      model.fundedTeams
+        .filter((team) => team.selected)
+        .map((team) => team.displayName)
+        .sort(),
+    ).toEqual(['Care workspace', 'Loyalty experience', 'Returns experience']);
     expect(model.fundedTeams).toHaveLength(opened.value.spec.teams.length);
+    expect(model.fundedTeamGroups.some((group) => group.domainTitle === 'Customer')).toBe(true);
+    const fulfil = model.fundedTeams.find((team) => team.id === 'team_fulfilil');
+    expect(fulfil?.interactions.length).toBeGreaterThan(0);
+    expect(fulfil?.cues.some((cue) => cue.kind === 'many_dependents')).toBe(true);
     expect(
       model.metricOptions.filter((metric) => metric.selected).map((metric) => metric.title),
     ).toEqual(['Promise hit rate']);
@@ -43,6 +50,27 @@ describe('presentBetDetail', () => {
     expect(model.fundingStance).toBe('sustain');
     expect(model.kind).toBe('opportunity');
     expect(model.primaryMetricId).toBeNull();
+    expect(model.flowOverlay?.participants.some((p) => p.teamId === 'team_loyalty_cx')).toBe(true);
+    expect(model.flowOverlay?.edges.length).toBeGreaterThan(0);
+  });
+
+  it('groups delivery teams by domain and surfaces dependency load cues', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const model = presentBetDetail(opened.value, 'bet_pickup');
+    expect(model).not.toBeNull();
+    if (!model) return;
+
+    expect(model.fundedTeamGroups.map((group) => group.domainTitle)).toEqual(
+      expect.arrayContaining(['Commerce', 'Shared support']),
+    );
+    const storefront = model.fundedTeams.find((team) => team.id === 'team_storefront');
+    expect(storefront?.domainTitle).toBe('Commerce');
+    expect(storefront?.interactions.some((item) => item.modeLabel === 'X-as-a-Service')).toBe(true);
+    expect(storefront?.cues.some((cue) => cue.kind === 'many_dependencies')).toBe(true);
+    expect(model.deliveryLoadSummary).toMatch(/depends on/i);
   });
 
   it('presents review timing and primary metric for a bet that has them', () => {

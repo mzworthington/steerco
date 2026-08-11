@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -52,7 +52,8 @@ afterEach(() => {
 });
 
 describe('OrganisationPage', () => {
-  it('shows purpose zones, English relationships, and decision-note CTA', () => {
+  it('defaults to zoomed-out flow of change and can switch to as-is detail', async () => {
+    const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -67,13 +68,26 @@ describe('OrganisationPage', () => {
 
     expect(screen.getByTestId('organisation-page')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /how work is organised/i })).toBeTruthy();
-    expect(screen.getByText(/four team topologies shapes/i)).toBeTruthy();
-    expect(screen.getByTestId('organisation-capacity-board')).toBeTruthy();
+    expect(screen.getByTestId('organisation-view-switch')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-overview')).toBeTruthy();
+    expect(screen.getByTestId('organisation-lvt-placeholder')).toBeTruthy();
+    expect(screen.queryByTestId('organisation-as-of')).toBeNull();
     expect(
       screen.getByText(/storefront experience uses as a service fulfilment platform/i),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: /prepare decision note/i })).toBeTruthy();
-    expect(screen.getByText(/expected until 2026-12-31/i)).toBeTruthy();
+
+    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
+    expect(screen.getByTestId('organisation-capacity-board')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();
+    expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
+    expect(screen.getByTestId('organisation-team-team_pricing')).toBeTruthy();
+
+    await user.click(screen.getByRole('tab', { name: /^domain$/i }));
+    expect(screen.getByTestId('organisation-domain-zoom')).toBeTruthy();
+    expect(screen.getByTestId('organisation-domain-select')).toBeTruthy();
+    expect(screen.getByTestId('organisation-domain-external-edges')).toBeTruthy();
+    expect(screen.getAllByText(/out of domain/i).length).toBeGreaterThan(0);
   });
 
   it('surfaces operating-model mismatches', () => {
@@ -115,17 +129,74 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    await user.type(screen.getByLabelText('Display name'), 'Returns desk');
-    await user.click(screen.getByRole('button', { name: 'Add a team' }));
+    await user.click(screen.getByTestId('organisation-add-team-cta'));
+    const modal = screen.getByTestId('organisation-team-modal');
+    expect(modal).toBeTruthy();
+    await user.type(within(modal).getByLabelText('Display name'), 'Returns desk');
+    await user.selectOptions(
+      within(modal).getByTestId('organisation-team-modal-domain'),
+      'domain_customer',
+    );
+    await user.selectOptions(
+      within(modal).getByTestId('organisation-team-modal-stream'),
+      'stream_returns',
+    );
+    await user.click(within(modal).getByRole('button', { name: 'Add a team' }));
 
-    expect(screen.getByText(/team added to this workspace session/i)).toBeTruthy();
-    expect(screen.getAllByText('Returns desk').length).toBeGreaterThan(0);
+    expect(screen.getByText(/team added/i)).toBeTruthy();
+    expect(within(modal).getByRole('heading', { name: /edit team/i })).toBeTruthy();
 
     const stored = sessionStorage.getItem('steerlens.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
-      spec: { spec: { teams: Array<{ displayName: string }> } };
+      spec: {
+        spec: { teams: Array<{ displayName: string; streamIds?: string[] }> };
+      };
     };
-    expect(parsed.spec.spec.teams.some((team) => team.displayName === 'Returns desk')).toBe(true);
+    const created = parsed.spec.spec.teams.find((team) => team.displayName === 'Returns desk');
+    expect(created).toBeTruthy();
+    expect(created?.streamIds).toEqual(['stream_returns']);
+  });
+
+  it('edits a team and can attach a relationship from the modal', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
+    await user.click(screen.getByTestId('organisation-edit-team-team_storefront'));
+    const modal = screen.getByTestId('organisation-team-modal');
+    expect(modal).toBeTruthy();
+    expect(within(modal).getByDisplayValue('Storefront experience')).toBeTruthy();
+
+    await user.selectOptions(within(modal).getByLabelText('Other team'), 'team_observability');
+    await user.click(within(modal).getByRole('button', { name: 'Add relationship' }));
+
+    expect(screen.getByText(/relationship saved/i)).toBeTruthy();
+    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const parsed = JSON.parse(stored ?? '{}') as {
+      spec: {
+        spec: {
+          relationships: Array<{ fromTeamId: string; toTeamId: string; mode: string }>;
+        };
+      };
+    };
+    expect(
+      parsed.spec.spec.relationships.some(
+        (rel) =>
+          rel.fromTeamId === 'team_storefront' &&
+          rel.toTeamId === 'team_observability' &&
+          rel.mode === 'x_as_a_service',
+      ),
+    ).toBe(true);
   });
 
   it('adds a person onto a team with quick add', async () => {
@@ -142,6 +213,7 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
+    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
     await user.click(screen.getAllByRole('button', { name: 'Add person' })[0]!);
     await user.type(screen.getByLabelText('Name'), 'Nina Torres');
     await user.click(screen.getByRole('button', { name: 'Add to team' }));
@@ -175,6 +247,7 @@ describe('OrganisationPage', () => {
       </WorkspaceSessionProvider>,
     );
 
+    await user.click(screen.getByRole('tab', { name: /^as-is$/i }));
     await user.click(
       screen.getByTestId('organisation-person-mem_storefront_em').querySelector('button')!,
     );

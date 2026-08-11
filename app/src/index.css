@@ -88,6 +88,48 @@
     @apply font-display text-ink hover:text-ocean text-lg font-semibold tracking-tight transition-colors;
   }
 
+  .brand-reveal {
+    @apply relative inline-flex max-w-full flex-col items-center gap-3;
+  }
+
+  .brand-reveal-lockup {
+    @apply h-14 w-auto sm:h-16;
+  }
+
+  .brand-reveal-wordmark {
+    opacity: 0;
+    transform: translateY(0.35rem);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+
+  .brand-reveal-wordmark.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .brand-reveal.is-reduced .brand-reveal-wordmark {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-reveal-wordmark {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+
+    .coming-soon-title,
+    .coming-soon-lead {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .site-nav-links {
     @apply text-ink-muted flex items-center gap-6 text-sm font-semibold;
   }
@@ -146,7 +188,6 @@
 
   .coming-soon-brand {
     @apply flex flex-col items-center gap-3;
-    animation: fade-up 0.7s ease-out both;
   }
 
   .coming-soon-name {
@@ -155,12 +196,12 @@
 
   .coming-soon-title {
     @apply font-display text-ocean mt-8 text-2xl font-semibold tracking-tight sm:text-3xl;
-    animation: fade-up 0.7s ease-out 0.12s both;
+    animation: fade-up 0.7s ease-out 1.9s both;
   }
 
   .coming-soon-lead {
     @apply text-ink-muted mt-5 max-w-xl text-lg leading-relaxed sm:text-xl;
-    animation: fade-up 0.7s ease-out 0.22s both;
+    animation: fade-up 0.7s ease-out 2.05s both;
   }
 
   .hero {
@@ -578,7 +619,7 @@
   }
 
   .workspace-sidebar {
-    @apply border-line bg-paper-soft flex w-60 shrink-0 flex-col border-r px-4 py-5;
+    @apply border-line bg-paper-soft sticky top-0 flex h-dvh w-60 shrink-0 flex-col self-start overflow-y-auto border-r px-4 py-5;
   }
 
   .workspace-brand {
@@ -853,12 +894,64 @@
     @apply text-ink-muted mt-3 text-sm;
   }
 
+  .bet-detail-teams-lead {
+    @apply text-ink-muted mt-2 text-sm;
+  }
+
   .bet-detail-teams {
-    @apply mt-4 space-y-3 border-0 p-0;
+    @apply mt-4 space-y-5 border-0 p-0;
+  }
+
+  .bet-detail-team-group-title {
+    @apply text-ink mb-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .bet-detail-team-list {
+    @apply space-y-3;
   }
 
   .bet-detail-team {
-    @apply text-ink flex cursor-pointer items-center gap-3 text-sm;
+    @apply text-ink flex cursor-pointer items-start gap-3 text-sm;
+  }
+
+  .bet-detail-team-body {
+    @apply flex min-w-0 flex-1 flex-col gap-1;
+  }
+
+  .bet-detail-team-name {
+    @apply font-medium;
+  }
+
+  .bet-detail-team-meta {
+    @apply text-ink-muted text-xs;
+  }
+
+  .bet-detail-team-interactions {
+    @apply text-ink-muted space-y-0.5 text-xs;
+  }
+
+  .bet-detail-team-mode {
+    @apply text-ink font-medium;
+  }
+
+  .bet-detail-team-interactions-more {
+    @apply text-ink-muted italic;
+  }
+
+  .bet-detail-team-cues {
+    @apply space-y-0.5;
+  }
+
+  .bet-detail-team-cue {
+    @apply text-xs text-amber-900;
+  }
+
+  .bet-detail-team-cue--warning {
+    @apply font-medium text-amber-950;
+  }
+
+  .bet-detail-delivery-load {
+    @apply border-line bg-paper-soft text-ink mt-4 rounded-md border px-3 py-2 text-sm;
   }
 
   .bet-detail-feedback {
@@ -1030,6 +1123,71 @@
     @apply max-w-2xl;
   }
 
+  .organisation-header-top {
+    @apply flex flex-wrap items-start justify-between gap-4;
+  }
+
+  .organisation-fab {
+    @apply bg-ocean text-paper hover:bg-ocean-hover fixed right-6 bottom-6 z-40 rounded-full px-4 py-3 text-sm font-semibold shadow-lg;
+  }
+
+  .organisation-team-header-actions {
+    @apply flex flex-col items-stretch gap-2;
+  }
+
+  .organisation-team-modal-root {
+    @apply fixed inset-0 z-50 flex items-center justify-center p-4;
+  }
+
+  .organisation-team-modal-backdrop {
+    @apply bg-ink/40 absolute inset-0 border-0;
+  }
+
+  .organisation-team-modal {
+    @apply border-line relative z-10 max-h-[min(90vh,52rem)] w-[min(36rem,calc(100vw-2rem))] overflow-y-auto rounded-xl border bg-white shadow-xl;
+  }
+
+  .organisation-team-modal-panel {
+    @apply space-y-5 px-5 py-5;
+  }
+
+  .organisation-team-modal-header {
+    @apply flex items-start justify-between gap-3;
+  }
+
+  .organisation-team-modal-lead,
+  .organisation-team-modal-hint {
+    @apply text-ink-muted text-sm leading-relaxed;
+  }
+
+  .organisation-team-modal-fields {
+    @apply space-y-4;
+  }
+
+  .organisation-team-modal-actions {
+    @apply flex flex-wrap gap-3;
+  }
+
+  .organisation-team-modal-subtitle {
+    @apply text-ink text-sm font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-team-modal-relationships {
+    @apply border-line space-y-3 border-t pt-4;
+  }
+
+  .organisation-team-modal-relationship-list {
+    @apply space-y-2 text-sm;
+  }
+
+  .organisation-team-modal-relationship-list li {
+    @apply border-line flex flex-wrap items-center justify-between gap-2 rounded-lg border px-3 py-2;
+  }
+
+  .organisation-team-modal-relationship-form {
+    @apply space-y-3;
+  }
+
   .organisation-title {
     @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight sm:text-4xl;
   }
@@ -1084,6 +1242,181 @@
 
   .organisation-zones-four {
     @apply xl:grid-cols-4;
+  }
+
+  .organisation-as-of {
+    @apply mt-4 inline-flex max-w-xs flex-col gap-1 text-sm;
+  }
+
+  .organisation-view-switch {
+    @apply border-line mt-5 inline-flex flex-wrap gap-1 rounded-xl border bg-white p-1;
+  }
+
+  .organisation-view-tab {
+    @apply text-ink-muted rounded-lg px-3 py-2 text-sm font-semibold transition;
+  }
+
+  .organisation-view-tab--active {
+    @apply bg-ocean text-white;
+  }
+
+  .organisation-overview {
+    @apply mt-8 flex flex-col gap-5;
+  }
+
+  .organisation-overview-lvt {
+    @apply border-line text-ink-muted rounded-xl border border-dashed bg-white/70 px-4 py-3 text-sm;
+  }
+
+  .organisation-overview-lanes {
+    @apply flex gap-3 overflow-x-auto pb-2;
+  }
+
+  .organisation-overview-lane {
+    @apply border-line min-w-[12rem] flex-1 rounded-xl border bg-white px-4 py-4;
+  }
+
+  .organisation-overview-lane-title {
+    @apply text-base font-semibold;
+  }
+
+  .organisation-overview-labels {
+    @apply mt-3 flex list-none flex-col gap-2 p-0;
+  }
+
+  .organisation-overview-chip {
+    @apply rounded-lg px-3 py-2 text-sm font-medium;
+  }
+
+  .organisation-overview-chip--stream {
+    @apply text-ink bg-stone-100;
+  }
+
+  .organisation-overview-chip--css {
+    @apply text-ink bg-amber-50;
+  }
+
+  .organisation-overview-chip--external {
+    @apply border-ocean/40 text-ink border bg-white;
+  }
+
+  .organisation-overview-meta {
+    @apply text-ink-muted mt-0.5 block text-xs font-normal;
+  }
+
+  .organisation-overview-supports {
+    @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .organisation-overview-support {
+    @apply border-line rounded-xl border border-dashed bg-white px-4 py-3;
+  }
+
+  .organisation-overview-support-title {
+    @apply text-sm font-semibold;
+  }
+
+  .organisation-domain-zoom {
+    @apply mt-8 flex flex-col gap-5;
+  }
+
+  .organisation-domain-edges {
+    @apply border-line rounded-xl border bg-white px-5 py-4;
+  }
+
+  .organisation-domain-edges--external {
+    @apply border-ocean/40;
+  }
+
+  .organisation-domain-edge-list {
+    @apply text-ink mt-3 list-disc space-y-2 pl-5 text-sm;
+  }
+
+  .organisation-domain-edge-list--external {
+    @apply list-none pl-0;
+  }
+
+  .organisation-domain-edge-badge {
+    @apply bg-ocean/10 text-ocean mr-2 inline-block rounded px-2 py-0.5 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-domain-external-teams {
+    @apply mt-4;
+  }
+
+  .organisation-flow {
+    @apply mt-8 flex flex-col gap-6;
+  }
+
+  .organisation-flow-cue {
+    @apply text-ink-muted text-xs font-semibold tracking-[0.18em] uppercase;
+  }
+
+  .organisation-flow-streams {
+    @apply grid gap-4 lg:grid-cols-2;
+  }
+
+  .organisation-flow-band,
+  .organisation-flow-platforms,
+  .organisation-flow-enabling,
+  .organisation-flow-orphans {
+    @apply border-line rounded-xl border bg-white px-5 py-5;
+  }
+
+  .organisation-flow-band-title {
+    @apply text-base font-semibold;
+  }
+
+  .organisation-flow-band-hint,
+  .organisation-flow-scope,
+  .organisation-flow-grouping,
+  .organisation-flow-nested-label,
+  .organisation-team-scope {
+    @apply text-ink-muted mt-1 text-sm;
+  }
+
+  .organisation-flow-team-row {
+    @apply mt-4 flex flex-col gap-3;
+  }
+
+  .organisation-flow-nested {
+    @apply border-line mt-4 border-l-2 pl-4;
+  }
+
+  .organisation-flow-platform-list {
+    @apply mt-4 list-none space-y-4 p-0;
+  }
+
+  .organisation-flow-enabling-list {
+    @apply mt-4 list-none space-y-4 p-0;
+  }
+
+  .organisation-zones-details {
+    @apply border-line mt-6 rounded-xl border bg-white px-5 py-4;
+  }
+
+  .organisation-zones-details summary {
+    @apply cursor-pointer text-sm font-semibold;
+  }
+
+  .organisation-team-list-plain {
+    @apply text-ink-muted mt-3 list-disc space-y-1 pl-5 text-sm;
+  }
+
+  .bet-detail-flow-lead {
+    @apply text-ink-muted mt-2 text-sm leading-relaxed;
+  }
+
+  .bet-detail-flow-participants {
+    @apply mt-4 list-none space-y-2 p-0 text-sm;
+  }
+
+  .bet-detail-flow-participants span {
+    @apply text-ink-muted ml-2;
+  }
+
+  .bet-detail-flow-edges {
+    @apply text-ink-muted mt-4 list-disc space-y-1 pl-5 text-sm;
   }
 
   .organisation-zone {

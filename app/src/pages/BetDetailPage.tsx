@@ -154,6 +154,10 @@ export function BetDetailPage() {
     updateDraft({ ...draft, metricIds: nextMetricIds, primaryMetricId });
   };
 
+  const deliveryLoadLines = model.fundedTeams
+    .filter((team) => draft.fundedTeamIds.includes(team.id))
+    .flatMap((team) => team.cues.map((cue) => `${team.displayName}: ${cue.label}`));
+
   const onSave = () => {
     const validation = validateBetDetailDraft(draft);
     if (!validation.ok) {
@@ -287,20 +291,123 @@ export function BetDetailPage() {
           <h2 id="bet-teams-heading" className="bet-detail-card-title">
             Who delivers
           </h2>
-          <fieldset className="bet-detail-teams">
-            <legend className="sr-only">Funded teams</legend>
-            {model.fundedTeams.map((team) => (
-              <label key={team.id} className="bet-detail-team">
-                <input
-                  type="checkbox"
-                  checked={draft.fundedTeamIds.includes(team.id)}
-                  onChange={() => toggleTeam(team.id)}
-                />
-                <span>{team.displayName}</span>
-              </label>
+          <p className="bet-detail-teams-lead">
+            Teams grouped by domain. Interaction modes and load cues show how each team sits in the
+            topology — not just who is funded.
+          </p>
+          <fieldset className="bet-detail-teams" data-testid="bet-who-delivers">
+            <legend className="sr-only">Funded teams by domain</legend>
+            {model.fundedTeamGroups.map((group) => (
+              <div key={group.domainTitle} className="bet-detail-team-group">
+                <h3 className="bet-detail-team-group-title">{group.domainTitle}</h3>
+                <ul className="bet-detail-team-list">
+                  {group.teams.map((team) => {
+                    const checked = draft.fundedTeamIds.includes(team.id);
+                    return (
+                      <li key={team.id}>
+                        <label className="bet-detail-team">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleTeam(team.id)}
+                            aria-label={`Fund ${team.displayName}`}
+                          />
+                          <span className="bet-detail-team-body">
+                            <span className="bet-detail-team-name">{team.displayName}</span>
+                            <span className="bet-detail-team-meta">
+                              {team.roleLabel}
+                              {team.streamTitles.length > 0
+                                ? ` · ${team.streamTitles.join(', ')}`
+                                : null}
+                            </span>
+                            {team.interactions.length > 0 ? (
+                              <ul className="bet-detail-team-interactions">
+                                {team.interactions.slice(0, 3).map((interaction) => (
+                                  <li
+                                    key={`${interaction.direction}-${interaction.otherTeamLabel}-${interaction.modeLabel}`}
+                                  >
+                                    <span className="bet-detail-team-mode">
+                                      {interaction.modeLabel}
+                                    </span>
+                                    {interaction.direction === 'outbound' ? ' → ' : ' ← '}
+                                    {interaction.otherTeamLabel}
+                                  </li>
+                                ))}
+                                {team.interactions.length > 3 ? (
+                                  <li className="bet-detail-team-interactions-more">
+                                    +{team.interactions.length - 3} more
+                                  </li>
+                                ) : null}
+                              </ul>
+                            ) : null}
+                            {team.cues.length > 0 ? (
+                              <ul className="bet-detail-team-cues">
+                                {team.cues.map((cue) => (
+                                  <li
+                                    key={cue.kind}
+                                    className={
+                                      cue.kind === 'overloaded'
+                                        ? 'bet-detail-team-cue bet-detail-team-cue--warning'
+                                        : 'bet-detail-team-cue'
+                                    }
+                                  >
+                                    {cue.label}
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : null}
+                          </span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             ))}
           </fieldset>
+          {deliveryLoadLines.length > 0 ? (
+            <p className="bet-detail-delivery-load" data-testid="bet-delivery-load">
+              {deliveryLoadLines.join(' · ')}
+            </p>
+          ) : null}
         </section>
+
+        {model.flowOverlay ? (
+          <section
+            className="bet-detail-card"
+            aria-labelledby="bet-flow-heading"
+            data-testid="bet-flow-overlay"
+          >
+            <h2 id="bet-flow-heading" className="bet-detail-card-title">
+              Flow of change
+            </h2>
+            <p className="bet-detail-flow-lead">{model.flowOverlay.lead}</p>
+            {model.flowOverlay.participants.length === 0 ? (
+              <p className="bet-detail-mos-empty">No teams on this bet’s flow yet.</p>
+            ) : (
+              <ul className="bet-detail-flow-participants">
+                {model.flowOverlay.participants.map((participant) => (
+                  <li key={participant.teamId}>
+                    <strong>{participant.displayName}</strong>
+                    <span>
+                      {participant.roleLabel}
+                      {participant.kind === 'funded' ? ' · funded' : ' · related'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {model.flowOverlay.edges.length > 0 ? (
+              <ul className="bet-detail-flow-edges" aria-label="Interactions on this flow">
+                {model.flowOverlay.edges.map((edge) => (
+                  <li key={`${edge.fromLabel}-${edge.toLabel}-${edge.modeLabel}`}>
+                    {edge.sentence}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </section>
+        ) : null}
 
         <section className="bet-detail-card" aria-labelledby="bet-metrics-heading">
           <h2 id="bet-metrics-heading" className="bet-detail-card-title">

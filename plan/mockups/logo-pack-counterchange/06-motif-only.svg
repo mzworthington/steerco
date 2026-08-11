@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="SteerLens counterchange motif without disc field">
+  <rect width="200" height="200" fill="#f7f5f3"/>
+  <path fill="#041c38" d="M48 100 L128 100 L150 48 Z"/>
+  <path fill="#041c38" d="M48 100 L128 100 Q122 124 100 156 Q78 124 48 100 Z" opacity="0.45"/>
+  <line x1="48" y1="100" x2="128" y2="100" stroke="#041c38" stroke-width="1.5" opacity="0.35"/>
+</svg>

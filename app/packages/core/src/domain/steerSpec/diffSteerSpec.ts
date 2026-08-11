@@ -7,6 +7,9 @@ export type SteerSpecDiffSection =
   | 'outcomes'
   | 'bets'
   | 'teams'
+  | 'streams'
+  | 'domains'
+  | 'groupings'
   | 'relationships'
   | 'decisionNotes'
   | 'evidence';
@@ -81,6 +84,30 @@ export function diffSteerSpec(baseline: SteerSpec, working: SteerSpec): SteerSpe
     working.spec.teams,
     (item) => item.id,
     (item) => item.displayName,
+  );
+  diffById(
+    changes,
+    'streams',
+    baseline.spec.streams ?? [],
+    working.spec.streams ?? [],
+    (item) => item.id,
+    (item) => item.title,
+  );
+  diffById(
+    changes,
+    'domains',
+    baseline.spec.domains ?? [],
+    working.spec.domains ?? [],
+    (item) => item.id,
+    (item) => item.title,
+  );
+  diffById(
+    changes,
+    'groupings',
+    baseline.spec.groupings ?? [],
+    working.spec.groupings ?? [],
+    (item) => item.id,
+    (item) => item.title,
   );
   diffById(
     changes,

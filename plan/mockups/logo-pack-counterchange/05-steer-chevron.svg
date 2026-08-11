@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="SteerLens counterchange mark east-pointing arrowhead">
+  <defs>
+    <clipPath id="disc">
+      <circle cx="100" cy="100" r="80"/>
+    </clipPath>
+  </defs>
+  <rect width="200" height="200" fill="#0a0a0a"/>
+  <g clip-path="url(#disc)">
+    <rect x="20" y="20" width="160" height="80" fill="#ffffff"/>
+    <rect x="20" y="100" width="160" height="80" fill="#0a0a0a"/>
+    <!-- East-pointing diamond / arrowhead, split on the horizon -->
+    <path fill="#0a0a0a" d="M48 100 L96 56 L156 100 Z"/>
+    <path fill="#ffffff" d="M48 100 L156 100 L96 144 Z"/>
+  </g>
+</svg>

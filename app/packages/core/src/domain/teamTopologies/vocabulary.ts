@@ -81,7 +81,7 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     purpose:
       'A grouping of team types that provide a compelling internal product so stream-aligned teams can move faster with less cognitive load.',
     teaching:
-      'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams — not an org chart silo.',
+      'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams — not an org chart silo. Scope may be organisation-wide, one vertical, or a single team.',
     shape: 'square_dotted',
     shapeTeaching:
       'Square corners with a dotted border — platform as a grouping boundary, not a single silo box.',
@@ -90,9 +90,9 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     topologyName: 'Enabling',
     zoneTitle: 'Enabling teams',
     purpose:
-      'Helps a stream-aligned team overcome obstacles and detect missing capabilities — then moves on rather than becoming a permanent delivery owner.',
+      'Helps stream-aligned teams overcome obstacles and detect missing capabilities — then moves on rather than becoming a permanent delivery owner.',
     teaching:
-      'Enabling teams facilitate and coach. Facilitation is temporary and focused; they should not absorb long-term delivery ownership.',
+      'Enabling teams facilitate and coach across one or many streams. Facilitation is temporary and focused; they should not absorb long-term delivery ownership.',
     shape: 'rounded_vertical',
     shapeTeaching: 'Vertical rounded rectangle — temporary uplift beside stream-aligned teams.',
   },
@@ -102,7 +102,7 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     purpose:
       'Where significant mathematics, calculation, or deep technical expertise is needed — a specialist team that reduces load on stream-aligned teams.',
     teaching:
-      'Use sparingly. Complicated-subsystem teams exist when the specialty would otherwise overload stream-aligned teams.',
+      'Use sparingly. Place in a stream (not inside another team). Interaction mode shows how embedded they are with stream-aligned teams.',
     shape: 'octagon',
     shapeTeaching: 'Octagon — rare specialty that would otherwise overload stream-aligned teams.',
   },
@@ -154,3 +154,39 @@ export function normalizeTeamTopologyType(value: string): TeamTopologyType | str
 export function normalizeInteractionMode(value: string): InteractionMode | string {
   return LEGACY_INTERACTION_MODE_ALIASES[value] ?? value;
 }
+
+/** Who a platform accelerates — org-wide, one vertical/domain, or one stream team. */
+export const PLATFORM_SCOPES = ['organisation', 'vertical', 'team'] as const;
+
+export type PlatformScope = (typeof PLATFORM_SCOPES)[number];
+
+export const PLATFORM_SCOPE_COPY: Record<PlatformScope, { label: string; teaching: string }> = {
+  organisation: {
+    label: 'Organisation',
+    teaching: 'Internal product for many streams across the organisation.',
+  },
+  vertical: {
+    label: 'Vertical',
+    teaching: 'Bound to one domain / vertical (a group of related streams).',
+  },
+  team: {
+    label: 'Single team',
+    teaching: 'Dedicated to accelerating one stream-aligned team.',
+  },
+};
+
+/**
+ * Platform groupings only.
+ * Streams are first-class (`spec.streams`); domains group streams (`spec.domains`).
+ * Legacy `value_stream` groupings migrate to streams at parse time.
+ */
+export const GROUPING_KINDS = ['platform'] as const;
+
+export type GroupingKind = (typeof GROUPING_KINDS)[number];
+
+export const GROUPING_KIND_COPY: Record<GroupingKind, { label: string; teaching: string }> = {
+  platform: {
+    label: 'Platform grouping',
+    teaching: 'Teams that share a platform purpose — a compelling internal product.',
+  },
+};

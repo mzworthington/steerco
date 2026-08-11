@@ -9,6 +9,7 @@ import {
   applyAddOrganisationTeam,
   applyMoveOrganisationMember,
   applyUpdateOrganisationMember,
+  applyUpdateOrganisationTeam,
   presentOrganisation,
 } from './presentOrganisation';
 
@@ -26,37 +27,124 @@ describe('presentOrganisation', () => {
 
     const model = presentOrganisation(opened.value);
     expect(model.empty).toBe(false);
-    expect(model.teachingLine).toMatch(/four team topologies shapes/i);
+    expect(model.layout).toBe('flow');
+    expect(model.viewMode).toBe('as_is');
+    expect(model.teachingLine).toMatch(/as-is team shape/i);
+    expect(model.overview?.lanes.map((lane) => lane.title)).toEqual(
+      expect.arrayContaining(['Storefront', 'Catalog']),
+    );
+    expect(model.overview?.lvtPlaceholder).toMatch(/lean value tree/i);
     expect(model.zones.map((zone) => zone.role)).toEqual([
       'stream_aligned',
       'platform',
       'enabling',
       'complicated_subsystem',
     ]);
-    expect(model.zones[0]?.teams.map((team) => team.displayName)).toEqual([
-      'Storefront experience',
-      'Catalog and discovery',
-    ]);
+    expect(model.zones[0]?.teams.map((team) => team.displayName)).toEqual(
+      expect.arrayContaining(['Storefront experience', 'Catalog and discovery']),
+    );
+    expect(model.zones[0]?.teams.length).toBeGreaterThan(10);
+    expect(model.flow?.streams.map((band) => band.title)).toEqual(
+      expect.arrayContaining(['Storefront', 'Catalog']),
+    );
+    expect(model.flow?.streams[0]?.complicatedSubsystems.map((team) => team.displayName)).toEqual(
+      expect.arrayContaining(['Pricing engine']),
+    );
+    expect(model.flow?.streams[0]?.domainTitle).toBe('Commerce');
+    expect(model.flow?.platforms.some((item) => item.scopeLabel === 'Organisation')).toBe(true);
+    const waysOfWorking = model.flow?.enabling.find(
+      (item) => item.team.displayName === 'Ways of working',
+    );
+    expect(waysOfWorking?.facilitatesLabels).toEqual(
+      expect.arrayContaining(['Storefront experience', 'Catalog and discovery']),
+    );
     expect(model.zones[0]?.shape).toBe('rounded_horizontal');
     expect(model.zones[1]?.shape).toBe('square_dotted');
-    expect(model.zones[0]?.teams[0]?.capacityLabel).toMatch(/3 people/i);
-    expect(model.zones[0]?.teams[0]?.members[0]).toMatchObject({
+    const storefront = model.zones[0]?.teams.find((team) => team.id === 'team_storefront');
+    expect(storefront?.capacityLabel).toMatch(/\d+ people/i);
+    expect(storefront?.members[0]).toMatchObject({
       discipline: 'leadership',
       disciplineLabel: 'Leadership',
       title: 'Engineering Manager',
       initials: 'PN',
     });
-    expect(model.zones[0]?.teams[0]?.fteTotal).toBe(2.5);
+    expect(storefront?.fteTotal).toBeGreaterThan(2);
     expect(model.relationships.some((item) => /uses as a service/i.test(item.sentence))).toBe(true);
     expect(model.relationships.some((item) => item.modeLabel === 'X-as-a-Service')).toBe(true);
     expect(model.relationships.find((item) => item.mode === 'x_as_a_service')?.shape).toBe(
       'triangle',
     );
     expect(model.overloadBanner).toBeNull();
-    const facilitation = model.relationships.find((item) => item.mode === 'facilitation');
-    expect(facilitation?.expectedUntil).toBe('2026-12-31');
+    const facilitation = model.relationships.filter((item) => item.mode === 'facilitation');
+    expect(facilitation.length).toBeGreaterThanOrEqual(2);
+    expect(
+      facilitation.find(
+        (item) => item.fromTeamId === 'team_enablement' && item.toTeamId === 'team_storefront',
+      )?.expectedUntil,
+    ).toBe('2026-12-31');
     const service = model.relationships.find((item) => item.mode === 'x_as_a_service');
     expect(service?.expectedUntil).toBeNull();
+  });
+
+  it('projects capacity as of a selected date', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const withWindow = {
+      ...opened.value,
+      spec: {
+        ...opened.value.spec,
+        teams: opened.value.spec.teams.map((team) =>
+          team.id === 'team_storefront'
+            ? {
+                ...team,
+                members: team.members.map((member, index) =>
+                  index === 0
+                    ? { ...member, effectiveFrom: '2026-01-01', effectiveUntil: '2026-06-30' }
+                    : member,
+                ),
+              }
+            : team,
+        ),
+      },
+    };
+
+    const before = presentOrganisation(withWindow, { asOf: '2026-03-01' });
+    const after = presentOrganisation(withWindow, { asOf: '2026-08-01' });
+    const storefrontBefore = before.zones[0]?.teams.find((t) => t.id === 'team_storefront');
+    const storefrontAfter = after.zones[0]?.teams.find((t) => t.id === 'team_storefront');
+    expect(storefrontBefore?.members.some((m) => m.id === 'mem_storefront_em')).toBe(true);
+    expect(storefrontAfter?.members.some((m) => m.id === 'mem_storefront_em')).toBe(false);
+    expect(after.asOf).toBe('2026-08-01');
+    expect(after.pointInTimeLine).toMatch(/2026-08-01/);
+  });
+
+  it('builds a zoomed-out flow overview and a domain focus with external edges', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const overviewModel = presentOrganisation(opened.value, { viewMode: 'flow_of_change' });
+    expect(overviewModel.viewMode).toBe('flow_of_change');
+    expect(overviewModel.teachingLine).toMatch(/zoomed-out flow of change/i);
+    expect(overviewModel.overview?.lanes[0]?.streamAlignedLabels).toContain(
+      'Storefront experience',
+    );
+
+    const domainModel = presentOrganisation(opened.value, {
+      viewMode: 'domain',
+      domainId: 'domain_commerce',
+    });
+    expect(domainModel.domainFocus?.domainTitle).toBe('Commerce');
+    expect(domainModel.domainFocus?.streamBands.length).toBeGreaterThanOrEqual(2);
+    expect(domainModel.domainFocus?.externalEdges.some((edge) => edge.crossesBoundary)).toBe(true);
+    expect(domainModel.domainFocus?.externalTeams.some((team) => team.id === 'team_fulfilil')).toBe(
+      true,
+    );
+    expect(
+      domainModel.domainFocus?.externalTeams.some((team) => team.id === 'team_enablement'),
+    ).toBe(true);
   });
 
   it('normalizes legacy roles and modes from stored sessions without crashing', () => {
@@ -93,7 +181,7 @@ describe('presentOrganisation', () => {
     };
 
     const model = presentOrganisation(legacy);
-    expect(model.zones[0]?.teams.length).toBe(2);
+    expect(model.zones[0]?.teams.length).toBeGreaterThan(2);
     expect(model.relationships.some((item) => item.modeLabel === 'X-as-a-Service')).toBe(true);
   });
 });
@@ -107,10 +195,34 @@ describe('applyAddOrganisationTeam', () => {
     const applied = applyAddOrganisationTeam(opened.value, {
       displayName: 'Returns desk',
       role: 'stream_aligned',
+      domainId: 'domain_customer',
+      streamId: 'stream_returns',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
-    expect(applied.value.spec.teams.some((team) => team.displayName === 'Returns desk')).toBe(true);
+    const team = applied.value.spec.teams.find((item) => item.displayName === 'Returns desk');
+    expect(team?.streamIds).toEqual(['stream_returns']);
+  });
+});
+
+describe('applyUpdateOrganisationTeam', () => {
+  it('updates display name, role, and stream placement', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyUpdateOrganisationTeam(opened.value, {
+      teamId: 'team_storefront',
+      displayName: 'Storefront web',
+      role: 'stream_aligned',
+      domainId: 'domain_commerce',
+      streamId: 'stream_checkout',
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    const team = applied.value.spec.teams.find((item) => item.id === 'team_storefront');
+    expect(team?.displayName).toBe('Storefront web');
+    expect(team?.streamIds).toEqual(['stream_checkout']);
   });
 });
 
@@ -162,7 +274,10 @@ describe('applyAddOrganisationRelationship', () => {
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
     const relationship = applied.value.spec.relationships.find(
-      (item) => item.fromTeamId === 'team_enablement' && item.toTeamId === 'team_catalog',
+      (item) =>
+        item.fromTeamId === 'team_enablement' &&
+        item.toTeamId === 'team_catalog' &&
+        item.mode === 'collaboration',
     );
     expect(relationship?.expectedUntil).toBe('2026-12-01');
   });

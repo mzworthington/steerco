@@ -29,6 +29,7 @@ describe('detectSteerSpecMismatches', () => {
       provenance: 'local' as const,
       externalRefs: [],
       members: [],
+      streamIds: [],
     }));
     const overloaded: SteerSpec = {
       ...sample,
@@ -183,12 +184,7 @@ describe('detectSteerSpecMismatches', () => {
     expect(mismatch).toBeTruthy();
     expect(mismatch?.severity).toBe('warning');
     expect(mismatch?.relatedTeamIds).toEqual(['team_storefront']);
-    expect(mismatch?.relatedBetIds).toEqual([
-      'bet_pickup',
-      'bet_fulfilil',
-      'bet_extra_1',
-      'bet_extra_2',
-    ]);
+    expect(mismatch?.relatedBetIds).toEqual(['bet_pickup', 'bet_extra_1', 'bet_extra_2']);
   });
 
   it('does not flag stream_bet_wip at exactly the threshold', () => {
@@ -258,5 +254,33 @@ describe('detectSteerSpecMismatches', () => {
     expect(mismatch).toBeTruthy();
     expect(mismatch?.severity).toBe('warning');
     expect(mismatch?.relatedTeamIds).toEqual(['team_catalog']);
+  });
+
+  it('flags stream_aligned_multi_stream when a stream-aligned team spans multiple streams', () => {
+    const sample = loadSample();
+    const nextTeams = sample.spec.teams.map((team) =>
+      team.id === 'team_storefront'
+        ? { ...team, streamIds: ['stream_storefront', 'stream_catalog'] }
+        : team,
+    );
+    const mismatches = detectSteerSpecMismatches({
+      ...sample,
+      spec: { ...sample.spec, teams: nextTeams },
+    });
+    const mismatch = mismatches.find((item) => item.code === 'stream_aligned_multi_stream');
+    expect(mismatch).toBeTruthy();
+    expect(mismatch?.headline).toMatch(/multiple streams|cognitive load|one stream/i);
+  });
+
+  it('flags css_without_stream when a complicated subsystem has no stream', () => {
+    const sample = loadSample();
+    const nextTeams = sample.spec.teams.map((team) =>
+      team.id === 'team_pricing' ? { ...team, streamIds: [] } : team,
+    );
+    const mismatches = detectSteerSpecMismatches({
+      ...sample,
+      spec: { ...sample.spec, teams: nextTeams },
+    });
+    expect(mismatches.some((item) => item.code === 'css_without_stream')).toBe(true);
   });
 });

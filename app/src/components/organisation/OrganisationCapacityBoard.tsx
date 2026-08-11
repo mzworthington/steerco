@@ -14,6 +14,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import type { MemberDiscipline, TeamShapeGeometry } from '@steerlens/core';
 import type {
+  OrganisationFlowModel,
   OrganisationTeamCard,
   OrganisationTeamMember,
   OrganisationZone,
@@ -47,10 +48,12 @@ export type MovePersonInput = {
 
 type OrganisationCapacityBoardProps = {
   zones: OrganisationZone[];
+  flow?: OrganisationFlowModel | null;
   disciplineOptions: Array<{ value: MemberDiscipline; label: string }>;
   onQuickAdd: (input: QuickAddPersonInput) => void;
   onMovePerson: (input: MovePersonInput) => void;
   onSaveAllocation: (input: AllocatePersonInput) => void;
+  onEditTeam?: (teamId: string) => void;
 };
 
 type DragMemberPayload = {
@@ -70,10 +73,12 @@ function parseTeamDropId(id: string | number): string | null {
 
 export function OrganisationCapacityBoard({
   zones,
+  flow = null,
   disciplineOptions,
   onQuickAdd,
   onMovePerson,
   onSaveAllocation,
+  onEditTeam,
 }: OrganisationCapacityBoardProps) {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
   const [activeDrag, setActiveDrag] = useState<DragMemberPayload | null>(null);
@@ -107,6 +112,30 @@ export function OrganisationCapacityBoard({
     setSelected({ teamId: toTeamId, memberId: data.memberId });
   };
 
+  const renderTeam = (team: OrganisationTeamCard) => (
+    <TeamShapeDropZone
+      key={team.id}
+      team={team}
+      isAdding={addingTeamId === team.id}
+      disciplineOptions={disciplineOptions}
+      selectedMemberId={selected?.teamId === team.id ? selected.memberId : null}
+      onSelectMember={(memberId) => {
+        setSelected({ teamId: team.id, memberId });
+        setAddingTeamId(null);
+      }}
+      onStartAdd={() => {
+        setAddingTeamId(team.id);
+        setSelected(null);
+      }}
+      onEditTeam={onEditTeam ? () => onEditTeam(team.id) : undefined}
+      onCancelAdd={() => setAddingTeamId(null)}
+      onQuickAdd={(input) => {
+        onQuickAdd(input);
+        setAddingTeamId(null);
+      }}
+    />
+  );
+
   return (
     <div className="organisation-capacity" data-testid="organisation-capacity-board">
       <div className="organisation-capacity-intro">
@@ -123,61 +152,161 @@ export function OrganisationCapacityBoard({
         onDragEnd={onDragEnd}
         onDragCancel={() => setActiveDrag(null)}
       >
-        <div className="organisation-zones organisation-zones-four">
-          {zones.map((zone) => (
-            <section
-              key={zone.role}
-              className={
-                zone.role === 'platform'
-                  ? 'organisation-zone organisation-zone-platform'
-                  : 'organisation-zone'
-              }
-              aria-labelledby={`zone-${zone.role}`}
-            >
-              <div className="organisation-zone-heading">
-                <TeamShapeGlyph shape={zone.shape} />
-                <div>
-                  <p className="organisation-zone-eyebrow">{zone.topologyName}</p>
-                  <h2 id={`zone-${zone.role}`} className="organisation-zone-title">
-                    {zone.title}
-                  </h2>
-                </div>
-              </div>
-              <p className="organisation-zone-purpose">{zone.purpose}</p>
-              <p className="organisation-zone-shape-hint">{zone.shapeTeaching}</p>
+        {flow ? (
+          <div className="organisation-flow" data-testid="organisation-flow-canvas">
+            <p className="organisation-flow-cue" aria-hidden="true">
+              Flow of change →
+            </p>
+            <div className="organisation-flow-streams">
+              {flow.streams.map((band) => (
+                <section
+                  key={band.id}
+                  className="organisation-flow-band"
+                  aria-labelledby={`flow-band-${band.id}`}
+                >
+                  <h3 id={`flow-band-${band.id}`} className="organisation-flow-band-title">
+                    {band.title}
+                  </h3>
+                  {band.domainTitle ? (
+                    <p className="organisation-flow-grouping">Domain · {band.domainTitle}</p>
+                  ) : null}
+                  <p className="organisation-flow-band-hint">
+                    {band.kind === 'stream'
+                      ? 'Stream — stream-aligned teams ideally own this flow end-to-end'
+                      : 'Teams not yet assigned to a stream'}
+                  </p>
+                  <div className="organisation-flow-team-row">
+                    {band.streamAlignedTeams.map(renderTeam)}
+                  </div>
+                  {band.complicatedSubsystems.length > 0 ? (
+                    <div className="organisation-flow-nested">
+                      <p className="organisation-flow-nested-label">
+                        Complicated subsystem in this stream
+                      </p>
+                      <div className="organisation-flow-team-row">
+                        {band.complicatedSubsystems.map(renderTeam)}
+                      </div>
+                    </div>
+                  ) : null}
+                </section>
+              ))}
+            </div>
 
-              {zone.teams.length === 0 ? (
-                <p className="organisation-zone-empty">{zone.teaching}</p>
-              ) : (
-                <ul className="organisation-team-list">
-                  {zone.teams.map((team) => (
-                    <li key={team.id}>
-                      <TeamShapeDropZone
-                        team={team}
-                        isAdding={addingTeamId === team.id}
-                        disciplineOptions={disciplineOptions}
-                        selectedMemberId={selected?.teamId === team.id ? selected.memberId : null}
-                        onSelectMember={(memberId) => {
-                          setSelected({ teamId: team.id, memberId });
-                          setAddingTeamId(null);
-                        }}
-                        onStartAdd={() => {
-                          setAddingTeamId(team.id);
-                          setSelected(null);
-                        }}
-                        onCancelAdd={() => setAddingTeamId(null)}
-                        onQuickAdd={(input) => {
-                          onQuickAdd(input);
-                          setAddingTeamId(null);
-                        }}
-                      />
+            {flow.platforms.length > 0 ? (
+              <section className="organisation-flow-platforms" aria-labelledby="flow-platforms">
+                <h3 id="flow-platforms" className="organisation-flow-band-title">
+                  Platforms
+                </h3>
+                <ul className="organisation-flow-platform-list">
+                  {flow.platforms.map((item) => (
+                    <li key={item.team.id} className="organisation-flow-platform-item">
+                      {item.scopeLabel ? (
+                        <p className="organisation-flow-scope">Scope: {item.scopeLabel}</p>
+                      ) : null}
+                      {item.groupingTitle ? (
+                        <p className="organisation-flow-grouping">{item.groupingTitle}</p>
+                      ) : null}
+                      {renderTeam(item.team)}
                     </li>
                   ))}
                 </ul>
-              )}
-            </section>
-          ))}
-        </div>
+              </section>
+            ) : null}
+
+            {flow.enabling.length > 0 ? (
+              <section className="organisation-flow-enabling" aria-labelledby="flow-enabling">
+                <h3 id="flow-enabling" className="organisation-flow-band-title">
+                  Enabling
+                </h3>
+                <p className="organisation-flow-band-hint">
+                  Facilitation across one or many streams — temporary capability uplift
+                </p>
+                <ul className="organisation-flow-enabling-list">
+                  {flow.enabling.map((item) => (
+                    <li key={item.team.id} className="organisation-flow-enabling-item">
+                      {item.facilitatesLabels.length > 0 ? (
+                        <p className="organisation-flow-scope">
+                          Facilitates: {item.facilitatesLabels.join(', ')}
+                        </p>
+                      ) : (
+                        <p className="organisation-flow-scope">No facilitation edges yet</p>
+                      )}
+                      {renderTeam(item.team)}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {flow.orphanTeams.length > 0 ? (
+              <section className="organisation-flow-orphans" aria-labelledby="flow-orphans">
+                <h3 id="flow-orphans" className="organisation-flow-band-title">
+                  Other teams
+                </h3>
+                <div className="organisation-flow-team-row">{flow.orphanTeams.map(renderTeam)}</div>
+              </section>
+            ) : null}
+          </div>
+        ) : (
+          <div className="organisation-zones organisation-zones-four">
+            {zones.map((zone) => (
+              <section
+                key={zone.role}
+                className={
+                  zone.role === 'platform'
+                    ? 'organisation-zone organisation-zone-platform'
+                    : 'organisation-zone'
+                }
+                aria-labelledby={`zone-${zone.role}`}
+              >
+                <div className="organisation-zone-heading">
+                  <TeamShapeGlyph shape={zone.shape} />
+                  <div>
+                    <p className="organisation-zone-eyebrow">{zone.topologyName}</p>
+                    <h2 id={`zone-${zone.role}`} className="organisation-zone-title">
+                      {zone.title}
+                    </h2>
+                  </div>
+                </div>
+                <p className="organisation-zone-purpose">{zone.purpose}</p>
+                <p className="organisation-zone-shape-hint">{zone.shapeTeaching}</p>
+
+                {zone.teams.length === 0 ? (
+                  <p className="organisation-zone-empty">{zone.teaching}</p>
+                ) : (
+                  <ul className="organisation-team-list">
+                    {zone.teams.map((team) => (
+                      <li key={team.id}>{renderTeam(team)}</li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+          </div>
+        )}
+
+        {flow ? (
+          <details className="organisation-zones-details">
+            <summary>Browse by team type</summary>
+            <div className="organisation-zones organisation-zones-four">
+              {zones.map((zone) => (
+                <section key={`filter-${zone.role}`} className="organisation-zone">
+                  <h3 className="organisation-zone-title">{zone.topologyName}</h3>
+                  <p className="organisation-zone-purpose">{zone.purpose}</p>
+                  {zone.teams.length === 0 ? (
+                    <p className="organisation-zone-empty">{zone.teaching}</p>
+                  ) : (
+                    <ul className="organisation-team-list organisation-team-list-plain">
+                      {zone.teams.map((team) => (
+                        <li key={team.id}>{team.displayName}</li>
+                      ))}
+                    </ul>
+                  )}
+                </section>
+              ))}
+            </div>
+          </details>
+        ) : null}
 
         <DragOverlay dropAnimation={null}>
           {activeDrag ? <PersonChip member={activeDrag.member} dragging overlay /> : null}
@@ -209,6 +338,7 @@ function TeamShapeDropZone({
   selectedMemberId,
   onSelectMember,
   onStartAdd,
+  onEditTeam,
   onCancelAdd,
   onQuickAdd,
 }: {
@@ -218,6 +348,7 @@ function TeamShapeDropZone({
   selectedMemberId: string | null;
   onSelectMember: (memberId: string) => void;
   onStartAdd: () => void;
+  onEditTeam?: () => void;
   onCancelAdd: () => void;
   onQuickAdd: (input: QuickAddPersonInput) => void;
 }) {
@@ -240,10 +371,38 @@ function TeamShapeDropZone({
         <div>
           <p className="organisation-team-name">{team.displayName}</p>
           <p className="organisation-team-capacity">{team.capacityLabel}</p>
+          {team.platformScopeLabel ? (
+            <p className="organisation-team-scope">Platform scope · {team.platformScopeLabel}</p>
+          ) : null}
+          {team.role === 'complicated_subsystem' ? (
+            <p className="organisation-team-scope">Complicated subsystem</p>
+          ) : null}
+          {team.streamTitles.length > 0 ? (
+            <p className="organisation-team-scope">
+              Stream{team.streamTitles.length > 1 ? 's' : ''} · {team.streamTitles.join(', ')}
+            </p>
+          ) : null}
+          {team.facilitatesLabels.length > 0 ? (
+            <p className="organisation-team-scope">
+              Facilitates · {team.facilitatesLabels.join(', ')}
+            </p>
+          ) : null}
         </div>
-        <button type="button" className="organisation-team-add" onClick={onStartAdd}>
-          Add person
-        </button>
+        <div className="organisation-team-header-actions">
+          {onEditTeam ? (
+            <button
+              type="button"
+              className="organisation-team-add"
+              onClick={onEditTeam}
+              data-testid={`organisation-edit-team-${team.id}`}
+            >
+              Edit team
+            </button>
+          ) : null}
+          <button type="button" className="organisation-team-add" onClick={onStartAdd}>
+            Add person
+          </button>
+        </div>
       </div>
 
       <ul className="organisation-person-list" aria-label={`People on ${team.displayName}`}>

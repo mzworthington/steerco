@@ -16,7 +16,8 @@ describe('openWorkspaceFromYaml', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
     expect(result.value.metadata.name).toBe('northwind-q3-alignment');
-    expect(result.value.spec.bets).toHaveLength(3);
+    expect(result.value.spec.bets.length).toBeGreaterThanOrEqual(3);
+    expect(result.value.spec.teams.length).toBeGreaterThan(20);
   });
 
   it('returns plain-language error for invalid YAML without a value', () => {
