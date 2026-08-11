@@ -1156,7 +1156,7 @@
   }
 
   .graph-stage-expand-btn {
-    @apply border-line text-ink hover:border-ocean rounded-full border bg-white px-3 py-1.5 text-xs font-semibold tracking-wide uppercase;
+    @apply border-line text-ink hover:border-ocean hidden rounded-full border bg-white px-3 py-1.5 text-xs font-semibold tracking-wide uppercase lg:inline-flex;
   }
 
   .graph-stage-expand-btn[aria-pressed='true'] {

@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
+import { useLgUp } from '../../hooks/useMediaQuery';
 
-/** Expand a graph stage over workspace-main while the sidebar stays visible. */
+/** Expand a graph stage over workspace-main while the sidebar stays visible (desktop only). */
 export function useGraphStageExpand() {
   const [expanded, setExpanded] = useState(false);
+  const desktop = useLgUp();
+
+  useEffect(() => {
+    if (!desktop && expanded) {
+      setExpanded(false);
+    }
+  }, [desktop, expanded]);
 
   useEffect(() => {
     if (!expanded) return;
@@ -22,8 +30,11 @@ export function useGraphStageExpand() {
   }, [expanded]);
 
   return {
-    expanded,
+    expanded: desktop && expanded,
     setExpanded,
-    toggleExpanded: () => setExpanded((value) => !value),
+    toggleExpanded: () => {
+      if (!desktop) return;
+      setExpanded((value) => !value);
+    },
   };
 }
