@@ -1,7 +1,7 @@
 # PRD F05 - Outcomes
 
 **Slice:** 1 · **Mockup:** `steerlens-exec-04-outcomes.png`  
-**Frameworks:** EDGE Goals + Measures of Success — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE Goals + Measures of Success (customer-value fitness function) — see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
 
@@ -9,7 +9,7 @@ Leaders need the headline outcome narrative, not a metrics warehouse.
 
 ## Goal
 
-Present one primary outcome with large **Measures of Success** and funded bets as quiet rows. MoS define what the organisation is willing to pay for — they shape work, they are not vanity KPIs.
+Present one primary outcome with large **Measures of Success** and funded bets as quiet rows. MoS are the customer-value fitness function — they define what the organisation is willing to pay for and shape work; they are not vanity KPIs or industrial cost/schedule scores.
 
 ## User stories
 

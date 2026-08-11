@@ -14,7 +14,7 @@ SteerLens is a **steering workspace**: edit strategy and topology intent in plai
 
 It operationalises two complementary models without becoming a PMO or HR tool:
 
-- **EDGE** — Lean Value Tree and lightweight start/stop funding governance (vision → outcomes/MoS → bets → optional initiatives)
+- **EDGE** — holistic value-driven operating model: Lean Value Tree **plus** product mindset / Product Blueprint, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles (vision → outcomes/MoS → bets → optional initiatives)
 - **Team Topologies** (2e) — topology _intent_ for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
 
 See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice commitments in [ROADMAP.md](./ROADMAP.md).
@@ -34,26 +34,32 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 | Context                            | Responsibility                                                           |
 | ---------------------------------- | ------------------------------------------------------------------------ |
-| **Investment alignment**           | Outcomes, MoS, bets, kill criteria, decision notes (EDGE LVT)            |
+| **Investment alignment**           | Outcomes, MoS, bets, kill criteria, decision notes / PVR (EDGE toolkit)  |
+| **Product & tech fitness**         | Product mindset cues; Tech@Core capability bets (not a radar or debt DB) |
 | **Topology intent**                | How teams relate for fast flow (Team Topologies; not HR reporting lines) |
 | **Evidence**                       | Leading indicators / learning attached to outcomes/bets (sample Slice 1) |
 | **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                |
-| **Work execution** (external)      | Jira - link/annotate later, never dual backlog                           |
-| **System architecture** (external) | ArchLens - optional bet → system refs later                              |
+| **Work execution** (external)      | Jira - link/annotate later, never dual / owned integrated backlog        |
+| **System architecture** (external) | ArchLens - optional bet → system refs later (Tech@Core evidence)         |
 
 ## 5. Domain glossary
 
 | Term                         | Definition                                                                                                                                                                                                                                                |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Outcome**                  | Measurable change the organisation wants (EDGE Goal); carries Measures of Success                                                                                                                                                                         |
-| **Measure of Success (MoS)** | Leading indicator that shapes and funds work toward an outcome (not a vanity KPI)                                                                                                                                                                         |
-| **Bet**                      | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet)                                                                                                                                                            |
+| **Measure of Success (MoS)** | Leading (and validating lagging) indicator in the customer-value fitness function — shapes and funds work toward an outcome (not a vanity KPI or cost/schedule score)                                                                                    |
+| **Bet**                      | Time-boxed investment intended to move an outcome; has success signal and stop rule (EDGE Bet); may be opportunity or capability (Tech@Core)                                                                                                              |
 | **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) — narrative only; never a dual backlog                                                                                                                                                            |
-| **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding)                                                                                                                                                                        |
+| **Product Blueprint**        | Lightweight EDGE product definition: customer problems, core elements, and LVT links — without heavy upfront requirements; supports product mindset over project mindset                                                                                  |
+| **Tech@Core**                | EDGE stance that technology is the business engine; strategic tech debt and trend sensing (e.g. Tech Radar refs) are investment concerns — not a back-office cost centre                                                                                |
+| **Periodic Value Review (PVR)** | EDGE lightweight governance ritual: frequent, data-informed portfolio rebalancing (double down or defund) instead of annual stage-gate theatre; SteerLens decision notes are the PVR artifact                                                          |
+| **Integrated Backlog**       | EDGE model for cross-prioritising strategic (LVT) work with BAU, maintenance, and capability building via relative value/effort — SteerLens shows mix/stance cues and never owns the execution backlog                                                  |
+| **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding / PVR)                                                                                                                                                                  |
+| **EDGE principles**          | Six cultural OS principles: outcome-based strategy; value-based prioritization; lightweight planning/governance; adaptive learning culture; autonomous teams; self-sufficient collaborative decisions                                                   |
 | **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                                                     |
 | **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned (spine), platform (scoped org / vertical / team), enabling, complicated subsystem (may nest in a stream); modes X-as-a-Service / Collaboration / Facilitation; value-stream / platform groupings; optional members with `discipline` + FTE% as capacity / mix; point-in-time as-of projection |
 | **Mismatch**                 | Detectable conflict (portfolio or topology smell — e.g. unfunded bet; platform overload / cognitive-load proxy)                                                                                                                                           |
-| **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (lightweight governance)                                                                                                                                                  |
+| **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (PVR / lightweight governance)                                                                                                                                            |
 | **SteerSpec**                | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                                                                                                                                           |
 | **Workspace**                | Local folder containing SteerSpec (+ optional exports)                                                                                                                                                                                                    |
 | **Overlay** (later)          | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync                                                                                                                                                                |
@@ -75,10 +81,10 @@ SteerLens builds on two operating-model sources (full backlog and vocabulary bri
 
 | Source                                  | Role in SteerLens                                                                                                                                                  |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **EDGE** (Highsmith / Luu / Robinson)   | Lean Value Tree: vision → goals/outcomes + MoS → bets → (optional) initiatives; incremental funding; lightweight start/stop governance                             |
+| **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals/outcomes + MoS → bets → optional initiatives) **plus** product mindset/Blueprint, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
 | **Team Topologies** 2e (Skelton / Pais) | Topology _intent_ for fast flow: stream-aligned, platform _groupings_, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
 
-Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Outcome / Bet / Measure of Success in the default views.
+Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Outcome / Bet / Measure of Success / value review in the default views; Product Blueprint, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
 
 ## 7. Acceptance scenarios (Gherkin)
 
@@ -192,5 +198,6 @@ Greenfield - no existing tests. Design phase should add:
 - Auto-mutating Entra or GitHub team membership
 - Replacing ArchLens canvas or ChaosLens
 - Multi-user realtime collaboration (revisit after auth)
-- Full BAU vs strategic finance accounting; full cognitive-load assessment instruments
+- Full BAU vs strategic finance accounting; Tech Radar product; tech-debt inventory DB; heavy Product Blueprint / requirements docs; full cognitive-load assessment instruments
 - Proprietary Team Topologies diagram artwork without permission
+- Owning an Integrated Backlog execution system (Jira remains the work SoR)
