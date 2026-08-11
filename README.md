@@ -15,7 +15,7 @@ bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Append `?preview=1` to unlock the full site behind the Coming Soon gate.
+Open [http://localhost:5173](http://localhost:5173). Append `?preview=1` to unlock the full site behind the Coming Soon gate (sticky in `localStorage` until `?preview=no`).
 
 ## Docs
 

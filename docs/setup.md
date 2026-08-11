@@ -14,7 +14,7 @@ bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Coming Soon** splash; append `?preview=1` to unlock the full site (remembered for the tab via `sessionStorage`).
+Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Coming Soon** splash; append `?preview=1` to unlock the full site (remembered in `localStorage` until you visit with `?preview=no`).
 
 | Path                    | Role                                                        |
 | ----------------------- | ----------------------------------------------------------- |
