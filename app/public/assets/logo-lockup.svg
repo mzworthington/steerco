@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 309.4 82.6" role="img" aria-label="SteerCo lockup mark">
-  <!-- Circles + arrow on a shared centre line; even 120u centre rhythm; artboard trimmed to ink. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 249.4 82.6" role="img" aria-label="SteerCo lockup mark">
+  <!-- Circles + arrow on a shared centre line; 90u centre rhythm (tighter dots); artboard trimmed to ink. -->
   <circle cx="38" cy="38" r="38" fill="#041c38"/>
-  <circle cx="158" cy="38" r="38" fill="#041c38"/>
-  <g transform="translate(278 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
+  <circle cx="128" cy="38" r="38" fill="#041c38"/>
+  <g transform="translate(218 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
     <path fill="#041c38"
           d="M 117.98 -15.16
              A 18 18 0 0 1 117.98 15.16

@@ -11,7 +11,7 @@ export function BrandMark({ className, variant = 'mark' }: BrandMarkProps) {
       <img
         src="/assets/logo-lockup.svg"
         alt=""
-        width={105}
+        width={84}
         height={28}
         className={className ?? 'h-7 w-auto'}
         decoding="async"

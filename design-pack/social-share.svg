@@ -24,11 +24,11 @@
     <path d="M80 0 V630 M160 0 V630 M240 0 V630 M320 0 V630 M400 0 V630 M480 0 V630 M560 0 V630 M640 0 V630 M720 0 V630 M800 0 V630 M880 0 V630 M960 0 V630 M1040 0 V630 M1120 0 V630"/>
   </g>
 
-  <!-- Corrected lockup (shared centre / 120u rhythm / trimmed ink), scaled for the card. -->
-  <g transform="translate(812 248) scale(0.9)">
+  <!-- Lockup (shared centre / 90u rhythm / trimmed ink), scaled for the card. -->
+  <g transform="translate(840 248) scale(0.9)">
     <circle cx="38" cy="38" r="38" fill="#041c38"/>
-    <circle cx="158" cy="38" r="38" fill="#041c38"/>
-    <g transform="translate(278 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
+    <circle cx="128" cy="38" r="38" fill="#041c38"/>
+    <g transform="translate(218 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
       <path fill="#041c38"
             d="M 117.98 -15.16 A 18 18 0 0 1 117.98 15.16 L -130 102 Q -48 0 -130 -102 Z"/>
     </g>

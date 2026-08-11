@@ -26,7 +26,7 @@ Sketch: `mockups/logo-explorations/steerco-logo-sketch-dots-arrow.png` (from v16
 
 - Full motif: two filled circles + northeast arrowhead with scooped base (`mark-lockup.svg`).
 - Square applications: **arrow only** (`mark.svg`, `mark-dark.svg`, `favicon.svg`, PWA / apple-touch).
-- Geometry: rotate about the arrow’s **optical centre** (not its bounding box); square marks fill ~**78%** of the artboard; lockup shares one centre line, even **120u** centre rhythm, artboard trimmed to ink.
+- Geometry: rotate about the arrow’s **optical centre** (not its bounding box); square marks fill ~**78%** of the artboard; lockup shares one centre line, **90u** centre rhythm (tighter dots), artboard trimmed to ink.
 
 ## Sources (this folder)
 

@@ -68,8 +68,8 @@ export function BrandReveal({ className }: BrandRevealProps) {
     >
       <svg
         className="brand-reveal-lockup"
-        viewBox="0 0 309.4 82.6"
-        width={309.4}
+        viewBox="0 0 249.4 82.6"
+        width={249.4}
         height={82.6}
         aria-hidden
       >
@@ -78,7 +78,7 @@ export function BrandReveal({ className }: BrandRevealProps) {
             <animate
               attributeName="opacity"
               values="0;1"
-              begin="0.1s"
+              begin="0.08s"
               dur="0.28s"
               fill="freeze"
               calcMode="spline"
@@ -87,12 +87,12 @@ export function BrandReveal({ className }: BrandRevealProps) {
             />
           )}
         </circle>
-        <circle cx="158" cy="38" r="38" fill="#041c38" opacity={reduceMotion ? 1 : 0}>
+        <circle cx="128" cy="38" r="38" fill="#041c38" opacity={reduceMotion ? 1 : 0}>
           {reduceMotion ? null : (
             <animate
               attributeName="opacity"
               values="0;1"
-              begin="0.48s"
+              begin="0.38s"
               dur="0.28s"
               fill="freeze"
               calcMode="spline"
@@ -106,7 +106,7 @@ export function BrandReveal({ className }: BrandRevealProps) {
             <animateTransform
               attributeName="transform"
               type="translate"
-              values="-240 0;0 0"
+              values="-200 0;0 0"
               dur="1.35s"
               fill="freeze"
               calcMode="spline"
@@ -114,7 +114,7 @@ export function BrandReveal({ className }: BrandRevealProps) {
               keyTimes="0;1"
             />
           )}
-          <g transform="translate(278 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
+          <g transform="translate(218 38) scale(0.293879) rotate(-45) translate(17.3702 0)">
             <path fill="#041c38" d={ARROW_PATH} />
           </g>
         </g>
