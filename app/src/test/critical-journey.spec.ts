@@ -61,4 +61,20 @@ test.describe('Slice 1 critical journey', () => {
       expect(results.violations, `axe violations on ${route}`).toEqual([]);
     }
   });
+
+  test('mobile workspace uses a drawer for section navigation', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/workspace?preview=1');
+    await expect(page.getByTestId('workspace-mobile-bar')).toBeVisible();
+    await expect(page.getByTestId('workspace-home')).toBeVisible();
+
+    await page.getByRole('button', { name: /start from sample/i }).click();
+    await expect(page.getByTestId('steering-overview')).toBeVisible();
+
+    await page.getByTestId('nav-drawer-toggle').click();
+    await expect(page.getByTestId('nav-drawer-backdrop')).toBeVisible();
+    await page.getByRole('link', { name: /^outcomes$/i }).click();
+    await expect(page.getByTestId('outcomes-page')).toBeVisible();
+    await expect(page.getByTestId('nav-drawer-backdrop')).toHaveCount(0);
+  });
 });
