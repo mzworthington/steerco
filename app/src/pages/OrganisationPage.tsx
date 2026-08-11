@@ -295,6 +295,9 @@ export function OrganisationPage() {
               id: team.id,
               displayName: team.displayName,
               domainTitle: team.domainTitle,
+              roleLabel: team.roleLabel,
+              purpose: team.purpose,
+              capacityLabel: team.capacityLabel,
             }))}
           />
         </section>

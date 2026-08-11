@@ -10,10 +10,6 @@ import { OutcomesPage } from './OutcomesPage';
 
 const setLocation = vi.fn();
 
-vi.mock('../components/MermaidPreview', () => ({
-  MermaidPreview: ({ code }: { code: string }) => <div data-testid="outcomes-mermaid">{code}</div>,
-}));
-
 vi.mock('wouter', async () => {
   const actual = await vi.importActual<typeof import('wouter')>('wouter');
   return {
@@ -55,7 +51,7 @@ afterEach(() => {
 });
 
 describe('OutcomesPage', () => {
-  it('shows MoS framing, hero measures, and bet rows', async () => {
+  it('shows MoS framing, value tree, hero measures, and bet rows', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -71,7 +67,8 @@ describe('OutcomesPage', () => {
     expect(screen.getByTestId('outcomes-page')).toBeTruthy();
     expect(screen.getByTestId('outcomes-value-tree')).toBeTruthy();
     expect(screen.getByTestId('value-tree-vision')).toBeTruthy();
-    expect(await screen.findByTestId('outcomes-mermaid')).toBeTruthy();
+    expect(screen.getByTestId('value-tree-canvas')).toBeTruthy();
+    expect(screen.getByTestId('value-tree-detail')).toBeTruthy();
     expect(screen.getByText(/measures of success for this outcome/i)).toBeTruthy();
     expect(screen.getByRole('heading', { name: /reliable customer promises/i })).toBeTruthy();
     expect(screen.getByText('91%')).toBeTruthy();
@@ -121,7 +118,7 @@ describe('OutcomesPage', () => {
     ).toBe(93);
   });
 
-  it('switches Lean Value Tree orientation between top-down and left-to-right', async () => {
+  it('switches Lean Value Tree orientation and selects nodes for detail', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -135,14 +132,20 @@ describe('OutcomesPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    const mermaid = await screen.findByTestId('outcomes-mermaid');
-    expect(mermaid.textContent).toContain('flowchart TB');
+    expect(screen.getByTestId('value-tree-detail').textContent).toMatch(/investment vision/i);
 
     await user.click(screen.getByTestId('value-tree-orient-lr'));
-    expect((await screen.findByTestId('outcomes-mermaid')).textContent).toContain('flowchart LR');
+    expect(screen.getByTestId('value-tree-orient-lr')).toHaveAttribute('aria-pressed', 'true');
 
-    await user.click(screen.getByTestId('value-tree-orient-tb'));
-    expect((await screen.findByTestId('outcomes-mermaid')).textContent).toContain('flowchart TB');
+    const outline = screen.getByTestId('value-tree-outline');
+    await user.click(within(outline).getByRole('button', { name: /same-day pickup reliability/i }));
+    expect(screen.getByTestId('value-tree-detail').textContent).toMatch(/open bet/i);
+
+    await user.click(screen.getByTestId('value-tree-expand'));
+    expect(screen.getByTestId('outcomes-value-tree')).toHaveAttribute('data-expanded', 'true');
+    expect(screen.queryByTestId('value-tree-outline')).toBeNull();
+    await user.click(screen.getByTestId('value-tree-expand'));
+    expect(screen.getByTestId('outcomes-value-tree')).toHaveAttribute('data-expanded', 'false');
   });
 
   it('links outcomes and bets by checkbox when saving a product brief', async () => {

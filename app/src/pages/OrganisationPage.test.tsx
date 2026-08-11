@@ -11,12 +11,6 @@ import { OrganisationPage } from './OrganisationPage';
 
 const setLocation = vi.fn();
 
-vi.mock('../components/MermaidPreview', () => ({
-  MermaidPreview: ({ code }: { code: string }) => (
-    <div data-testid="organisation-mermaid">{code}</div>
-  ),
-}));
-
 vi.mock('wouter', async () => {
   const actual = await vi.importActual<typeof import('wouter')>('wouter');
   return {
@@ -89,12 +83,21 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-lvt-placeholder')).toBeTruthy();
     expect(screen.queryByTestId('organisation-as-of')).toBeNull();
     expect(screen.getByTestId('organisation-flow-graph')).toBeTruthy();
-    expect(await screen.findByTestId('organisation-mermaid')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-canvas')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-detail')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-domain')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-orient')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-expand')).toBeTruthy();
     expect(
       screen.getByText(/storefront experience uses as a service fulfilment platform/i),
     ).toBeTruthy();
     expect(screen.getByRole('link', { name: /prepare decision note/i })).toBeTruthy();
+
+    await user.click(screen.getByTestId('organisation-flow-expand'));
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-expanded', 'true');
+    expect(screen.queryByTestId('organisation-flow-graph-list')).toBeNull();
+    await user.click(screen.getByTestId('organisation-flow-expand'));
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-expanded', 'false');
 
     await openAsIsCapacityBoard(user);
     expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();

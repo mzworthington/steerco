@@ -13,7 +13,7 @@ const fixtureDir = path.resolve(
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
 describe('presentOrganisationFlowGraph', () => {
-  it('builds a mermaid flowchart with domain subgraphs for the sample', () => {
+  it('builds positioned interaction graphs with domain layout for the sample', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
@@ -24,14 +24,17 @@ describe('presentOrganisationFlowGraph', () => {
         id: team.id,
         displayName: team.displayName,
         domainTitle: team.domainTitle ?? 'Ungrouped',
+        roleLabel: team.roleLabel,
+        purpose: team.purpose,
+        capacityLabel: team.capacityLabel,
       })),
     );
 
     const graph = presentOrganisationFlowGraph(org.relationships, meta);
     expect(graph.empty).toBe(false);
-    expect(graph.mermaid).toContain('flowchart LR');
-    expect(graph.mermaid).toContain('subgraph');
-    expect(graph.mermaid).toMatch(/XaaS|Facilitate|Collab/);
+    expect(graph.nodes.length).toBeGreaterThan(1);
+    expect(graph.edges.length).toBeGreaterThan(0);
+    expect(graph.edges.some((edge) => /XaaS|Facilitate|Collab/.test(edge.modeLabel))).toBe(true);
     expect(graph.listGroups.length).toBeGreaterThan(1);
     expect(graph.domainOptions.some((option) => /commerce/i.test(option.title))).toBe(true);
 
@@ -40,5 +43,9 @@ describe('presentOrganisationFlowGraph', () => {
     });
     expect(focused.edgeCount).toBeLessThan(graph.edgeCount);
     expect(focused.lead).toMatch(/commerce/i);
+
+    const tb = presentOrganisationFlowGraph(org.relationships, meta, { orientation: 'TB' });
+    expect(tb.orientation).toBe('TB');
+    expect(tb.lead).toMatch(/top-down/i);
   });
 });

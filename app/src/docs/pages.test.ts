@@ -47,6 +47,7 @@ describe('ADR docs pages', () => {
     expect(findDocPage('adrs').title).toBe('ADRs');
     expect(DOC_SLUGS.has('adrs/0002-tech-stack')).toBe(true);
     expect(DOC_SLUGS.has('adrs/0006-steerspec-name-and-kinded-refs')).toBe(true);
+    expect(DOC_SLUGS.has('adrs/0007-mermaid-docs-react-flow-product-graphs')).toBe(true);
     const page = findDocPage('adrs/0002-tech-stack');
     expect(page.markdown).toContain('status: Accepted');
     expect(page.markdown).toContain('# 0002. Tech stack for SteerLens');

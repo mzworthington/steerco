@@ -2,6 +2,27 @@ import type { SteerSpec } from '@steerlens/core';
 
 export type ValueTreeOrientation = 'TB' | 'LR';
 
+export type ValueTreeNodeKind = 'vision' | 'outcome' | 'bet' | 'initiative';
+
+export type ValueTreeGraphNode = {
+  id: string;
+  kind: ValueTreeNodeKind;
+  label: string;
+  /** Short supporting line for the node and detail panel. */
+  summary: string | null;
+  href: string | null;
+  hrefLabel: string | null;
+  /** Depth from vision (0 = vision). */
+  depth: number;
+  position: { x: number; y: number };
+};
+
+export type ValueTreeGraphEdge = {
+  id: string;
+  source: string;
+  target: string;
+};
+
 export type ValueTreeOutlineBet = {
   id: string;
   title: string;
@@ -17,26 +38,50 @@ export type ValueTreeOutlineOutcome = {
 export type ValueTreeModel = {
   vision: string;
   orientation: ValueTreeOrientation;
-  mermaid: string;
   lead: string;
+  nodes: ValueTreeGraphNode[];
+  edges: ValueTreeGraphEdge[];
   outline: ValueTreeOutlineOutcome[];
   outcomeCount: number;
   betCount: number;
   initiativeCount: number;
 };
 
+const NODE_WIDTH = 200;
+const NODE_HEIGHT = 72;
+const GAP_X = 48;
+const GAP_Y = 56;
+
+type LayoutChild = {
+  id: string;
+  kind: ValueTreeNodeKind;
+  label: string;
+  summary: string | null;
+  href: string | null;
+  hrefLabel: string | null;
+  children: LayoutChild[];
+};
+
 /**
- * Present the Lean Value Tree spine as Mermaid (TB or LR) plus an outline for a11y.
- * Vision → outcomes → bets → optional initiatives.
+ * Present the Lean Value Tree spine as positioned nodes/edges (TB or LR)
+ * plus an outline for a11y. Vision → outcomes → bets → optional initiatives.
  */
 export function presentValueTree(
   spec: SteerSpec,
   orientation: ValueTreeOrientation = 'TB',
 ): ValueTreeModel {
-  const initiativesByBet = new Map<string, Array<{ id: string; title: string }>>();
+  const initiativesByBet = new Map<
+    string,
+    Array<{ id: string; title: string; successSignal: string; externalUrl?: string }>
+  >();
   for (const initiative of spec.spec.initiatives ?? []) {
     const list = initiativesByBet.get(initiative.betId) ?? [];
-    list.push({ id: initiative.id, title: initiative.title });
+    list.push({
+      id: initiative.id,
+      title: initiative.title,
+      successSignal: initiative.successSignal,
+      externalUrl: initiative.externalUrl,
+    });
     initiativesByBet.set(initiative.betId, list);
   }
 
@@ -46,7 +91,10 @@ export function presentValueTree(
       .map((bet) => ({
         id: bet.id,
         title: bet.title,
-        initiatives: initiativesByBet.get(bet.id) ?? [],
+        initiatives: (initiativesByBet.get(bet.id) ?? []).map((item) => ({
+          id: item.id,
+          title: item.title,
+        })),
       }));
     return { id: outcome.id, title: outcome.title, bets };
   });
@@ -57,14 +105,60 @@ export function presentValueTree(
     0,
   );
 
+  const root: LayoutChild = {
+    id: 'vision',
+    kind: 'vision',
+    label: 'Vision',
+    summary: truncate(spec.spec.vision, 120),
+    href: null,
+    hrefLabel: null,
+    children: spec.spec.outcomes.map((outcome) => {
+      const outcomeBets = spec.spec.bets.filter((bet) => bet.outcomeId === outcome.id);
+      const measureCount = outcome.metrics.length;
+      return {
+        id: outcome.id,
+        kind: 'outcome' as const,
+        label: outcome.title,
+        summary:
+          outcome.summary?.trim() ||
+          `${measureCount} measure${measureCount === 1 ? '' : 's'} · ${outcomeBets.length} bet${outcomeBets.length === 1 ? '' : 's'}`,
+        href: '/workspace/outcomes',
+        hrefLabel: 'Open outcomes',
+        children: outcomeBets.map((bet) => {
+          const initiatives = initiativesByBet.get(bet.id) ?? [];
+          return {
+            id: bet.id,
+            kind: 'bet' as const,
+            label: bet.title,
+            summary: bet.successSignal,
+            href: `/workspace/bets/${bet.id}`,
+            hrefLabel: 'Open bet',
+            children: initiatives.map((initiative) => ({
+              id: initiative.id,
+              kind: 'initiative' as const,
+              label: initiative.title,
+              summary: initiative.successSignal,
+              href: initiative.externalUrl?.trim() || null,
+              hrefLabel: initiative.externalUrl ? 'External tracker' : null,
+              children: [],
+            })),
+          };
+        }),
+      };
+    }),
+  };
+
+  const { nodes, edges } = layoutTree(root, orientation);
+
   return {
     vision: spec.spec.vision,
     orientation,
-    mermaid: buildMermaid(spec.spec.vision, outline, orientation),
     lead:
       orientation === 'TB'
-        ? 'Top-down Lean Value Tree: vision → outcomes → bets → initiatives.'
-        : 'Left-to-right Lean Value Tree: vision → outcomes → bets → initiatives.',
+        ? 'Top-down Lean Value Tree: vision → outcomes → bets → initiatives. Select a node for detail.'
+        : 'Left-to-right Lean Value Tree: vision → outcomes → bets → initiatives. Select a node for detail.',
+    nodes,
+    edges,
     outline,
     outcomeCount: outline.length,
     betCount,
@@ -72,49 +166,58 @@ export function presentValueTree(
   };
 }
 
-function buildMermaid(
-  vision: string,
-  outline: ValueTreeOutlineOutcome[],
+function layoutTree(
+  root: LayoutChild,
   orientation: ValueTreeOrientation,
-): string {
-  const lines: string[] = [`flowchart ${orientation}`];
-  const visionId = 'vision';
-  lines.push(`  ${visionId}["${escapeLabel(truncate(vision, 72))}"]`);
+): { nodes: ValueTreeGraphNode[]; edges: ValueTreeGraphEdge[] } {
+  const nodes: ValueTreeGraphNode[] = [];
+  const edges: ValueTreeGraphEdge[] = [];
 
-  if (outline.length === 0) {
-    lines.push('  empty["No outcomes yet"]');
-    lines.push(`  ${visionId} --> empty`);
-    return lines.join('\n');
-  }
+  const measure = (node: LayoutChild): number => {
+    if (node.children.length === 0) return 1;
+    return node.children.reduce((sum, child) => sum + measure(child), 0);
+  };
 
-  for (const outcome of outline) {
-    const outcomeNode = mermaidSafeId(outcome.id);
-    lines.push(`  ${outcomeNode}["${escapeLabel(outcome.title)}"]`);
-    lines.push(`  ${visionId} --> ${outcomeNode}`);
+  const place = (node: LayoutChild, depth: number, offset: number, parentId: string | null) => {
+    const span = measure(node);
+    const center = offset + span / 2;
+    const x =
+      orientation === 'TB'
+        ? center * (NODE_WIDTH + GAP_X) - NODE_WIDTH / 2
+        : depth * (NODE_WIDTH + GAP_X);
+    const y =
+      orientation === 'TB'
+        ? depth * (NODE_HEIGHT + GAP_Y)
+        : center * (NODE_HEIGHT + GAP_Y) - NODE_HEIGHT / 2;
 
-    for (const bet of outcome.bets) {
-      const betNode = mermaidSafeId(bet.id);
-      lines.push(`  ${betNode}["${escapeLabel(bet.title)}"]`);
-      lines.push(`  ${outcomeNode} --> ${betNode}`);
+    nodes.push({
+      id: node.id,
+      kind: node.kind,
+      label: node.label,
+      summary: node.summary,
+      href: node.href,
+      hrefLabel: node.hrefLabel,
+      depth,
+      position: { x, y },
+    });
 
-      for (const initiative of bet.initiatives) {
-        const initNode = mermaidSafeId(initiative.id);
-        lines.push(`  ${initNode}["${escapeLabel(initiative.title)}"]`);
-        lines.push(`  ${betNode} --> ${initNode}`);
-      }
+    if (parentId) {
+      edges.push({
+        id: `${parentId}->${node.id}`,
+        source: parentId,
+        target: node.id,
+      });
     }
-  }
 
-  return lines.join('\n');
-}
+    let childOffset = offset;
+    for (const child of node.children) {
+      place(child, depth + 1, childOffset, node.id);
+      childOffset += measure(child);
+    }
+  };
 
-function mermaidSafeId(value: string): string {
-  const cleaned = value.replace(/[^a-zA-Z0-9_]/g, '_');
-  return /^[0-9]/.test(cleaned) ? `n_${cleaned}` : cleaned;
-}
-
-function escapeLabel(value: string): string {
-  return value.replace(/"/g, "'").replace(/[\[\]]/g, '');
+  place(root, 0, 0, null);
+  return { nodes, edges };
 }
 
 function truncate(value: string, max: number): string {

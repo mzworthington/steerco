@@ -56,3 +56,17 @@ function ensureStorage(name: 'localStorage' | 'sessionStorage') {
 
 ensureStorage('localStorage');
 ensureStorage('sessionStorage');
+
+class ResizeObserverStub {
+  observe(): void {}
+  unobserve(): void {}
+  disconnect(): void {}
+}
+
+if (typeof globalThis.ResizeObserver === 'undefined') {
+  Object.defineProperty(globalThis, 'ResizeObserver', {
+    configurable: true,
+    writable: true,
+    value: ResizeObserverStub,
+  });
+}

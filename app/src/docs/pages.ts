@@ -15,6 +15,7 @@ import adr0003 from '../../../docs/ADRs/0003-local-first-no-auth.md?raw';
 import adr0004 from '../../../docs/ADRs/0004-suite-relationship-archlens.md?raw';
 import adr0005 from '../../../docs/ADRs/0005-provider-teams-reference-only.md?raw';
 import adr0006 from '../../../docs/ADRs/0006-steerspec-name-and-kinded-refs.md?raw';
+import adr0007 from '../../../docs/ADRs/0007-mermaid-docs-react-flow-product-graphs.md?raw';
 import { titleFromMarkdown } from './presentDocsMarkdown';
 
 export type DocSection = 'product' | 'build';
@@ -56,6 +57,7 @@ const ADR_PAGES: DocPage[] = [
   adrPage('0004-suite-relationship-archlens', adr0004),
   adrPage('0005-provider-teams-reference-only', adr0005),
   adrPage('0006-steerspec-name-and-kinded-refs', adr0006),
+  adrPage('0007-mermaid-docs-react-flow-product-graphs', adr0007),
 ];
 
 const TOP_LEVEL: DocPage[] = [
