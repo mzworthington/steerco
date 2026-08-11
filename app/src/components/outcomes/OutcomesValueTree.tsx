@@ -209,57 +209,73 @@ export function OutcomesValueTree({ spec, dense = false }: Props) {
       </div>
 
       {expanded ? null : (
-        <details className="value-tree-outline">
-          <summary>
+        <div className="value-tree-outline">
+          <p className="value-tree-outline-title">
             Outline ({tree.outcomeCount} outcomes · {tree.betCount} bets
             {tree.initiativeCount > 0 ? ` · ${tree.initiativeCount} initiatives` : ''})
-          </summary>
-          <ol className="value-tree-outline-list" data-testid="value-tree-outline">
-            {tree.outline.map((outcome) => (
-              <li key={outcome.id}>
-                <button
-                  type="button"
-                  className="value-tree-outline-outcome"
+          </p>
+          <div className="value-tree-outline-accordion" data-testid="value-tree-outline">
+            {tree.outline.map((outcome, index) => (
+              <details
+                key={outcome.id}
+                className="value-tree-outline-item"
+                name="value-tree-outline"
+                open={index === 0}
+              >
+                <summary
+                  className="value-tree-outline-summary"
                   onClick={() => setSelectedId(outcome.id)}
                 >
                   {outcome.title}
-                </button>
+                  <span className="organisation-flow-graph-accordion-count">
+                    {outcome.bets.length}
+                  </span>
+                </summary>
                 {outcome.bets.length > 0 ? (
-                  <ol>
+                  <ul className="value-tree-outline-bets">
                     {outcome.bets.map((bet) => (
                       <li key={bet.id}>
-                        <button
-                          type="button"
-                          className="value-tree-outline-bet"
-                          onClick={() => setSelectedId(bet.id)}
+                        <details
+                          className="value-tree-outline-bet-item"
+                          name={`value-tree-${outcome.id}`}
                         >
-                          {bet.title}
-                        </button>
-                        {bet.initiatives.length > 0 ? (
-                          <ol>
-                            {bet.initiatives.map((initiative) => (
-                              <li key={initiative.id}>
-                                <button
-                                  type="button"
-                                  className="value-tree-outline-initiative"
-                                  onClick={() => setSelectedId(initiative.id)}
-                                >
-                                  {initiative.title}
-                                </button>
-                              </li>
-                            ))}
-                          </ol>
-                        ) : null}
+                          <summary
+                            className="value-tree-outline-bet-summary"
+                            onClick={() => setSelectedId(bet.id)}
+                          >
+                            {bet.title}
+                            {bet.initiatives.length > 0 ? (
+                              <span className="organisation-flow-graph-accordion-count">
+                                {bet.initiatives.length}
+                              </span>
+                            ) : null}
+                          </summary>
+                          {bet.initiatives.length > 0 ? (
+                            <ul className="value-tree-outline-initiatives">
+                              {bet.initiatives.map((initiative) => (
+                                <li key={initiative.id}>
+                                  <button
+                                    type="button"
+                                    className="value-tree-outline-initiative"
+                                    onClick={() => setSelectedId(initiative.id)}
+                                  >
+                                    {initiative.title}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </details>
                       </li>
                     ))}
-                  </ol>
+                  </ul>
                 ) : (
                   <p className="value-tree-outline-empty">No bets under this outcome yet.</p>
                 )}
-              </li>
+              </details>
             ))}
-          </ol>
-        </details>
+          </div>
+        </div>
       )}
     </section>
   );

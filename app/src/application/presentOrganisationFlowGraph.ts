@@ -2,6 +2,14 @@ import type { OrganisationInteractionMode, OrganisationRelationship } from './pr
 
 export type OrganisationFlowOrientation = 'TB' | 'LR';
 
+export type OrganisationFlowGraphMember = {
+  id: string;
+  displayName: string;
+  title: string;
+  disciplineLabel: string;
+  ftePercent: number;
+};
+
 export type OrganisationFlowGraphTeamMeta = {
   id: string;
   displayName: string;
@@ -9,6 +17,10 @@ export type OrganisationFlowGraphTeamMeta = {
   roleLabel: string;
   purpose: string;
   capacityLabel: string;
+  streamTitles: string[];
+  platformScopeLabel: string | null;
+  facilitatesLabels: string[];
+  members: OrganisationFlowGraphMember[];
 };
 
 export type OrganisationFlowGraphDomainOption = {
@@ -27,6 +39,10 @@ export type OrganisationFlowGraphNode = {
   roleLabel: string;
   purpose: string;
   capacityLabel: string;
+  streamTitles: string[];
+  platformScopeLabel: string | null;
+  facilitatesLabels: string[];
+  members: OrganisationFlowGraphMember[];
   position: { x: number; y: number };
 };
 
@@ -50,6 +66,15 @@ export type OrganisationFlowGraphModel = {
   edgeCount: number;
   empty: boolean;
   lead: string;
+};
+
+export type OrganisationFlowFocusSelection =
+  { kind: 'team'; id: string } | { kind: 'edge'; id: string } | null;
+
+export type OrganisationFlowFocus = {
+  hasFocus: boolean;
+  activeNodeIds: string[];
+  activeEdgeIds: string[];
 };
 
 const NODE_WIDTH = 180;
@@ -110,6 +135,43 @@ export function presentOrganisationFlowGraph(
   };
 }
 
+/** Which nodes/edges stay bright when a team or interaction is selected. */
+export function presentOrganisationFlowFocus(
+  edges: OrganisationFlowGraphEdge[],
+  selection: OrganisationFlowFocusSelection,
+): OrganisationFlowFocus {
+  if (!selection) {
+    return { hasFocus: false, activeNodeIds: [], activeEdgeIds: [] };
+  }
+
+  if (selection.kind === 'edge') {
+    const edge = edges.find((item) => item.id === selection.id);
+    if (!edge) {
+      return { hasFocus: false, activeNodeIds: [], activeEdgeIds: [] };
+    }
+    return {
+      hasFocus: true,
+      activeEdgeIds: [edge.id],
+      activeNodeIds: [edge.source, edge.target],
+    };
+  }
+
+  const related = edges.filter(
+    (edge) => edge.source === selection.id || edge.target === selection.id,
+  );
+  const activeNodeIds = new Set<string>([selection.id]);
+  for (const edge of related) {
+    activeNodeIds.add(edge.source);
+    activeNodeIds.add(edge.target);
+  }
+
+  return {
+    hasFocus: true,
+    activeNodeIds: [...activeNodeIds],
+    activeEdgeIds: related.map((edge) => edge.id),
+  };
+}
+
 function layoutInteractionGraph(
   relationships: OrganisationRelationship[],
   teamById: Map<string, OrganisationFlowGraphTeamMeta>,
@@ -153,6 +215,10 @@ function layoutInteractionGraph(
         roleLabel: team?.roleLabel ?? 'Team',
         purpose: team?.purpose ?? '',
         capacityLabel: team?.capacityLabel ?? '',
+        streamTitles: team?.streamTitles ?? [],
+        platformScopeLabel: team?.platformScopeLabel ?? null,
+        facilitatesLabels: team?.facilitatesLabels ?? [],
+        members: team?.members ?? [],
         position: { x, y },
       });
     });

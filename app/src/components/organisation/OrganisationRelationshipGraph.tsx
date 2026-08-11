@@ -12,8 +12,10 @@ import {
 import { memo, useEffect, useMemo, useState } from 'react';
 import type { OrganisationRelationship } from '../../application/presentOrganisation';
 import {
+  presentOrganisationFlowFocus,
   presentOrganisationFlowGraph,
   type OrganisationFlowGraphEdge,
+  type OrganisationFlowGraphMember,
   type OrganisationFlowGraphNode,
   type OrganisationFlowOrientation,
 } from '../../application/presentOrganisationFlowGraph';
@@ -28,6 +30,10 @@ type TeamMeta = {
   roleLabel: string;
   purpose: string;
   capacityLabel: string;
+  streamTitles: string[];
+  platformScopeLabel: string | null;
+  facilitatesLabels: string[];
+  members: OrganisationFlowGraphMember[];
 };
 
 type Props = {
@@ -40,6 +46,8 @@ type TeamFlowNodeData = {
   domainTitle: string;
   roleLabel: string;
   selected: boolean;
+  related: boolean;
+  dimmed: boolean;
 };
 
 type TeamFlowNode = Node<TeamFlowNodeData, 'orgTeam'>;
@@ -50,11 +58,21 @@ type Selection =
   | null;
 
 function OrgTeamNodeView({ data }: NodeProps<TeamFlowNode>) {
+  const stateClass = data.selected
+    ? ' is-selected'
+    : data.related
+      ? ' is-related'
+      : data.dimmed
+        ? ' is-dimmed'
+        : '';
+
   return (
     <button
       type="button"
-      className={`org-flow-node${data.selected ? 'is-selected' : ''}`}
+      className={`org-flow-node${stateClass}`}
       data-testid="organisation-flow-node"
+      data-dimmed={data.dimmed ? 'true' : 'false'}
+      data-related={data.related || data.selected ? 'true' : 'false'}
     >
       <span className="org-flow-node-domain">{data.domainTitle}</span>
       <span className="org-flow-node-label">{data.label}</span>
@@ -82,6 +100,10 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
         roleLabel: team.roleLabel,
         purpose: team.purpose,
         capacityLabel: team.capacityLabel,
+        streamTitles: team.streamTitles,
+        platformScopeLabel: team.platformScopeLabel,
+        facilitatesLabels: team.facilitatesLabels,
+        members: team.members,
       })),
     [teams],
   );
@@ -107,43 +129,85 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
     });
   }, [graph.nodes, graph.edges]);
 
+  const focus = useMemo(
+    () =>
+      presentOrganisationFlowFocus(
+        graph.edges,
+        selection
+          ? selection.kind === 'team'
+            ? { kind: 'team', id: selection.node.id }
+            : { kind: 'edge', id: selection.edge.id }
+          : null,
+      ),
+    [graph.edges, selection],
+  );
+
+  const activeNodeSet = useMemo(() => new Set(focus.activeNodeIds), [focus.activeNodeIds]);
+  const activeEdgeSet = useMemo(() => new Set(focus.activeEdgeIds), [focus.activeEdgeIds]);
+
+  const selectedTeamEdges = useMemo(() => {
+    if (selection?.kind !== 'team') return [];
+    return graph.edges.filter(
+      (edge) => edge.source === selection.node.id || edge.target === selection.node.id,
+    );
+  }, [graph.edges, selection]);
+
   const flowNodes: TeamFlowNode[] = useMemo(
     () =>
-      graph.nodes.map((node) => ({
-        id: node.id,
-        type: 'orgTeam',
-        position: node.position,
-        data: {
-          label: node.label,
-          domainTitle: node.domainTitle,
-          roleLabel: node.roleLabel,
-          selected: selection?.kind === 'team' && selection.node.id === node.id,
-        },
-        draggable: false,
-        selectable: true,
-      })),
-    [graph.nodes, selection],
+      graph.nodes.map((node) => {
+        const selected = selection?.kind === 'team' && selection.node.id === node.id;
+        const related = focus.hasFocus && activeNodeSet.has(node.id);
+        return {
+          id: node.id,
+          type: 'orgTeam',
+          position: node.position,
+          data: {
+            label: node.label,
+            domainTitle: node.domainTitle,
+            roleLabel: node.roleLabel,
+            selected,
+            related: related && !selected,
+            dimmed: focus.hasFocus && !related,
+          },
+          className: focus.hasFocus && !related ? 'org-flow-rf-node--dimmed' : undefined,
+          draggable: false,
+          selectable: true,
+          zIndex: selected ? 3 : related ? 2 : 1,
+        };
+      }),
+    [graph.nodes, selection, focus.hasFocus, activeNodeSet],
   );
 
   const flowEdges: Edge[] = useMemo(
     () =>
-      graph.edges.map((edge) => ({
-        id: edge.id,
-        source: edge.source,
-        target: edge.target,
-        label: edge.modeLabel,
-        type: 'smoothstep',
-        animated: edge.mode === 'facilitation',
-        style:
-          edge.mode === 'collaboration'
-            ? { strokeWidth: 3 }
-            : edge.mode === 'facilitation'
-              ? { strokeDasharray: '6 4' }
-              : { strokeWidth: 1.5 },
-        markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16 },
-        selected: selection?.kind === 'edge' && selection.edge.id === edge.id,
-      })),
-    [graph.edges, selection],
+      graph.edges.map((edge) => {
+        const related = focus.hasFocus && activeEdgeSet.has(edge.id);
+        const dimmed = focus.hasFocus && !related;
+        const selected = selection?.kind === 'edge' && selection.edge.id === edge.id;
+        const baseWidth = edge.mode === 'collaboration' ? 3 : 1.5;
+        return {
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label: related || !focus.hasFocus ? edge.modeLabel : undefined,
+          type: 'smoothstep',
+          animated: edge.mode === 'facilitation' && (related || !focus.hasFocus),
+          style: {
+            strokeWidth: related ? baseWidth + 1 : baseWidth,
+            strokeDasharray: edge.mode === 'facilitation' ? '6 4' : undefined,
+            opacity: dimmed ? 0.18 : 1,
+          },
+          markerEnd: { type: MarkerType.ArrowClosed, width: 16, height: 16 },
+          selected,
+          zIndex: related ? 2 : 0,
+          className: dimmed
+            ? 'org-flow-edge--dimmed'
+            : related
+              ? 'org-flow-edge--related'
+              : undefined,
+        };
+      }),
+    [graph.edges, focus.hasFocus, activeEdgeSet, selection],
   );
 
   if (relationships.length === 0) {
@@ -157,6 +221,7 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
         .join(' ')}
       data-testid="organisation-flow-graph"
       data-expanded={expanded ? 'true' : 'false'}
+      data-focus={focus.hasFocus ? 'true' : 'false'}
     >
       <div className="organisation-flow-graph-toolbar">
         <label className="organisation-field organisation-flow-graph-filter">
@@ -284,21 +349,7 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
             data-testid="organisation-flow-graph-detail"
           >
             {selection?.kind === 'team' ? (
-              <div>
-                <p className="organisation-flow-graph-detail-kind">{selection.node.roleLabel}</p>
-                <h3 className="organisation-flow-graph-detail-title">{selection.node.label}</h3>
-                <p className="organisation-flow-graph-detail-meta">
-                  Domain · {selection.node.domainTitle}
-                </p>
-                {selection.node.purpose ? (
-                  <p className="organisation-flow-graph-detail-body">{selection.node.purpose}</p>
-                ) : null}
-                {selection.node.capacityLabel ? (
-                  <p className="organisation-flow-graph-detail-meta">
-                    Capacity · {selection.node.capacityLabel}
-                  </p>
-                ) : null}
-              </div>
+              <TeamDetailPanel node={selection.node} interactions={selectedTeamEdges} />
             ) : selection?.kind === 'edge' ? (
               <div>
                 <p className="organisation-flow-graph-detail-kind">{selection.edge.modeLabel}</p>
@@ -321,12 +372,27 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
       )}
 
       {expanded ? null : (
-        <details className="organisation-flow-graph-details">
-          <summary>List alternative ({graph.edgeCount} interactions)</summary>
-          <div className="organisation-flow-graph-list" data-testid="organisation-flow-graph-list">
-            {graph.listGroups.map((group) => (
-              <section key={group.domainTitle} className="organisation-flow-graph-list-group">
-                <h3 className="organisation-flow-graph-list-title">{group.domainTitle}</h3>
+        <div className="organisation-flow-graph-details">
+          <p className="organisation-flow-graph-details-title">
+            List alternative ({graph.edgeCount} interactions)
+          </p>
+          <div
+            className="organisation-flow-graph-list organisation-flow-graph-accordion"
+            data-testid="organisation-flow-graph-list"
+          >
+            {graph.listGroups.map((group, index) => (
+              <details
+                key={group.domainTitle}
+                className="organisation-flow-graph-accordion-item"
+                name="organisation-flow-domains"
+                open={index === 0}
+              >
+                <summary className="organisation-flow-graph-accordion-summary">
+                  {group.domainTitle}
+                  <span className="organisation-flow-graph-accordion-count">
+                    {group.relationships.length}
+                  </span>
+                </summary>
                 <ul className="organisation-relationship-list">
                   {group.relationships.map((relationship) => {
                     const edgeId = `${relationship.fromTeamId}-${relationship.mode}-${relationship.toTeamId}`;
@@ -363,11 +429,107 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
                     );
                   })}
                 </ul>
-              </section>
+              </details>
             ))}
           </div>
-        </details>
+        </div>
       )}
+    </div>
+  );
+}
+
+function TeamDetailPanel({
+  node,
+  interactions,
+}: {
+  node: OrganisationFlowGraphNode;
+  interactions: OrganisationFlowGraphEdge[];
+}) {
+  return (
+    <div data-testid="organisation-flow-team-detail">
+      <p className="organisation-flow-graph-detail-kind">{node.roleLabel}</p>
+      <h3 className="organisation-flow-graph-detail-title">{node.label}</h3>
+      <p className="organisation-flow-graph-detail-meta">Domain · {node.domainTitle}</p>
+      {node.streamTitles.length > 0 ? (
+        <p className="organisation-flow-graph-detail-meta">
+          Streams · {node.streamTitles.join(', ')}
+        </p>
+      ) : null}
+      {node.platformScopeLabel ? (
+        <p className="organisation-flow-graph-detail-meta">
+          Platform scope · {node.platformScopeLabel}
+        </p>
+      ) : null}
+      {node.purpose ? <p className="organisation-flow-graph-detail-body">{node.purpose}</p> : null}
+      {node.capacityLabel ? (
+        <p className="organisation-flow-graph-detail-meta">Capacity · {node.capacityLabel}</p>
+      ) : null}
+
+      <div className="organisation-flow-graph-accordion organisation-flow-graph-detail-accordion">
+        <details
+          className="organisation-flow-graph-accordion-item"
+          name={`team-detail-${node.id}`}
+          open
+        >
+          <summary className="organisation-flow-graph-accordion-summary">
+            People
+            <span className="organisation-flow-graph-accordion-count">{node.members.length}</span>
+          </summary>
+          {node.members.length === 0 ? (
+            <p className="organisation-flow-graph-detail-empty">No people on this team yet.</p>
+          ) : (
+            <ul
+              className="organisation-flow-graph-members"
+              data-testid="organisation-flow-team-members"
+            >
+              {node.members.map((member) => (
+                <li key={member.id}>
+                  <span className="organisation-flow-graph-member-name">{member.displayName}</span>
+                  <span className="organisation-flow-graph-member-meta">
+                    {member.title}
+                    {member.disciplineLabel ? ` · ${member.disciplineLabel}` : ''}
+                    {` · ${member.ftePercent}%`}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </details>
+
+        <details className="organisation-flow-graph-accordion-item" name={`team-detail-${node.id}`}>
+          <summary className="organisation-flow-graph-accordion-summary">
+            Communicates with
+            <span className="organisation-flow-graph-accordion-count">{interactions.length}</span>
+          </summary>
+          {interactions.length === 0 ? (
+            <p className="organisation-flow-graph-detail-empty">
+              No interaction modes recorded for this team.
+            </p>
+          ) : (
+            <ul className="organisation-flow-graph-interactions">
+              {interactions.map((edge) => (
+                <li key={edge.id}>
+                  <span className="organisation-flow-graph-interaction-mode">{edge.modeLabel}</span>
+                  <span className="organisation-flow-graph-interaction-sentence">
+                    {edge.sentence}
+                  </span>
+                  {edge.expectedUntil ? (
+                    <span className="organisation-flow-graph-detail-meta">
+                      Expected until {edge.expectedUntil}
+                    </span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </details>
+      </div>
+
+      {node.facilitatesLabels.length > 0 ? (
+        <p className="organisation-flow-graph-detail-meta">
+          Facilitates · {node.facilitatesLabels.join(', ')}
+        </p>
+      ) : null}
     </div>
   );
 }

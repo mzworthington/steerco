@@ -298,6 +298,16 @@ export function OrganisationPage() {
               roleLabel: team.roleLabel,
               purpose: team.purpose,
               capacityLabel: team.capacityLabel,
+              streamTitles: team.streamTitles,
+              platformScopeLabel: team.platformScopeLabel,
+              facilitatesLabels: team.facilitatesLabels,
+              members: team.members.map((member) => ({
+                id: member.id,
+                displayName: member.displayName,
+                title: member.title,
+                disciplineLabel: member.disciplineLabel,
+                ftePercent: member.ftePercent,
+              })),
             }))}
           />
         </section>

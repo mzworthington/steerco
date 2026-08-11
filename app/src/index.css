@@ -1265,35 +1265,41 @@
     @apply border-line mt-4 rounded-xl border px-4 py-3;
   }
 
-  .value-tree-outline summary {
-    @apply text-ink cursor-pointer text-sm font-semibold;
+  .value-tree-outline-title {
+    @apply text-ink mb-3 text-sm font-semibold;
   }
 
-  .value-tree-outline-list {
-    @apply text-ink mt-3 list-decimal space-y-3 pl-5 text-sm;
+  .value-tree-outline-accordion {
+    @apply flex flex-col gap-2;
   }
 
-  .value-tree-outline-list ol {
-    @apply text-ink-muted mt-2 list-[lower-alpha] space-y-1 pl-5;
+  .value-tree-outline-item,
+  .value-tree-outline-bet-item {
+    @apply border-line rounded-lg border bg-white;
   }
 
-  .value-tree-outline-list ol ol {
-    @apply list-[lower-roman];
+  .value-tree-outline-summary,
+  .value-tree-outline-bet-summary {
+    @apply text-ink flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-sm font-semibold;
   }
 
-  .value-tree-outline-outcome,
-  .value-tree-outline-bet,
+  .value-tree-outline-summary::-webkit-details-marker,
+  .value-tree-outline-bet-summary::-webkit-details-marker,
+  .organisation-flow-graph-accordion-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .value-tree-outline-bets,
+  .value-tree-outline-initiatives {
+    @apply border-line m-0 flex list-none flex-col gap-1 border-t px-2 py-2;
+  }
+
   .value-tree-outline-initiative {
-    @apply text-ink hover:text-ocean cursor-pointer text-left font-semibold underline-offset-2 hover:underline;
-  }
-
-  .value-tree-outline-bet,
-  .value-tree-outline-initiative {
-    @apply font-normal;
+    @apply text-ink-muted hover:text-ocean w-full cursor-pointer px-2 py-1.5 text-left text-sm;
   }
 
   .value-tree-outline-empty {
-    @apply text-ink-muted mt-1 text-sm;
+    @apply text-ink-muted px-3 py-2 text-sm;
   }
 
   .outcomes-list-intro {
@@ -2154,7 +2160,27 @@
   }
 
   .org-flow-node.is-selected {
-    @apply border-ocean ring-ocean/30 ring-2;
+    @apply border-ocean ring-ocean/40 ring-2;
+  }
+
+  .org-flow-node.is-related {
+    @apply border-ocean/70;
+  }
+
+  .org-flow-node.is-dimmed {
+    @apply opacity-35;
+  }
+
+  .organisation-flow-graph-canvas .org-flow-rf-node--dimmed {
+    @apply opacity-40;
+  }
+
+  .organisation-flow-graph-canvas .org-flow-edge--related .react-flow__edge-path {
+    stroke: var(--color-ocean);
+  }
+
+  .organisation-flow-graph-canvas .org-flow-edge--dimmed .react-flow__edge-path {
+    @apply opacity-30;
   }
 
   .org-flow-node-domain {
@@ -2193,12 +2219,72 @@
     @apply text-ink-muted mt-2 text-xs leading-relaxed;
   }
 
+  .organisation-flow-graph-detail-section {
+    @apply border-line mt-4 border-t pt-3;
+  }
+
+  .organisation-flow-graph-detail-section-title {
+    @apply text-ink mb-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-flow-graph-detail-accordion {
+    @apply border-line mt-4 border-t pt-3;
+  }
+
+  .organisation-flow-graph-accordion {
+    @apply flex flex-col gap-2;
+  }
+
+  .organisation-flow-graph-accordion-item {
+    @apply border-line rounded-lg border bg-white;
+  }
+
+  .organisation-flow-graph-accordion-summary {
+    @apply text-ink flex cursor-pointer list-none items-center justify-between gap-3 px-3 py-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-flow-graph-accordion-count {
+    @apply text-ink-muted bg-paper-soft rounded-full px-2 py-0.5 text-[0.65rem] font-semibold tracking-normal normal-case;
+  }
+
+  .organisation-flow-graph-accordion-item .organisation-flow-graph-members,
+  .organisation-flow-graph-accordion-item .organisation-flow-graph-interactions,
+  .organisation-flow-graph-accordion-item .organisation-relationship-list,
+  .organisation-flow-graph-accordion-item .organisation-flow-graph-detail-empty {
+    @apply px-3 pb-3;
+  }
+
+  .organisation-flow-graph-members,
+  .organisation-flow-graph-interactions {
+    @apply m-0 flex list-none flex-col gap-2 p-0;
+  }
+
+  .organisation-flow-graph-member-name {
+    @apply text-ink block text-sm font-medium;
+  }
+
+  .organisation-flow-graph-member-meta {
+    @apply text-ink-muted block text-xs;
+  }
+
+  .organisation-flow-graph-interaction-mode {
+    @apply text-ocean mr-2 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-flow-graph-interaction-sentence {
+    @apply text-ink block text-sm leading-snug;
+  }
+
   .organisation-relationship-select {
     @apply hover:bg-paper-soft flex w-full cursor-pointer items-start justify-between gap-3 rounded-lg px-1 py-1 text-left;
   }
 
   .organisation-flow-graph-details {
     @apply border-line rounded-xl border bg-white px-4 py-3;
+  }
+
+  .organisation-flow-graph-details-title {
+    @apply text-ink mb-3 text-sm font-semibold;
   }
 
   .organisation-flow-graph-details summary {

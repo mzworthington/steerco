@@ -99,6 +99,28 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     await user.click(screen.getByTestId('organisation-flow-expand'));
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-expanded', 'false');
 
+    const list = screen.getByTestId('organisation-flow-graph-list');
+    await user.click(
+      within(list).getByRole('button', {
+        name: /storefront experience uses as a service fulfilment platform/i,
+      }),
+    );
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
+
+    const storefrontNode = screen
+      .getAllByTestId('organisation-flow-node')
+      .find((node) => /storefront experience/i.test(node.textContent ?? ''));
+    expect(storefrontNode).toBeTruthy();
+    await user.click(storefrontNode!);
+    expect(screen.getByTestId('organisation-flow-team-detail')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-team-members')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
+    expect(
+      screen
+        .getAllByTestId('organisation-flow-node')
+        .some((node) => node.dataset.dimmed === 'true'),
+    ).toBe(true);
+
     await openAsIsCapacityBoard(user);
     expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();
     expect(screen.getByTestId('organisation-as-of')).toBeTruthy();

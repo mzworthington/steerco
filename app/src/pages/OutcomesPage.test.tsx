@@ -138,7 +138,7 @@ describe('OutcomesPage', () => {
     expect(screen.getByTestId('value-tree-orient-lr')).toHaveAttribute('aria-pressed', 'true');
 
     const outline = screen.getByTestId('value-tree-outline');
-    await user.click(within(outline).getByRole('button', { name: /same-day pickup reliability/i }));
+    await user.click(within(outline).getByText(/same-day pickup reliability/i));
     expect(screen.getByTestId('value-tree-detail').textContent).toMatch(/open bet/i);
 
     await user.click(screen.getByTestId('value-tree-expand'));
