@@ -11,6 +11,7 @@ describe('HomePage', () => {
   it('renders the product name and tagline', () => {
     render(<HomePage />);
     expect(screen.getByRole('heading', { name: SITE_NAME })).toBeTruthy();
+    expect(screen.getByTestId('brand-reveal')).toBeTruthy();
     expect(screen.getByText(SITE_TAGLINE)).toBeTruthy();
   });
 

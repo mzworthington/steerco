@@ -124,7 +124,10 @@
     }
 
     .coming-soon-title,
-    .coming-soon-lead {
+    .coming-soon-lead,
+    .hero-lead,
+    .hero-supporting,
+    .hero-actions {
       animation: none !important;
       opacity: 1;
       transform: none;
@@ -234,17 +237,25 @@
 
   .hero-brand {
     @apply font-display text-ink text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl;
-    animation: fade-up 0.7s ease-out both;
+    /* Fade is owned by BrandReveal wordmark when used as the hero brand. */
+  }
+
+  .hero .brand-reveal {
+    @apply items-start;
   }
 
   .hero-lead {
     @apply text-ink-muted mt-6 max-w-xl text-lg leading-relaxed sm:text-xl;
-    animation: fade-up 0.7s ease-out 0.1s both;
+    animation: fade-up 0.7s ease-out 1.45s both;
   }
 
   .hero-actions {
     @apply mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4;
-    animation: fade-up 0.7s ease-out 0.2s both;
+    animation: fade-up 0.7s ease-out 1.55s both;
+  }
+
+  .hero-supporting {
+    animation: fade-up 0.7s ease-out 1.5s both;
   }
 
   .hero-snippets {
@@ -1207,10 +1218,6 @@
   .graph-stage--expanded .value-tree-canvas,
   .graph-stage--expanded .organisation-flow-graph-canvas {
     @apply h-full min-h-[12rem];
-  }
-
-  .graph-stage--expanded .organisation-flow-graph-detail {
-    @apply max-h-full overflow-y-auto;
   }
 
   .organisation-flow-graph-toolbar-actions {
@@ -2188,7 +2195,7 @@
   }
 
   .organisation-flow-graph-workspace {
-    @apply grid gap-4 lg:grid-cols-[minmax(0,1fr)_16rem];
+    @apply mt-4;
   }
 
   .organisation-flow-graph-canvas {

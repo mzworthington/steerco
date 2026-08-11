@@ -24,4 +24,10 @@ describe('BrandReveal', () => {
     expect(screen.getByTestId('brand-reveal').getAttribute('data-named')).toBe('true');
     expect(wordmark.className).toContain('is-visible');
   });
+
+  it('can render the wordmark as the page heading', () => {
+    render(<BrandReveal wordmarkAs="h1" />);
+    expect(screen.getByRole('heading', { level: 1, name: SITE_NAME })).toBeTruthy();
+    expect(screen.getByTestId('brand-reveal').getAttribute('role')).toBeNull();
+  });
 });

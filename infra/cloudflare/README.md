@@ -10,6 +10,7 @@ Real zone/hostname values live in gitignored `Pulumi.<stack>.yaml`, local `.env`
 |----------|---------|
 | `PagesProject` | Direct-upload Pages project |
 | `DnsRecord` / `PagesDomain` | Proxied CNAME + hostname binding per `pagesHostnames` entry |
+| `DnsRecord` + `Ruleset` | Optional legacy hostnames (`legacyRedirectHostnames`) → 301 to the canonical Pages host |
 | `WebAnalyticsSite` | Zone RUM / Web Analytics (`autoInstall`) - opt-in via `enableWebAnalytics` |
 | `ObservatoryScheduledTest` | Synthetic Speed test per Pages hostname |
 
@@ -27,6 +28,8 @@ pulumi import 'cloudflare:index/observatoryScheduledTest:ObservatoryScheduledTes
 export BWS_ACCESS_TOKEN=... BWS_PROJECT_ID=...
 export DOMAIN=mzworthington.co.uk PAGES_HOSTNAMES=steerco.mzworthington.co.uk
 export PAGES_PROJECT_NAME=steerco PULUMI_STACK=prod
+# After destroying the old steerlens stack (frees DNS), set:
+#   pulumi config set --path legacyRedirectHostnames[0] steerlens.mzworthington.co.uk
 ../../bin/setup-cloudflare-hosting.sh
 pulumi up
 ```

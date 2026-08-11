@@ -3,6 +3,10 @@ import { SITE_NAME } from '../siteConfig';
 
 type BrandRevealProps = {
   className?: string;
+  /** Semantic tag for the product name. Use `h1` when this is the page hero brand. */
+  wordmarkAs?: 'p' | 'h1';
+  /** Extra classes on the wordmark (e.g. `hero-brand`). */
+  wordmarkClassName?: string;
 };
 
 const ARROW_PATH = 'M 117.98 -15.16 A 18 18 0 0 1 117.98 15.16 L -130 102 Q -48 0 -130 -102 Z';
@@ -42,11 +46,13 @@ function usePrefersReducedMotion() {
 
 /**
  * Lockup intro: arrow sweeps L→R; dots fade in as it passes; then SteerCo fades in.
- * Settled layout matches BrandMark lockup + coming-soon wordmark (production coming-soon).
+ * Settled layout matches BrandMark lockup + coming-soon / hero wordmark.
  */
-export function BrandReveal({ className }: BrandRevealProps) {
+export function BrandReveal({ className, wordmarkAs = 'p', wordmarkClassName }: BrandRevealProps) {
   const reduceMotion = usePrefersReducedMotion();
   const [named, setNamed] = useState(reduceMotion);
+  const Wordmark = wordmarkAs;
+  const isPageHeading = wordmarkAs === 'h1';
 
   useEffect(() => {
     if (reduceMotion) {
@@ -63,8 +69,12 @@ export function BrandReveal({ className }: BrandRevealProps) {
       className={`brand-reveal ${reduceMotion ? 'is-reduced' : ''} ${named ? 'is-named' : ''} ${className ?? ''}`}
       data-testid="brand-reveal"
       data-named={named ? 'true' : 'false'}
-      role="img"
-      aria-label={SITE_NAME}
+      {...(isPageHeading
+        ? {}
+        : {
+            role: 'img' as const,
+            'aria-label': SITE_NAME,
+          })}
     >
       <svg
         className="brand-reveal-lockup"
@@ -119,9 +129,18 @@ export function BrandReveal({ className }: BrandRevealProps) {
           </g>
         </g>
       </svg>
-      <p className={`coming-soon-name brand-reveal-wordmark${named ? 'is-visible' : ''}`}>
+      <Wordmark
+        className={[
+          'coming-soon-name',
+          'brand-reveal-wordmark',
+          named ? 'is-visible' : '',
+          wordmarkClassName ?? '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+      >
         {SITE_NAME}
-      </p>
+      </Wordmark>
     </div>
   );
 }

@@ -6,3 +6,6 @@ config:
   # Subdomain on the shared mzworthington.co.uk zone (owned by edge-dns):
   steerco:pagesHostnames:
     - steerco.mzworthington.co.uk
+  # Optional: former hostnames that 301 to the first pagesHostname
+  steerco:legacyRedirectHostnames:
+    - steerlens.mzworthington.co.uk

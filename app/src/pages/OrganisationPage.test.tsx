@@ -84,7 +84,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.queryByTestId('organisation-as-of')).toBeNull();
     expect(screen.getByTestId('organisation-flow-graph')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-canvas')).toBeTruthy();
-    expect(screen.getByTestId('organisation-flow-graph-detail')).toBeTruthy();
+    expect(screen.queryByTestId('organisation-flow-graph-detail')).toBeNull();
     expect(screen.getByTestId('organisation-flow-graph-domain')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-orient')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-expand')).toBeTruthy();
@@ -106,9 +106,6 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
       }),
     );
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
-    expect(screen.getByTestId('organisation-flow-graph-detail').textContent).toMatch(
-      /interaction/i,
-    );
 
     await openAsIsCapacityBoard(user);
     expect(screen.getByTestId('organisation-flow-canvas')).toBeTruthy();

@@ -2,7 +2,6 @@ import {
   Background,
   Controls,
   MarkerType,
-  MiniMap,
   ReactFlow,
   ReactFlowProvider,
   type Edge,
@@ -144,13 +143,6 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
 
   const activeNodeSet = useMemo(() => new Set(focus.activeNodeIds), [focus.activeNodeIds]);
   const activeEdgeSet = useMemo(() => new Set(focus.activeEdgeIds), [focus.activeEdgeIds]);
-
-  const selectedTeamEdges = useMemo(() => {
-    if (selection?.kind !== 'team') return [];
-    return graph.edges.filter(
-      (edge) => edge.source === selection.node.id || edge.target === selection.node.id,
-    );
-  }, [graph.edges, selection]);
 
   const flowNodes: TeamFlowNode[] = useMemo(
     () =>
@@ -338,36 +330,9 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
               >
                 <Background gap={18} size={1} />
                 <Controls showInteractive={false} />
-                <MiniMap pannable zoomable />
               </ReactFlow>
             </ReactFlowProvider>
           </div>
-
-          <aside
-            className="organisation-flow-graph-detail"
-            aria-live="polite"
-            data-testid="organisation-flow-graph-detail"
-          >
-            {selection?.kind === 'team' ? (
-              <TeamDetailPanel node={selection.node} interactions={selectedTeamEdges} />
-            ) : selection?.kind === 'edge' ? (
-              <div>
-                <p className="organisation-flow-graph-detail-kind">{selection.edge.modeLabel}</p>
-                <h3 className="organisation-flow-graph-detail-title">Interaction</h3>
-                <p className="organisation-flow-graph-detail-body">{selection.edge.sentence}</p>
-                <p className="organisation-flow-graph-detail-meta">{selection.edge.modeTeaching}</p>
-                {selection.edge.expectedUntil ? (
-                  <p className="organisation-flow-graph-detail-meta">
-                    Expected until {selection.edge.expectedUntil}
-                  </p>
-                ) : null}
-              </div>
-            ) : (
-              <p className="organisation-flow-graph-detail-empty">
-                Select a team or interaction edge for detail.
-              </p>
-            )}
-          </aside>
         </div>
       )}
 
@@ -434,102 +399,6 @@ export function OrganisationRelationshipGraph({ relationships, teams }: Props) {
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function TeamDetailPanel({
-  node,
-  interactions,
-}: {
-  node: OrganisationFlowGraphNode;
-  interactions: OrganisationFlowGraphEdge[];
-}) {
-  return (
-    <div data-testid="organisation-flow-team-detail">
-      <p className="organisation-flow-graph-detail-kind">{node.roleLabel}</p>
-      <h3 className="organisation-flow-graph-detail-title">{node.label}</h3>
-      <p className="organisation-flow-graph-detail-meta">Domain · {node.domainTitle}</p>
-      {node.streamTitles.length > 0 ? (
-        <p className="organisation-flow-graph-detail-meta">
-          Streams · {node.streamTitles.join(', ')}
-        </p>
-      ) : null}
-      {node.platformScopeLabel ? (
-        <p className="organisation-flow-graph-detail-meta">
-          Platform scope · {node.platformScopeLabel}
-        </p>
-      ) : null}
-      {node.purpose ? <p className="organisation-flow-graph-detail-body">{node.purpose}</p> : null}
-      {node.capacityLabel ? (
-        <p className="organisation-flow-graph-detail-meta">Capacity · {node.capacityLabel}</p>
-      ) : null}
-
-      <div className="organisation-flow-graph-accordion organisation-flow-graph-detail-accordion">
-        <details
-          className="organisation-flow-graph-accordion-item"
-          name={`team-detail-${node.id}`}
-          open={false}
-        >
-          <summary className="organisation-flow-graph-accordion-summary">
-            People
-            <span className="organisation-flow-graph-accordion-count">{node.members.length}</span>
-          </summary>
-          {node.members.length === 0 ? (
-            <p className="organisation-flow-graph-detail-empty">No people on this team yet.</p>
-          ) : (
-            <ul
-              className="organisation-flow-graph-members"
-              data-testid="organisation-flow-team-members"
-            >
-              {node.members.map((member) => (
-                <li key={member.id}>
-                  <span className="organisation-flow-graph-member-name">{member.displayName}</span>
-                  <span className="organisation-flow-graph-member-meta">
-                    {member.title}
-                    {member.disciplineLabel ? ` · ${member.disciplineLabel}` : ''}
-                    {` · ${member.ftePercent}%`}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </details>
-
-        <details className="organisation-flow-graph-accordion-item" name={`team-detail-${node.id}`}>
-          <summary className="organisation-flow-graph-accordion-summary">
-            Communicates with
-            <span className="organisation-flow-graph-accordion-count">{interactions.length}</span>
-          </summary>
-          {interactions.length === 0 ? (
-            <p className="organisation-flow-graph-detail-empty">
-              No interaction modes recorded for this team.
-            </p>
-          ) : (
-            <ul className="organisation-flow-graph-interactions">
-              {interactions.map((edge) => (
-                <li key={edge.id}>
-                  <span className="organisation-flow-graph-interaction-mode">{edge.modeLabel}</span>
-                  <span className="organisation-flow-graph-interaction-sentence">
-                    {edge.sentence}
-                  </span>
-                  {edge.expectedUntil ? (
-                    <span className="organisation-flow-graph-detail-meta">
-                      Expected until {edge.expectedUntil}
-                    </span>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
-          )}
-        </details>
-      </div>
-
-      {node.facilitatesLabels.length > 0 ? (
-        <p className="organisation-flow-graph-detail-meta">
-          Facilitates · {node.facilitatesLabels.join(', ')}
-        </p>
-      ) : null}
     </div>
   );
 }
