@@ -39,7 +39,7 @@ const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 
 
 function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
   sessionStorage.setItem(
-    'steerlens.workspace-session',
+    'steerco.workspace-session',
     JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
   );
 }
@@ -114,7 +114,7 @@ describe('DecisionNotesPage', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(screen.getByText(/saved decision note/i)).toBeTruthy();
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: { spec: { decisionNotes: Array<{ measured: string[] }> } };
     };
@@ -146,7 +146,7 @@ describe('DecisionNotesPage', () => {
     expect(cycleCheckbox).toBeChecked();
 
     await user.click(screen.getByRole('button', { name: 'Save' }));
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: { spec: { decisionNotes: Array<{ measuredMetricIds: string[] }> } };
     };

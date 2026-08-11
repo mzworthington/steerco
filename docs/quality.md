@@ -1,6 +1,6 @@
 # Quality
 
-SteerLens keeps a full local + CI quality toolchain so regressions fail early.
+SteerCo keeps a full local + CI quality toolchain so regressions fail early.
 
 **Toolchain:**
 
@@ -8,7 +8,7 @@ SteerLens keeps a full local + CI quality toolchain so regressions fail early.
 | -------------------------------- | --------------------------------------------------------------------------------------- |
 | **Prettier**                     | Opinionated formatting (incl. Tailwind class sorting via `prettier-plugin-tailwindcss`) |
 | **oxlint**                       | Fast lint for `app/src` and `packages/core/src`                                         |
-| **TypeScript**                   | Strict `tsc --noEmit` for the SPA and `@steerlens/core`                                 |
+| **TypeScript**                   | Strict `tsc --noEmit` for the SPA and `@steerco/core`                                   |
 | **knip**                         | Unused files, exports, and dependencies (`app/knip.json`)                               |
 | **Vitest** + **Testing Library** | Unit / component tests (app + core)                                                     |
 | **Husky**                        | Git hooks (`.husky/pre-commit`)                                                         |

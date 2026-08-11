@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a problem with SteerLens
+description: Report a problem with SteerCo
 labels: [bug]
 body:
   - type: dropdown

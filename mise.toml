@@ -1,4 +1,4 @@
-# Toolchain for steerlens.
+# Toolchain for steerco.
 # Cursor Cloud agents bootstrap via `.cursor/environment.json` → `bin/setup-dev-env.sh`.
 [tools]
 node = "26.7.0"

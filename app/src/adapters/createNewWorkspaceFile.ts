@@ -1,4 +1,4 @@
-import { serializeSteerSpec, type SteerSpec } from '@steerlens/core';
+import { serializeSteerSpec, type SteerSpec } from '@steerco/core';
 import { createBlankSteerSpec, BLANK_WORKSPACE_LABEL } from '../application/createBlankWorkspace';
 import {
   saveSteerSpecToPersistence,

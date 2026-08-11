@@ -13,8 +13,8 @@ export BWS_PROJECT_ID="..."
 # Site identity (or use a gitignored .env - see .env.example)
 export PULUMI_STACK=prod
 export DOMAIN=mzworthington.co.uk
-export PAGES_HOSTNAMES=steerlens.mzworthington.co.uk
-export PAGES_PROJECT_NAME=steerlens
+export PAGES_HOSTNAMES=steerco.mzworthington.co.uk
+export PAGES_PROJECT_NAME=steerco
 
 gh auth login
 pulumi login
@@ -25,7 +25,7 @@ The shim downloads the canonical script from edge-dns (`EDGE_DNS_REF`, default `
 
 Then `cd infra/cloudflare && pulumi up`, or merge to `main` for CI.
 
-Public origin is `https://steerlens.mzworthington.co.uk` (`SITE_ORIGIN` in `app/src/siteConfig.ts`).
+Public origin is `https://steerco.mzworthington.co.uk` (`SITE_ORIGIN` in `app/src/siteConfig.ts`).
 
 ### Existing zone required
 

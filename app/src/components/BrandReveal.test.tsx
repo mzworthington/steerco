@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 describe('BrandReveal', () => {
-  it('fades in SteerLens after the arrow sweep', () => {
+  it('fades in SteerCo after the arrow sweep', () => {
     vi.useFakeTimers();
     render(<BrandReveal />);
 

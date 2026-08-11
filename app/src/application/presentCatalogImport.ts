@@ -5,7 +5,7 @@ import {
   type CatalogMergePlan,
   type CatalogMergeRow,
   type SteerSpec,
-} from '@steerlens/core';
+} from '@steerco/core';
 
 export type CatalogImportPreviewRow = {
   action: CatalogMergeRow['action'];

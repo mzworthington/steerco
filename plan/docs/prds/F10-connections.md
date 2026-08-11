@@ -1,6 +1,6 @@
 # PRD F10 - Connections
 
-**Slice:** 2+ · **Mockup:** `steerlens-exec-09-connections.png`
+**Slice:** 2+ · **Mockup:** `steerco-exec-09-connections.png`
 
 ## Problem
 

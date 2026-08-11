@@ -42,7 +42,7 @@ const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 
 
 function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
   sessionStorage.setItem(
-    'steerlens.workspace-session',
+    'steerco.workspace-session',
     JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
   );
 }
@@ -82,7 +82,7 @@ describe('BetDetailPage', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(screen.getByText(/saved to this workspace session/i)).toBeTruthy();
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     expect(stored).toBeTruthy();
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: { spec: { bets: Array<{ id: string; title: string }> } };
@@ -118,7 +118,7 @@ describe('BetDetailPage', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }));
     expect(screen.getByText(/saved to this workspace session/i)).toBeTruthy();
 
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
         spec: {

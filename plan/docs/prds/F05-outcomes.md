@@ -1,6 +1,6 @@
 # PRD F05 - Outcomes
 
-**Slice:** 1 · **Mockup:** `steerlens-exec-04-outcomes.png`  
+**Slice:** 1 · **Mockup:** `steerco-exec-04-outcomes.png`  
 **Frameworks:** EDGE Goals + Measures of Success (customer-value fitness function) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem

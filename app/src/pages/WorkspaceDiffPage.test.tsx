@@ -48,7 +48,7 @@ function seedDirtySession() {
   if (!bet) return null;
   bet.status = 'stopped';
   sessionStorage.setItem(
-    'steerlens.workspace-session',
+    'steerco.workspace-session',
     JSON.stringify({ ...baseline, spec: working }),
   );
   return working;
@@ -83,7 +83,7 @@ describe('WorkspaceDiffPage', () => {
     await user.click(screen.getByTestId('workspace-diff-revert'));
     expect(screen.getByTestId('workspace-diff-empty')).toBeTruthy();
 
-    const stored = JSON.parse(sessionStorage.getItem('steerlens.workspace-session') ?? '{}') as {
+    const stored = JSON.parse(sessionStorage.getItem('steerco.workspace-session') ?? '{}') as {
       spec: { spec: { bets: Array<{ id: string; status: string }> } };
     };
     expect(stored.spec.spec.bets.find((bet) => bet.id === 'bet_loyalty')?.status).toBe(
@@ -95,7 +95,7 @@ describe('WorkspaceDiffPage', () => {
     const user = userEvent.setup();
     expect(seedDirtySession()).toBeTruthy();
 
-    const createObjectURL = vi.fn(() => 'blob:steerlens');
+    const createObjectURL = vi.fn(() => 'blob:steerco');
     const revokeObjectURL = vi.fn();
     vi.stubGlobal('URL', {
       ...URL,
@@ -113,7 +113,7 @@ describe('WorkspaceDiffPage', () => {
     expect(screen.getByTestId('workspace-diff-empty')).toBeTruthy();
     expect(screen.getByText(/downloaded/i)).toBeTruthy();
 
-    const stored = JSON.parse(sessionStorage.getItem('steerlens.workspace-session') ?? '{}') as {
+    const stored = JSON.parse(sessionStorage.getItem('steerco.workspace-session') ?? '{}') as {
       spec: { spec: { bets: Array<{ id: string; status: string }> } };
       baselineSpec: { spec: { bets: Array<{ id: string; status: string }> } };
     };

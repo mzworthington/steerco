@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from './openWorkspace';
 import { presentTopologyTimeline } from './presentTopologyTimeline';
-import type { SteerSpec } from '@steerlens/core';
+import type { SteerSpec } from '@steerco/core';
 
 const fixtureDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),

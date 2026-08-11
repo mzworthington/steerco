@@ -38,7 +38,7 @@ const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 
 
 function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
   sessionStorage.setItem(
-    'steerlens.workspace-session',
+    'steerco.workspace-session',
     JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
   );
 }
@@ -72,6 +72,10 @@ describe('SteeringOverviewPage', () => {
     expect(screen.getAllByText('At risk').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Stop').length).toBeGreaterThan(0);
     expect(screen.getByRole('link', { name: /loyalty ledger unification/i })).toBeTruthy();
-    expect(screen.getByLabelText(/value rank for same-day pickup/i)).toBeTruthy();
+    expect(screen.getByTestId('steering-value-stack')).toBeTruthy();
+    expect(
+      screen.getByRole('button', { name: /drag to reorder same-day pickup reliability/i }),
+    ).toBeTruthy();
+    expect(screen.queryByLabelText(/stack rank for/i)).toBeNull();
   });
 });

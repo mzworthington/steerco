@@ -1,4 +1,4 @@
-import type { SteerSpec } from '@steerlens/core';
+import type { SteerSpec } from '@steerco/core';
 import { presentDecisionNotes, type DecisionNoteCard } from './presentDecisionNotes';
 import { presentEvidence, type EvidenceCard } from './presentEvidence';
 import { presentOrganisation, type OrganisationModel } from './presentOrganisation';
@@ -180,7 +180,7 @@ export function buildBoardPackPreview(
     coverTitle: options?.packTitle?.trim() || model.packTitle,
     coverDateLabel,
     coverBlurb: model.coverBlurb,
-    filenameBase: `steerlens-board-pack-${slug}-${dateStamp}`,
+    filenameBase: `steerco-board-pack-${slug}-${dateStamp}`,
     pillars,
     steering,
     outcomes,

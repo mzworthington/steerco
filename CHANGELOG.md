@@ -37,5 +37,5 @@
 ### 🧰 Maintenance & Dependencies
 
 - Fix knip findings and add to precommit
-- Update design system and branding to SteerLens executive theme with new color tokens and assets
+- Update design system and branding to SteerCo executive theme with new color tokens and assets
 - Update brand assets with new logo designs and favicon adjustments

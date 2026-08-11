@@ -1,6 +1,6 @@
 # PRD F02 - Steering overview
 
-**Slice:** 1 · **Mockup:** `steerlens-exec-01-steering.png`  
+**Slice:** 1 · **Mockup:** `steerco-exec-01-steering.png`  
 **Frameworks:** EDGE invest / adapt + Periodic Value Review cadence - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem

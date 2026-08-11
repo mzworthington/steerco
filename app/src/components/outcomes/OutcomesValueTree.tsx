@@ -2,7 +2,6 @@ import {
   Background,
   Controls,
   MarkerType,
-  MiniMap,
   ReactFlow,
   ReactFlowProvider,
   type Edge,
@@ -10,11 +9,9 @@ import {
   type NodeProps,
 } from '@xyflow/react';
 import { memo, useEffect, useMemo, useState } from 'react';
-import { Link } from 'wouter';
-import type { SteerSpec } from '@steerlens/core';
+import type { SteerSpec } from '@steerco/core';
 import {
   presentValueTree,
-  type ValueTreeGraphNode,
   type ValueTreeNodeKind,
   type ValueTreeOrientation,
 } from '../../application/presentValueTree';
@@ -75,8 +72,6 @@ export function OutcomesValueTree({ spec, dense = false }: Props) {
       return 'vision';
     });
   }, [tree.nodes]);
-
-  const selected = tree.nodes.find((node) => node.id === selectedId) ?? null;
 
   const flowNodes: ValueTreeFlowNode[] = useMemo(
     () =>
@@ -194,18 +189,9 @@ export function OutcomesValueTree({ spec, dense = false }: Props) {
             >
               <Background gap={18} size={1} />
               <Controls showInteractive={false} />
-              <MiniMap pannable zoomable />
             </ReactFlow>
           </ReactFlowProvider>
         </div>
-
-        <aside className="value-tree-detail" aria-live="polite" data-testid="value-tree-detail">
-          {selected ? (
-            <ValueTreeDetail node={selected} vision={tree.vision} />
-          ) : (
-            <p className="value-tree-detail-empty">Select a node to see more detail.</p>
-          )}
-        </aside>
       </div>
 
       {expanded ? null : (
@@ -278,29 +264,6 @@ export function OutcomesValueTree({ spec, dense = false }: Props) {
         </div>
       )}
     </section>
-  );
-}
-
-function ValueTreeDetail({ node, vision }: { node: ValueTreeGraphNode; vision: string }) {
-  return (
-    <div>
-      <p className="value-tree-detail-kind">{KIND_LABEL[node.kind]}</p>
-      <h3 className="value-tree-detail-title">
-        {node.kind === 'vision' ? 'Investment vision' : node.label}
-      </h3>
-      <p className="value-tree-detail-body">{node.kind === 'vision' ? vision : node.summary}</p>
-      {node.href && node.hrefLabel ? (
-        node.href.startsWith('http') ? (
-          <a className="value-tree-detail-link" href={node.href} target="_blank" rel="noreferrer">
-            {node.hrefLabel}
-          </a>
-        ) : (
-          <Link href={node.href} className="value-tree-detail-link">
-            {node.hrefLabel}
-          </Link>
-        )
-      ) : null}
-    </div>
   );
 }
 

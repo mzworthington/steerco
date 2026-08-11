@@ -1,4 +1,4 @@
-import { parseSteerSpecYaml, type SteerSpec } from '@steerlens/core';
+import { parseSteerSpecYaml, type SteerSpec } from '@steerco/core';
 
 export type OpenWorkspaceResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
 
@@ -19,7 +19,7 @@ function toPlainLanguageError(detail: string): string {
     return 'That file does not look like valid YAML. Check the contents and try again.';
   }
   if (detail.includes('apiVersion')) {
-    return 'This SteerSpec version is not supported yet. SteerLens currently opens steerlens.dev/v1alpha1 documents.';
+    return 'This SteerSpec version is not supported yet. SteerCo currently opens steerco.dev/v1alpha1 documents.';
   }
   if (detail.includes('empty')) {
     return 'That file is empty. Choose a steertree.yaml with outcomes and bets.';

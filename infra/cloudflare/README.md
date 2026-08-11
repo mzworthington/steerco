@@ -2,7 +2,7 @@
 
 Pages project + custom **subdomain** hostnames on an existing active zone, plus optional Web Analytics (RUM) and Observatory scheduled tests. The SPA is built in CI and deployed with `wrangler pages deploy`.
 
-SteerLens ships on the shared `mzworthington.co.uk` zone (owned by [edge-dns](https://github.com/mzworthington/edge-dns)) at **`steerlens.mzworthington.co.uk`**. Zone-level Web Analytics stays off here (`enableWebAnalytics` defaults to `false`) so we do not fight the existing RUM site on that apex.
+SteerCo ships on the shared `mzworthington.co.uk` zone (owned by [edge-dns](https://github.com/mzworthington/edge-dns)) at **`steerco.mzworthington.co.uk`**. Zone-level Web Analytics stays off here (`enableWebAnalytics` defaults to `false`) so we do not fight the existing RUM site on that apex.
 
 Real zone/hostname values live in gitignored `Pulumi.<stack>.yaml`, local `.env`, or GitHub Actions vars; see [secrets checklist](../../docs/cloudflare-secrets.md).
 
@@ -25,8 +25,8 @@ pulumi import 'cloudflare:index/observatoryScheduledTest:ObservatoryScheduledTes
 ```bash
 # Prefer BWS; or cp ../../.env.example ../../.env (DOMAIN / PAGES_* already set)
 export BWS_ACCESS_TOKEN=... BWS_PROJECT_ID=...
-export DOMAIN=mzworthington.co.uk PAGES_HOSTNAMES=steerlens.mzworthington.co.uk
-export PAGES_PROJECT_NAME=steerlens PULUMI_STACK=prod
+export DOMAIN=mzworthington.co.uk PAGES_HOSTNAMES=steerco.mzworthington.co.uk
+export PAGES_PROJECT_NAME=steerco PULUMI_STACK=prod
 ../../bin/setup-cloudflare-hosting.sh
 pulumi up
 ```

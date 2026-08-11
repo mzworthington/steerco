@@ -3,7 +3,7 @@ import {
   summariseWriteBackPolicy,
   type SteerMismatch,
   type SteerSpec,
-} from '@steerlens/core';
+} from '@steerco/core';
 
 export type TechnicalFitnessMismatch = {
   code: string;

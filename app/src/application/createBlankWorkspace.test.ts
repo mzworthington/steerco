@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { createBlankSteerSpec, BLANK_WORKSPACE_LABEL } from './createBlankWorkspace';
-import { serializeSteerSpec } from '@steerlens/core';
+import { serializeSteerSpec } from '@steerco/core';
 import { openWorkspaceFromYaml } from './openWorkspace';
 
 describe('createBlankSteerSpec', () => {

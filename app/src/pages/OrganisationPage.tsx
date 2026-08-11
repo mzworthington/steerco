@@ -72,7 +72,7 @@ export function OrganisationPage() {
 
   useEffect(() => {
     if (model) {
-      document.title = `How work is organised · ${model.workspaceTitle} · SteerLens`;
+      document.title = `How work is organised · ${model.workspaceTitle} · SteerCo`;
     }
   }, [model]);
 

@@ -28,7 +28,7 @@ export function evaluateWriteBackPolicy(input: {
       allowed: true,
       reason:
         artifact === 'steer_overlay'
-          ? 'SteerLens-owned overlay kinds (e.g. SteerBet) are always allowed.'
+          ? 'SteerCo-owned overlay kinds (e.g. SteerBet) are always allowed.'
           : 'SteerSpec is the system of record for investment intent.',
       provenance,
       artifact,

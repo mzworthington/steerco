@@ -39,7 +39,7 @@ const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 
 
 function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
   sessionStorage.setItem(
-    'steerlens.workspace-session',
+    'steerco.workspace-session',
     JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
   );
 }
@@ -68,7 +68,7 @@ describe('OutcomesPage', () => {
     expect(screen.getByTestId('outcomes-value-tree')).toBeTruthy();
     expect(screen.getByTestId('value-tree-vision')).toBeTruthy();
     expect(screen.getByTestId('value-tree-canvas')).toBeTruthy();
-    expect(screen.getByTestId('value-tree-detail')).toBeTruthy();
+    expect(screen.queryByTestId('value-tree-detail')).toBeNull();
     expect(screen.getByText(/measures of success for this outcome/i)).toBeTruthy();
     expect(screen.getByRole('heading', { name: /reliable customer promises/i })).toBeTruthy();
     expect(screen.getByText('91%')).toBeTruthy();
@@ -104,7 +104,7 @@ describe('OutcomesPage', () => {
     expect(screen.getByText(/saved measure to this workspace session/i)).toBeTruthy();
     expect(screen.getByText('93%')).toBeTruthy();
 
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
         spec: {
@@ -118,7 +118,7 @@ describe('OutcomesPage', () => {
     ).toBe(93);
   });
 
-  it('switches Lean Value Tree orientation and selects nodes for detail', async () => {
+  it('switches Lean Value Tree orientation and expands the canvas', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -132,14 +132,10 @@ describe('OutcomesPage', () => {
       </WorkspaceSessionProvider>,
     );
 
-    expect(screen.getByTestId('value-tree-detail').textContent).toMatch(/investment vision/i);
-
     await user.click(screen.getByTestId('value-tree-orient-lr'));
     expect(screen.getByTestId('value-tree-orient-lr')).toHaveAttribute('aria-pressed', 'true');
 
-    const outline = screen.getByTestId('value-tree-outline');
-    await user.click(within(outline).getByText(/same-day pickup reliability/i));
-    expect(screen.getByTestId('value-tree-detail').textContent).toMatch(/open bet/i);
+    expect(screen.getByTestId('value-tree-outline')).toBeTruthy();
 
     await user.click(screen.getByTestId('value-tree-expand'));
     expect(screen.getByTestId('outcomes-value-tree')).toHaveAttribute('data-expanded', 'true');
@@ -181,7 +177,7 @@ describe('OutcomesPage', () => {
     expect(screen.getByText(/saved product brief to this workspace session/i)).toBeTruthy();
     expect(screen.getByText('Checkout continuity')).toBeTruthy();
 
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
         spec: {

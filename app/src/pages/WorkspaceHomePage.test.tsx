@@ -66,7 +66,7 @@ describe('WorkspaceHomePage', () => {
 
     expect(createNewWorkspaceFile).toHaveBeenCalled();
     expect(setLocation).toHaveBeenCalledWith('/workspace/steering');
-    expect(sessionStorage.getItem('steerlens.workspace-session')).toMatch(/new-workspace/);
+    expect(sessionStorage.getItem('steerco.workspace-session')).toMatch(/new-workspace/);
   });
 
   it('starts from sample and navigates to steering', async () => {
@@ -80,7 +80,7 @@ describe('WorkspaceHomePage', () => {
     await user.click(screen.getByRole('button', { name: /start from sample/i }));
 
     expect(setLocation).toHaveBeenCalledWith('/workspace/steering');
-    expect(sessionStorage.getItem('steerlens.workspace-session')).toMatch(/northwind-q3-alignment/);
+    expect(sessionStorage.getItem('steerco.workspace-session')).toMatch(/northwind-q3-alignment/);
   });
 
   it('offers continue when a session is already open', async () => {
@@ -92,7 +92,7 @@ describe('WorkspaceHomePage', () => {
     if (!opened.ok) return;
 
     sessionStorage.setItem(
-      'steerlens.workspace-session',
+      'steerco.workspace-session',
       JSON.stringify({
         spec: opened.value,
         baselineSpec: opened.value,

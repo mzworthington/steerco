@@ -41,7 +41,7 @@ export function TechnicalHubPage() {
   );
 
   useEffect(() => {
-    document.title = `Technical · ${title} · SteerLens`;
+    document.title = `Technical · ${title} · SteerCo`;
   }, [title]);
 
   if (!session) return null;

@@ -1,5 +1,5 @@
 /**
- * Team Topologies vocabulary baked into SteerLens.
+ * Team Topologies vocabulary baked into SteerCo.
  * Source of truth for team types, interaction modes, and modeling shapes:
  * https://teamtopologies.com/key-concepts
  * https://github.com/TeamTopologies/Team-Shape-Templates

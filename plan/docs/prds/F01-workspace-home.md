@@ -1,6 +1,6 @@
 # PRD F01 - Workspace home
 
-**Slice:** 1 · **Mockup:** `steerlens-exec-05-workspace-home.png`
+**Slice:** 1 · **Mockup:** `steerco-exec-05-workspace-home.png`
 
 ## Problem
 

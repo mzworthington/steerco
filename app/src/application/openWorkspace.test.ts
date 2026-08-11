@@ -29,7 +29,7 @@ describe('openWorkspaceFromYaml', () => {
 
   it('returns plain-language error for unsupported apiVersion', () => {
     const result = openWorkspaceFromYaml(`
-apiVersion: steerlens.dev/v9
+apiVersion: steerco.dev/v9
 kind: SteerTree
 metadata:
   name: x

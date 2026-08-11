@@ -1,8 +1,8 @@
 config:
   # Fill via bin/setup-cloudflare-hosting.sh (writes gitignored Pulumi.<stack>.yaml).
-  steerlens:accountId: YOUR_CLOUDFLARE_ACCOUNT_ID
-  steerlens:zoneId: YOUR_CLOUDFLARE_ZONE_ID
-  steerlens:pagesProjectName: steerlens
+  steerco:accountId: YOUR_CLOUDFLARE_ACCOUNT_ID
+  steerco:zoneId: YOUR_CLOUDFLARE_ZONE_ID
+  steerco:pagesProjectName: steerco
   # Subdomain on the shared mzworthington.co.uk zone (owned by edge-dns):
-  steerlens:pagesHostnames:
-    - steerlens.mzworthington.co.uk
+  steerco:pagesHostnames:
+    - steerco.mzworthington.co.uk

@@ -1,14 +1,14 @@
 ---
 status: Accepted
 date: 2026-08-11
-deciders: ['SteerLens']
+deciders: ['SteerCo']
 ---
 
 # 0007. Mermaid for docs; React Flow for product graphs
 
 ## Context and Problem Statement
 
-SteerLens already renders Mermaid fences in docs/ADRs and briefly used Mermaid for the Lean Value Tree and organisation relationship views. Product graphs now need SteerLens styling, TB/LR layout control, and clickable nodes that open further detail - without pulling ArchLens canvas chrome into the executive surface.
+SteerCo already renders Mermaid fences in docs/ADRs and briefly used Mermaid for the Lean Value Tree and organisation relationship views. Product graphs now need SteerCo styling, TB/LR layout control, and clickable nodes that open further detail - without pulling ArchLens canvas chrome into the executive surface.
 
 ## Decision Drivers
 
@@ -35,7 +35,7 @@ Chosen option: **Option B**.
 
 ### Consequences
 
-- Good, because custom nodes can use SteerLens CSS tokens and real React controls
+- Good, because custom nodes can use SteerCo CSS tokens and real React controls
 - Good, because click/keyboard selection and detail panels are ordinary React state
 - Good, because docs keep a zero-config diagram path
 - Bad, because a second diagram dependency exists alongside Mermaid (accepted; different jobs)

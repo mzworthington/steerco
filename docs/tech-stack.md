@@ -2,8 +2,8 @@
 
 | Layer           | Choice                                                                                                              |
 | --------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Domain          | `@steerlens/core` - TypeScript + Zod + YAML (SteerSpec)                                                             |
-| UI              | React 19 + TypeScript under `app/` (`@steerlens/app`)                                                               |
+| Domain          | `@steerco/core` - TypeScript + Zod + YAML (SteerSpec)                                                               |
+| UI              | React 19 + TypeScript under `app/` (`@steerco/app`)                                                                 |
 | Bundler         | Vite 8                                                                                                              |
 | Styling         | Tailwind CSS 4 executive tokens (stone + ocean) + recipes in `app/src/index.css`; showcase at `/docs/design-system` |
 | Routing         | wouter                                                                                                              |

@@ -3,7 +3,7 @@ import { parseSteerSpecYaml } from './parseSteerSpecYaml';
 import { isEffectiveOnDate, projectSteerSpecAsOf } from './projectSteerSpecAsOf';
 
 const minimalDoc = `
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo
@@ -69,7 +69,7 @@ spec:
 `;
 
 const legacyDoc = `
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: legacy

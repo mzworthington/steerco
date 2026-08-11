@@ -18,7 +18,7 @@ export function TechnicalTreePage() {
 
   useEffect(() => {
     if (model) {
-      document.title = `Steer tree · ${model.workspaceTitle} · SteerLens`;
+      document.title = `Steer tree · ${model.workspaceTitle} · SteerCo`;
     }
   }, [model]);
 

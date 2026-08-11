@@ -1,5 +1,5 @@
-# Sample catalog import for SteerLens Technical mode demos.
-# Provider-backed refs only - SteerLens never creates directory groups.
+# Sample catalog import for SteerCo Technical mode demos.
+# Provider-backed refs only - SteerCo never creates directory groups.
 teams:
   - id: team_storefront
     displayName: Storefront experience

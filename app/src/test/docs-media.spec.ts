@@ -24,7 +24,7 @@ test.describe('docs media', () => {
   test('home page screenshot', async ({ page }) => {
     await page.goto('/?preview=1');
     await expect(page.getByTestId('home')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /steerlens/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /steerco/i })).toBeVisible();
     await page.screenshot({
       path: path.join(outDir, 'home.png'),
       fullPage: true,
@@ -34,7 +34,7 @@ test.describe('docs media', () => {
   test('docs overview screenshot', async ({ page }) => {
     await page.goto('/docs?preview=1');
     await expect(page.getByTestId('docs')).toBeVisible();
-    await expect(page.getByRole('heading', { name: /steerlens/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /steerco/i })).toBeVisible();
     await page.screenshot({
       path: path.join(outDir, 'docs-overview.png'),
       fullPage: true,

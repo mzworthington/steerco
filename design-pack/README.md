@@ -1,10 +1,10 @@
 # Design pack
 
-SteerLens brand assets - circles + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
+SteerCo brand assets - circles + arrow motif, warm paper field, ocean accent. Tuned to executive tokens in `app/src/index.css`.
 
 Live swatches: `/docs/design-system`. Written guide: `docs/design-system.md`.
 
-Sketch: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png` (from v16 reticle explorations).
+Sketch: `mockups/logo-explorations/steerco-logo-sketch-dots-arrow.png` (from v16 reticle explorations).
 
 ## Identity
 

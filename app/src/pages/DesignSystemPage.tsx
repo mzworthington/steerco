@@ -22,7 +22,7 @@ export function DesignSystemPage() {
         <p className="eyebrow">Executive · stone &amp; ocean</p>
         <h1>Design system</h1>
         <p>
-          Light editorial language for SteerLens - board-pack calm, deep ocean accent, serif titles.
+          Light editorial language for SteerCo - board-pack calm, deep ocean accent, serif titles.
           Tokens live in{' '}
           <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             app/src/index.css
@@ -97,8 +97,8 @@ function IdentityPanel() {
       <section className="ds-section">
         <h2>Brand reveal</h2>
         <p>
-          Arrow sweeps left to right; each dot fades in as it passes. After the sweep, SteerLens
-          fades in. Settles on the shipped lockup + name. Honours{' '}
+          Arrow sweeps left to right; each dot fades in as it passes. After the sweep, SteerCo fades
+          in. Settles on the shipped lockup + name. Honours{' '}
           <code className="bg-stone text-ink rounded px-1.5 py-0.5 font-mono text-[0.9em]">
             prefers-reduced-motion
           </code>

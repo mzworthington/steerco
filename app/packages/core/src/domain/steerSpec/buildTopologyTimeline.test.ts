@@ -3,7 +3,7 @@ import { parseSteerSpecYaml } from './parseSteerSpecYaml';
 import { buildTopologyTimeline } from './buildTopologyTimeline';
 
 const docYaml = `
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: timeline-demo
@@ -140,7 +140,7 @@ describe('buildTopologyTimeline', () => {
 
   it('returns empty timeline when nothing is dated', () => {
     const parsed = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: empty

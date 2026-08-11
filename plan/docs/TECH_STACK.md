@@ -9,7 +9,7 @@
 | Language            | **TypeScript**                                                                 | Matches ArchLens and portfolio Cloudflare hosting                                   |
 | UI                  | **React 19 + Vite**                                                            | Fast local DX; same family as `@archlens/canvas`                                    |
 | Styling             | **Tailwind CSS + CSS variables**                                               | Executive theme tokens (stone, ocean blue); light-first skin distinct from ArchLens |
-| Domain              | **Zod** in `@steerlens/core`                                                   | SteerSpec as typed contract; mirror BlueprintSpec discipline                        |
+| Domain              | **Zod** in `@steerco/core`                                                   | SteerSpec as typed contract; mirror BlueprintSpec discipline                        |
 | Unit test           | **Vitest**                                                                     | Workspace-native with Vite                                                          |
 | E2E / a11y          | **Playwright** (+ axe)                                                         | Critical executive journeys                                                         |
 | Package manager     | **pnpm** + **mise**                                                            | Align with ArchLens / site toolchain                                                |
@@ -22,16 +22,16 @@
 ## Monorepo shape
 
 ```text
-steerlens/
+steerco/
   app/                      # workspace root
-    packages/core/          # @steerlens/core - SteerSpec, mismatches, pure logic
-    src/                    # @steerlens/app - React SPA
+    packages/core/          # @steerco/core - SteerSpec, mismatches, pure logic
+    src/                    # @steerco/app - React SPA
   plan/                     # product specs, PRDs, schema, samples
   docs/                     # in-app docs + ADRs
   mockups/                  # executive UI mockups
 ```
 
-`@steerlens/core` already ships; Slice 1 UI adapters land next.
+`@steerco/core` already ships; Slice 1 UI adapters land next.
 
 ## Slice 1 constraints
 
@@ -44,7 +44,7 @@ steerlens/
 
 | Capability                     | Stack note                                                             |
 | ------------------------------ | ---------------------------------------------------------------------- |
-| Backstage Catalog API          | `adapters/backstage` - read Groups; write only SteerLens overlay kinds |
+| Backstage Catalog API          | `adapters/backstage` - read Groups; write only SteerCo overlay kinds |
 | GitHub teams + Actions metrics | Octokit; OAuth App / GitHub App                                        |
 | Entra groups                   | Microsoft Graph; Entra ID app registration                             |
 | Sync / multi-device            | Cloudflare Worker + R2 optional; still SteerSpec-first                 |
@@ -57,7 +57,7 @@ steerlens/
 | Next.js (Slice 1)            | No SSR/SEO need for local SPA; Vite keeps local-first simple            |
 | Electron/Tauri (Slice 1)     | Browser + FS Access enough; revisit if folder UX insufficient on Safari |
 | Shared ArchLens UI package   | Visual languages must diverge                                           |
-| Jira as SoR inside SteerLens | Dual entry kills adoption                                               |
+| Jira as SoR inside SteerCo | Dual entry kills adoption                                               |
 | Python backend               | Unnecessary until connectors need secrets vaulting server-side          |
 
 ## Design system direction

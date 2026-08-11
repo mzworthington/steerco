@@ -39,7 +39,7 @@ export function DecisionNotesPage() {
 
   useEffect(() => {
     if (!model) return;
-    document.title = `Decision notes · ${model.workspaceTitle} · SteerLens`;
+    document.title = `Decision notes · ${model.workspaceTitle} · SteerCo`;
     if (evidenceSeedApplied.current) return;
     if (selectedId === null && model.notes[0]) {
       setSelectedId(model.notes[0].id);

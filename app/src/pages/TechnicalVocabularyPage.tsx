@@ -15,7 +15,7 @@ export function TechnicalVocabularyPage() {
   }, [session, setLocation]);
 
   useEffect(() => {
-    document.title = 'Vocabulary bridge · SteerLens';
+    document.title = 'Vocabulary bridge · SteerCo';
   }, []);
 
   if (!session) return null;
@@ -70,7 +70,7 @@ function VocabularyTable({
           <thead>
             <tr>
               <th scope="col">Framework term</th>
-              <th scope="col">SteerLens</th>
+              <th scope="col">SteerCo</th>
               <th scope="col">Note</th>
             </tr>
           </thead>

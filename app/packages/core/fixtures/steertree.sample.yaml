@@ -1,4 +1,4 @@
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: northwind-q3-alignment

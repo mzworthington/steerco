@@ -1,6 +1,6 @@
 # Product guide
 
-How to use SteerLens as a **steering workspace**: open a session, align investment and team shape, write a decision, and export a board pack - without signing in or touching YAML.
+How to use SteerCo as a **steering workspace**: open a session, align investment and team shape, write a decision, and export a board pack - without signing in or touching YAML.
 
 Everything in Slice 1 stays on this device until you choose to connect systems later.
 
@@ -13,7 +13,7 @@ Everything in Slice 1 stays on this device until you choose to connect systems l
 | CTO or transformation sponsor           | Read a steering view and take a decision note - no tooling jargon                                |
 | Staff+ (optional)                       | **Technical** mode for refs, fitness, vocabulary, and catalog import; default UI stays executive |
 
-Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Architecture diagrams stay in ArchLens. SteerLens holds the **investment contract**.
+Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Architecture diagrams stay in ArchLens. SteerCo holds the **investment contract**.
 
 ## Open a workspace
 
@@ -25,7 +25,7 @@ Recent workspaces appear on the home screen for quick return. Edits live in the 
 
 ## The three questions
 
-SteerLens is organised around how leadership already steers (EDGE’s invest / work / adapt loop):
+SteerCo is organised around how leadership already steers (EDGE’s invest / work / adapt loop):
 
 | Question   | Where in the app             | Intent                                                                   |
 | ---------- | ---------------------------- | ------------------------------------------------------------------------ |
@@ -37,14 +37,14 @@ SteerLens is organised around how leadership already steers (EDGE’s invest / w
 
 The Lean Value Tree (vision → outcomes + Measures of Success → bets) is the spine. EDGE also expects:
 
-| Teaching                        | In SteerLens                                                                                                                                                              |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Product mindset**             | Long-lived teams fund continuous value - not temporary project theatre. Outcomes page lists lightweight Product briefs (problem + linked outcomes/bets).                  |
-| **Tech@Core**                   | Capability bets, optional ArchLens `systemRefs`, and an optional Tech Radar URL treat core systems as business investments, not a cost centre.                            |
-| **Periodic Value Review (PVR)** | Decision notes + bet review dates: look at the data, double down or defund - no stage-gate bureaucracy. Executives see “value review”; staff+ may see PVR.                |
-| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain), value rank, and portfolio mix cues cross-prioritise strategic work with BAU and capability - without SteerLens owning Jira. |
-| **Measures of Success**         | Customer-value fitness function tied to outcomes and bets - leading indicators that fund work, not vanity dashboards.                                                     |
-| **Six principles**              | Outcome-based strategy; value-based prioritization; lightweight governance; adaptive learning; autonomous teams; decisions close to the work.                             |
+| Teaching                        | In SteerCo                                                                                                                                                                        |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Product mindset**             | Long-lived teams fund continuous value - not temporary project theatre. Outcomes page lists lightweight Product briefs (problem + linked outcomes/bets).                          |
+| **Tech@Core**                   | Capability bets, optional ArchLens `systemRefs`, and an optional Tech Radar URL treat core systems as business investments, not a cost centre.                                    |
+| **Periodic Value Review (PVR)** | Decision notes + bet review dates: look at the data, double down or defund - no stage-gate bureaucracy. Executives see “value review”; staff+ may see PVR.                        |
+| **Integrated Backlogs**         | Funding stance (explore / exploit / sustain), portfolio stack rank, and portfolio mix cues cross-prioritise strategic work with BAU and capability - without SteerCo owning Jira. |
+| **Measures of Success**         | Customer-value fitness function tied to outcomes and bets - leading indicators that fund work, not vanity dashboards.                                                             |
+| **Six principles**              | Outcome-based strategy; value-based prioritization; lightweight governance; adaptive learning; autonomous teams; decisions close to the work.                                     |
 
 Full framework backlog: planning docs under `plan/docs/OPERATING_MODEL_ALIGNMENT.md`.
 
@@ -52,7 +52,7 @@ Full framework backlog: planning docs under `plan/docs/OPERATING_MODEL_ALIGNMENT
 
 ### Steering overview
 
-Portfolio view of **outcomes** and the **bets** funded against them: status, alignment cues, portfolio mix (kind + funding stance), calm topology cues, value rank, and links into detail. Use it to see the whole contract at a glance before drilling in.
+Portfolio view of **outcomes** and the **bets** funded against them: status, alignment cues, portfolio mix (kind + funding stance), calm topology cues, a drag-to-reorder value stack, and links into detail. Use it to see the whole contract at a glance before drilling in.
 
 ### Outcomes
 
@@ -89,7 +89,7 @@ Build a **board pack** for leadership distribution. Sections group under Invest 
 
 ### Save and pending changes
 
-The sidebar shows whether the draft differs from what you opened. Review the diff, then save to the folder or download. SteerLens will not silently overwrite an invalid file.
+The sidebar shows whether the draft differs from what you opened. Review the diff, then save to the folder or download. SteerCo will not silently overwrite an invalid file.
 
 ## Plain-language glossary
 
@@ -102,13 +102,13 @@ The sidebar shows whether the draft differs from what you opened. Review the dif
 | **Value review (PVR)** | Frequent, data-informed start / stop / continue decision - not annual stage-gate   |
 | **Product mindset**    | Long-lived teams delivering continuous value (vs temporary project teams)          |
 | **Tech@Core**          | Technology as the business engine; tech debt is an investment concern              |
-| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work - SteerLens cues the mix    |
+| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work - SteerCo cues the mix      |
 | **Topology intent**    | Desired team types, groupings, and interaction modes for fast flow (point-in-time) |
 | **Decision note**      | Start / stop / continue / re-scope recommendation with rationale                   |
 | **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`)                   |
 | **Board pack**         | Export for steering distribution                                                   |
 
-## What SteerLens is not
+## What SteerCo is not
 
 - A sprint board, OKR check-in tool, or employee directory
 - A replacement for Jira, Backstage, Entra, or ArchLens

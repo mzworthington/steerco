@@ -1,6 +1,6 @@
 # PRD F04 - Bet detail
 
-**Slice:** 1 · **Mockup:** `steerlens-exec-06-bet-detail.png`  
+**Slice:** 1 · **Mockup:** `steerco-exec-06-bet-detail.png`  
 **Frameworks:** EDGE Bet (success signal + kill criteria; incremental funding / PVR; funding stance = Integrated Backlog mix; capability = Tech@Core) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem

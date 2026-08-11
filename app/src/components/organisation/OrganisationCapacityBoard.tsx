@@ -12,7 +12,7 @@ import {
   type DragStartEvent,
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import type { MemberDiscipline, TeamShapeGeometry } from '@steerlens/core';
+import type { MemberDiscipline, TeamShapeGeometry } from '@steerco/core';
 import type {
   OrganisationFlowModel,
   OrganisationTeamCard,

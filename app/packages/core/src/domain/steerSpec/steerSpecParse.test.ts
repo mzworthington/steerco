@@ -63,7 +63,7 @@ describe('parseSteerSpecYaml', () => {
 
   it('rejects an unsupported apiVersion with a plain-language error', () => {
     const result = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v0
+apiVersion: steerco.dev/v0
 kind: SteerTree
 metadata:
   name: demo
@@ -81,7 +81,7 @@ spec:
 
   it('rejects documents missing required fields', () => {
     const result = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo
@@ -96,7 +96,7 @@ spec:
 
   it('rejects unknown fields on the document root', () => {
     const result = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo
@@ -121,7 +121,7 @@ extra: surprise
 
   it('rejects a team member missing discipline', () => {
     const result = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo
@@ -148,7 +148,7 @@ spec:
 
   it('rejects a bet that references a missing outcome', () => {
     const result = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo
@@ -175,7 +175,7 @@ spec:
 
   it('fails closed on hostile prototype keys instead of yielding a document', () => {
     const result = parseSteerSpecYaml(`
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo

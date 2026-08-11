@@ -1,4 +1,4 @@
-import type { SteerSpec } from '@steerlens/core';
+import type { SteerSpec } from '@steerco/core';
 import { applyOutcomeMetricEdit, type OutcomeMetricEditInput } from './presentOutcomes';
 
 export type EvidenceSourceKind = 'sample' | 'manual' | 'github' | 'other';

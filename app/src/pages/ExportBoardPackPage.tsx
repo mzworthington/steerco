@@ -26,7 +26,7 @@ export function ExportBoardPackPage() {
 
   useEffect(() => {
     if (!model) return;
-    document.title = `Export · ${model.workspaceTitle} · SteerLens`;
+    document.title = `Export · ${model.workspaceTitle} · SteerCo`;
     setPackTitle((current) => current || model.packTitle);
   }, [model]);
 
@@ -137,7 +137,7 @@ export function ExportBoardPackPage() {
             aria-label="Board pack preview document"
           >
             <header className="export-cover">
-              <p className="export-cover-brand">SteerLens</p>
+              <p className="export-cover-brand">SteerCo</p>
               <h2 className="export-cover-title">{preview.coverTitle}</h2>
               <p className="export-cover-date">{preview.coverDateLabel}</p>
               <p className="export-cover-blurb">{preview.coverBlurb}</p>

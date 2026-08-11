@@ -1,6 +1,6 @@
 # PRD F03 - How work is organised
 
-**Slice:** 1 · **Mockups:** `steerlens-exec-02-org-shape.png`, `steerlens-exec-10-org-empty.png`  
+**Slice:** 1 · **Mockups:** `steerco-exec-02-org-shape.png`, `steerco-exec-10-org-empty.png`  
 **Frameworks:** [Team Topologies key concepts](https://teamtopologies.com/key-concepts) (four topologies, three interaction modes, cognitive load, fast flow, flow of change) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
@@ -49,7 +49,7 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
     - **As-is** - detailed capacity + interactions for a selected date (default today)
     - **Domain** - zoom into a domain; highlight edges that leave the domain
 12. Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams)
-13. Derived visual may be exported for board pack Work section - use SteerLens shapes, never proprietary TT book diagrams
+13. Derived visual may be exported for board pack Work section - use SteerCo shapes, never proprietary TT book diagrams
 14. Enabling one-to-many facilitation is expected; sole delivery ownership of a bet remains a mismatch (`enabling_owns_delivery`)
 
 ## Acceptance

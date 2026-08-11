@@ -34,7 +34,7 @@ describe('saveSteerSpecToPersistence', () => {
     expect(result).toEqual({ ok: true, method: 'directory', fileName: 'steertree.yaml' });
     expect(writeDirectoryFile).toHaveBeenCalledOnce();
     const yaml = writeDirectoryFile.mock.calls[0]?.[2];
-    expect(yaml).toMatch(/apiVersion:\s*steerlens\.dev\/v1alpha1/);
+    expect(yaml).toMatch(/apiVersion:\s*steerco\.dev\/v1alpha1/);
     expect(yaml).toMatch(/kind:\s*SteerTree/);
   });
 

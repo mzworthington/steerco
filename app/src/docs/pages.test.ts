@@ -6,12 +6,12 @@ import { resolveDocsHref } from './resolveDocsHref';
 describe('splitDocsMarkdown', () => {
   it('parses frontmatter fields and returns the body without fences', () => {
     const { frontmatter, body } = splitDocsMarkdown(
-      "---\nstatus: Accepted\ndate: 2026-08-10\ndeciders: ['SteerLens']\n---\n\n# Title\n",
+      "---\nstatus: Accepted\ndate: 2026-08-10\ndeciders: ['SteerCo']\n---\n\n# Title\n",
     );
     expect(frontmatter).toEqual({
       status: 'Accepted',
       date: '2026-08-10',
-      deciders: 'SteerLens',
+      deciders: 'SteerCo',
     });
     expect(body).toContain('# Title');
     expect(body).not.toContain('```yaml');
@@ -50,7 +50,7 @@ describe('ADR docs pages', () => {
     expect(DOC_SLUGS.has('adrs/0007-mermaid-docs-react-flow-product-graphs')).toBe(true);
     const page = findDocPage('adrs/0002-tech-stack');
     expect(page.markdown).toContain('status: Accepted');
-    expect(page.markdown).toContain('# 0002. Tech stack for SteerLens');
+    expect(page.markdown).toContain('# 0002. Tech stack for SteerCo');
   });
 
   it('resolves relative ADR links from the index', () => {

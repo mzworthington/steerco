@@ -1,4 +1,4 @@
-import { serializeSteerSpec, steerSpecSchema, type SteerSpec } from '@steerlens/core';
+import { serializeSteerSpec, steerSpecSchema, type SteerSpec } from '@steerco/core';
 
 export type WorkspaceDirectoryPersistence = {
   mode: 'directory';

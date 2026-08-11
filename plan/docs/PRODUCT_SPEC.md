@@ -1,4 +1,4 @@
-# SteerLens - product specification
+# SteerCo - product specification
 
 **Status:** Draft (pre-implementation)  
 **Audience:** Product, design, engineering  
@@ -10,7 +10,7 @@ Product owners, product executives, and Engineering Directors must align **outco
 
 ## 2. Product thesis
 
-SteerLens is a **steering workspace**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, leave with decision notes, and export a board pack when you need to share. It reads and later writes _around_ existing systems of record; it does not become one.
+SteerCo is a **steering workspace**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, leave with decision notes, and export a board pack when you need to share. It reads and later writes _around_ existing systems of record; it does not become one.
 
 It operationalises two complementary models without becoming a PMO or HR tool:
 
@@ -53,8 +53,8 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | **Initiative**               | Optional thin value slice under a bet (EDGE Initiative) - narrative only; never a dual backlog                                                                                                                                                            |
 | **Product brief**        | Lightweight EDGE product definition: customer problems, core elements, and LVT links - without heavy upfront requirements; supports product mindset over project mindset                                                                                  |
 | **Tech@Core**                | EDGE stance that technology is the business engine; strategic tech debt and trend sensing (e.g. Tech Radar refs) are investment concerns - not a back-office cost centre                                                                                |
-| **Periodic Value Review (PVR)** | EDGE lightweight governance ritual: frequent, data-informed portfolio rebalancing (double down or defund) instead of annual stage-gate theatre; SteerLens decision notes are the PVR artifact                                                          |
-| **Integrated Backlog**       | EDGE model for cross-prioritising strategic (LVT) work with BAU, maintenance, and capability building via relative value/effort - SteerLens shows mix/stance cues and never owns the execution backlog                                                  |
+| **Periodic Value Review (PVR)** | EDGE lightweight governance ritual: frequent, data-informed portfolio rebalancing (double down or defund) instead of annual stage-gate theatre; SteerCo decision notes are the PVR artifact                                                          |
+| **Integrated Backlog**       | EDGE model for cross-prioritising strategic (LVT) work with BAU, maintenance, and capability building via relative value/effort - SteerCo shows mix/stance cues and never owns the execution backlog                                                  |
 | **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding / PVR)                                                                                                                                                                  |
 | **EDGE principles**          | Six cultural OS principles: outcome-based strategy; value-based prioritization; lightweight planning/governance; adaptive learning culture; autonomous teams; self-sufficient collaborative decisions                                                   |
 | **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                                                     |
@@ -63,7 +63,7 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (PVR / lightweight governance)                                                                                                                                            |
 | **SteerSpec**                | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                                                                                                                                           |
 | **Workspace**                | Local folder containing SteerSpec (+ optional exports)                                                                                                                                                                                                    |
-| **Overlay** (later)          | Git-managed Backstage entities SteerLens owns - never replacement Groups for provider sync                                                                                                                                                                |
+| **Overlay** (later)          | Git-managed Backstage entities SteerCo owns - never replacement Groups for provider sync                                                                                                                                                                |
 | **Board pack**               | PDF/export for leadership distribution                                                                                                                                                                                                                    |
 
 **Aggregate roots:** `Workspace` (contains SteerSpec document), `DecisionNote`.
@@ -78,9 +78,9 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 ### Foundational frameworks
 
-SteerLens builds on two operating-model sources (full backlog and vocabulary bridge in [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)):
+SteerCo builds on two operating-model sources (full backlog and vocabulary bridge in [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)):
 
-| Source                                  | Role in SteerLens                                                                                                                                                  |
+| Source                                  | Role in SteerCo                                                                                                                                                  |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals/outcomes + MoS → bets → optional initiatives) **plus** product mindset/brief, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
 | **Team Topologies** 2e (Skelton / Pais) | Topology _intent_ for fast flow: stream-aligned, platform _groupings_, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
@@ -102,7 +102,7 @@ Feature: Open a local workspace
   Scenario: Open existing folder
     Given a folder containing a valid steertree.yaml
     When the leader opens that folder
-    Then SteerLens loads the SteerSpec into steering and org views
+    Then SteerCo loads the SteerSpec into steering and org views
 
   Scenario: Invalid SteerSpec
     Given a folder with an invalid steertree.yaml

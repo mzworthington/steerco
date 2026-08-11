@@ -1,7 +1,7 @@
 ---
 status: Accepted
 date: 2026-08-10
-deciders: ['SteerLens']
+deciders: ['SteerCo']
 ---
 
 # 0003. Local-first, no auth in Slice 1

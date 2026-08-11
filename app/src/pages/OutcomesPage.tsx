@@ -62,7 +62,7 @@ export function OutcomesPage() {
 
   useEffect(() => {
     if (model) {
-      document.title = `Outcomes · ${model.workspaceTitle} · SteerLens`;
+      document.title = `Outcomes · ${model.workspaceTitle} · SteerCo`;
     }
   }, [model]);
 

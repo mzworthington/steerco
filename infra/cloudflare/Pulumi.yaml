@@ -1,5 +1,5 @@
-name: steerlens
-description: Cloudflare Pages project and custom domains for SteerLens
+name: steerco
+description: Cloudflare Pages project and custom domains for SteerCo
 runtime:
   name: nodejs
   options:

@@ -1,4 +1,4 @@
-const DECISION_NOTE_SEED_KEY = 'steerlens.decision-note-seed';
+const DECISION_NOTE_SEED_KEY = 'steerco.decision-note-seed';
 
 export type DecisionNoteMeasuredSeed = {
   measuredLines: string[];

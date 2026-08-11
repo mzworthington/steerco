@@ -11,7 +11,7 @@
 
 ```text
 ┌─────────────────────────────────────────────────────────────┐
-│                     SteerLens App (SPA)                      │
+│                     SteerCo App (SPA)                      │
 │  Executive UI          Technical UI (secondary, later)       │
 │  steering · org ·      import merge · refs · write-back      │
 │  decision · export                                           │
@@ -33,7 +33,7 @@
 * Slice 2+
 ```
 
-## 3. Core domain (`@steerlens/core`)
+## 3. Core domain (`@steerco/core`)
 
 Pure TypeScript + Zod. No React, no `fetch`, no filesystem.
 
@@ -122,7 +122,7 @@ ELSE
 Bet.systems[] → archlens entityRef (optional)
 ```
 
-SteerLens never embeds ArchLens canvas. Deep link out is sufficient.
+SteerCo never embeds ArchLens canvas. Deep link out is sufficient.
 
 ## 10. Quality gates
 

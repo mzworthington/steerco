@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from './openWorkspace';
-import { applyBetValueRank, presentSteeringOverview } from './presentSteeringOverview';
+import { presentSteeringOverview, reorderBetValueStack } from './presentSteeringOverview';
 
 const fixtureDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -46,19 +46,56 @@ describe('presentSteeringOverview', () => {
     } else {
       expect(model.wipMismatchSummary).toBeNull();
     }
-    expect(bets.some((bet) => bet.valueRank === 1)).toBe(true);
-    const promiseBets = model.outcomes.find((outcome) => outcome.id === 'out_promise')?.bets ?? [];
-    expect(promiseBets[0]?.valueRank).toBe(1);
+    expect(model.valueStack.map((bet) => bet.id)).toEqual([
+      'bet_pickup',
+      'bet_fulfilil',
+      'bet_pos_resilience',
+      'bet_insights',
+      'bet_loyalty',
+    ]);
+    expect(model.valueStack[0]?.outcomeTitle).toMatch(/reliable customer promises/i);
   });
 
-  it('persists value rank edits', () => {
+  it('reorders the portfolio value stack from drag order', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
-    const applied = applyBetValueRank(opened.value, 'bet_loyalty', 2);
-    expect(applied.ok).toBe(true);
-    if (!applied.ok) return;
-    expect(applied.value.spec.bets.find((bet) => bet.id === 'bet_loyalty')?.valueRank).toBe(2);
+    const reordered = reorderBetValueStack(opened.value, [
+      'bet_loyalty',
+      'bet_pickup',
+      'bet_fulfilil',
+      'bet_pos_resilience',
+      'bet_insights',
+    ]);
+    expect(reordered.ok).toBe(true);
+    if (!reordered.ok) return;
+
+    const ranks = Object.fromEntries(
+      reordered.value.spec.bets.map((bet) => [bet.id, bet.valueRank ?? null]),
+    );
+    expect(ranks).toEqual({
+      bet_loyalty: 1,
+      bet_pickup: 2,
+      bet_fulfilil: 3,
+      bet_pos_resilience: 4,
+      bet_insights: 5,
+    });
+    expect(presentSteeringOverview(reordered.value).valueStack.map((bet) => bet.id)).toEqual([
+      'bet_loyalty',
+      'bet_pickup',
+      'bet_fulfilil',
+      'bet_pos_resilience',
+      'bet_insights',
+    ]);
+  });
+
+  it('rejects unknown bet ids when reordering', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const rejected = reorderBetValueStack(opened.value, ['bet_pickup', 'bet_missing']);
+    expect(rejected.ok).toBe(false);
   });
 });

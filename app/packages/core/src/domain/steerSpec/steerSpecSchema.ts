@@ -89,7 +89,7 @@ const betSchema = z
     horizon: z.string().optional(),
     fundingStance: fundingStanceSchema.optional(),
     kind: betKindSchema.optional(),
-    /** Relative value rank within the portfolio (lower = higher priority). */
+    /** Dense portfolio stack rank (1 = highest priority). Optional; UI reorders via stack moves. */
     valueRank: z.number().int().positive().optional(),
   })
   .strict();
@@ -214,7 +214,7 @@ const initiativeSchema = z
     betId: z.string().min(1),
     title: z.string().min(1),
     successSignal: z.string().min(1),
-    /** Optional external tracker URL - SteerLens never owns the backlog. */
+    /** Optional external tracker URL - SteerCo never owns the backlog. */
     externalUrl: z.string().optional(),
   })
   .strict();
@@ -272,14 +272,14 @@ const specSchema = z
     initiatives: z.array(initiativeSchema).default([]),
     /** Lightweight product briefs linked to outcomes/bets. */
     products: z.array(productSchema).default([]),
-    /** Optional external Tech Radar URL (no radar UI in SteerLens). */
+    /** Optional external Tech Radar URL (no radar UI in SteerCo). */
     techRadarUrl: z.string().optional(),
   })
   .strict();
 
 export const steerSpecSchema = z
   .object({
-    apiVersion: z.literal('steerlens.dev/v1alpha1'),
+    apiVersion: z.literal('steerco.dev/v1alpha1'),
     kind: z.literal('SteerTree'),
     metadata: metadataSchema,
     spec: specSchema,

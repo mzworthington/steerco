@@ -17,7 +17,7 @@ import {
   type SteerSpec,
   type TeamRole,
   type TeamShapeGeometry,
-} from '@steerlens/core';
+} from '@steerco/core';
 import { presentTopologyTimeline, type TopologyTimelineModel } from './presentTopologyTimeline';
 
 export type OrganisationTeamRole = TeamRole;

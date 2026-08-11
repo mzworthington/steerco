@@ -6,7 +6,7 @@ import {
   type InteractionShapeGeometry,
   type SteerSpec,
   type TopologyEventKind,
-} from '@steerlens/core';
+} from '@steerco/core';
 
 export type TopologyTimelineCapacityMarker = {
   at: string;

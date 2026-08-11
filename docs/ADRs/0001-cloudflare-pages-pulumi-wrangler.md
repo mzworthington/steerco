@@ -1,14 +1,14 @@
 ---
 status: Accepted
 date: 2026-08-07
-deciders: ['SteerLens']
+deciders: ['SteerCo']
 ---
 
 # 0001. Cloudflare Pages static hosting with Pulumi and Wrangler
 
 ## Context and Problem Statement
 
-SteerLens needs a reproducible path from git to a public SPA with infrastructure defined in-repo, without dashboard-only Cloudflare configuration.
+SteerCo needs a reproducible path from git to a public SPA with infrastructure defined in-repo, without dashboard-only Cloudflare configuration.
 
 ## Decision Drivers
 

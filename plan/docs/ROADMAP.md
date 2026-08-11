@@ -1,6 +1,6 @@
 # Roadmap
 
-SteerLens delivers an **investment contract** (EDGE value-driven operating model - Lean Value Tree **and** the teachings beyond it) and **topology intent** (Team Topologies) in a steering workspace - with a board pack as the shareable export. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+SteerCo delivers an **investment contract** (EDGE value-driven operating model - Lean Value Tree **and** the teachings beyond it) and **topology intent** (Team Topologies) in a steering workspace - with a board pack as the shareable export. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
 
 ## Slice 0 - Spec (this folder)
 
@@ -44,7 +44,7 @@ SteerLens delivers an **investment contract** (EDGE value-driven operating model
 
 ### Slice 1 follow-ups (backlog)
 
-- [x] **IndexedDB for File System Access handles** - persist folder handles (and optional working-copy metadata) across refresh so **Save to folder** works without re-picking the directory. SteerSpec drafts live in `sessionStorage`; directory handles live in IndexedDB (`steerlens-workspace`). Pattern reference: ArchLens IndexedDB working-copy / baseline. See [F09](./prds/F09-steerspec-persistence.md).
+- [x] **IndexedDB for File System Access handles** - persist folder handles (and optional working-copy metadata) across refresh so **Save to folder** works without re-picking the directory. SteerSpec drafts live in `sessionStorage`; directory handles live in IndexedDB (`steerco-workspace`). Pattern reference: ArchLens IndexedDB working-copy / baseline. See [F09](./prds/F09-steerspec-persistence.md).
 
 ## Slice 1.5 - Operating model depth (additive SteerSpec)
 
@@ -60,7 +60,7 @@ SteerLens delivers an **investment contract** (EDGE value-driven operating model
 | **Governance**        | Decision notes prefer MoS ids in `measured`; steering “next review” from bet horizons (PVR cadence)                                                                                                                                                                                                            |
 | **Docs / Technical**  | Glossary stays TT-first for types/modes; EDGE beyond-LVT vocabulary (PVR, Product brief, Tech@Core, Integrated Backlog, six principles) in docs + [F12](./prds/F12-technical-mode.md)                                                                                                                      |
 
-**PRD impact:** amend F02–F07 + [STEER_SPEC.md](./STEER_SPEC.md) / schema; new mismatch rules in `@steerlens/core`. Prefer additive fields + migrate helpers; bump `apiVersion` only if needed.
+**PRD impact:** amend F02–F07 + [STEER_SPEC.md](./STEER_SPEC.md) / schema; new mismatch rules in `@steerco/core`. Prefer additive fields + migrate helpers; bump `apiVersion` only if needed.
 
 **Exit criteria:** Sample workspace uses MoS links + at least one timed collaboration; core mismatch suite covers new codes; executive UI remains jargon-light.
 

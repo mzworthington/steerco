@@ -25,7 +25,7 @@ export function parseSteerSpecYaml(text: string): ParseSteerSpecResult {
     if (apiVersionIssue) {
       return {
         ok: false,
-        error: `Unsupported or missing apiVersion. SteerLens currently accepts steerlens.dev/v1alpha1 only.`,
+        error: `Unsupported or missing apiVersion. SteerCo currently accepts steerco.dev/v1alpha1 only.`,
       };
     }
     return { ok: false, error: formatSteerSpecIssues(parsed.error.issues) };

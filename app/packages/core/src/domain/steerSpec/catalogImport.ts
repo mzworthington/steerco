@@ -155,7 +155,7 @@ export function proposeTeamCatalogMerge(
     rows,
     proposesGroupYaml: false,
     banner:
-      'Provider and catalog imports are reference-only. SteerLens never creates directory groups.',
+      'Provider and catalog imports are reference-only. SteerCo never creates directory groups.',
   };
 }
 

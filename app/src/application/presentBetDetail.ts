@@ -1,11 +1,11 @@
-import type { BetKind, FundingStance, SteerSpec } from '@steerlens/core';
+import type { BetKind, FundingStance, SteerSpec } from '@steerco/core';
 import {
   DEFAULT_PLATFORM_OVERLOAD_THRESHOLD,
   INTERACTION_MODE_COPY,
   TOPOLOGY_TYPE_COPY,
   projectSteerSpecAsOf,
   type TeamRole,
-} from '@steerlens/core';
+} from '@steerco/core';
 import {
   presentBetStatus,
   type ExecutiveBetStatus,

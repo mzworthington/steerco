@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="SteerLens mark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" role="img" aria-label="SteerCo mark">
   <!-- Arrow only. Rotate about optical centre (not bbox); scale to ~78% fill. -->
   <g transform="translate(250 250) scale(1.508064) rotate(-45) translate(17.3702 0)">
     <path fill="#041c38"

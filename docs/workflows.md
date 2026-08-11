@@ -1,6 +1,6 @@
 # Workflows (GitHub Actions)
 
-Automation for SteerLens lives under `.github/workflows/`:
+Automation for SteerCo lives under `.github/workflows/`:
 
 | Workflow              | File                    | When it runs                                   | What it does                                                                                                      |
 | --------------------- | ----------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |

@@ -1,7 +1,7 @@
 ---
 status: Accepted
 date: 2026-08-10
-deciders: ['SteerLens']
+deciders: ['SteerCo']
 ---
 
 # 0005. Provider-synced teams are reference-only
@@ -18,16 +18,16 @@ Many Backstage installs sync Groups from GitHub or Entra and never commit Group 
 
 ## Considered Options
 
-- Option A: Always emit Backstage Group YAML for teams SteerLens knows
+- Option A: Always emit Backstage Group YAML for teams SteerCo knows
 - Option B: Reference provider teams; deny Group write-back except explicit `catalog_file` opt-in
-- Option C: Own a parallel org directory inside SteerLens only
+- Option C: Own a parallel org directory inside SteerCo only
 
 ## Decision Outcome
 
 Chosen option: **Option B**.
 
 - Ingest teams via Catalog API / GitHub / Entra as **references**
-- Persist intent in SteerSpec (+ optional SteerLens-owned overlay kinds)
+- Persist intent in SteerSpec (+ optional SteerCo-owned overlay kinds)
 - **Deny** Group catalog write-back when `provenance` is `backstage` (provider), `github`, or `entra`
 - Allow Group YAML round-trip only for `provenance: catalog_file` with explicit opt-in
 

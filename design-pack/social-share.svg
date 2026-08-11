@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="SteerLens">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="SteerCo">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#ebe7e2"/>
@@ -37,7 +37,7 @@
   <text x="88" y="268"
         font-family="Fraunces, ui-serif, Georgia, serif"
         font-size="72" font-weight="600" fill="#041c38" letter-spacing="-1">
-    SteerLens
+    SteerCo
   </text>
   <text x="88" y="340"
         font-family="Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"

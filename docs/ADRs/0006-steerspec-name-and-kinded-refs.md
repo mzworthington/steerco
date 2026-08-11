@@ -1,7 +1,7 @@
 ---
 status: Accepted
 date: 2026-08-10
-deciders: ['SteerLens']
+deciders: ['SteerCo']
 ---
 
 # 0006. SteerSpec entities use name and kinded refs

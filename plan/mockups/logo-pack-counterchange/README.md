@@ -1,6 +1,6 @@
 # Logo pack - counterchange disc
 
-Partner exploration mark (Aug 2026) and vector alternatives for SteerLens review.
+Partner exploration mark (Aug 2026) and vector alternatives for SteerCo review.
 
 Source mockup: [`00-source-partner.png`](./00-source-partner.png)  
 Shipped brand today (for comparison): [`../../../design-pack/`](../../../design-pack/)
@@ -31,7 +31,7 @@ Shipped brand today (for comparison): [`../../../design-pack/`](../../../design-
 | Placement | Need |
 | --- | --- |
 | Favicon, PWA, avatar, nav glyph | Disc alone |
-| Marketing header, docs title, export cover, OG image | Disc + **SteerLens** wordmark |
+| Marketing header, docs title, export cover, OG image | Disc + **SteerCo** wordmark |
 | Dense UI where type sits next to the mark already | Disc alone (avoid double-branding) |
 
 Recommendation: keep one refined circular mark; pair it with a horizontal lockup (`07`) and a stacked lockup (`08`) when the product name must carry the viewport. Do not elongate the disc geometry unless exploring the optional bar motif (`13`).
@@ -63,8 +63,8 @@ Recommendation: keep one refined circular mark; pair it with a horizontal lockup
 | `04-harmonized-curved.svg` | Both blades scooped (sail/lens) |
 | `05-steer-chevron.svg` | Counterchange chevron pointing east |
 | `06-motif-only.svg` | Blades without disc field |
-| `07-lockup-horizontal.svg` | Mark + SteerLens (wide) |
-| `08-lockup-stacked.svg` | Mark over SteerLens (square/portrait) |
+| `07-lockup-horizontal.svg` | Mark + SteerCo (wide) |
+| `08-lockup-stacked.svg` | Mark over SteerCo (square/portrait) |
 | `09-colorway-ocean.svg` | Ocean on paper |
 | `10-colorway-ink-paper.svg` | Ink on paper (executive UI) |
 | `11-colorway-dark.svg` | Dark chrome |

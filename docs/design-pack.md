@@ -1,6 +1,6 @@
 # Design pack & brand assets
 
-SteerLens favicon, logos, and social-share art ship under `design-pack/` (vector sources + README) and `app/public/` (Vite-served copies).
+SteerCo favicon, logos, and social-share art ship under `design-pack/` (vector sources + README) and `app/public/` (Vite-served copies).
 
 **Mark rules**
 
@@ -8,7 +8,7 @@ SteerLens favicon, logos, and social-share art ship under `design-pack/` (vector
 - **Wide lockup** (social, brand moments): two circles + arrow (`mark-lockup.svg`).
 - **Geometry**: rotate about the arrow’s optical centre; square marks ~78% fill; lockup on a shared centre line with 120u centre rhythm, artboard trimmed to ink.
 
-Sketch reference: `mockups/logo-explorations/steerlens-logo-sketch-dots-arrow.png`.
+Sketch reference: `mockups/logo-explorations/steerco-logo-sketch-dots-arrow.png`.
 
 | Asset        | Path                                        | Use                                  |
 | ------------ | ------------------------------------------- | ------------------------------------ |

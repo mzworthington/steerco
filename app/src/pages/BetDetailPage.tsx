@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type MouseEvent } from 'react';
 import { Link, useLocation, useParams } from 'wouter';
-import type { BetKind, FundingStance } from '@steerlens/core';
+import type { BetKind, FundingStance } from '@steerco/core';
 import {
   applyAddInitiative,
   applyBetDetailDraft,
@@ -93,7 +93,7 @@ export function BetDetailPage() {
         : null;
 
   useEffect(() => {
-    document.title = model ? `${model.title} · SteerLens` : 'Bet · SteerLens';
+    document.title = model ? `${model.title} · SteerCo` : 'Bet · SteerCo';
   }, [model]);
 
   const dirty = Boolean(activeEdit && !draftsEqual(activeEdit.draft, activeEdit.baseline));

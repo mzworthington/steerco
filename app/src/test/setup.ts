@@ -40,8 +40,8 @@ function ensureStorage(name: 'localStorage' | 'sessionStorage') {
   try {
     const current = globalThis[name];
     if (current && typeof current.getItem === 'function') {
-      current.setItem('__steerlens_storage_probe__', '1');
-      current.removeItem('__steerlens_storage_probe__');
+      current.setItem('__steerco_storage_probe__', '1');
+      current.removeItem('__steerco_storage_probe__');
       return;
     }
   } catch {

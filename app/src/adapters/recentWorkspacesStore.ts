@@ -7,7 +7,7 @@ export type RecentWorkspace = {
   openedAt: string;
 };
 
-const STORAGE_KEY = 'steerlens.recent-workspaces';
+const STORAGE_KEY = 'steerco.recent-workspaces';
 const MAX_RECENT = 8;
 
 export function listRecentWorkspaces(

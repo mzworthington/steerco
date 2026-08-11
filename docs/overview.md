@@ -1,6 +1,6 @@
-# SteerLens
+# SteerCo
 
-SteerLens is a **steering workspace** for product owners, product executives, and Engineering Directors: align **outcomes**, **funded bets**, and **team shape**, then leave with a **decision note** - and export a board pack when you need to share it.
+SteerCo is a **steering workspace** for product owners, product executives, and Engineering Directors: align **outcomes**, **funded bets**, and **team shape**, then leave with a **decision note** - and export a board pack when you need to share it.
 
 ## The problem
 
@@ -26,7 +26,7 @@ Start with the [Product guide](/docs/product-guide), or [open the workspace](/wo
 
 ## Operating model
 
-SteerLens operationalises two complementary models without becoming a PMO or HR tool:
+SteerCo operationalises two complementary models without becoming a PMO or HR tool:
 
 - **EDGE** - a holistic value-driven operating model: Lean Value Tree **plus** product mindset, Tech@Core, Periodic Value Review, Integrated Backlogs, Measures of Success, and six core principles (vision → outcomes + measures → bets)
 - **Team Topologies** - topology intent for fast flow of value (team types, interaction modes, cognitive load as a signal)

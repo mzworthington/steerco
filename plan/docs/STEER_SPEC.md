@@ -1,6 +1,6 @@
 # SteerSpec
 
-Canonical contract for a SteerLens workspace. Stored as `steertree.yaml` at the workspace root.
+Canonical contract for a SteerCo workspace. Stored as `steertree.yaml` at the workspace root.
 
 Executive UI never shows this document by default; Technical mode and git reviews do.
 
@@ -36,7 +36,7 @@ Optional `teams[].members[]` records display name, `discipline` (engineering | d
 ## Document shape (v1alpha1)
 
 ```yaml
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: northwind-q3-alignment
@@ -153,7 +153,7 @@ Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`
 | -------------------- | --------- | --------------------------------------------------------------- |
 | Backstage `Group`    | In        | Map to `teams[]` + `externalRefs`; set `provenance`             |
 | Backstage Group YAML | Out       | **Only** if `provenance: catalog_file` and user opts in         |
-| SteerBet overlay     | Out       | Always OK - SteerLens-owned kind                                |
+| SteerBet overlay     | Out       | Always OK - SteerCo-owned kind                                |
 | GitHub team          | In        | `externalRefs: [{ system: github, id: org/team }]`              |
 | Entra group          | In        | `externalRefs: [{ system: entra, id: objectId }]`               |
 | ArchLens entityRef   | Out/In    | Optional `bets[].systemRefs[]` (field reserved, unused Slice 1) |

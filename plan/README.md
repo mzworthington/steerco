@@ -1,14 +1,14 @@
-# SteerLens
+# SteerCo
 
 **Investment alignment for product leaders** - a board-pack you can interact with.
 
-SteerLens helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned - and decide what to start, stop, or continue. It is intentionally **not** Jira, not an org directory, and not a service catalog.
+SteerCo helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned - and decide what to start, stop, or continue. It is intentionally **not** Jira, not an org directory, and not a service catalog.
 
 | Related                               | Role                                                           |
 | ------------------------------------- | -------------------------------------------------------------- |
-| **SteerLens**                         | Bets, outcomes, topology _intent_, decision notes              |
+| **SteerCo**                         | Bets, outcomes, topology _intent_, decision notes              |
 | **[ArchLens](https://archlens.dev)**  | Systems architecture risk (separate product & visual language) |
-| **Jira / Backstage / Entra / GitHub** | Systems of record SteerLens _references_ (never replaces)      |
+| **Jira / Backstage / Entra / GitHub** | Systems of record SteerCo _references_ (never replaces)      |
 
 This folder holds **product planning** (specs, PRDs, schema, samples). Implementation lives under `app/`; accepted architecture decisions live under [`docs/ADRs/`](../docs/ADRs/).
 
@@ -45,4 +45,4 @@ Full roadmap: [docs/ROADMAP.md](./docs/ROADMAP.md). Framework backlog: [docs/OPE
 
 ## One-liner
 
-> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerLens contracts how outcomes, bets, topology intent, and evidence stay aligned - and when to stop.
+> Jira plans work. Backstage catalogs systems. Entra catalogs people. SteerCo contracts how outcomes, bets, topology intent, and evidence stay aligned - and when to stop.

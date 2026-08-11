@@ -17,7 +17,7 @@ export function TechnicalFitnessPage() {
 
   useEffect(() => {
     if (model) {
-      document.title = `Topology fitness · ${model.workspaceTitle} · SteerLens`;
+      document.title = `Topology fitness · ${model.workspaceTitle} · SteerCo`;
     }
   }, [model]);
 

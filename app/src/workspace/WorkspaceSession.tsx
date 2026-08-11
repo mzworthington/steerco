@@ -7,7 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { steerSpecHasPendingChanges, steerSpecSchema, type SteerSpec } from '@steerlens/core';
+import { steerSpecHasPendingChanges, steerSpecSchema, type SteerSpec } from '@steerco/core';
 import {
   saveSteerSpecToPersistence,
   type SaveSteerSpecResult,
@@ -57,7 +57,7 @@ type WorkspaceSessionContextValue = {
 
 const WorkspaceSessionContext = createContext<WorkspaceSessionContextValue | null>(null);
 
-const SESSION_STORAGE_KEY = 'steerlens.workspace-session';
+const SESSION_STORAGE_KEY = 'steerco.workspace-session';
 
 function cloneSpec(spec: SteerSpec): SteerSpec {
   return structuredClone(spec);

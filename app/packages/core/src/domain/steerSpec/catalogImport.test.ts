@@ -3,7 +3,7 @@ import { applyTeamCatalogMerge, parseCatalogFile, proposeTeamCatalogMerge } from
 import { parseSteerSpecYaml } from './parseSteerSpecYaml';
 
 const baseYaml = `
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo

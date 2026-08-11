@@ -1,4 +1,4 @@
-import type { SteerSpec } from '@steerlens/core';
+import type { SteerSpec } from '@steerco/core';
 import {
   presentBetStatus,
   type ExecutiveBetStatus,

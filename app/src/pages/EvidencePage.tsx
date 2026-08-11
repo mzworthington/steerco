@@ -41,7 +41,7 @@ export function EvidencePage() {
 
   useEffect(() => {
     if (model) {
-      document.title = `Evidence · ${model.workspaceTitle} · SteerLens`;
+      document.title = `Evidence · ${model.workspaceTitle} · SteerCo`;
     }
   }, [model]);
 

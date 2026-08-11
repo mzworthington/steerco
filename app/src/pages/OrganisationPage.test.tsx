@@ -40,7 +40,7 @@ const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 
 
 function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 'sample') {
   sessionStorage.setItem(
-    'steerlens.workspace-session',
+    'steerco.workspace-session',
     JSON.stringify(sessionWithBaseline(spec, 'sample', label)),
   );
 }
@@ -185,7 +185,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByText(/team added/i)).toBeTruthy();
     expect(within(modal).getByRole('heading', { name: /edit team/i })).toBeTruthy();
 
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
         spec: { teams: Array<{ displayName: string; streamIds?: string[] }> };
@@ -220,7 +220,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     await user.click(within(modal).getByRole('button', { name: 'Add relationship' }));
 
     expect(screen.getByText(/relationship saved/i)).toBeTruthy();
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
         spec: {
@@ -260,7 +260,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     await user.click(within(quickAdd).getByRole('button', { name: 'Add to team' }));
 
     expect(screen.getByText(/nina torres added to the team/i)).toBeTruthy();
-    const stored = sessionStorage.getItem('steerlens.workspace-session');
+    const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
         spec: {

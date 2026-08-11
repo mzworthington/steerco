@@ -13,7 +13,7 @@ function resolvePagesHostnames(): string[] {
   const listed = config.getObject<string[]>('pagesHostnames');
   if (listed && listed.length > 0) return listed;
   throw new Error(
-    'Set pagesHostnames to a JSON array of subdomains, e.g. ["steerlens.mzworthington.co.uk"]',
+    'Set pagesHostnames to a JSON array of subdomains, e.g. ["steerco.mzworthington.co.uk"]',
   );
 }
 

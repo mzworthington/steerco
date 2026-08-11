@@ -57,8 +57,8 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
       },
       {
         term: 'Integrated Backlog',
-        alias: 'fundingStance / valueRank / mix cues',
-        note: 'Explore / exploit / sustain mix and relative value - SteerLens never owns Jira.',
+        alias: 'fundingStance / stack rank (valueRank) / mix cues',
+        note: 'Explore / exploit / sustain mix and relative value - SteerCo never owns Jira.',
       },
     ],
     teamTopologies: [
@@ -90,7 +90,7 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
     ],
     principles: [
       { title: 'Outcome-based strategy', note: 'Fund outcomes and bets, not activity.' },
-      { title: 'Value-based prioritization', note: 'Relative valueRank and mix cues over FIFO.' },
+      { title: 'Value-based prioritization', note: 'Portfolio stack rank and mix cues over FIFO.' },
       {
         title: 'Lightweight governance',
         note: 'Decision notes and review dates - not stage gates.',

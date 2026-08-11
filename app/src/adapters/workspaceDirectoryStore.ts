@@ -1,4 +1,4 @@
-const DB_NAME = 'steerlens-workspace';
+const DB_NAME = 'steerco-workspace';
 const DB_VERSION = 1;
 const STORE_NAME = 'directory-bindings';
 

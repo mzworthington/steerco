@@ -15,7 +15,7 @@ eval "$(mise activate bash --shims)"
 mise install node pnpm
 
 # Marker for shells that source activation once.
-# steerlens mise activation
+# steerco mise activation
 
 (cd app && CI=true pnpm install)
 

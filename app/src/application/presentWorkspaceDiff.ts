@@ -4,7 +4,7 @@ import {
   type SteerSpecDiff,
   type SteerSpecDiffSection,
   type SteerSpecEntityChange,
-} from '@steerlens/core';
+} from '@steerco/core';
 
 const SECTION_LABELS: Record<SteerSpecDiffSection, string> = {
   vision: 'Vision',

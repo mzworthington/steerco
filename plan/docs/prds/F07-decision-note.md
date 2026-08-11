@@ -1,6 +1,6 @@
 # PRD F07 - Decision note
 
-**Slice:** 1 · **Mockup:** `steerlens-exec-03-decision-note.png`  
+**Slice:** 1 · **Mockup:** `steerco-exec-03-decision-note.png`  
 **Frameworks:** EDGE Periodic Value Review (PVR) / lightweight governance - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem

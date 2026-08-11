@@ -50,7 +50,7 @@ describe('Team Topologies vocabulary', () => {
 describe('legacy SteerSpec aliases', () => {
   it('normalizes legacy team roles and interaction modes on parse', () => {
     const yaml = `
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: legacy-roles

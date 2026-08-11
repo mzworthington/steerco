@@ -35,7 +35,7 @@ export function WorkspaceHomePage() {
   const [recent, setRecent] = useState<RecentWorkspace[]>(() => listRecentWorkspaces());
 
   useEffect(() => {
-    document.title = 'Your workspace · SteerLens';
+    document.title = 'Your workspace · SteerCo';
   }, []);
 
   const recentItems = useMemo(() => recent, [recent]);

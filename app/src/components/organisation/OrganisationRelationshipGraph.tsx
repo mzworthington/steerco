@@ -469,7 +469,7 @@ function TeamDetailPanel({
         <details
           className="organisation-flow-graph-accordion-item"
           name={`team-detail-${node.id}`}
-          open
+          open={false}
         >
           <summary className="organisation-flow-graph-accordion-summary">
             People

@@ -30,7 +30,7 @@ export function WorkspaceDiffPage() {
 
   useEffect(() => {
     if (!model) return;
-    document.title = `Pending changes · ${model.workspaceTitle} · SteerLens`;
+    document.title = `Pending changes · ${model.workspaceTitle} · SteerCo`;
   }, [model]);
 
   if (!session || !model) return null;

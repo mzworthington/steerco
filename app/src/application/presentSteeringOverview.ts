@@ -1,4 +1,4 @@
-import { detectSteerSpecMismatches, type SteerSpec } from '@steerlens/core';
+import { detectSteerSpecMismatches, type SteerSpec } from '@steerco/core';
 
 export type ExecutiveBetStatus = 'On track' | 'At risk' | 'Stop' | 'Proposed' | 'Done';
 
@@ -8,7 +8,10 @@ export type SteeringBetCard = {
   metricCue: string;
   status: ExecutiveBetStatus;
   statusTone: 'on-track' | 'at-risk' | 'stop' | 'neutral';
+  /** Dense portfolio stack position (1 = highest priority), or null when unranked. */
   valueRank: number | null;
+  outcomeId: string;
+  outcomeTitle: string;
   kind: string | null;
   fundingStance: string | null;
 };
@@ -40,6 +43,8 @@ export type SteeringOverviewModel = {
   /** Soonest review horizon across funded bets (Slice 1.5). */
   nextReviewSummary: string | null;
   decisionNotes: Array<{ id: string; title: string; recommendationLabel: string }>;
+  /** Portfolio priority stack (highest value first). Drag order persists as dense valueRank. */
+  valueStack: SteeringBetCard[];
   outcomes: SteeringOutcomeGroup[];
   statusCounts: {
     onTrack: number;
@@ -69,25 +74,33 @@ export function presentSteeringOverview(
     if (presented.tone === 'stop') statusCounts.stop += 1;
   }
 
+  const outcomeTitleById = new Map(
+    spec.spec.outcomes.map((outcome) => [outcome.id, outcome.title]),
+  );
+
+  const toCard = (bet: SteerSpec['spec']['bets'][number]): SteeringBetCard => {
+    const presented = presentBetStatus(bet.status);
+    return {
+      id: bet.id,
+      title: bet.title,
+      metricCue: bet.successSignal,
+      status: presented.label,
+      statusTone: presented.tone,
+      valueRank: typeof bet.valueRank === 'number' ? bet.valueRank : null,
+      outcomeId: bet.outcomeId,
+      outcomeTitle: outcomeTitleById.get(bet.outcomeId) ?? bet.outcomeId,
+      kind: bet.kind ?? null,
+      fundingStance: bet.fundingStance ?? null,
+    };
+  };
+
   const outcomes = spec.spec.outcomes.map((outcome) => ({
     id: outcome.id,
     title: outcome.title,
     summary: outcome.summary ?? null,
     bets: bets
       .filter((bet) => bet.outcomeId === outcome.id)
-      .map((bet) => {
-        const presented = presentBetStatus(bet.status);
-        return {
-          id: bet.id,
-          title: bet.title,
-          metricCue: bet.successSignal,
-          status: presented.label,
-          statusTone: presented.tone,
-          valueRank: typeof bet.valueRank === 'number' ? bet.valueRank : null,
-          kind: bet.kind ?? null,
-          fundingStance: bet.fundingStance ?? null,
-        };
-      })
+      .map(toCard)
       .sort((a, b) => {
         const rankA = a.valueRank ?? Number.POSITIVE_INFINITY;
         const rankB = b.valueRank ?? Number.POSITIVE_INFINITY;
@@ -95,6 +108,13 @@ export function presentSteeringOverview(
         return STATUS_SORT[a.statusTone] - STATUS_SORT[b.statusTone];
       }),
   }));
+
+  const valueStack = [...bets].map(toCard).sort((a, b) => {
+    const rankA = a.valueRank ?? Number.POSITIVE_INFINITY;
+    const rankB = b.valueRank ?? Number.POSITIVE_INFINITY;
+    if (rankA !== rankB) return rankA - rankB;
+    return STATUS_SORT[a.statusTone] - STATUS_SORT[b.statusTone];
+  });
 
   const decisionNotes = spec.spec.decisionNotes.map((note) => ({
     id: note.id,
@@ -117,45 +137,48 @@ export function presentSteeringOverview(
     decisionNotesSummary: buildDecisionNotesSummary(decisionNotes),
     nextReviewSummary: buildNextReviewSummary(bets),
     decisionNotes,
+    valueStack,
     outcomes,
     statusCounts,
   };
 }
 
-export type ApplyBetValueRankResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
+export type ReorderBetValueStackResult =
+  { ok: true; value: SteerSpec } | { ok: false; error: string };
 
-/** Persist a relative value rank (lower = higher priority) for a bet. */
-export function applyBetValueRank(
+/**
+ * Persist a portfolio value stack from drag order (first id = highest priority).
+ * Rewrites dense valueRank 1..n for the ordered ids; clears rank on bets omitted from the list.
+ */
+export function reorderBetValueStack(
   spec: SteerSpec,
-  betId: string,
-  valueRank: number | null,
-): ApplyBetValueRankResult {
-  const index = spec.spec.bets.findIndex((bet) => bet.id === betId);
-  if (index < 0) {
-    return { ok: false, error: 'That bet is not in the open workspace.' };
+  orderedBetIds: string[],
+): ReorderBetValueStackResult {
+  const knownIds = new Set(spec.spec.bets.map((bet) => bet.id));
+  if (orderedBetIds.length !== new Set(orderedBetIds).size) {
+    return { ok: false, error: 'Stack order cannot list the same bet twice.' };
   }
-  if (valueRank !== null && (!Number.isInteger(valueRank) || valueRank < 1)) {
-    return { ok: false, error: 'Value rank must be a positive whole number, or cleared.' };
-  }
-
-  const current = spec.spec.bets[index];
-  if (!current) {
-    return { ok: false, error: 'That bet is not in the open workspace.' };
+  for (const betId of orderedBetIds) {
+    if (!knownIds.has(betId)) {
+      return { ok: false, error: 'That bet is not in the open workspace.' };
+    }
   }
 
-  const nextBets = [...spec.spec.bets];
-  nextBets[index] = {
-    ...current,
-    valueRank: valueRank ?? undefined,
-  };
-
+  const rankById = new Map(orderedBetIds.map((id, position) => [id, position + 1]));
   return {
     ok: true,
     value: {
       ...spec,
       spec: {
         ...spec.spec,
-        bets: nextBets,
+        bets: spec.spec.bets.map((bet) => {
+          const nextRank = rankById.get(bet.id);
+          if (nextRank === undefined) {
+            if (bet.valueRank === undefined) return bet;
+            return { ...bet, valueRank: undefined };
+          }
+          return { ...bet, valueRank: nextRank };
+        }),
       },
     },
   };

@@ -1,6 +1,6 @@
 # PRD F12 - Technical mode
 
-**Slice:** 2+ · **Mockups:** `technical/steerlens-01-steer-tree.png`, `technical/steerlens-02-topology-fitness.png`  
+**Slice:** 2+ · **Mockups:** `technical/steerco-01-steer-tree.png`, `technical/steerco-02-topology-fitness.png`  
 **Frameworks:** EDGE + Team Topologies vocabulary bridge for staff+ - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem

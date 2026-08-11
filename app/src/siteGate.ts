@@ -2,7 +2,7 @@
 const PREVIEW_QUERY_PARAM = 'preview';
 
 /** localStorage key so preview stays unlocked across visits after `?preview=1`. */
-export const PREVIEW_STORAGE_KEY = 'steerlens.preview';
+export const PREVIEW_STORAGE_KEY = 'steerco.preview';
 
 const UNLOCK_VALUES = new Set(['1', 'true', 'yes']);
 const LOCK_VALUES = new Set(['0', 'false', 'no']);

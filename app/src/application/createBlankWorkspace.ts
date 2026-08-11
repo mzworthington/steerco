@@ -1,4 +1,4 @@
-import { steerSpecSchema, type SteerSpec } from '@steerlens/core';
+import { steerSpecSchema, type SteerSpec } from '@steerco/core';
 
 export const BLANK_WORKSPACE_LABEL = 'New workspace';
 
@@ -9,7 +9,7 @@ export function createBlankSteerSpec(options?: { name?: string; title?: string }
   const name = options?.name?.trim() || 'new-workspace';
   const title = options?.title?.trim() || BLANK_WORKSPACE_LABEL;
   const parsed = steerSpecSchema.safeParse({
-    apiVersion: 'steerlens.dev/v1alpha1',
+    apiVersion: 'steerco.dev/v1alpha1',
     kind: 'SteerTree',
     metadata: {
       name:

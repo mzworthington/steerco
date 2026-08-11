@@ -37,7 +37,7 @@ describe('evaluateWriteBackPolicy', () => {
 describe('summariseWriteBackPolicy', () => {
   it('counts provider-blocked teams in the sample', () => {
     const yaml = `
-apiVersion: steerlens.dev/v1alpha1
+apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
   name: demo

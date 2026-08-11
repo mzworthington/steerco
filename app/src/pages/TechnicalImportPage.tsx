@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import type { CatalogMergePlan } from '@steerlens/core';
+import type { CatalogMergePlan } from '@steerco/core';
 import {
   applyCatalogImportPlan,
   presentCatalogImportPreview,
@@ -25,7 +25,7 @@ export function TechnicalImportPage() {
   }, [session, setLocation]);
 
   useEffect(() => {
-    document.title = 'Catalog import · SteerLens';
+    document.title = 'Catalog import · SteerCo';
   }, []);
 
   if (!session) return null;
@@ -84,7 +84,7 @@ export function TechnicalImportPage() {
       </header>
 
       <div className="technical-banner" role="status" data-testid="catalog-import-banner">
-        Provider and catalog imports are reference-only. SteerLens never creates directory groups (
+        Provider and catalog imports are reference-only. SteerCo never creates directory groups (
         <code>proposesGroupYaml</code> is always false).
       </div>
 

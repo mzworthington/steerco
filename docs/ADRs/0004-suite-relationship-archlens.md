@@ -1,14 +1,14 @@
 ---
 status: Accepted
 date: 2026-08-10
-deciders: ['SteerLens']
+deciders: ['SteerCo']
 ---
 
 # 0004. Suite relationship with ArchLens
 
 ## Context and Problem Statement
 
-SteerLens and ArchLens both serve engineering leadership concerns but different jobs: investment alignment vs architecture risk. Combining UIs would expose executives to C4/YAML and dilute ArchLens focus.
+SteerCo and ArchLens both serve engineering leadership concerns but different jobs: investment alignment vs architecture risk. Combining UIs would expose executives to C4/YAML and dilute ArchLens focus.
 
 ## Decision Drivers
 
@@ -35,7 +35,7 @@ Chosen option: **Option B**.
 
 - Good, because sponsors stay in a steering workspace (board pack is the export)
 - Bad, because some Vite/Zod/Cloudflare patterns are duplicated (accepted)
-- Follow-up: deep links out of SteerLens for architecture detail
+- Follow-up: deep links out of SteerCo for architecture detail
 
 ## Links
 

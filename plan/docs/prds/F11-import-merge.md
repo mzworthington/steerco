@@ -1,6 +1,6 @@
 # PRD F11 - Import & merge
 
-**Slice:** 2+ · **Mockup:** `technical/steerlens-03-import-merge.png`
+**Slice:** 2+ · **Mockup:** `technical/steerco-03-import-merge.png`
 
 ## Problem
 

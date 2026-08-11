@@ -41,7 +41,7 @@ function usePrefersReducedMotion() {
 }
 
 /**
- * Lockup intro: arrow sweeps L→R; dots fade in as it passes; then SteerLens fades in.
+ * Lockup intro: arrow sweeps L→R; dots fade in as it passes; then SteerCo fades in.
  * Settled layout matches BrandMark lockup + coming-soon wordmark (production coming-soon).
  */
 export function BrandReveal({ className }: BrandRevealProps) {

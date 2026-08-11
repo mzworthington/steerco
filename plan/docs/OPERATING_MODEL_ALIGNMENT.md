@@ -3,9 +3,9 @@
 **Status:** Living product backlog notes (not an ADR)  
 **Audience:** Product, design, engineering  
 **Captured:** 2026-08-10  
-**Purpose:** Preserve how SteerLens should build on [EDGE](https://www.thoughtworks.com/content/dam/thoughtworks/documents/books/bk_EDGE_en.pdf) - a **holistic value-driven operating model** (Lean Value Tree **plus** product mindset, Tech@Core, PVR, integrated backlogs, MoS, and six principles) - and [Team Topologies](https://teamtopologies.com/book) (esp. 2nd edition), so Slice work does not lose the intent.
+**Purpose:** Preserve how SteerCo should build on [EDGE](https://www.thoughtworks.com/content/dam/thoughtworks/documents/books/bk_EDGE_en.pdf) - a **holistic value-driven operating model** (Lean Value Tree **plus** product mindset, Tech@Core, PVR, integrated backlogs, MoS, and six principles) - and [Team Topologies](https://teamtopologies.com/book) (esp. 2nd edition), so Slice work does not lose the intent.
 
-SteerLens stays an **investment contract + topology intent** surface. It does **not** become Jira, an HR org chart, a tech-radar product, or a full portfolio PMO.
+SteerCo stays an **investment contract + topology intent** surface. It does **not** become Jira, an HR org chart, a tech-radar product, or a full portfolio PMO.
 
 ---
 
@@ -37,13 +37,13 @@ Matthew Skelton, Manuel Pais (IT Revolution). Subtitle: _Organizing Business and
 | Core team types                | https://teamtopologies.com/key-concepts-content/what-are-the-core-team-types-in-team-topologies                                                                      |
 | Beyond the machine (2e themes) | https://teamtopologies.com/news-blogs-newsletters/2025/8/27/beyond-the-machine-team-topologies-second-edition-and-the-future-of-humane-high-performing-organizations |
 
-**Diagram / trademark note:** Team Topologies branding and book diagrams have usage rules ([use of book diagrams](https://teamtopologies.com/book)). SteerLens should use plain-language topology labels in the executive UI, not copy proprietary TT artwork without permission.
+**Diagram / trademark note:** Team Topologies branding and book diagrams have usage rules ([use of book diagrams](https://teamtopologies.com/book)). SteerCo should use plain-language topology labels in the executive UI, not copy proprietary TT artwork without permission.
 
 ---
 
-## How the two frameworks meet in SteerLens
+## How the two frameworks meet in SteerCo
 
-EDGE shifts organisations from traditional, efficiency-focused planning to **adaptive, value-driven execution**. The Lean Value Tree is the strategy spine; EDGE also supplies product mindset, Tech@Core, Periodic Value Review, integrated backlogs, Measures of Success, and six operating principles. Team Topologies answers **how we organise for fast flow of value**. SteerLens is the steering workspace that keeps both contracts versionable - with a board pack as the shareable export.
+EDGE shifts organisations from traditional, efficiency-focused planning to **adaptive, value-driven execution**. The Lean Value Tree is the strategy spine; EDGE also supplies product mindset, Tech@Core, Periodic Value Review, integrated backlogs, Measures of Success, and six operating principles. Team Topologies answers **how we organise for fast flow of value**. SteerCo is the steering workspace that keeps both contracts versionable - with a board pack as the shareable export.
 
 ```mermaid
 flowchart TB
@@ -76,23 +76,23 @@ flowchart TB
   modes -->|topology intent| decide
 ```
 
-| EDGE question                 | SteerLens surface today                         | Build toward                                                                 |
+| EDGE question                 | SteerCo surface today                         | Build toward                                                                 |
 | ----------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------- |
 | How should we invest?         | Vision, outcomes, bets, metrics                 | Full EDGE toolkit: LVT + MoS + product brief + Tech@Core + backlog mix |
 | How should we work together?  | How work is organised (zones + relationships)   | Full TT types, modes, groupings, cognitive-load signals                      |
 | How can we adapt fast enough? | Kill criteria, evidence, decision notes         | Named Periodic Value Review (PVR) cadence; stop-ready; learn-before-number   |
 
-**One-line thesis:** SteerLens is the lightweight operating surface for EDGE’s full value-driven model (not LVT alone) and Team Topologies’ topology intent: a versionable investment contract, product/tech fitness cues, PVR-style start/stop decisions, and fast-flow org shape-without becoming the system of record for work.
+**One-line thesis:** SteerCo is the lightweight operating surface for EDGE’s full value-driven model (not LVT alone) and Team Topologies’ topology intent: a versionable investment contract, product/tech fitness cues, PVR-style start/stop decisions, and fast-flow org shape-without becoming the system of record for work.
 
 ---
 
 ## Part A - EDGE alignments (capture all)
 
-EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Lean Value Tree it supplies product mindset & Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles. SteerLens must treat those teachings as first-class product intent-even when a teaching maps to copy, mismatches, and lightweight schema cues rather than a full submodule.
+EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Lean Value Tree it supplies product mindset & Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles. SteerCo must treat those teachings as first-class product intent-even when a teaching maps to copy, mismatches, and lightweight schema cues rather than a full submodule.
 
 ### A0. Already aligned
 
-| EDGE idea                                     | SteerLens today                                        |
+| EDGE idea                                     | SteerCo today                                        |
 | --------------------------------------------- | ------------------------------------------------------ |
 | Operating model between strategy and delivery | Steering workspace / SteerSpec investment contract     |
 | Outcome over output                           | Outcomes + metrics; bets carry success/kill signals    |
@@ -104,7 +104,7 @@ EDGE is a **holistic operating model**, not a single tree diagram. Beyond the Le
 
 ### A0b. Primary EDGE tools beyond the LVT (first-class map)
 
-| EDGE teaching                         | Meaning                                                                                         | SteerLens today                                      | Build toward (stay investment-contract, not PMO)                                                                 |
+| EDGE teaching                         | Meaning                                                                                         | SteerCo today                                      | Build toward (stay investment-contract, not PMO)                                                                 |
 | ------------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | **Six core principles**               | Cultural OS that makes the tools work                                                           | Implicit in copy                                     | Explicit principles in glossary / docs / Technical mode; UX reinforces autonomy + value prioritization           |
 | **Product mindset & Product brief** | Long-lived product teams; lightweight product definition linked to LVT                        | Bets + funded teams                                  | Optional Product brief linked to outcomes/bets; teaching copy: product ≠ project                             |
@@ -191,7 +191,7 @@ Mismatch ideas: too many concurrent `on_track` bets; explore bets with no kill/r
 
 EDGE replaces annual budgeting and heavy stage-gate steering with **Periodic Value Review**: leaders regularly review active bets, look at MoS/evidence, and **double down or defund** without bureaucratic friction.
 
-| SteerLens surface                         | PVR role                                                              |
+| SteerCo surface                         | PVR role                                                              |
 | ----------------------------------------- | --------------------------------------------------------------------- |
 | Bet `reviewDate` / horizon                | Next PVR checkpoint                                                   |
 | Steering overview “next review” strip     | Portfolio rebalancing agenda                                          |
@@ -244,21 +244,21 @@ A common failure mode is funding only innovation while ignoring BAU, maintenance
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
 | Funding stance            | Keep `explore` \| `exploit` \| `sustain` as the exec-facing mix signal                         |
 | Portfolio mix hint (later)| Steering shows approximate mix of opportunity vs capability vs sustain - calm cue, not finance |
-| Relative value rank       | Optional rank / value-vs-effort on bets for value-based prioritization                         |
+| Relative value stack          | Drag-to-reorder portfolio stack on bets (top = highest; dense valueRank under the hood) |
 | External work links       | Later: annotate Jira (or similar) refs - **never** import/own the execution backlog            |
 | Explicit non-goal         | Full BAU vs strategic finance / ROI accounting (EDGE Ch.7 numbers) - guardrails only if shown  |
 
 ### A11. Six core EDGE principles (cultural OS)
 
-Tools fail without the principles. SteerLens should make these visible in docs, Technical mode, and calm UX cues-not as a poster wall in the executive hero.
+Tools fail without the principles. SteerCo should make these visible in docs, Technical mode, and calm UX cues-not as a poster wall in the executive hero.
 
-| Principle                                   | SteerLens expression                                                              |
+| Principle                                   | SteerCo expression                                                              |
 | ------------------------------------------- | --------------------------------------------------------------------------------- |
 | **Outcome-based strategy**                  | Outcomes + MoS before output; bets judged by fitness movement                     |
 | **Value-based prioritization**              | Rank / WIP / stance; do the most valuable work first                              |
 | **Lightweight planning and governance**     | Decision notes + PVR cadence; no stage-gate theatre                               |
 | **Adaptive, learning culture**              | Evidence “what did we learn?”; stop/rescope without stigma                        |
-| **Autonomous teams**                        | Topology intent funds long-lived teams; SteerLens doesn’t micromanage delivery    |
+| **Autonomous teams**                        | Topology intent funds long-lived teams; SteerCo doesn’t micromanage delivery    |
 | **Self-sufficient, collaborative decisions**| Push start/stop decisions to people closest to the work; board pack shares, not dictates |
 
 ### A12. Explicitly out of scope from EDGE
@@ -288,7 +288,7 @@ Tools fail without the principles. SteerLens should make these visible in docs, 
 
 ### B0. Already aligned
 
-| TT idea                          | SteerLens today                                      |
+| TT idea                          | SteerCo today                                      |
 | -------------------------------- | ---------------------------------------------------- |
 | Delivery topology ≠ HR org chart | Product principle + F03                              |
 | Stream-aligned                   | `team.role: stream_aligned`                          |
@@ -305,7 +305,7 @@ Tools fail without the principles. SteerLens should make these visible in docs, 
 
 From [teamtopologies.com/book](https://teamtopologies.com/book), the [Sep 2025 newsletter](https://teamtopologies.com/news-blogs-newsletters/the-second-edition-of-team-topologies-is-now-available), and [IT Revolution](https://itrevolution.com/product/team-topologies-second-edition/):
 
-| 2e theme                                               | Meaning for SteerLens                                                                                                      |
+| 2e theme                                               | Meaning for SteerCo                                                                                                      |
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | **Clearly articulated intent and purpose**             | Topology and bets are _intent_ artifacts leaders evolve-not a frozen org chart export                                      |
 | **Cognitive load as a design principle**               | Surface load drivers (dependencies, bet thrash, platform fan-in); calm mismatches, not vanity org polish                   |
@@ -324,7 +324,7 @@ From [teamtopologies.com/book](https://teamtopologies.com/book), the [Sep 2025 n
 
 Current SteerSpec has three roles. TT has **four** fundamental types:
 
-| TT type               | SteerLens today         | Suggested evolution                                                                                                                         |
+| TT type               | SteerCo today         | Suggested evolution                                                                                                                         |
 | --------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Stream-aligned        | `stream_aligned`        | Zone title “Stream-aligned teams”; own outcomes end-to-end                                                                                  |
 | Platform (grouping)   | `platform`              | Support **platform grouping** later (parent grouping + member teams)                                                                        |

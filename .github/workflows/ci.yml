@@ -68,7 +68,7 @@ jobs:
         run: pnpm test
 
       - name: SteerSpec mismatch check
-        run: pnpm --filter @steerlens/core test -- checkSteerSpec
+        run: pnpm --filter @steerco/core test -- checkSteerSpec
 
   build:
     runs-on: ubuntu-latest
@@ -121,4 +121,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy app/dist --project-name=${{ vars.PULUMI_PAGES_PROJECT_NAME || 'steerlens' }}
+          command: pages deploy app/dist --project-name=${{ vars.PULUMI_PAGES_PROJECT_NAME || 'steerco' }}
