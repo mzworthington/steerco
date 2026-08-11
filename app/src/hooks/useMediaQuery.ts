@@ -1,5 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
+const LG_UP_QUERY = '(min-width: 1024px)';
+
 function subscribeMediaQuery(query: string, onStoreChange: () => void) {
   if (typeof window.matchMedia !== 'function') {
     return () => {};
@@ -16,10 +18,7 @@ function getMediaQuerySnapshot(query: string) {
   return window.matchMedia(query).matches;
 }
 
-/** Tailwind `lg` breakpoint (1024px) and up. */
-export const LG_UP_QUERY = '(min-width: 1024px)';
-
-export function useMediaQuery(query: string, serverSnapshot = false) {
+function useMediaQuery(query: string, serverSnapshot = false) {
   return useSyncExternalStore(
     (onStoreChange) => subscribeMediaQuery(query, onStoreChange),
     () => getMediaQuerySnapshot(query),
@@ -27,6 +26,7 @@ export function useMediaQuery(query: string, serverSnapshot = false) {
   );
 }
 
+/** True at the Tailwind `lg` breakpoint (1024px) and up. */
 export function useLgUp() {
   return useMediaQuery(LG_UP_QUERY, true);
 }
