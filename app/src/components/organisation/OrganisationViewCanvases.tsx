@@ -15,7 +15,12 @@ export function OrganisationFlowOverview({ overview }: OrganisationFlowOverviewP
         {overview.lvtPlaceholder}
       </p>
 
-      <div className="organisation-overview-lanes" role="list">
+      <div
+        className="organisation-overview-lanes"
+        role="list"
+        tabIndex={0}
+        aria-label="Value stream lanes"
+      >
         {overview.lanes.map((lane) => (
           <article key={lane.id} className="organisation-overview-lane" role="listitem">
             <h3 className="organisation-overview-lane-title">{lane.title}</h3>

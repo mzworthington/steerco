@@ -81,11 +81,11 @@
   }
 
   .site-nav-inner {
-    @apply mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8;
+    @apply mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:gap-6 sm:px-8 sm:py-4;
   }
 
   .site-brand {
-    @apply font-display text-ink hover:text-ocean text-lg font-semibold tracking-tight transition-colors;
+    @apply font-display text-ink hover:text-ocean min-w-0 text-base font-semibold tracking-tight transition-colors sm:text-lg;
   }
 
   .brand-reveal {
@@ -131,11 +131,11 @@
   }
 
   .site-nav-links {
-    @apply text-ink-muted flex items-center gap-6 text-sm font-semibold;
+    @apply text-ink-muted flex shrink-0 items-center gap-1 text-sm font-semibold sm:gap-2;
   }
 
   .site-nav-link {
-    @apply hover:text-ink relative transition-colors;
+    @apply hover:text-ink relative inline-flex min-h-11 items-center px-2.5 py-2 transition-colors sm:px-3;
   }
 
   .site-nav-link::after {
@@ -242,7 +242,7 @@
   }
 
   .hero-actions {
-    @apply mt-10 flex flex-wrap items-center gap-4;
+    @apply mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4;
     animation: fade-up 0.7s ease-out 0.2s both;
   }
 
@@ -324,11 +324,27 @@
   }
 
   .docs-layout {
-    @apply mx-auto grid max-w-6xl gap-10 px-5 py-10 sm:px-8 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-14 lg:py-14;
+    @apply relative mx-auto grid max-w-6xl gap-6 px-4 py-6 sm:gap-10 sm:px-8 sm:py-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-14 lg:py-14;
+  }
+
+  .docs-mobile-bar {
+    @apply border-line bg-paper-soft sticky top-[3.25rem] z-20 -mx-4 mb-2 flex items-center gap-3 border-y px-4 py-2.5 sm:-mx-8 sm:px-8 lg:hidden;
+  }
+
+  .docs-mobile-bar-label {
+    @apply font-display text-ink m-0 text-sm font-semibold tracking-tight;
   }
 
   .docs-sidebar {
-    @apply lg:sticky lg:top-24 lg:self-start;
+    @apply border-line bg-paper-soft fixed inset-y-0 left-0 z-40 flex w-[min(18rem,calc(100vw-3rem))] -translate-x-full flex-col overflow-y-auto border-r px-4 py-5 transition-transform duration-200 ease-out lg:sticky lg:top-24 lg:z-auto lg:h-auto lg:w-auto lg:translate-x-0 lg:self-start lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:transition-none;
+  }
+
+  .docs-sidebar.is-open {
+    @apply translate-x-0;
+  }
+
+  .docs-sidebar-top {
+    @apply mb-4 flex items-start justify-between gap-3 lg:mb-0;
   }
 
   .docs-sidebar-title {
@@ -614,16 +630,60 @@
     @apply mr-2 inline-block h-2.5 w-2.5 rounded-full;
   }
 
+  .nav-drawer-toggle {
+    @apply text-ink hover:bg-stone inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg transition-colors;
+  }
+
+  .nav-drawer-toggle-icon {
+    @apply flex h-3.5 w-5 flex-col justify-between;
+  }
+
+  .nav-drawer-toggle-icon > span {
+    @apply bg-ink block h-0.5 w-full rounded-full;
+  }
+
+  .nav-drawer-backdrop {
+    @apply bg-ink/40 fixed inset-0 z-30 border-0 lg:hidden;
+  }
+
+  .nav-drawer-close {
+    @apply text-ink-muted hover:bg-stone hover:text-ink rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors;
+  }
+
   .workspace-shell {
-    @apply bg-paper flex min-h-dvh;
+    @apply bg-paper relative flex min-h-dvh flex-col lg:flex-row;
+  }
+
+  .workspace-mobile-bar {
+    @apply border-line bg-paper-soft sticky top-0 z-20 flex items-center gap-3 border-b px-3 py-2.5 lg:hidden;
+  }
+
+  .workspace-mobile-brand {
+    @apply font-display text-ink hover:text-ocean inline-flex min-w-0 flex-1 items-center gap-2 text-base font-semibold tracking-tight transition-colors;
+  }
+
+  .workspace-mobile-save {
+    @apply shrink-0 px-3 py-2 text-sm;
+  }
+
+  .workspace-mobile-bar-spacer {
+    @apply inline-block h-11 w-11 shrink-0;
   }
 
   .workspace-sidebar {
-    @apply border-line bg-paper-soft sticky top-0 flex h-dvh w-60 shrink-0 flex-col self-start overflow-y-auto border-r px-4 py-5;
+    @apply border-line bg-paper-soft fixed inset-y-0 left-0 z-40 flex h-dvh w-[min(18rem,calc(100vw-3rem))] shrink-0 -translate-x-full flex-col overflow-y-auto border-r px-4 py-5 transition-transform duration-200 ease-out lg:sticky lg:top-0 lg:z-auto lg:w-60 lg:translate-x-0 lg:self-start lg:transition-none;
+  }
+
+  .workspace-sidebar.is-open {
+    @apply translate-x-0;
+  }
+
+  .workspace-sidebar-top {
+    @apply mb-6 flex items-start justify-between gap-3;
   }
 
   .workspace-brand {
-    @apply font-display text-ink hover:text-ocean mb-8 inline-flex items-center gap-2.5 text-base font-semibold tracking-tight transition-colors;
+    @apply font-display text-ink hover:text-ocean inline-flex items-center gap-2.5 text-base font-semibold tracking-tight transition-colors;
   }
 
   .workspace-nav {
@@ -695,7 +755,7 @@
   }
 
   .workspace-main {
-    @apply animate-fade-in min-w-0 flex-1 px-6 py-8 sm:px-10 sm:py-10;
+    @apply animate-fade-in min-w-0 flex-1 px-4 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10;
   }
 
   .workspace-home {
@@ -1487,7 +1547,7 @@
   }
 
   .organisation-fab {
-    @apply bg-ocean text-paper hover:bg-ocean-hover fixed right-6 bottom-6 z-40 rounded-full px-4 py-3 text-sm font-semibold shadow-lg;
+    @apply bg-ocean text-paper hover:bg-ocean-hover fixed right-4 bottom-4 z-40 rounded-full px-4 py-3 text-sm font-semibold shadow-lg sm:right-6 sm:bottom-6;
   }
 
   .organisation-team-header-actions {
@@ -3047,6 +3107,11 @@
 
   @media print {
     .workspace-sidebar,
+    .workspace-mobile-bar,
+    .docs-mobile-bar,
+    .nav-drawer-toggle,
+    .nav-drawer-backdrop,
+    .nav-drawer-close,
     .no-print,
     .decision-notes-list,
     .decision-notes-actions,

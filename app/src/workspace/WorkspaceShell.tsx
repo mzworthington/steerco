@@ -1,7 +1,15 @@
 import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { BrandMark } from '../components/BrandMark';
+import {
+  NavDrawerBackdrop,
+  NavDrawerClose,
+  NavDrawerToggle,
+  navDrawerPanelClass,
+  useNavDrawerEffects,
+} from '../components/NavDrawerChrome';
+import { useLgUp } from '../hooks/useMediaQuery';
 import { SITE_NAME } from '../siteConfig';
 import { useWorkspaceSession } from './WorkspaceSession';
 
@@ -44,14 +52,33 @@ const NAV = [
   },
 ] as const;
 
+const WORKSPACE_NAV_ID = 'workspace-nav-drawer';
+
 export function WorkspaceShell({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const { session, hasPendingChanges, canWriteToFolder, saveWorkspace } = useWorkspaceSession();
   const [saveFlash, setSaveFlash] = useState<string | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
+  const desktop = useLgUp();
   const diffActive = location.startsWith('/workspace/diff');
   const sessionReady = Boolean(session);
+  const drawerOpen = desktop || navOpen;
+
+  useEffect(() => {
+    setNavOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    if (desktop) setNavOpen(false);
+  }, [desktop]);
+
+  useNavDrawerEffects({
+    open: navOpen,
+    onClose: () => setNavOpen(false),
+    desktop,
+  });
 
   const onSave = async () => {
     if (!session || saving) return;
@@ -74,13 +101,52 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
     }
   };
 
+  const closeNav = () => setNavOpen(false);
+
   return (
     <div className="workspace-shell" data-testid="workspace-shell">
-      <aside className="workspace-sidebar" aria-label="Workspace">
-        <Link href="/workspace" className="workspace-brand">
-          <BrandMark variant="lockup" />
+      <header className="workspace-mobile-bar" data-testid="workspace-mobile-bar">
+        <NavDrawerToggle
+          open={navOpen}
+          onToggle={() => setNavOpen((value) => !value)}
+          controlsId={WORKSPACE_NAV_ID}
+          label="Open workspace navigation"
+        />
+        <Link href="/workspace" className="workspace-mobile-brand" onClick={closeNav}>
+          <BrandMark variant="mark" />
           <span>{SITE_NAME}</span>
         </Link>
+        {session ? (
+          <button
+            type="button"
+            className="btn-primary workspace-mobile-save"
+            data-testid="workspace-mobile-save"
+            disabled={saving || !hasPendingChanges}
+            onClick={() => void onSave()}
+          >
+            {saving ? 'Saving…' : 'Save'}
+          </button>
+        ) : (
+          <span className="workspace-mobile-bar-spacer" aria-hidden="true" />
+        )}
+      </header>
+
+      <NavDrawerBackdrop open={!desktop && navOpen} onClose={closeNav} />
+
+      <aside
+        id={WORKSPACE_NAV_ID}
+        className={navDrawerPanelClass('workspace-sidebar', drawerOpen)}
+        aria-label="Workspace"
+        data-testid="workspace-nav-drawer"
+        inert={!desktop && !navOpen ? true : undefined}
+      >
+        <div className="workspace-sidebar-top">
+          <Link href="/workspace" className="workspace-brand" onClick={closeNav}>
+            <BrandMark variant="mark" />
+            <span>{SITE_NAME}</span>
+          </Link>
+          {!desktop ? <NavDrawerClose onClose={closeNav} /> : null}
+        </div>
         <nav className="workspace-nav" aria-label="Workspace sections">
           {NAV.map((item) => {
             const active = item.match(location);
@@ -105,6 +171,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
                   active ? 'workspace-nav-link workspace-nav-link-active' : 'workspace-nav-link'
                 }
                 aria-current={active ? 'page' : undefined}
+                onClick={closeNav}
               >
                 {item.label}
               </Link>
@@ -129,6 +196,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
               }
               data-testid="workspace-pending-link"
               aria-current={diffActive ? 'page' : undefined}
+              onClick={closeNav}
             >
               <span className="workspace-pending-label">
                 {hasPendingChanges ? 'Pending changes' : 'No pending changes'}
@@ -161,7 +229,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
           </div>
         ) : null}
         <div className="workspace-sidebar-footer">
-          <Link href="/docs/product-guide" className="workspace-sidebar-docs">
+          <Link href="/docs/product-guide" className="workspace-sidebar-docs" onClick={closeNav}>
             Product guide
           </Link>
           <p className="workspace-sidebar-note">No account required for Slice 1.</p>

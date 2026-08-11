@@ -70,3 +70,23 @@ if (typeof globalThis.ResizeObserver === 'undefined') {
     value: ResizeObserverStub,
   });
 }
+
+/** Default to desktop (lg+) so layout shells stay open in unit tests unless overridden. */
+function createMatchMedia(defaultMatches: (query: string) => boolean): typeof window.matchMedia {
+  return (query: string) => ({
+    matches: defaultMatches(query),
+    media: query,
+    onchange: null,
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    addListener: () => {},
+    removeListener: () => {},
+    dispatchEvent: () => false,
+  });
+}
+
+Object.defineProperty(window, 'matchMedia', {
+  configurable: true,
+  writable: true,
+  value: createMatchMedia((query) => query.includes('min-width: 1024px')),
+});
