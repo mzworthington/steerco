@@ -9,7 +9,7 @@ bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Append `?preview=1` to unlock the full site locally.
+Append `?preview=1` to unlock the full site locally (persists until `?preview=no`).
 
 ## Quality checks
 

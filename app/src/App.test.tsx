@@ -14,6 +14,7 @@ import { App } from './App';
 
 afterEach(() => {
   cleanup();
+  localStorage.removeItem(PREVIEW_STORAGE_KEY);
   sessionStorage.removeItem(PREVIEW_STORAGE_KEY);
   window.history.replaceState({}, '', '/');
 });
@@ -30,6 +31,22 @@ describe('App site gate', () => {
     render(<App />);
     expect(screen.queryByTestId('coming-soon')).toBeNull();
     expect(screen.getByTestId('home')).toBeTruthy();
+  });
+
+  it('keeps the site unlocked from localStorage without a query string', () => {
+    localStorage.setItem(PREVIEW_STORAGE_KEY, '1');
+    render(<App />);
+    expect(screen.queryByTestId('coming-soon')).toBeNull();
+    expect(screen.getByTestId('home')).toBeTruthy();
+  });
+
+  it('locks again when preview=no is in the query string', () => {
+    localStorage.setItem(PREVIEW_STORAGE_KEY, '1');
+    window.history.replaceState({}, '', '/?preview=no');
+    render(<App />);
+    expect(screen.getByTestId('coming-soon')).toBeTruthy();
+    expect(screen.queryByTestId('home')).toBeNull();
+    expect(localStorage.getItem(PREVIEW_STORAGE_KEY)).toBeNull();
   });
 
   it('redirects /design-system to /docs/design-system when unlocked', () => {
