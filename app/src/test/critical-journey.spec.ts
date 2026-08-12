@@ -77,4 +77,44 @@ test.describe('Slice 1 critical journey', () => {
     await expect(page.getByTestId('goals-page')).toBeVisible();
     await expect(page.getByTestId('nav-drawer-backdrop')).toHaveCount(0);
   });
+
+  test('goals page can add goal, bet, and initiative via modals', async ({ page }) => {
+    await page.goto('/workspace?preview=1');
+    await page.getByRole('button', { name: /start from sample/i }).click();
+    await expect(page.getByTestId('steering-overview')).toBeVisible();
+
+    await page.getByRole('link', { name: /^goals$/i }).click();
+    await expect(page.getByTestId('goals-page')).toBeVisible();
+
+    await page.locator('.goals-header [data-testid="lvt-add-goal-open"]').click();
+    await expect(page.getByTestId('lvt-add-goal-modal')).toBeVisible();
+    await page.getByTestId('lvt-add-goal-title').fill('Safer checkouts');
+    await page.getByTestId('lvt-add-goal-summary').fill('Fewer payment fails at till.');
+    await page.getByTestId('lvt-add-goal-submit').click();
+    await expect(page.getByTestId('lvt-add-goal-modal')).toHaveCount(0);
+    await expect(page.getByTestId('goals-goal-detail')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /safer checkouts/i })).toBeVisible();
+
+    await page.getByTestId('lvt-add-bet-open').click();
+    await expect(page.getByTestId('lvt-add-bet-modal')).toBeVisible();
+    await page.getByTestId('lvt-add-bet-title').fill('Checkout retry cue');
+    await page.getByTestId('lvt-add-bet-success').fill('Retry prompt lifts completion');
+    await page.getByTestId('lvt-add-bet-kill').fill('No lift after one sprint');
+    await page.getByTestId('lvt-add-bet-submit').click();
+    await expect(page.getByTestId('lvt-add-bet-modal')).toHaveCount(0);
+    await expect(page.getByTestId('goals-bet-detail')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /checkout retry cue/i })).toBeVisible();
+
+    await page.getByTestId('lvt-add-initiative-open').click();
+    await expect(page.getByTestId('lvt-add-initiative-modal')).toBeVisible();
+    await page.getByTestId('lvt-add-initiative-title').fill('Pilot flagship till');
+    await page.getByTestId('lvt-add-initiative-success').fill('One store completes retry path');
+    await page.getByTestId('lvt-add-initiative-submit').click();
+    await expect(page.getByTestId('lvt-add-initiative-modal')).toHaveCount(0);
+    await expect(page.getByTestId('goals-initiative-detail')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /pilot flagship till/i })).toBeVisible();
+
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+    expect(results.violations, 'axe violations after LVT add flow').toEqual([]);
+  });
 });
