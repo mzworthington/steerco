@@ -16,7 +16,12 @@ module.exports = {
         'categories:best-practices': ['warn', { minScore: 0.85 }],
         'categories:seo': ['warn', { minScore: 0.8 }],
         'categories:performance': ['warn', { minScore: 0.45 }],
-        'categories:pwa': 'off',
+        // Lighthouse no longer ships a PWA category score; assert installability audits.
+        'installable-manifest': 'error',
+        'service-worker': 'error',
+        'splash-screen': 'warn',
+        'themed-omnibox': 'warn',
+        'maskable-icon': 'warn',
       },
     },
     upload: {

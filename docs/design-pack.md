@@ -18,7 +18,7 @@ Sketch reference: `mockups/logo-explorations/steerco-logo-sketch-dots-arrow.png`
 | Logo lockup  | `/assets/logo-lockup.svg`                   | Site header + wide circles + arrow   |
 | Social share | `/assets/social-share.png`                  | `og:image` / Twitter card (1200×630) |
 | Apple touch  | `/icons/apple-touch-icon.png`               | iOS home screen (arrow only)         |
-| PWA icons    | `/icons/pwa-192x192.png`, `pwa-512x512.png` | Optional install icons (arrow only)  |
+| PWA icons    | `/icons/pwa-192x192.png`, `pwa-512x512.png` | Installable PWA icons (arrow only)   |
 
 After changing mark SVGs, regenerate rasters:
 

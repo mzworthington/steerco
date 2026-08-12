@@ -4,7 +4,7 @@
 | --------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Domain          | `@steerco/core` - TypeScript + Zod + YAML (SteerSpec)                                                               |
 | UI              | React 19 + TypeScript under `app/` (`@steerco/app`)                                                                 |
-| Bundler         | Vite 8                                                                                                              |
+| Bundler         | Vite 8 + vite-plugin-pwa (installable app shell)                                                                    |
 | Styling         | Tailwind CSS 4 executive tokens (stone + ocean) + recipes in `app/src/index.css`; showcase at `/docs/design-system` |
 | Routing         | wouter                                                                                                              |
 | Docs            | Markdown under `docs/`, rendered in-app with `react-markdown`                                                       |

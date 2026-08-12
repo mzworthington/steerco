@@ -61,13 +61,13 @@ Deploy to Pages only happens after those jobs succeed on `main`.
 
 **Lighthouse CI** builds the app, serves the preview, and scores `/` and docs routes. Config: `app/lighthouserc.cjs`.
 
-| Category       | Gate              |
-| -------------- | ----------------- |
-| Accessibility  | error below `0.9` |
-| Best practices | warn below `0.85` |
-| SEO            | warn below `0.8`  |
-| Performance    | warn below `0.45` |
-| PWA            | off               |
+| Category       | Gate                                                                    |
+| -------------- | ----------------------------------------------------------------------- |
+| Accessibility  | error below `0.9`                                                       |
+| Best practices | warn below `0.85`                                                       |
+| SEO            | warn below `0.8`                                                        |
+| Performance    | warn below `0.45`                                                       |
+| PWA            | installable-manifest + service-worker error; splash/theme/maskable warn |
 
 Weekly workflow uploads the report artifact; locally: `pnpm build && pnpm test:lighthouse`.
 
