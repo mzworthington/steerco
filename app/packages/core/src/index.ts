@@ -46,9 +46,12 @@ export {
   GROUPING_KIND_COPY,
   INTERACTION_MODE_COPY,
   INTERACTION_SHAPE_GEOMETRIES,
+  LEADERSHIP_OUTSIDE_STREAM_COPY,
   PLATFORM_SCOPE_COPY,
   TEAM_SHAPE_GEOMETRIES,
+  TEAM_SIZE_GUIDANCE,
   TEAM_TOPOLOGY_TYPES,
+  TOPOLOGY_LENS_COPY,
   TOPOLOGY_TYPE_COPY,
   normalizeInteractionMode,
   normalizeTeamTopologyType,
@@ -59,6 +62,7 @@ export {
 } from './domain/teamTopologies/vocabulary';
 export {
   DEFAULT_PLATFORM_OVERLOAD_THRESHOLD,
+  DEFAULT_TEAM_OVERSIZED_THRESHOLD,
   detectSteerSpecMismatches,
   type DetectMismatchesOptions,
   type SteerMismatch,

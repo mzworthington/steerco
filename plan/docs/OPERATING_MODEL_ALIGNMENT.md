@@ -1,9 +1,9 @@
-# Operating model alignment - EDGE + Team Topologies
+# Operating model alignment - EDGE + Team Topologies + DDD
 
 **Status:** Living product backlog notes (not an ADR)  
 **Audience:** Product, design, engineering  
-**Captured:** 2026-08-10  
-**Purpose:** Preserve how SteerCo should build on [EDGE](https://www.thoughtworks.com/content/dam/thoughtworks/documents/books/bk_EDGE_en.pdf) - a **holistic value-driven operating model** (Lean Value Tree **plus** product mindset, Tech@Core, PVR, integrated backlogs, MoS, and six principles) - and [Team Topologies](https://teamtopologies.com/book) (esp. 2nd edition), so Slice work does not lose the intent.
+**Captured:** 2026-08-10 · **Refined:** 2026-08-12  
+**Purpose:** Preserve how SteerCo should build on [EDGE](https://www.thoughtworks.com/content/dam/thoughtworks/documents/books/bk_EDGE_en.pdf) - a **holistic value-driven operating model** (Lean Value Tree **plus** product mindset, Tech@Core, PVR, integrated backlogs, MoS, and six principles) - [Team Topologies](https://teamtopologies.com/book) (esp. 2nd edition) - and [Domain-Driven Design](https://www.domainlanguage.com/ddd/) (Eric Evans) - so Slice work does not lose the intent.
 
 SteerCo stays an **investment contract + topology intent** surface. It does **not** become Jira, an HR org chart, a tech-radar product, or a full portfolio PMO.
 
@@ -36,14 +36,25 @@ Matthew Skelton, Manuel Pais (IT Revolution). Subtitle: _Organizing Business and
 | Groupings (2e clarification)   | https://teamtopologies.com/key-concepts-content/groupings                                                                                                            |
 | Core team types                | https://teamtopologies.com/key-concepts-content/what-are-the-core-team-types-in-team-topologies                                                                      |
 | Beyond the machine (2e themes) | https://teamtopologies.com/news-blogs-newsletters/2025/8/27/beyond-the-machine-team-topologies-second-edition-and-the-future-of-humane-high-performing-organizations |
+| Oversized teams / cognitive load | https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues |
+
+### Domain-Driven Design (Eric Evans)
+
+Eric Evans, _Domain-Driven Design: Tackling Complexity in the Heart of Software_ (Addison-Wesley). SteerCo does not replace ArchLens as a software modeler; it uses DDD language so topology intent stays aligned to problem-space boundaries.
+
+| Resource              | URL                                                                 |
+| --------------------- | ------------------------------------------------------------------- |
+| Domain Language (DDD) | https://www.domainlanguage.com/ddd/                                 |
+| Bounded Context      | https://martinfowler.com/bliki/BoundedContext.html                  |
+| Ubiquitous Language   | Core DDD practice: shared vocabulary across business and delivery |
 
 **Diagram / trademark note:** Team Topologies branding and book diagrams have usage rules ([use of book diagrams](https://teamtopologies.com/book)). SteerCo should use plain-language topology labels in the executive UI, not copy proprietary TT artwork without permission.
 
 ---
 
-## How the two frameworks meet in SteerCo
+## How the three frameworks meet in SteerCo
 
-EDGE shifts organisations from traditional, efficiency-focused planning to **adaptive, value-driven execution**. The Lean Value Tree is the strategy spine; EDGE also supplies product mindset, Tech@Core, Periodic Value Review, integrated backlogs, Measures of Success, and six operating principles. Team Topologies answers **how we organise for fast flow of value**. SteerCo is the steering workspace that keeps both contracts versionable - with a board pack as the shareable export.
+EDGE shifts organisations from traditional, efficiency-focused planning to **adaptive, value-driven execution**. The Lean Value Tree is the strategy spine; EDGE also supplies product mindset, Tech@Core, Periodic Value Review, integrated backlogs, Measures of Success, and six operating principles. Domain-Driven Design (Eric Evans) answers **where problem-space boundaries sit** (bounded contexts, ubiquitous language). Team Topologies answers **how we organise for fast flow of value** along those boundaries. SteerCo is the steering workspace that keeps the investment contract and topology intent versionable - with a board pack as the shareable export.
 
 ```mermaid
 flowchart TB
@@ -59,11 +70,19 @@ flowchart TB
     decide --> goals
   end
 
+  subgraph ddd [DDD - name the problem space]
+    bc[Bounded contexts]
+    ul[Ubiquitous language]
+    fracture[Fracture planes when load rises]
+    bc --- ul
+    ul --- fracture
+  end
+
   subgraph tt [Team Topologies - work together]
     stream[Stream-aligned / customer-facing]
     platform[Platform grouping]
     enabling[Enabling / coaching]
-    subsystem[Complicated subsystem - later]
+    subsystem[Complicated subsystem]
     modes[Interaction modes: XaaS / collaborate / facilitate]
     stream --- modes
     platform --- modes
@@ -71,18 +90,20 @@ flowchart TB
     subsystem --- modes
   end
 
+  bc -->|domains are BC lenses| stream
   bets -->|fundedTeamIds| stream
   bets -->|fundedTeamIds| platform
   modes -->|topology intent| decide
 ```
 
-| EDGE question                 | SteerCo surface today                         | Build toward                                                                 |
-| ----------------------------- | ----------------------------------------------- | ---------------------------------------------------------------------------- |
-| How should we invest?         | Vision, goals, bets, metrics                 | Full EDGE toolkit: LVT + MoS + product brief + Tech@Core + backlog mix |
-| How should we work together?  | How work is organised (zones + relationships)   | Full TT types, modes, groupings, cognitive-load signals                      |
-| How can we adapt fast enough? | Kill criteria, evidence, decision notes         | Named Periodic Value Review (PVR) cadence; stop-ready; learn-before-number   |
+| Question                        | SteerCo surface today                         | Build toward                                                                 |
+| ------------------------------- | --------------------------------------------- | ---------------------------------------------------------------------------- |
+| How should we invest?           | Vision, goals, bets, metrics                  | Full EDGE toolkit: LVT + MoS + product brief + Tech@Core + backlog mix |
+| Where are the problem boundaries? | Domain labels on streams                    | Explicit DDD bounded-context teaching; fracture when contexts overload |
+| How should we work together?    | How work is organised (zones + relationships) | Full TT types, modes, groupings, cognitive-load signals                      |
+| How can we adapt fast enough?   | Kill criteria, evidence, decision notes       | Named Periodic Value Review (PVR) cadence; stop-ready; learn-before-number   |
 
-**One-line thesis:** SteerCo is the lightweight operating surface for EDGE’s full value-driven model (not LVT alone) and Team Topologies’ topology intent: a versionable investment contract, product/tech fitness cues, PVR-style start/stop decisions, and fast-flow org shape-without becoming the system of record for work.
+**One-line thesis:** SteerCo is the lightweight operating surface for EDGE’s full value-driven model, Eric Evans’ Domain-Driven Design (bounded contexts as domain lenses), and Team Topologies’ topology intent: a versionable investment contract, product/tech fitness cues, PVR-style start/stop decisions, and fast-flow org shape - without becoming the system of record for work or an HR org chart.
 
 ---
 
@@ -348,9 +369,19 @@ Suggested mismatch/warnings:
 
 ### B4. Groupings, scope, and flow-of-change layout (2e)
 
-Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams inside value stream groupings**; platform, enabling, and complicated-subsystem teams are scoped support for that flow - not peer columns of equal weight.
+Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams** owning flows of change; platform, enabling, and complicated-subsystem teams are **lateral** support for that flow - not peer columns of equal weight, and not managers above streams.
 
-In Team Topologies 2e, “organise teams under a domain” maps to a **value stream grouping**; a multi-team platform maps to a **platform grouping**. Platforms also have an **audience scope**: organisation-wide, vertical (one value stream), or dedicated to a single stream-aligned team. Complicated-subsystem teams nest **inside** a value stream (team-within-a-team). Enabling teams **fan out** via facilitation to many streams.
+**Domains, streams, and teams are coplanar lenses - not a hierarchy** ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)):
+
+| Lens | Meaning | SteerSpec |
+| ---- | ------- | --------- |
+| **Domain** (what) | Problem-space / bounded-context boundary | `domains[]` labels related streams for filters - never a managerial parent |
+| **Stream** (flow) | End-to-end flow of change inside that slice | `streams[]` |
+| **Stream-aligned team** (who) | People empowered to deliver that flow | `teams[]` with `role: stream_aligned` + ideally one `streamId` |
+
+Ideal: **one stream-aligned team ↔ one stream ↔ one domain slice**. When a vertical is too large for one team’s cognitive load, **fracture into peer sub-domains** (each with its own stream and team) - do not invent a “Domain Team” that manages several “Stream Teams.” Platform, enabling, and complicated-subsystem teams remain beside the spine (XaaS / facilitation), not above it. Directors and VPs sit **outside** the delivery stream: they redesign boundaries, fund platforms/enablers, and watch load - they are not a topology type.
+
+In Team Topologies 2e, “organise teams under a domain” maps to related **value-stream** slices sharing a context label; a multi-team platform maps to a **platform grouping**. Platforms also have an **audience scope**: organisation-wide, vertical (related streams), or dedicated to a single stream-aligned team. Complicated-subsystem teams sit **in** a stream (specialty beside the stream team). Enabling teams **fan out** via facilitation to many streams.
 
 ```yaml
 # Illustrative - not yet in v1alpha1
@@ -406,7 +437,14 @@ Do **not** build a full psychometric survey in Slice 1. Do encode **steering-vis
 | Collaboration tax                | Too many concurrent `works_together` edges                                                    |
 | Missing enablement               | At-risk stream teams with no enabling relationship                                            |
 | Fractal overload                 | Platform grouping with too many internal members _and_ external dependents                    |
-| Size heuristic (later, optional) | Soft warning near Dunbar trust boundary for a single team - never hard HR enforcement         |
+| Team size / complexity           | Soft `team_oversized` when recorded members ≥ ~15 (Dunbar high-trust caution; ~8 is healthy). Headline cites communication paths `n(n-1)/2` and evolution paths - never hard HR enforcement |
+| Shared stream                    | Soft `stream_multi_team` when more than one stream-aligned team owns the same stream - prefer peer domain/stream splits |
+
+**Evolution paths when a team or domain slice is overloaded** ([TT newsletter on oversized teams](https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues)):
+
+1. Form independent stream-aligned teams on peer sub-domains / streams
+2. Form a platform grouping (X-as-a-Service) so streams shed shared complexity
+3. Extract a complicated-subsystem team for deep specialty
 
 Decision-note prompt: “What load are we removing for stream-aligned teams?”
 
@@ -444,18 +482,70 @@ Empty / teaching states should reflect 2e language without trademark overload:
 4. Schema: `complicated_subsystem` role
 5. Schema: `groupings` (platform + value_stream) + fractal membership; `platformScope`; CSS `within` nest
 6. Soft “one primary bet per stream team” mismatch
+6b. Soft `team_oversized` + `stream_multi_team`; teach domain/stream/team as coplanar lenses ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md))
 7. Org view **flow-of-change** layout (streams as spine) + as-of date; type zones as teaching/filter
 8. Bet flow overlay (funded teams + related interactions as of date)
 9. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
 10. Topology timeline: capacity deltas + relationship spans over time ([F13](./prds/F13-topology-timeline.md)) — landed (Organisation **Timeline** view)
 
+### B10. Leadership sits outside the stream (HR ≠ topology)
+
+Engineering Directors and VPs still have line management, budget, and career paths. That **HR reporting structure is not the delivery topology**.
+
+| Leadership job in SteerCo | Not their job in the flow graph |
+| ------------------------- | ------------------------------- |
+| Keep strategy, team shape, and evidence aligned (EDGE + TT) | Hand requirements down a domain → stream → team chain |
+| Sense cognitive load; find **fracture planes**; split overloaded bounded contexts into peer sub-domains | Act as a permanent approval gate inside the stream |
+| Sponsor / fund platform and enabling teams when many streams share the same drag | Dictate paved-road usage as a hierarchy above streams |
+| Drive the **Inverse Conway Maneuver** - reshape teams and interaction modes so the desired architecture can emerge | Sit on the organisation canvas as a topology type |
+
+Stream-aligned teams are the **customers** of platform and enabling teams (XaaS / facilitation). Platform does not manage streams; it offers a compelling internal product that reduces load.
+
 ---
 
-## Part C - Combined backlog (do not lose)
+## Part C - Domain-Driven Design alignments (Eric Evans)
+
+SteerCo utilises and aligns to Eric Evans’ Domain-Driven Design. It does **not** become a full DDD modeling tool (that stays closer to ArchLens / code). It does make DDD vocabulary first-class so leaders draw team boundaries on **problem-space** lines.
+
+### C0. Already aligned (implicit → make explicit)
+
+| DDD idea              | SteerCo today                                                                 |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Bounded context       | `domains[]` as the “what” lens; titles should use business language           |
+| Ubiquitous language   | Glossary + Technical vocabulary; Goal / Bet / MoS / stream-aligned naming     |
+| Context boundaries    | Soft mismatches when one team owns many streams or many teams share one stream |
+| Strategic design join | Team Topologies stream-aligned ownership of a context slice end-to-end        |
+
+### C1. How DDD maps onto SteerSpec
+
+| DDD term                 | SteerSpec / product meaning                                                                                          |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| **Bounded context**      | A `domains[]` entry is a problem-space fence (concepts + rules). Containment is taxonomic, like a BC around a service - **not** a manager over teams |
+| **Ubiquitous language**  | Domain, stream, and team **titles** should match how the business talks - not org-chart labels (“Digital squad 4”) |
+| **Sub-domain / fracture**| When cognitive load rises, split the context into peer sub-domains (each with its own stream + stream-aligned team) |
+| **Context map (light)**  | Interaction modes + relationships are the steering-visible map of how contexts collaborate - not a full DDD context-map product |
+| **Anti-corruption**      | Import/merge and external refs stay at the adapter edge; SteerSpec never dual-owns IdP Groups                         |
+
+### C2. Explicitly out of scope from DDD (in SteerCo)
+
+- Full tactical DDD modeling (aggregates, entities, repositories) as a product surface - keep that in code / ArchLens
+- Generating microservices or context maps as engineering CAD
+- Replacing domain experts’ workshops - SteerCo records the resulting boundary intent
+
+### C3. DDD priority order
+
+1. Name domains as **bounded contexts** in glossary, product guide, Technical vocabulary, and F03 teaching
+2. Keep domain/stream/team coplanar (ADR 0008) with BC containment analogy
+3. Fracture-plane / peer sub-domain evolution copy on oversized and multi-team mismatches
+4. Optional later: short `domains[].summary` for problem-space language (still not a DDD wiki)
+
+---
+
+## Part D - Combined backlog (do not lose)
 
 **Slice commitments:** checklist items below are scheduled in [ROADMAP.md](./ROADMAP.md) (Slice 1 copy → Slice 1.5 schema → Slice 3 groupings/initiatives). Tick here when implemented in product; keep rationale sections above.
 
-### C1. Near-term (Slice 1 - copy / presentation)
+### D1. Near-term (Slice 1 - copy / presentation)
 
 - [x] Document LVT mapping in [PRODUCT_SPEC.md](./PRODUCT_SPEC.md) glossary (Goal is LVT canonical; schema `outcomes[]`; MoS; Initiative reserved)
 - [x] Document TT mapping in glossary (roles ↔ types; modes ↔ interactions; platform grouping note)
@@ -468,8 +558,9 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] Document full EDGE toolkit beyond LVT (principles, Product brief, Tech@Core, PVR, Integrated Backlogs, MoS) in product glossary + in-app docs
 - [x] Name decision notes / review cadence as **Periodic Value Review (PVR)** in product guide and F07/F02 copy (executive-safe: “value review”, Technical mode: PVR)
 - [x] Technical mode / glossary: six EDGE principles + product-vs-project teaching
+- [x] Document DDD (Eric Evans): domains ≈ bounded contexts; ubiquitous language; fracture planes; leadership outside the stream
 
-### C2. Schema / core (Slice 1.5 - additive)
+### D2. Schema / core (Slice 1.5 - additive)
 
 - [x] Canonical Team Topologies team types (`stream_aligned` \| `platform` \| `enabling` \| `complicated_subsystem`) + legacy alias parse
 - [x] Canonical interaction modes (`x_as_a_service` \| `collaboration` \| `facilitation`) + legacy alias parse
@@ -482,15 +573,18 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] `relationships[].expectedUntil` (collaboration / facilitation time-box)
 - [x] Member / relationship `effectiveFrom`–`effectiveUntil` windows (capacity + interaction history toward [F13](./prds/F13-topology-timeline.md))
 - [x] Optional `topologyEvents[]` ledger (capacity up/down, relationship added/ended/mode-changed)
-- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`
+- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`, `team_oversized`, `stream_multi_team`
 - [x] Decision notes prefer structured MoS refs in `measured` (keep free text)
 - [x] Member edit UX on organisation page
 
-### C3. Later (Slice 3+)
+### D3. Later (Slice 3+)
 
 - [x] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) - value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
 - [x] `platformScope` on platform teams and platform groupings: `organisation | vertical | team` (who the platform accelerates)
 - [x] Complicated-subsystem nest: optional `within` (team ref to stream-aligned parent) and/or membership in a value-stream grouping for team-within-team layout
+- [x] Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams; multiple stream-aligned teams on one stream; team size ≥ ~15)
+- [x] Domain / stream / team taught as coplanar lenses (what / flow / who), not a reporting hierarchy ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md))
+- [x] DDD (Eric Evans) named as foundational alignment: domains ≈ bounded contexts; leadership outside the stream; stream-aligned teams as customers of platform/enabling; Inverse Conway / fracture-plane teaching in docs + Technical vocabulary
 - [x] Enabling one-to-many: present facilitation fan-out as expected; keep `enabling_owns_delivery` mismatch
 - [x] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) - type zones remain teaching/filter
 - [x] **As-of date on org view** - project teams / members / relationships / mismatches at selected date (default today)
@@ -505,37 +599,39 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] **Topology timeline view ([F13](./prds/F13-topology-timeline.md))** - capacity deltas + relationship spans; deep-dive scrubber (org view keeps lightweight as-of)
 - [ ] ArchLens suite link deferred (no SteerSpec field yet)
 - [ ] Narrative tie-in: AI gains without topology redesign stall in bottlenecks (press / docs only until evidence exists)
-- [x] Technical mode ([F12](./prds/F12-technical-mode.md)): Steer tree, topology fitness + write-back policy, EDGE/TT vocabulary bridge
+- [x] Technical mode ([F12](./prds/F12-technical-mode.md)): Steer tree, topology fitness + write-back policy, EDGE / DDD / TT vocabulary bridge
 - [x] Catalog-file import & merge ([F11](./prds/F11-import-merge.md)) without OAuth; never proposes Group YAML
 - [ ] Connections / OAuth UI ([F10](./prds/F10-connections.md))
 
 ---
 
-## Part D - SteerSpec vocabulary bridge
+## Part E - SteerSpec vocabulary bridge
 
-| SteerSpec (exec)                     | EDGE                        | Team Topologies                               |
-| ------------------------------------ | --------------------------- | --------------------------------------------- |
-| `metadata` / workspace title         | Portfolio / steering period / PVR window | Intent for this period                 |
-| `spec.vision`                        | Vision                      | Purpose / direction                           |
-| `outcomes` + `metrics`               | Goals + Measures of Success (fitness function) | Value definition that flow should serve |
-| `bets`                               | Bets (product / Tech@Core investments) | Funded work streams for stream/platform teams |
-| `bets[].fundingStance`               | Integrated Backlog mix cue (explore/exploit/sustain) | Capacity focus                     |
-| `bets[].kind`                        | Opportunity vs capability (Tech@Core revitalize) | -                                       |
-| `bets[].reviewDate` / `horizon`      | PVR / incremental funding checkpoint | -                                       |
-| `products[]`                           | Product brief           | Stream-aligned product ownership              |
-| `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
-| `teams` + `role`                     | Delivery capacity / product teams | Team types (incl. complicated subsystem) |
-| `groupings` (future)                 | -                           | Platform + value-stream groupings (domain org; fractal) |
-| `platformScope` / CSS `within` (future) | -                        | Platform audience; complicated subsystem nest |
-| Flow-of-change + as-of (future UI)   | Who delivers this bet when  | Point-in-time topology intent                 |
-| `relationships` + `mode`             | How we work                 | Interaction modes                             |
-| Capacity / topology windows          | Delivery capacity over time | Shape evolves; collaboration time-boxed       |
-| `topologyEvents`                     | What changed in the period  | Evidence for adapt / load response            |
-| `decisionNotes`                      | Lightweight governance / PVR decision record | Response to flow/load signals        |
-| `evidence`                           | Feedback for adapt / PVR    | Learning that changes funding or shape        |
-| Optional Tech Radar link             | Tech@Core sensing           | -                                             |
-| Mismatches                           | Portfolio smells            | Cognitive-load / interaction smells           |
-| Docs: six principles                 | Cultural OS for EDGE tools  | Complements fast-flow culture                 |
+| SteerSpec (exec)                     | EDGE                        | DDD (Evans)                              | Team Topologies                               |
+| ------------------------------------ | --------------------------- | ---------------------------------------- | --------------------------------------------- |
+| `metadata` / workspace title         | Portfolio / steering period / PVR window | -                                 | Intent for this period                 |
+| `spec.vision`                        | Vision                      | Shared direction language                | Purpose / direction                           |
+| `outcomes` + `metrics`               | Goals + Measures of Success (fitness function) | Goal language in ubiquitous terms | Value definition that flow should serve |
+| `bets`                               | Bets (product / Tech@Core investments) | Funded change inside contexts     | Funded work streams for stream/platform teams |
+| `bets[].fundingStance`               | Integrated Backlog mix cue (explore/exploit/sustain) | -                            | Capacity focus                     |
+| `bets[].kind`                        | Opportunity vs capability (Tech@Core revitalize) | -                               | -                                       |
+| `bets[].reviewDate` / `horizon`      | PVR / incremental funding checkpoint | -                               | -                                       |
+| `products[]`                           | Product brief           | Product language in the domain           | Stream-aligned product ownership              |
+| `initiatives`                        | Initiatives                 | Thin slices (not backlog items)          | Thin slices (not backlog items)               |
+| `domains[]`                          | Vertical / related-context filter | **Bounded context** (problem-space fence) | Domain lens (what) - not a manager |
+| `streams[]`                          | -                           | Flow of change inside a context          | Stream lens (flow)                            |
+| `teams` + `role`                     | Delivery capacity / product teams | Who owns the context slice        | Team types; size is a cognitive-load signal |
+| `groupings`                          | -                           | -                                        | Platform groupings only (lateral support) |
+| `platformScope` / CSS in stream      | -                           | Specialty inside / beside a context      | Platform audience; complicated subsystem beside stream team |
+| Flow-of-change + as-of               | Who delivers this bet when  | Context ownership over time              | Point-in-time topology intent                 |
+| `relationships` + `mode`             | How we work                 | Light context collaboration cues         | Interaction modes                             |
+| Capacity / topology windows          | Delivery capacity over time | -                                        | Shape evolves; collaboration time-boxed       |
+| `topologyEvents`                     | What changed in the period  | Boundary / ownership changes             | Evidence for adapt / load response            |
+| `decisionNotes`                      | Lightweight governance / PVR decision record | Fracture / re-scope decisions   | Response to flow/load signals        |
+| `evidence`                           | Feedback for adapt / PVR    | Learning that changes funding or shape   | Learning that changes funding or shape        |
+| Optional Tech Radar link             | Tech@Core sensing           | -                                        | -                                             |
+| Mismatches                           | Portfolio smells            | Context overload / shared-stream smells  | Cognitive-load / interaction smells           |
+| Docs: six principles                 | Cultural OS for EDGE tools  | Complements clear domain language        | Complements fast-flow culture                 |
 
 ---
 
@@ -545,5 +641,6 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [STEER_SPEC.md](./STEER_SPEC.md) - canonical contract
 - [ROADMAP.md](./ROADMAP.md) - slices
 - [F02](./prds/F02-steering-overview.md) · [F03](./prds/F03-how-work-is-organised.md) · [F04](./prds/F04-bet-detail.md) · [F05](./prds/F05-goals.md) · [F06](./prds/F06-evidence.md) · [F07](./prds/F07-decision-note.md) · [F08](./prds/F08-export-board-pack.md)
+- [ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md) - domains / streams / teams as coplanar lenses
 
-When a checklist item graduates into committed Slice work, add or amend a PRD and tick it here-do not delete the rationale sections above.
+When a checklist item graduates into committed Slice work, add or amend a PRD and tick it here - do not delete the rationale sections above.

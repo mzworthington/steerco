@@ -1,6 +1,6 @@
 # Roadmap
 
-SteerCo delivers an **investment contract** (EDGE value-driven operating model - Lean Value Tree **and** the teachings beyond it) and **topology intent** (Team Topologies) in a steering workspace - with a board pack as the shareable export. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+SteerCo delivers an **investment contract** (EDGE value-driven operating model - Lean Value Tree **and** the teachings beyond it), **problem-space boundaries** (Domain-Driven Design / Eric Evans), and **topology intent** (Team Topologies) in a steering workspace - with a board pack as the shareable export. Rationale, vocabulary bridge, and detailed checklists: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
 
 ## Slice 0 - Spec (this folder)
 
@@ -9,7 +9,7 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 - [x] Executive mockups
 - [x] Feature PRDs
 - [x] ADRs for stack, local-first, suite relationship (canonical under `docs/ADRs/`)
-- [x] Operating-model alignment (EDGE + Team Topologies 2e) - [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)
+- [x] Operating-model alignment (EDGE + Team Topologies 2e + DDD / Eric Evans) - [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)
 
 ## Slice 1 - Local executive workspace (no auth)
 
@@ -108,7 +108,8 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 | EDGE LVT + MoS + incremental funding      | 1 (copy), 1.5 (schema), 3 (initiatives / rank)                           |
 | EDGE beyond LVT (principles, Product brief, Tech@Core, PVR, Integrated Backlogs) | 1 (docs/copy), 1.5 (stance/review cues), 3 (product brief / mix / radar refs) |
 | EDGE lightweight governance / PVR         | 1 (F07/F08), 1.5 (MoS-measured + review dates)                           |
+| Domain-Driven Design (bounded contexts)   | 1 (docs/glossary), 3 (domain lens + fracture teaching + Technical vocabulary) |
 | Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (flow-of-change + groupings + platform scope + CSS nest) |
-| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (fractal zoom + bet flow overlay + timeline) |
+| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (team size + shared-stream + lenses teaching + fractal zoom + bet flow overlay + timeline) |
 | Topology evolution over time              | 1.5 (schema), 3 (F03 as-of + [F13](./prds/F13-topology-timeline.md) view) |
 | Full rationale                            | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)           |

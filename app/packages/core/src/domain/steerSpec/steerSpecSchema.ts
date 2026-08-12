@@ -129,7 +129,10 @@ const domainSchema = z
   .object({
     id: z.string().min(1),
     title: z.string().min(1),
-    /** Streams in this domain / vertical / bounded context. */
+    /**
+     * Related streams for this DDD bounded context / vertical label.
+     * Domains are coplanar lenses (the "what"), not managerial parents of streams or teams.
+     */
     memberStreamIds: z.array(z.string()).default([]),
   })
   .strict();
@@ -142,13 +145,18 @@ const teamSchema = z
     role: teamRoleSchema,
     provenance: provenanceSchema,
     externalRefs: z.array(externalRefSchema).default([]),
+    /**
+     * Capacity / mix signal - also feeds team-size cognitive-load proxies.
+     * Not an HR directory; empty means size mismatches are skipped.
+     */
     members: z.array(teamMemberSchema).default([]),
     /** Who this platform accelerates - meaningful when role is platform. */
     platformScope: platformScopeSchema.optional(),
     /**
-     * Streams this team belongs to.
-     * Ideal for stream-aligned: exactly one. Multiple is allowed to model reality (soft mismatch).
-     * Complicated subsystem: one or more streams (not nested under a team).
+     * Streams this team belongs to (the "flow" lens).
+     * Ideal for stream-aligned: exactly one stream owned by exactly one stream-aligned team.
+     * Multiple streams on one team, or multiple stream-aligned teams on one stream, are soft mismatches.
+     * Complicated subsystem: one or more streams (lateral specialty, not nested under a team).
      */
     streamIds: z.array(z.string()).default([]),
   })
@@ -257,11 +265,14 @@ const specSchema = z
     outcomes: z.array(outcomeSchema),
     bets: z.array(betSchema),
     teams: z.array(teamSchema),
-    /** Flow of change slices - stream-aligned teams ideally align to one. */
+    /** Flow-of-change slices (the "flow" lens). Stream-aligned teams ideally own exactly one. */
     streams: z.array(streamSchema).default([]),
-    /** Optional groupings of streams (vertical / bounded context). */
+    /**
+     * Optional related-context labels (DDD bounded contexts - the "what" lens).
+     * Not a reporting hierarchy over streams or teams - see ADR 0008.
+     */
     domains: z.array(domainSchema).default([]),
-    /** Platform groupings only (streams/domains are first-class). */
+    /** Platform groupings only (lateral support; streams/domains stay first-class lenses). */
     groupings: z.array(groupingSchema).default([]),
     relationships: z.array(relationshipSchema).default([]),
     decisionNotes: z.array(decisionNoteSchema).default([]),

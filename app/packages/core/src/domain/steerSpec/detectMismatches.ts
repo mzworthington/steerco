@@ -1,6 +1,9 @@
 import type { SteerSpec } from './steerSpecSchema';
+import { TEAM_SIZE_GUIDANCE } from '../teamTopologies/vocabulary';
 
 export const DEFAULT_PLATFORM_OVERLOAD_THRESHOLD = 8;
+/** Soft caution when recorded member count reaches Dunbar high-trust boundary (~15). */
+export const DEFAULT_TEAM_OVERSIZED_THRESHOLD = TEAM_SIZE_GUIDANCE.oversizedThreshold;
 
 export type SteerMismatchCode =
   | 'bet_without_team'
@@ -15,7 +18,9 @@ export type SteerMismatchCode =
   | 'stream_missing_product'
   | 'stream_aligned_without_stream'
   | 'stream_aligned_multi_stream'
-  | 'css_without_stream';
+  | 'css_without_stream'
+  | 'team_oversized'
+  | 'stream_multi_team';
 
 /** Bet statuses considered "active" - funded and being steered, not just proposed or closed out. */
 const ACTIVE_BET_STATUSES = new Set(['on_track', 'at_risk', 'stop_ready']);
@@ -35,17 +40,24 @@ export type SteerMismatch = {
   relatedTeamIds?: string[];
   relatedBetIds?: string[];
   relatedOutcomeIds?: string[];
+  relatedStreamIds?: string[];
 };
 
 export type DetectMismatchesOptions = {
   platformOverloadThreshold?: number;
+  teamOversizedThreshold?: number;
 };
+
+function communicationPaths(memberCount: number): number {
+  return (memberCount * (memberCount - 1)) / 2;
+}
 
 export function detectSteerSpecMismatches(
   doc: SteerSpec,
   options?: DetectMismatchesOptions,
 ): SteerMismatch[] {
   const threshold = options?.platformOverloadThreshold ?? DEFAULT_PLATFORM_OVERLOAD_THRESHOLD;
+  const oversizedThreshold = options?.teamOversizedThreshold ?? DEFAULT_TEAM_OVERSIZED_THRESHOLD;
   const mismatches: SteerMismatch[] = [];
   const teamsById = new Map(doc.spec.teams.map((team) => [team.id, team]));
 
@@ -212,6 +224,42 @@ export function detectSteerSpecMismatches(
         relatedTeamIds: [team.id],
       });
     }
+  }
+
+  for (const team of doc.spec.teams) {
+    const memberCount = team.members.length;
+    if (memberCount < oversizedThreshold) continue;
+    const paths = communicationPaths(memberCount);
+    mismatches.push({
+      code: 'team_oversized',
+      severity: 'warning',
+      title: 'Team size raising cognitive load',
+      headline: `“${team.displayName}” has ${memberCount} people recorded (~${paths} communication paths). Team Topologies aims near ${TEAM_SIZE_GUIDANCE.idealAround}; above ~${oversizedThreshold} trust and coordination strain. ${TEAM_SIZE_GUIDANCE.evolutionTeaching}`,
+      relatedTeamIds: [team.id],
+    });
+  }
+
+  const streamAlignedByStream = new Map<string, string[]>();
+  for (const team of doc.spec.teams) {
+    if (team.role !== 'stream_aligned') continue;
+    for (const streamId of team.streamIds ?? []) {
+      const list = streamAlignedByStream.get(streamId) ?? [];
+      list.push(team.id);
+      streamAlignedByStream.set(streamId, list);
+    }
+  }
+  const streamTitleById = new Map(doc.spec.streams.map((stream) => [stream.id, stream.title]));
+  for (const [streamId, teamIds] of streamAlignedByStream) {
+    if (teamIds.length < 2) continue;
+    const names = teamIds.map((id) => teamsById.get(id)?.displayName ?? id);
+    mismatches.push({
+      code: 'stream_multi_team',
+      severity: 'warning',
+      title: 'Multiple stream-aligned teams on one stream',
+      headline: `Stream “${streamTitleById.get(streamId) ?? streamId}” has ${teamIds.length} stream-aligned teams (${names.join(', ')}). Ideal is one team owning one flow - if load is high, find a fracture plane and split into peer bounded-context slices each with its own stream, rather than stacking teams under one stream.`,
+      relatedTeamIds: teamIds,
+      relatedStreamIds: [streamId],
+    });
   }
 
   // Keep relatedTeamIds only for teams that still exist (defensive).

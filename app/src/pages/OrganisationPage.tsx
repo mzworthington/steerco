@@ -161,12 +161,16 @@ export function OrganisationPage() {
       {model.empty ? (
         <div className="organisation-empty" data-testid="organisation-empty">
           <p className="organisation-empty-lead">
-            Add the teams that deliver your bets - names, Team Topologies type, and domain.
+            Add the teams that deliver your bets - names, Team Topologies type, and the domain /
+            stream lenses they own.
           </p>
           <p className="organisation-empty-tip">
-            Tip: Stick to the four fundamental shapes. Platform teams accelerate stream-aligned
-            teams by reducing cognitive load; enabling teams facilitate temporarily;
-            complicated-subsystem teams hold rare specialty.
+            Tip: A domain is a DDD bounded context (the problem-space fence) - domain, stream, and
+            stream-aligned team are three lenses on one slice of value, not a hierarchy. Platform
+            teams accelerate stream-aligned teams (their customers) by reducing cognitive load;
+            enabling teams facilitate temporarily; complicated-subsystem teams hold rare specialty.
+            If a team or context grows too large, find a fracture plane and split into peer streams
+            - do not add a management layer. Directors stay outside the stream.
           </p>
           <button type="button" className="btn-primary" onClick={openCreateTeam}>
             Add a team

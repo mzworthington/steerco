@@ -8,7 +8,7 @@
 
 Most enterprises already have Jira for work, Backstage for services, and Entra or GitHub for people and teams. None of those tools own the **investment contract** - the living link between business goals, Measures of Success, funded bets, team topology intent, and the evidence that should trigger a stop or re-scope. Leaders end up stitching slide decks by hand. Alignment decays between steering committees.
 
-SteerCo treats that contract as a first-class artifact, drawing on value-driven portfolio practice (**EDGE**: Lean Value Tree plus product mindset, Tech@Core, Periodic Value Review, Integrated Backlogs, Measures of Success, and six operating principles) and modern team-of-teams design (Team Topologies). Leaders open a local workspace, shape a plain-language map of goals and bets, organise how work flows across customer-facing teams and shared platforms, and leave with a **decision note** fit for a board pack - not a backlog.
+SteerCo treats that contract as a first-class artifact, drawing on value-driven portfolio practice (**EDGE**: Lean Value Tree plus product mindset, Tech@Core, Periodic Value Review, Integrated Backlogs, Measures of Success, and six operating principles), **Domain-Driven Design** (Eric Evans: bounded contexts and ubiquitous language for problem-space boundaries), and modern team-of-teams design (Team Topologies). Leaders open a local workspace, shape a plain-language map of goals and bets, organise how work flows across customer-facing teams and shared platforms along clear domain boundaries, and leave with a **decision note** fit for a board pack - not a backlog.
 
 ### Not another system of record
 

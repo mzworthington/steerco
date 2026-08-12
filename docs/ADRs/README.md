@@ -11,5 +11,6 @@ Sparse [MADR](https://adr.github.io/madr/)-style records for choices that are **
 | [0005](./0005-provider-teams-reference-only.md)          | Provider-synced teams are reference-only        | Accepted | 2026-08-10 |
 | [0006](./0006-steerspec-name-and-kinded-refs.md)         | SteerSpec entities use name and kinded refs     | Accepted | 2026-08-10 |
 | [0007](./0007-mermaid-docs-react-flow-product-graphs.md) | Mermaid for docs; React Flow for product graphs | Accepted | 2026-08-11 |
+| [0008](./0008-domain-stream-team-coplanar-lenses.md)     | Domains, streams, teams as coplanar lenses      | Accepted | 2026-08-12 |
 
-New ADRs: copy `docs/ADRs/0000-template.md` to `docs/ADRs/NNNN-short-title.md` (next number = 0008).
+New ADRs: copy `docs/ADRs/0000-template.md` to `docs/ADRs/NNNN-short-title.md` (next number = 0009).
