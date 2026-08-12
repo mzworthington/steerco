@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react';
-import { Redirect, Route, Switch, useLocation } from 'wouter';
+import { Redirect, Route, Switch, useLocation, useParams } from 'wouter';
 import { BrandMark } from './components/BrandMark';
 import { SiteFooter } from './components/SiteFooter';
 import { SITE_NAME } from './siteConfig';
@@ -9,7 +9,6 @@ import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
 import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
 import { SteeringOverviewPage } from './pages/SteeringOverviewPage';
-import { BetDetailPage } from './pages/BetDetailPage';
 import { DecisionNotesPage } from './pages/DecisionNotesPage';
 import { EvidencePage } from './pages/EvidencePage';
 import { ExportBoardPackPage } from './pages/ExportBoardPackPage';
@@ -22,11 +21,17 @@ import { TechnicalTreePage } from './pages/TechnicalTreePage';
 import { TechnicalFitnessPage } from './pages/TechnicalFitnessPage';
 import { TechnicalVocabularyPage } from './pages/TechnicalVocabularyPage';
 import { TechnicalImportPage } from './pages/TechnicalImportPage';
+import { lvtPath } from './application/lvtRoutes';
 import { WorkspaceSessionProvider } from './workspace/WorkspaceSession';
 import { WorkspaceShell } from './workspace/WorkspaceShell';
 
 function isWorkspacePath(path: string): boolean {
   return path === '/workspace' || path.startsWith('/workspace/');
+}
+
+function BetToLvtRedirect() {
+  const params = useParams<{ betId: string }>();
+  return <Redirect to={lvtPath('bet', params.betId || 'vision')} />;
 }
 
 function SiteChrome({ children }: { children: ReactNode }) {
@@ -63,10 +68,14 @@ function AppRoutes() {
       <Route path="/" component={HomePage} />
       <Route path="/workspace" component={WorkspaceHomePage} />
       <Route path="/workspace/steering" component={SteeringOverviewPage} />
-      <Route path="/workspace/goals" component={GoalsPage} />
+      <Route path="/workspace/lvt/:hierarchyType/:slug" component={GoalsPage} />
+      <Route path="/workspace/lvt" component={GoalsPage} />
+      <Route path="/workspace/goals">
+        <Redirect to="/workspace/lvt" />
+      </Route>
       <Route path="/workspace/products" component={ProductsPage} />
       <Route path="/workspace/outcomes">
-        <Redirect to="/workspace/goals" />
+        <Redirect to="/workspace/lvt" />
       </Route>
       <Route path="/workspace/evidence" component={EvidencePage} />
       <Route path="/workspace/organisation" component={OrganisationPage} />
@@ -78,7 +87,7 @@ function AppRoutes() {
       <Route path="/workspace/technical/vocabulary" component={TechnicalVocabularyPage} />
       <Route path="/workspace/technical/import" component={TechnicalImportPage} />
       <Route path="/workspace/technical" component={TechnicalHubPage} />
-      <Route path="/workspace/bets/:betId" component={BetDetailPage} />
+      <Route path="/workspace/bets/:betId" component={BetToLvtRedirect} />
       <Route path="/design-system">
         <Redirect to="/docs/design-system" />
       </Route>

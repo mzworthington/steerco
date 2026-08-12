@@ -22,7 +22,7 @@ describe('presentValueTree', () => {
     expect(tb.nodes.some((node) => node.kind === 'vision')).toBe(true);
     expect(tb.nodes.some((node) => node.kind === 'goal')).toBe(true);
     expect(
-      tb.nodes.some((node) => node.kind === 'bet' && node.href?.startsWith('/workspace/bets/')),
+      tb.nodes.some((node) => node.kind === 'bet' && node.href?.startsWith('/workspace/lvt/bet/')),
     ).toBe(true);
     expect(tb.edges.length).toBeGreaterThan(0);
     expect(tb.nodes.some((node) => node.kind === 'initiative')).toBe(true);
@@ -46,7 +46,7 @@ describe('presentValueTree', () => {
 
     const bet = tb.nodes.find((node) => node.kind === 'bet');
     expect(bet?.facts.some((fact) => fact.label === 'Kill criteria')).toBe(true);
-    expect(bet?.href?.startsWith('/workspace/bets/')).toBe(true);
+    expect(bet?.href?.startsWith('/workspace/lvt/bet/')).toBe(true);
 
     const lr = presentValueTree(opened.value, 'LR');
     expect(lr.nodes.map((node) => node.id)).toEqual(tb.nodes.map((node) => node.id));

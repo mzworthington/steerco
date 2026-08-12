@@ -160,7 +160,7 @@ export function presentValueTree(
             statusLabel: presentBetStatus(bet.status).label,
             facts: betFacts(bet, teamNameById, linkedMetrics),
             measures: linkedMetrics.map((metric) => presentMeasureCue(metric)),
-            href: `/workspace/bets/${bet.id}`,
+            href: `/workspace/lvt/bet/${bet.id}`,
             hrefLabel: 'Open bet',
             children: initiatives.map((initiative) => ({
               id: initiative.id,
@@ -191,7 +191,7 @@ export function presentValueTree(
   return {
     vision: spec.spec.vision,
     orientation,
-    lead: 'Lean Value Tree: vision → goals → bets → initiatives. Select a node for detail below.',
+    lead: 'Lean Value Tree: vision → goals → bets → initiatives. Select a node to open detail.',
     nodes,
     edges,
   };

@@ -74,7 +74,7 @@ export function presentTechnicalTree(spec: SteerSpec): TechnicalTreeModel {
       valueRank: typeof bet.valueRank === 'number' ? bet.valueRank : null,
       fundedTeamIds: [...bet.fundedTeamIds],
       metricIds: [...(bet.metricIds ?? [])],
-      executiveHref: `/workspace/bets/${bet.id}`,
+      executiveHref: `/workspace/lvt/bet/${bet.id}`,
     })),
     teams: spec.spec.teams.map((team) => ({
       id: team.id,

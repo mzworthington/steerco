@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { applyProductDraft, presentGoals } from '../application/presentGoals';
-import { BetDetailModal } from '../components/bets/BetDetailModal';
+import { lvtPath } from '../application/lvtRoutes';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function ProductsPage() {
   const { session, setSession } = useWorkspaceSession();
   const [, setLocation] = useLocation();
-  const [openBetId, setOpenBetId] = useState<string | null>(null);
   const [productDraft, setProductDraft] = useState<{
     id?: string;
     title: string;
@@ -127,14 +126,9 @@ export function ProductsPage() {
                     {product.betLinks.map((bet, index) => (
                       <span key={bet.id}>
                         {index > 0 ? ', ' : null}
-                        <button
-                          type="button"
-                          className="goals-node-link"
-                          data-testid="products-bet"
-                          onClick={() => setOpenBetId(bet.id)}
-                        >
+                        <Link href={lvtPath('bet', bet.id)} data-testid="products-bet">
                           {bet.title}
-                        </button>
+                        </Link>
                       </span>
                     ))}
                   </p>
@@ -282,8 +276,6 @@ export function ProductsPage() {
           {!error && savedFlash ? <p className="goals-saved">{savedFlash}</p> : null}
         </div>
       )}
-
-      {openBetId ? <BetDetailModal betId={openBetId} onClose={() => setOpenBetId(null)} /> : null}
     </section>
   );
 }

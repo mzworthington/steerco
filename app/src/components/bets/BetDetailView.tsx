@@ -142,8 +142,8 @@ export function BetDetailView({
         <h1 className="bet-detail-title">Bet not found</h1>
         <p className="bet-detail-lead">That bet is not in the open workspace.</p>
         {layout === 'page' ? (
-          <Link href="/workspace/steering" className="btn-secondary">
-            ← Back to steering
+          <Link href="/workspace/lvt" className="btn-secondary">
+            ← Back to goals
           </Link>
         ) : onClose ? (
           <button type="button" className="btn-secondary" onClick={onClose}>
@@ -232,8 +232,8 @@ export function BetDetailView({
       data-testid="bet-detail"
     >
       {layout === 'page' ? (
-        <Link href="/workspace/steering" className="bet-detail-back" onClick={onBack}>
-          ← Back to steering
+        <Link href="/workspace/lvt" className="bet-detail-back" onClick={onBack}>
+          ← Back to goals
         </Link>
       ) : null}
 
@@ -561,8 +561,8 @@ export function BetDetailView({
 
       <div className="bet-detail-actions">
         {layout === 'page' ? (
-          <Link href="/workspace/steering" className="btn-secondary" onClick={onBack}>
-            Back to steering
+          <Link href="/workspace/lvt" className="btn-secondary" onClick={onBack}>
+            Back to goals
           </Link>
         ) : (
           <button type="button" className="btn-secondary" onClick={requestClose}>

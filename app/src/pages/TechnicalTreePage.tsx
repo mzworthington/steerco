@@ -69,7 +69,7 @@ export function TechnicalTreePage() {
                     <code>{outcome.id}</code>
                   </td>
                   <td>
-                    <Link href="/workspace/goals">{outcome.title}</Link>
+                    <Link href="/workspace/lvt">{outcome.title}</Link>
                   </td>
                   <td>
                     <code>{outcome.status}</code>

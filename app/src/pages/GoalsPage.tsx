@@ -1,50 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import {
-  applyGoalMetricEdit,
   presentGoals,
-  type GoalMeasure,
   type GoalProductCard,
   type GoalSection,
   type GoalsModel,
 } from '../application/presentGoals';
+import { lvtPath, parseLvtPath } from '../application/lvtRoutes';
 import { presentValueTree, type ValueTreeGraphNode } from '../application/presentValueTree';
-import { BetDetailModal } from '../components/bets/BetDetailModal';
+import { LvtEditModal } from '../components/lvt/LvtEditModal';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 import { GoalsValueTree } from '../components/goals/GoalsValueTree';
-
-type MetricDraft = {
-  current: string;
-  target: string;
-};
-
-function draftFromMeasure(measure: GoalMeasure): MetricDraft {
-  return {
-    current: measure.current === null ? '' : String(measure.current),
-    target: measure.target === null ? '' : String(measure.target),
-  };
-}
 
 function productsLinkedToGoal(products: GoalProductCard[], goalId: string): GoalProductCard[] {
   return products.filter((product) => product.outcomeIds.includes(goalId));
 }
 
-function betIdFromHref(href: string): string | null {
-  const match = href.match(/^\/workspace\/bets\/([^/?#]+)/);
-  return match?.[1] ?? null;
-}
-
 export function GoalsPage() {
-  const { session, setSession } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
-  const [selectedId, setSelectedId] = useState<string | null>('vision');
-  const [openBetId, setOpenBetId] = useState<string | null>(null);
-  const [editing, setEditing] = useState<{
-    outcomeId: string;
-    metricId: string;
-    draft: MetricDraft;
-  } | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const { session } = useWorkspaceSession();
+  const [location, setLocation] = useLocation();
+  const [editOpen, setEditOpen] = useState(false);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
 
   useEffect(() => {
@@ -55,10 +30,16 @@ export function GoalsPage() {
 
   const model = useMemo(() => (session ? presentGoals(session.spec) : null), [session]);
   const tree = useMemo(() => (session ? presentValueTree(session.spec, 'TB') : null), [session]);
+  const focus = useMemo(() => parseLvtPath(location), [location]);
+
   const selectedNode = useMemo(() => {
     if (!tree) return null;
-    return tree.nodes.find((node) => node.id === selectedId) ?? null;
-  }, [tree, selectedId]);
+    if (focus) {
+      const matched = tree.nodes.find((node) => node.id === focus.slug && node.kind === focus.type);
+      if (matched) return matched;
+    }
+    return tree.nodes.find((node) => node.id === 'vision') ?? null;
+  }, [tree, focus]);
 
   useEffect(() => {
     if (model) {
@@ -66,39 +47,27 @@ export function GoalsPage() {
     }
   }, [model]);
 
-  if (!session || !model || !tree) return null;
+  useEffect(() => {
+    setEditOpen(false);
+  }, [selectedNode?.id]);
 
-  const startEdit = (outcomeId: string, measure: GoalMeasure) => {
-    setEditing({
-      outcomeId,
-      metricId: measure.id,
-      draft: draftFromMeasure(measure),
-    });
-    setError(null);
-    setSavedFlash(null);
-  };
+  if (!session || !model || !tree || !selectedNode) return null;
 
-  const cancelEdit = () => {
-    setEditing(null);
-    setError(null);
-  };
-
-  const saveEdit = () => {
-    if (!editing) return;
-    const applied = applyGoalMetricEdit(
-      session.spec,
-      editing.outcomeId,
-      editing.metricId,
-      editing.draft,
-    );
-    if (!applied.ok) {
-      setError(applied.error);
+  const selectNode = (id: string | null) => {
+    if (!id) {
+      setLocation(lvtPath());
       return;
     }
-    setSession({ ...session, spec: applied.value });
-    setEditing(null);
-    setError(null);
-    setSavedFlash('Saved measure to this workspace session.');
+    const node = tree.nodes.find((item) => item.id === id);
+    if (!node) {
+      setLocation(lvtPath());
+      return;
+    }
+    setLocation(lvtPath(node.kind, node.id));
+  };
+
+  const openNode = (kind: ValueTreeGraphNode['kind'], id: string) => {
+    setLocation(lvtPath(kind, id));
   };
 
   return (
@@ -111,42 +80,34 @@ export function GoalsPage() {
 
       <GoalsValueTree
         spec={session.spec}
-        selectedId={selectedId}
-        onSelectedIdChange={setSelectedId}
+        selectedId={selectedNode.id}
+        onSelectedIdChange={selectNode}
       />
 
       <div className="goals-selection" aria-live="polite" data-testid="goals-selection">
-        {selectedNode ? (
-          <SelectedNodeDetail
-            node={selectedNode}
-            vision={tree.vision}
-            model={model}
-            editing={editing}
-            onStartEdit={startEdit}
-            onCancelEdit={cancelEdit}
-            onSaveEdit={saveEdit}
-            onDraftChange={(draft) => {
-              if (!editing) return;
-              setEditing({ ...editing, draft });
-            }}
-            onOpenBet={setOpenBetId}
-          />
-        ) : (
-          <p className="goals-selection-empty" data-testid="goals-selection-empty">
-            Select a node in the Lean Value Tree for Measures of Success, bets, and linked product
-            briefs.
-          </p>
-        )}
+        <SelectedNodeDetail
+          node={selectedNode}
+          vision={tree.vision}
+          model={model}
+          onEdit={() => setEditOpen(true)}
+          onOpenNode={openNode}
+        />
       </div>
 
-      {(error || savedFlash) && (
+      {savedFlash ? (
         <div className="goals-feedback" role="status">
-          {error ? <p className="goals-error">{error}</p> : null}
-          {!error && savedFlash ? <p className="goals-saved">{savedFlash}</p> : null}
+          <p className="goals-saved">{savedFlash}</p>
         </div>
-      )}
+      ) : null}
 
-      {openBetId ? <BetDetailModal betId={openBetId} onClose={() => setOpenBetId(null)} /> : null}
+      {editOpen ? (
+        <LvtEditModal
+          kind={selectedNode.kind}
+          nodeId={selectedNode.id}
+          onClose={() => setEditOpen(false)}
+          onSaved={() => setSavedFlash('Saved changes to this workspace session.')}
+        />
+      ) : null}
     </section>
   );
 }
@@ -155,25 +116,11 @@ type SelectedNodeDetailProps = {
   node: ValueTreeGraphNode;
   vision: string;
   model: GoalsModel;
-  editing: { outcomeId: string; metricId: string; draft: MetricDraft } | null;
-  onStartEdit: (outcomeId: string, measure: GoalMeasure) => void;
-  onCancelEdit: () => void;
-  onSaveEdit: () => void;
-  onDraftChange: (draft: MetricDraft) => void;
-  onOpenBet: (betId: string) => void;
+  onEdit: () => void;
+  onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
 };
 
-function SelectedNodeDetail({
-  node,
-  vision,
-  model,
-  editing,
-  onStartEdit,
-  onCancelEdit,
-  onSaveEdit,
-  onDraftChange,
-  onOpenBet,
-}: SelectedNodeDetailProps) {
+function SelectedNodeDetail({ node, vision, model, onEdit, onOpenNode }: SelectedNodeDetailProps) {
   if (node.kind === 'goal') {
     const outcome = model.outcomes.find((item) => item.id === node.id);
     if (outcome) {
@@ -181,32 +128,48 @@ function SelectedNodeDetail({
         <GoalBranchDetail
           outcome={outcome}
           products={productsLinkedToGoal(model.products, outcome.id)}
-          editing={editing}
-          onStartEdit={onStartEdit}
-          onCancelEdit={onCancelEdit}
-          onSaveEdit={onSaveEdit}
-          onDraftChange={onDraftChange}
-          onOpenBet={onOpenBet}
+          onEdit={onEdit}
+          onOpenNode={onOpenNode}
         />
       );
     }
   }
 
   if (node.kind === 'vision') {
-    return <VisionDetail vision={vision} node={node} outcomes={model.outcomes} />;
+    return (
+      <VisionDetail
+        vision={vision}
+        node={node}
+        outcomes={model.outcomes}
+        onEdit={onEdit}
+        onOpenNode={onOpenNode}
+      />
+    );
   }
 
-  return <TreeNodeDetail node={node} vision={vision} onOpenBet={onOpenBet} />;
+  return <TreeNodeDetail node={node} vision={vision} onEdit={onEdit} onOpenNode={onOpenNode} />;
+}
+
+function EditButton({ onEdit }: { onEdit: () => void }) {
+  return (
+    <button type="button" className="btn-secondary" data-testid="lvt-edit" onClick={onEdit}>
+      Edit
+    </button>
+  );
 }
 
 function VisionDetail({
   vision,
   node,
   outcomes,
+  onEdit,
+  onOpenNode,
 }: {
   vision: string;
   node: ValueTreeGraphNode;
   outcomes: GoalSection[];
+  onEdit: () => void;
+  onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
 }) {
   return (
     <article className="goals-section" data-testid="goals-vision-detail">
@@ -217,6 +180,7 @@ function VisionDetail({
           <p className="goals-section-summary">{vision}</p>
           {node.meta ? <p className="goals-node-meta">{node.meta}</p> : null}
         </div>
+        <EditButton onEdit={onEdit} />
       </div>
 
       {node.facts.length > 0 ? (
@@ -241,15 +205,21 @@ function VisionDetail({
         <ul className="goals-vision-goal-list">
           {outcomes.map((outcome) => (
             <li key={outcome.id} className="goals-vision-goal-row">
-              <div>
-                <p className="goals-bet-title">{outcome.title}</p>
-                <p className="goals-bet-cue">
-                  {outcome.measures.length} measure
-                  {outcome.measures.length === 1 ? '' : 's'} · {outcome.bets.length} bet
-                  {outcome.bets.length === 1 ? '' : 's'}
-                </p>
-              </div>
-              <span className="text-ink-muted">{outcome.statusLabel}</span>
+              <button
+                type="button"
+                className="goals-vision-goal-select"
+                onClick={() => onOpenNode('goal', outcome.id)}
+              >
+                <span>
+                  <p className="goals-bet-title">{outcome.title}</p>
+                  <p className="goals-bet-cue">
+                    {outcome.measures.length} measure
+                    {outcome.measures.length === 1 ? '' : 's'} · {outcome.bets.length} bet
+                    {outcome.bets.length === 1 ? '' : 's'}
+                  </p>
+                </span>
+                <span className="text-ink-muted">{outcome.statusLabel}</span>
+              </button>
             </li>
           ))}
         </ul>
@@ -261,21 +231,13 @@ function VisionDetail({
 function GoalBranchDetail({
   outcome,
   products,
-  editing,
-  onStartEdit,
-  onCancelEdit,
-  onSaveEdit,
-  onDraftChange,
-  onOpenBet,
+  onEdit,
+  onOpenNode,
 }: {
   outcome: GoalSection;
   products: GoalProductCard[];
-  editing: { outcomeId: string; metricId: string; draft: MetricDraft } | null;
-  onStartEdit: (outcomeId: string, measure: GoalMeasure) => void;
-  onCancelEdit: () => void;
-  onSaveEdit: () => void;
-  onDraftChange: (draft: MetricDraft) => void;
-  onOpenBet: (betId: string) => void;
+  onEdit: () => void;
+  onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
 }) {
   return (
     <article
@@ -296,84 +258,43 @@ function GoalBranchDetail({
           </h2>
           {outcome.summary ? <p className="goals-section-summary">{outcome.summary}</p> : null}
         </div>
-        <p className="goals-section-status">{outcome.statusLabel}</p>
+        <div className="goals-section-header-actions">
+          <p className="goals-section-status">{outcome.statusLabel}</p>
+          <EditButton onEdit={onEdit} />
+        </div>
       </div>
 
       <ul className="goals-mos-grid">
-        {outcome.measures.map((measure) => {
-          const isEditing = editing?.outcomeId === outcome.id && editing.metricId === measure.id;
-          return (
-            <li key={measure.id} className="goals-mos-card">
-              <p className="goals-mos-title">{measure.title}</p>
-              <p className="goals-mos-value" aria-label={measure.textAlternative}>
-                {measure.displayValue}
+        {outcome.measures.map((measure) => (
+          <li key={measure.id} className="goals-mos-card">
+            <p className="goals-mos-title">{measure.title}</p>
+            <p className="goals-mos-value" aria-label={measure.textAlternative}>
+              {measure.displayValue}
+            </p>
+            <p className="goals-mos-interpretation">{measure.interpretation}</p>
+            {measure.claimedByBets.length > 0 ? (
+              <p className="goals-mos-claims">
+                Claimed by{' '}
+                {measure.claimedByBets.map((bet, index) => (
+                  <span key={bet.id}>
+                    {index > 0 ? ', ' : null}
+                    <button
+                      type="button"
+                      className="goals-node-link"
+                      onClick={() => onOpenNode('bet', bet.id)}
+                    >
+                      {bet.title}
+                    </button>
+                  </span>
+                ))}
               </p>
-              <p className="goals-mos-interpretation">{measure.interpretation}</p>
-              {measure.claimedByBets.length > 0 ? (
-                <p className="goals-mos-claims">
-                  Claimed by{' '}
-                  {measure.claimedByBets.map((bet, index) => (
-                    <span key={bet.id}>
-                      {index > 0 ? ', ' : null}
-                      <button
-                        type="button"
-                        className="goals-node-link"
-                        onClick={() => onOpenBet(bet.id)}
-                      >
-                        {bet.title}
-                      </button>
-                    </span>
-                  ))}
-                </p>
-              ) : (
-                <p className="goals-mos-claims goals-mos-claims-empty">
-                  No bet claims this measure yet.
-                </p>
-              )}
-
-              {isEditing && editing ? (
-                <div className="goals-mos-edit">
-                  <label className="goals-mos-field">
-                    <span>Current</span>
-                    <input
-                      inputMode="decimal"
-                      value={editing.draft.current}
-                      onChange={(event) =>
-                        onDraftChange({ ...editing.draft, current: event.target.value })
-                      }
-                    />
-                  </label>
-                  <label className="goals-mos-field">
-                    <span>Target</span>
-                    <input
-                      inputMode="decimal"
-                      value={editing.draft.target}
-                      onChange={(event) =>
-                        onDraftChange({ ...editing.draft, target: event.target.value })
-                      }
-                    />
-                  </label>
-                  <div className="goals-mos-edit-actions">
-                    <button type="button" className="btn-secondary" onClick={onCancelEdit}>
-                      Cancel
-                    </button>
-                    <button type="button" className="btn-primary" onClick={onSaveEdit}>
-                      Save measure
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  className="goals-mos-edit-trigger"
-                  onClick={() => onStartEdit(outcome.id, measure)}
-                >
-                  Edit current / target
-                </button>
-              )}
-            </li>
-          );
-        })}
+            ) : (
+              <p className="goals-mos-claims goals-mos-claims-empty">
+                No bet claims this measure yet.
+              </p>
+            )}
+          </li>
+        ))}
       </ul>
 
       <section className="goals-bets" aria-labelledby={`outcome-bets-${outcome.id}`}>
@@ -387,7 +308,7 @@ function GoalBranchDetail({
                 type="button"
                 className="goals-bet-row"
                 data-status={bet.statusTone}
-                onClick={() => onOpenBet(bet.id)}
+                onClick={() => onOpenNode('bet', bet.id)}
               >
                 <div>
                   <p className="goals-bet-title">{bet.title}</p>
@@ -451,7 +372,7 @@ function GoalBranchDetail({
                           type="button"
                           className="goals-node-link"
                           data-testid="goals-product-bet"
-                          onClick={() => onOpenBet(bet.id)}
+                          onClick={() => onOpenNode('bet', bet.id)}
                         >
                           {bet.title}
                         </button>
@@ -474,14 +395,14 @@ function GoalBranchDetail({
 function TreeNodeDetail({
   node,
   vision,
-  onOpenBet,
+  onEdit,
+  onOpenNode,
 }: {
   node: ValueTreeGraphNode;
   vision: string;
-  onOpenBet: (betId: string) => void;
+  onEdit: () => void;
+  onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
 }) {
-  const betHrefId = node.href ? betIdFromHref(node.href) : null;
-
   return (
     <article className="goals-section" data-testid={`goals-${node.kind}-detail`}>
       <div className="goals-section-header">
@@ -502,6 +423,7 @@ function TreeNodeDetail({
             </p>
           ) : null}
         </div>
+        <EditButton onEdit={onEdit} />
       </div>
 
       {node.measures.length > 0 ? (
@@ -538,19 +460,21 @@ function TreeNodeDetail({
           <a className="goals-node-link" href={node.href} target="_blank" rel="noreferrer">
             {node.hrefLabel}
           </a>
-        ) : betHrefId ? (
+        ) : node.kind === 'bet' ? null : (
           <button
             type="button"
             className="goals-node-link"
-            onClick={() => onOpenBet(betHrefId)}
-            data-testid="goals-open-bet"
+            onClick={() => {
+              const match = node.href?.match(
+                /\/workspace\/lvt\/(vision|goal|bet|initiative)\/([^/?#]+)/,
+              );
+              if (match?.[1] && match[2]) {
+                onOpenNode(match[1] as ValueTreeGraphNode['kind'], decodeURIComponent(match[2]));
+              }
+            }}
           >
             {node.hrefLabel}
           </button>
-        ) : (
-          <Link href={node.href} className="goals-node-link">
-            {node.hrefLabel}
-          </Link>
         )
       ) : null}
     </article>

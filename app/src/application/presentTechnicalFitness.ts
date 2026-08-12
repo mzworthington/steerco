@@ -68,11 +68,11 @@ export function presentTechnicalFitness(spec: SteerSpec): TechnicalFitnessModel 
 function presentMismatch(mismatch: SteerMismatch): TechnicalFitnessMismatch {
   const betId = mismatch.relatedBetIds?.[0];
   const deepLink = betId
-    ? `/workspace/bets/${betId}`
+    ? `/workspace/lvt/bet/${betId}`
     : mismatch.relatedTeamIds?.length
       ? '/workspace/organisation'
       : mismatch.relatedOutcomeIds?.length
-        ? '/workspace/goals'
+        ? '/workspace/lvt'
         : '/workspace/steering';
 
   return {

@@ -43,7 +43,7 @@ describe('presentTechnicalFitness', () => {
     expect(model.mismatchCount).toBeGreaterThan(0);
     expect(model.mismatches.some((item) => item.code === 'bet_without_team')).toBe(true);
     expect(model.mismatches.find((item) => item.code === 'bet_without_team')?.deepLink).toBe(
-      '/workspace/bets/bet_pickup',
+      '/workspace/lvt/bet/bet_pickup',
     );
   });
 });

@@ -1771,6 +1771,46 @@
     @apply sticky bottom-0 -mx-1 mt-6 bg-white/95 px-1 py-3 backdrop-blur-sm;
   }
 
+  .goals-section-header-actions {
+    @apply flex flex-col items-end gap-3;
+  }
+
+  .goals-vision-goal-select {
+    @apply flex w-full items-start justify-between gap-4 border-0 bg-transparent p-0 text-left;
+  }
+
+  .lvt-edit-form {
+    @apply grid gap-4;
+  }
+
+  .lvt-edit-header {
+    @apply mb-2;
+  }
+
+  .lvt-edit-title {
+    @apply font-display text-ink mt-1 text-2xl font-semibold tracking-tight;
+  }
+
+  .lvt-edit-actions {
+    @apply mt-2 flex flex-wrap justify-end gap-3;
+  }
+
+  .lvt-edit-metrics {
+    @apply border-line m-0 grid gap-4 rounded-xl border px-4 py-4;
+  }
+
+  .lvt-edit-metrics legend {
+    @apply text-ink-muted px-1 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .lvt-edit-metric-row {
+    @apply grid gap-3 sm:grid-cols-2;
+  }
+
+  .lvt-edit-metric-title {
+    @apply text-ink m-0 text-sm font-semibold sm:col-span-2;
+  }
+
   .organisation-title {
     @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight sm:text-4xl;
   }

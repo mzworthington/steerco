@@ -1,35 +1,14 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Router } from 'wouter';
+import { memoryLocation } from 'wouter/memory-location';
 import { openWorkspaceFromYaml } from '../application/openWorkspace';
 import { WorkspaceSessionProvider, sessionWithBaseline } from '../workspace/WorkspaceSession';
 import { GoalsPage } from './GoalsPage';
-
-const setLocation = vi.fn();
-
-vi.mock('wouter', async () => {
-  const actual = await vi.importActual<typeof import('wouter')>('wouter');
-  return {
-    ...actual,
-    useLocation: () => ['/workspace/goals', setLocation] as const,
-    Link: ({
-      href,
-      children,
-      className,
-    }: {
-      href: string;
-      children: React.ReactNode;
-      className?: string;
-    }) => (
-      <a href={href} className={className}>
-        {children}
-      </a>
-    ),
-  };
-});
 
 const fixtureDir = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -44,9 +23,20 @@ function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 's
   );
 }
 
+function renderGoals(initialPath = '/workspace/lvt') {
+  const memory = memoryLocation({ path: initialPath, record: true });
+  const view = render(
+    <Router hook={memory.hook}>
+      <WorkspaceSessionProvider>
+        <GoalsPage />
+      </WorkspaceSessionProvider>
+    </Router>,
+  );
+  return { ...view, memory };
+}
+
 afterEach(() => {
   cleanup();
-  setLocation.mockReset();
   sessionStorage.clear();
 });
 
@@ -57,147 +47,94 @@ describe('GoalsPage', () => {
     if (!opened.ok) return;
 
     seedSession(opened.value);
-
-    render(
-      <WorkspaceSessionProvider>
-        <GoalsPage />
-      </WorkspaceSessionProvider>,
-    );
+    renderGoals();
 
     expect(screen.getByTestId('goals-page')).toBeTruthy();
     expect(screen.getByTestId('goals-value-tree')).toBeTruthy();
     expect(screen.getByTestId('value-tree-canvas')).toBeTruthy();
-    expect(screen.queryByTestId('value-tree-vision')).toBeNull();
-    expect(screen.queryByTestId('value-tree-detail')).toBeNull();
     expect(screen.getByTestId('goals-selection')).toBeTruthy();
     expect(screen.getByTestId('goals-vision-detail')).toBeTruthy();
     expect(screen.getByTestId('goals-vision-facts')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /investment vision/i })).toBeTruthy();
-    expect(screen.getByText(/measures of success for this goal/i)).toBeTruthy();
+    expect(screen.getByTestId('lvt-edit')).toBeTruthy();
     expect(screen.queryByRole('button', { name: /add product/i })).toBeNull();
   });
 
-  it('shows goal measures, bets, and only linked product briefs when a goal node is selected', () => {
+  it('selects a goal from the tree, updates the LVT URL, and shows value detail', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
     seedSession(opened.value);
+    const { memory } = renderGoals();
 
-    render(
-      <WorkspaceSessionProvider>
-        <GoalsPage />
-      </WorkspaceSessionProvider>,
-    );
+    fireEvent.click(screen.getAllByTestId('value-tree-node-goal')[0]!);
 
-    const goalNodes = screen.getAllByTestId('value-tree-node-goal');
-    fireEvent.click(goalNodes[0]!);
-
+    expect(memory.history.at(-1)).toBe('/workspace/lvt/goal/out_promise');
     expect(screen.getByTestId('goals-goal-detail')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /reliable customer promises/i })).toBeTruthy();
     expect(screen.getByText('91%')).toBeTruthy();
-    expect(screen.getAllByText(/claimed by/i).length).toBeGreaterThan(0);
-    expect(
-      screen.getAllByRole('button', { name: /same-day pickup reliability/i }).length,
-    ).toBeGreaterThan(0);
-
-    const linked = screen.getByTestId('goals-linked-products');
-    expect(linked).toBeTruthy();
-    expect(screen.getByText('Customer promises')).toBeTruthy();
-    expect(screen.getByRole('link', { name: /manage briefs/i })).toHaveAttribute(
-      'href',
-      '/workspace/products',
-    );
+    expect(screen.getByTestId('lvt-edit')).toBeTruthy();
+    expect(screen.getByTestId('goals-linked-products')).toBeTruthy();
   });
 
-  it('opens bet detail in a modal from the tree without navigating away', async () => {
+  it('opens the focused bet from an LVT URL and edits via the consistent Edit modal', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
     seedSession(opened.value);
+    renderGoals('/workspace/lvt/bet/bet_pickup');
 
-    render(
-      <WorkspaceSessionProvider>
-        <GoalsPage />
-      </WorkspaceSessionProvider>,
-    );
-
-    fireEvent.click(screen.getAllByTestId('value-tree-node-bet')[0]!);
     expect(screen.getByTestId('goals-bet-detail')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /same-day pickup reliability/i })).toBeTruthy();
 
-    await user.click(screen.getByTestId('goals-open-bet'));
+    await user.click(screen.getByTestId('lvt-edit'));
     expect(screen.getByTestId('bet-detail-modal')).toBeTruthy();
     expect(screen.getByTestId('bet-detail')).toBeTruthy();
-    expect(setLocation).not.toHaveBeenCalledWith(expect.stringMatching(/\/workspace\/bets\//));
 
     await user.click(screen.getByRole('button', { name: /^close$/i }));
     expect(screen.queryByTestId('bet-detail-modal')).toBeNull();
-    expect(screen.getByTestId('goals-page')).toBeTruthy();
+    expect(screen.getByTestId('goals-bet-detail')).toBeTruthy();
   });
 
-  it('opens bet detail in a modal from a linked product brief bet', async () => {
+  it('selects a bet from a product brief link without opening the edit modal', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+    const { memory } = renderGoals('/workspace/lvt/goal/out_promise');
+
+    fireEvent.click(screen.getAllByTestId('goals-product-bet')[0]!);
+
+    expect(memory.history.at(-1)).toBe('/workspace/lvt/bet/bet_pickup');
+    expect(screen.getByTestId('goals-bet-detail')).toBeTruthy();
+    expect(screen.queryByTestId('bet-detail-modal')).toBeNull();
+  });
+
+  it('edits a goal measure through the Edit modal', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
     if (!opened.ok) return;
 
     seedSession(opened.value);
+    renderGoals('/workspace/lvt/goal/out_promise');
 
-    render(
-      <WorkspaceSessionProvider>
-        <GoalsPage />
-      </WorkspaceSessionProvider>,
-    );
+    await user.click(screen.getByTestId('lvt-edit'));
+    expect(screen.getByTestId('lvt-edit-modal')).toBeTruthy();
+    expect(screen.getByTestId('lvt-edit-goal')).toBeTruthy();
 
-    fireEvent.click(screen.getAllByTestId('value-tree-node-goal')[0]!);
-    const productBets = screen.getAllByTestId('goals-product-bet');
-    expect(productBets.length).toBeGreaterThan(0);
-
-    await user.click(productBets[0]!);
-    expect(screen.getByTestId('bet-detail-modal')).toBeTruthy();
-    expect(screen.getByTestId('bet-detail')).toBeTruthy();
-    expect(setLocation).not.toHaveBeenCalledWith(expect.stringMatching(/\/workspace\/bets\//));
-  });
-
-  it('edits a measure current value into the session from a selected goal', async () => {
-    const user = userEvent.setup();
-    const opened = openWorkspaceFromYaml(sampleYaml);
-    expect(opened.ok).toBe(true);
-    if (!opened.ok) return;
-
-    seedSession(opened.value);
-
-    render(
-      <WorkspaceSessionProvider>
-        <GoalsPage />
-      </WorkspaceSessionProvider>,
-    );
-
-    fireEvent.click(screen.getAllByTestId('value-tree-node-goal')[0]!);
-
-    await user.click(screen.getAllByRole('button', { name: /edit current \/ target/i })[0]!);
-    const current = screen.getByLabelText('Current');
+    const current = screen.getByLabelText(/promise hit rate current/i);
     await user.clear(current);
     await user.type(current, '93');
-    await user.click(screen.getByRole('button', { name: /save measure/i }));
+    await user.click(screen.getByRole('button', { name: /^save$/i }));
 
-    expect(screen.getByText(/saved measure to this workspace session/i)).toBeTruthy();
+    expect(screen.queryByTestId('lvt-edit-modal')).toBeNull();
+    expect(screen.getByText(/saved changes to this workspace session/i)).toBeTruthy();
     expect(screen.getByText('93%')).toBeTruthy();
-
-    const stored = sessionStorage.getItem('steerco.workspace-session');
-    const parsed = JSON.parse(stored ?? '{}') as {
-      spec: {
-        spec: {
-          outcomes: Array<{ metrics: Array<{ id: string; current: number }> }>;
-        };
-      };
-    };
-    expect(
-      parsed.spec.spec.outcomes[0]?.metrics.find((metric) => metric.id === 'met_promise_hit')
-        ?.current,
-    ).toBe(93);
   });
 
   it('renders the Lean Value Tree without expand or orientation controls', () => {
@@ -206,12 +143,7 @@ describe('GoalsPage', () => {
     if (!opened.ok) return;
 
     seedSession(opened.value);
-
-    render(
-      <WorkspaceSessionProvider>
-        <GoalsPage />
-      </WorkspaceSessionProvider>,
-    );
+    renderGoals();
 
     expect(screen.queryByTestId('value-tree-orient')).toBeNull();
     expect(screen.queryByTestId('value-tree-vision')).toBeNull();

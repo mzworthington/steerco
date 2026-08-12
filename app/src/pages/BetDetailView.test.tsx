@@ -5,8 +5,8 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { openWorkspaceFromYaml } from '../application/openWorkspace';
+import { BetDetailView } from '../components/bets/BetDetailView';
 import { WorkspaceSessionProvider, sessionWithBaseline } from '../workspace/WorkspaceSession';
-import { BetDetailPage } from './BetDetailPage';
 
 const setLocation = vi.fn();
 
@@ -14,8 +14,7 @@ vi.mock('wouter', async () => {
   const actual = await vi.importActual<typeof import('wouter')>('wouter');
   return {
     ...actual,
-    useLocation: () => ['/workspace/bets/bet_loyalty', setLocation] as const,
-    useParams: () => ({ betId: 'bet_loyalty' }),
+    useLocation: () => ['/workspace/lvt/bet/bet_loyalty', setLocation] as const,
     Link: ({
       href,
       children,
@@ -47,13 +46,21 @@ function seedSession(spec: Parameters<typeof sessionWithBaseline>[0], label = 's
   );
 }
 
+function renderBetDetail() {
+  return render(
+    <WorkspaceSessionProvider>
+      <BetDetailView betId="bet_loyalty" layout="modal" />
+    </WorkspaceSessionProvider>,
+  );
+}
+
 afterEach(() => {
   cleanup();
   setLocation.mockReset();
   sessionStorage.clear();
 });
 
-describe('BetDetailPage', () => {
+describe('BetDetailView', () => {
   it('shows goal MoS context and saves edits into the session', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
@@ -61,12 +68,7 @@ describe('BetDetailPage', () => {
     if (!opened.ok) return;
 
     seedSession(opened.value);
-
-    render(
-      <WorkspaceSessionProvider>
-        <BetDetailPage />
-      </WorkspaceSessionProvider>,
-    );
+    renderBetDetail();
 
     expect(screen.getByTestId('bet-detail')).toBeTruthy();
     expect(screen.getByRole('heading', { name: /this bet should move/i })).toBeTruthy();
@@ -119,12 +121,7 @@ describe('BetDetailPage', () => {
     if (!opened.ok) return;
 
     seedSession(opened.value);
-
-    render(
-      <WorkspaceSessionProvider>
-        <BetDetailPage />
-      </WorkspaceSessionProvider>,
-    );
+    renderBetDetail();
 
     await user.selectOptions(screen.getByLabelText('Funding stance'), 'explore');
     await user.selectOptions(screen.getByLabelText('Kind'), 'capability');
@@ -172,12 +169,7 @@ describe('BetDetailPage', () => {
     if (!opened.ok) return;
 
     seedSession(opened.value);
-
-    render(
-      <WorkspaceSessionProvider>
-        <BetDetailPage />
-      </WorkspaceSessionProvider>,
-    );
+    renderBetDetail();
 
     const title = screen.getByLabelText('Bet title');
     await user.clear(title);

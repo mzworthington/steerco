@@ -46,7 +46,7 @@ test.describe('Slice 1 critical journey', () => {
 
     const routes = [
       '/workspace/steering',
-      '/workspace/goals',
+      '/workspace/lvt',
       '/workspace/evidence',
       '/workspace/organisation',
       '/workspace/decisions',
