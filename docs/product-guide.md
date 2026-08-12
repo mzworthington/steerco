@@ -80,6 +80,8 @@ Portfolio view of **goals** and the **bets** funded against them: status, alignm
 
 Asks “are we getting the goal?” Select a node in the Lean Value Tree; the page below shows rich detail for that node. A selected **goal** carries **Measures of Success** (leading indicators that shape funding - not a metrics warehouse), the bets meant to move them, and only the **Product briefs** linked to that goal.
 
+Grow the tree in place with the same **Add** pattern everywhere: **Add goal** on the Goals page header or under Vision, **Add bet** on a selected goal, and **Add initiative** on a selected bet (also available inside bet edit). New goals start empty of measures; new bets start as **proposed** until you fund teams and link Measures of Success.
+
 ### Product briefs
 
 Lightweight product definitions: customer problem, customers, non-goals, and links to goals/bets - without becoming requirements docs. Briefs linked to a goal appear under that goal on the Goals page.
