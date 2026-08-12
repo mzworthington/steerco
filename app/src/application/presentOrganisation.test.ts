@@ -74,6 +74,12 @@ describe('presentOrganisation', () => {
       'triangle',
     );
     expect(model.overloadBanner).toBeNull();
+    expect(model.adviceByFamily.some((group) => group.family === 'team')).toBe(true);
+    expect(
+      model.adviceByFamily
+        .flatMap((group) => group.items)
+        .some((item) => item.code === 'team_size' || item.code === 'team_breadth'),
+    ).toBe(true);
     const facilitation = model.relationships.filter((item) => item.mode === 'facilitation');
     expect(facilitation.length).toBeGreaterThanOrEqual(2);
     expect(

@@ -69,6 +69,20 @@ export {
   type SteerMismatchCode,
 } from './domain/steerSpec/detectMismatches';
 export {
+  analyzeSteerSpec,
+  adviceToSteerMismatch,
+  analyzeTeamAdvice,
+  analyzePortfolioAdvice,
+  ANALYSIS_DEFAULTS,
+  communicationPaths,
+  ADVICE_FAMILIES,
+  type AdviceFamily,
+  type AdviceRecommendation,
+  type AdviceSeverity,
+  type AnalysisOptions,
+  type AnalysisReport,
+} from './domain/analysis';
+export {
   isEffectiveOnDate,
   isEffectiveInRange,
   projectSteerSpecAsOf,

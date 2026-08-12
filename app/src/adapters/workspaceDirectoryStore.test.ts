@@ -33,20 +33,20 @@ beforeEach(async () => {
 
 describe('workspaceDirectoryStore', () => {
   it('builds a stable key from source and metadata name', () => {
-    expect(workspaceDirectoryKey('folder', 'northwind-q3-alignment')).toBe(
-      'folder:northwind-q3-alignment',
+    expect(workspaceDirectoryKey('folder', 'northwind-group-h2-alignment')).toBe(
+      'folder:northwind-group-h2-alignment',
     );
   });
 
   it('round-trips a directory handle binding', async () => {
     const directory = fakeDirectory('northwind');
     await saveWorkspaceDirectoryBinding({
-      workspaceKey: 'folder:northwind-q3-alignment',
+      workspaceKey: 'folder:northwind-group-h2-alignment',
       fileName: 'steertree.yaml',
       directory,
     });
 
-    const loaded = await loadWorkspaceDirectoryBinding('folder:northwind-q3-alignment');
+    const loaded = await loadWorkspaceDirectoryBinding('folder:northwind-group-h2-alignment');
     expect(loaded?.fileName).toBe('steertree.yaml');
     expect(loaded?.directoryName).toBe('northwind');
     expect(loaded?.directory.name).toBe('northwind');
@@ -55,12 +55,12 @@ describe('workspaceDirectoryStore', () => {
   it('clears a single binding', async () => {
     const directory = fakeDirectory('northwind');
     await saveWorkspaceDirectoryBinding({
-      workspaceKey: 'folder:northwind-q3-alignment',
+      workspaceKey: 'folder:northwind-group-h2-alignment',
       fileName: 'steertree.yaml',
       directory,
     });
-    await clearWorkspaceDirectoryBinding('folder:northwind-q3-alignment');
-    expect(await loadWorkspaceDirectoryBinding('folder:northwind-q3-alignment')).toBeNull();
+    await clearWorkspaceDirectoryBinding('folder:northwind-group-h2-alignment');
+    expect(await loadWorkspaceDirectoryBinding('folder:northwind-group-h2-alignment')).toBeNull();
   });
 
   it('treats granted queryPermission as ready', async () => {

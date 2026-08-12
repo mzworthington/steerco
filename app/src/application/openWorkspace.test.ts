@@ -15,7 +15,7 @@ describe('openWorkspaceFromYaml', () => {
     const result = openWorkspaceFromYaml(sampleYaml);
     expect(result.ok).toBe(true);
     if (!result.ok) return;
-    expect(result.value.metadata.name).toBe('northwind-q3-alignment');
+    expect(result.value.metadata.name).toBe('northwind-group-h2-alignment');
     expect(result.value.spec.bets.length).toBeGreaterThanOrEqual(3);
     expect(result.value.spec.teams.length).toBeGreaterThan(20);
   });

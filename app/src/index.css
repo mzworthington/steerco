@@ -1835,6 +1835,22 @@
     }
   }
 
+  .organisation-advice-family {
+    @apply mt-4;
+  }
+
+  .organisation-advice-family-title {
+    @apply text-ink text-sm font-semibold tracking-tight;
+  }
+
+  .organisation-advice-code {
+    @apply text-ink-muted mr-2 font-mono text-xs;
+  }
+
+  .organisation-advice-rationale {
+    @apply text-ink-muted;
+  }
+
   .organisation-mismatch {
     @apply text-ink-muted text-sm leading-relaxed;
   }

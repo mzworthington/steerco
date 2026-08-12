@@ -55,7 +55,7 @@ export function WorkspaceHomePage() {
     });
     setRecent(
       rememberRecentWorkspace({
-        id: 'sample:northwind-q3-alignment',
+        id: 'sample:northwind-group-h2-alignment',
         title: SAMPLE_WORKSPACE_LABEL,
         kind: 'sample',
       }),

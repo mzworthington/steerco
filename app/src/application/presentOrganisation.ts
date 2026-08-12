@@ -1,4 +1,5 @@
 import {
+  analyzeSteerSpec,
   detectSteerSpecMismatches,
   DISCIPLINE_COPY,
   INTERACTION_MODE_COPY,
@@ -9,6 +10,8 @@ import {
   normalizeInteractionMode,
   normalizeTeamTopologyType,
   projectSteerSpecAsOf,
+  type AdviceFamily,
+  type AdviceRecommendation,
   type InteractionMode,
   type InteractionShapeGeometry,
   type MemberDiscipline,
@@ -164,6 +167,12 @@ export type OrganisationModel = {
   timeline: TopologyTimelineModel;
   overloadBanner: string | null;
   mismatches: SteerMismatch[];
+  /** Analysis engine recommendations grouped by family (team / portfolio). */
+  adviceByFamily: Array<{
+    family: AdviceFamily;
+    title: string;
+    items: AdviceRecommendation[];
+  }>;
 };
 
 export type AddOrganisationTeamInput = {
@@ -242,6 +251,14 @@ export function presentOrganisation(
     facilitatesByTeamId.set(from.id, list);
   }
 
+  const analysis = analyzeSteerSpec({
+    ...projected,
+    spec: {
+      ...projected.spec,
+      teams,
+      relationships: relationshipsRaw,
+    },
+  });
   const mismatches = detectSteerSpecMismatches({
     ...projected,
     spec: {
@@ -251,6 +268,20 @@ export function presentOrganisation(
     },
   });
   const overload = mismatches.find((item) => item.code === 'platform_overload') ?? null;
+  const adviceByFamily: OrganisationModel['adviceByFamily'] = (
+    [
+      {
+        family: 'team' as const,
+        title: 'Team advice',
+        items: analysis.teams,
+      },
+      {
+        family: 'portfolio' as const,
+        title: 'Portfolio / LVT advice',
+        items: analysis.portfolio,
+      },
+    ] as const
+  ).filter((group) => group.items.length > 0);
 
   const zones: OrganisationZone[] = TEAM_TOPOLOGY_TYPES.map((role) => {
     const copy = TOPOLOGY_TYPE_COPY[role];
@@ -376,6 +407,7 @@ export function presentOrganisation(
     timeline: presentTopologyTimeline(spec, { asOf, rangeFrom, rangeTo }),
     overloadBanner: overload?.headline ?? null,
     mismatches,
+    adviceByFamily,
   };
 }
 

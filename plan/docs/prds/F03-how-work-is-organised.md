@@ -49,10 +49,11 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 11. Executive views on How work is organised:
     - **As-is** - detailed capacity + interaction graph for a selected date (default today); optional domain filter
     - **Timeline** - capacity and interaction history ([F13](./F13-topology-timeline.md))
-12. Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams; `stream_multi_team`; `team_oversized` at ≥ ~15 members)
+12. Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams; `stream_multi_team`; `team_size` / `team_oversized` at ≥ ~15 members; `team_breadth`; `team_chatter`)
 13. Derived visual may be exported for board pack Work section - use SteerCo shapes, never proprietary TT book diagrams
 14. Enabling one-to-many facilitation is expected; sole delivery ownership of a bet remains a mismatch (`enabling_owns_delivery`)
 15. Teaching + Technical vocabulary: overloaded domain slices fracture into peer sub-domains / streams / teams; directors redesign boundaries outside the stream; domains taught as DDD bounded contexts; stream-aligned teams are customers of platform/enabling
+16. Organisation **Analysis & advice** groups recommendations by family (`team` / `portfolio`) via the analysis engine ([ADR 0009](../../../docs/ADRs/0009-analysis-engine-team-portfolio-advice.md))
 
 ## Acceptance
 
@@ -60,8 +61,10 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 - Empty state teaches four topologies and three interaction modes (lenses not hierarchy)
 - Sample shows member/FTE capacity on stream-aligned and platform teams
 - Overload appears when X-as-a-Service dependents ≥ threshold with load/flow framing
-- `team_oversized` appears when a team’s recorded members ≥ 15, with evolution-path wording
+- `team_oversized` / `team_size` appears when a team’s recorded members ≥ 15, with evolution-path wording
+- `team_breadth` and `team_chatter` appear for intentional large-org sample smells
 - `stream_multi_team` appears when two stream-aligned teams share one stream
+- Analysis & advice section groups team vs portfolio recommendations
 - Slice 3: sample with ≥2 streams, a domain, a scoped platform, CSS in a stream, and multi-team enabling renders flow layout + interaction graph (not only four flat zones)
 - Slice 3: As-is / Timeline as-of date updates projected shape and mismatches without leaving the page
 - Slice 3: As-is domain filter narrows stream bands while keeping shared platforms and enabling

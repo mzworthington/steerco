@@ -112,8 +112,18 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
       },
       {
         term: 'Team size / complexity',
-        alias: 'team_oversized (~15 members)',
+        alias: 'team_size / team_oversized (~15 members)',
         note: 'Soft cognitive-load cue (~8 healthy). Evolve by peer stream-aligned splits, platform grouping, or complicated subsystem - not a domain manager layer.',
+      },
+      {
+        term: 'Team breadth',
+        alias: 'team_breadth',
+        note: 'Too many streams or domains on one team - find a fracture plane and split into peer bounded contexts.',
+      },
+      {
+        term: 'Team chatter',
+        alias: 'team_chatter / team_chatter_external',
+        note: 'Communication paths grow as n(n-1)/2 within the team; external collaboration edges add tax. Soft analysis cues, not HR policy.',
       },
       {
         term: 'Interaction modes',

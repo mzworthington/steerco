@@ -437,7 +437,9 @@ Do **not** build a full psychometric survey in Slice 1. Do encode **steering-vis
 | Collaboration tax                | Too many concurrent `works_together` edges                                                    |
 | Missing enablement               | At-risk stream teams with no enabling relationship                                            |
 | Fractal overload                 | Platform grouping with too many internal members _and_ external dependents                    |
-| Team size / complexity           | Soft `team_oversized` when recorded members ≥ ~15 (Dunbar high-trust caution; ~8 is healthy). Headline cites communication paths `n(n-1)/2` and evolution paths - never hard HR enforcement |
+| Team size / complexity           | Analysis engine `team_size` (legacy mismatch alias `team_oversized`) when recorded members ≥ ~15 (Dunbar high-trust caution; ~8 is healthy). Headline cites communication paths `n(n-1)/2` and evolution paths - never hard HR enforcement |
+| Team breadth                     | Analysis engine `team_breadth` when a team spans multiple streams / domains (too many problem spaces) |
+| Team chatter                     | Analysis engine `team_chatter` / `team_chatter_external` when within-team paths or collaboration edges are high |
 | Shared stream                    | Soft `stream_multi_team` when more than one stream-aligned team owns the same stream - prefer peer domain/stream splits |
 
 **Evolution paths when a team or domain slice is overloaded** ([TT newsletter on oversized teams](https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues)):
@@ -483,6 +485,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 5. Schema: `groupings` (platform + value_stream) + fractal membership; `platformScope`; CSS `within` nest
 6. Soft “one primary bet per stream team” mismatch
 6b. Soft `team_oversized` + `stream_multi_team`; teach domain/stream/team as coplanar lenses ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md))
+6c. Analysis engine owns team advice (size / breadth / chatter) and portfolio/LVT advice ([ADR 0009](../../docs/ADRs/0009-analysis-engine-team-portfolio-advice.md)); large-org sample demonstrates intentional smells
 7. Org view **flow-of-change** layout (streams as spine) + as-of date; type zones as teaching/filter
 8. Bet flow overlay (funded teams + related interactions as of date)
 9. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
@@ -573,7 +576,7 @@ SteerCo utilises and aligns to Eric Evans’ Domain-Driven Design. It does **not
 - [x] `relationships[].expectedUntil` (collaboration / facilitation time-box)
 - [x] Member / relationship `effectiveFrom`–`effectiveUntil` windows (capacity + interaction history toward [F13](./prds/F13-topology-timeline.md))
 - [x] Optional `topologyEvents[]` ledger (capacity up/down, relationship added/ended/mode-changed)
-- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`, `team_oversized`, `stream_multi_team`
+- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`, `team_oversized`, `team_size`, `team_breadth`, `team_chatter`, `stream_multi_team`
 - [x] Decision notes prefer structured MoS refs in `measured` (keep free text)
 - [x] Member edit UX on organisation page
 
