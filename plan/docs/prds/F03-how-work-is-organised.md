@@ -1,11 +1,11 @@
 # PRD F03 - How work is organised
 
 **Slice:** 1 · **Mockups:** `steerco-exec-02-org-shape.png`, `steerco-exec-10-org-empty.png`  
-**Frameworks:** [Team Topologies key concepts](https://teamtopologies.com/key-concepts) (four topologies, three interaction modes, cognitive load, fast flow, flow of change) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** [Team Topologies key concepts](https://teamtopologies.com/key-concepts) + [Domain-Driven Design](https://www.domainlanguage.com/ddd/) (Eric Evans) - four topologies, three interaction modes, cognitive load, bounded contexts, fast flow - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
 
 ## Problem
 
-Executives confuse HR org charts with delivery topology. Flat “four type zones” teach vocabulary but do not scale when ~20 teams span many domains. Leaders need a view of how change flows through stream-aligned teams - with platforms, enabling, and complicated-subsystem teams scoped as support - grounded in Team Topologies, not invented department types.
+Executives confuse HR org charts with delivery topology. Flat “four type zones” teach vocabulary but do not scale when ~20 teams span many domains. Leaders need a view of how change flows through stream-aligned teams - with platforms, enabling, and complicated-subsystem teams scoped as support - grounded in Team Topologies and DDD bounded contexts, not invented department types.
 
 ## Goal
 
@@ -19,7 +19,8 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 - As a sponsor, I see a calm cue when a team’s recorded size crosses the Dunbar caution band (~15), with evolution options (peer stream-aligned teams, platform grouping, complicated subsystem) - not a staffing mandate.
 - As a new user, I see empty zones that teach all four purposes (stream-aligned, platform, enabling, complicated subsystem) and that domain/stream/team are lenses, not layers.
 - As a Director, I can see member count and FTE allocation per team as capacity context (not an HR roster).
-- As a Director (Slice 3), I align stream-aligned teams to **streams** (and optional **domain** labels), plus **platform groupings**, with stream-aligned teams as the spine of the map - never “teams under a domain manager.”
+- As a Director (Slice 3), I align stream-aligned teams to **streams** (and optional **domain / bounded-context** labels), plus **platform groupings**, with stream-aligned teams as the spine of the map - never “teams under a domain manager.”
+- As a Director / VP, I use SteerCo to keep strategy, shape, and evidence aligned and to spot fracture planes - without appearing as a topology type on the canvas.
 - As a Director (Slice 3), I set a platform’s **scope** (organisation / vertical / single team) so layout and load cues match who it accelerates.
 - As a Director (Slice 3), I place a **complicated subsystem** in a stream (not under a team); interaction mode shows how embedded it is.
 - As a coach (Slice 3), I see one **enabling** team facilitating multiple streams without treating that fan-out as an error.
@@ -51,7 +52,7 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 12. Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams; `stream_multi_team`; `team_oversized` at ≥ ~15 members)
 13. Derived visual may be exported for board pack Work section - use SteerCo shapes, never proprietary TT book diagrams
 14. Enabling one-to-many facilitation is expected; sole delivery ownership of a bet remains a mismatch (`enabling_owns_delivery`)
-15. Teaching + Technical vocabulary: overloaded domain slices fracture into peer sub-domains / streams / teams; directors redesign boundaries outside the stream
+15. Teaching + Technical vocabulary: overloaded domain slices fracture into peer sub-domains / streams / teams; directors redesign boundaries outside the stream; domains taught as DDD bounded contexts; stream-aligned teams are customers of platform/enabling
 
 ## Acceptance
 

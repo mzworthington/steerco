@@ -26,12 +26,17 @@ export function TechnicalVocabularyPage() {
         <p className="technical-crumb">
           <Link href="/workspace/technical">Technical</Link> / Vocabulary
         </p>
-        <h1 className="technical-title">EDGE / TT vocabulary bridge</h1>
+        <h1 className="technical-title">EDGE / DDD / TT vocabulary bridge</h1>
         <p className="technical-lead">{model.lead}</p>
       </header>
 
       <VocabularyTable id="lvt" title="Lean Value Tree" rows={model.lvtBridge} />
       <VocabularyTable id="beyond" title="EDGE beyond LVT" rows={model.beyondLvt} />
+      <VocabularyTable
+        id="ddd"
+        title="Domain-Driven Design (Eric Evans)"
+        rows={model.domainDrivenDesign}
+      />
       <VocabularyTable id="tt" title="Team Topologies" rows={model.teamTopologies} />
 
       <section className="technical-section" aria-labelledby="tech-principles">

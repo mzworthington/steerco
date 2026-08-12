@@ -26,12 +26,13 @@ Start with the [Product guide](/docs/product-guide), or [open the workspace](/wo
 
 ## Operating model
 
-SteerCo operationalises two complementary models without becoming a PMO or HR tool:
+SteerCo operationalises three complementary models without becoming a PMO or HR tool:
 
 - **EDGE** - a holistic value-driven operating model: Lean Value Tree **plus** product mindset, Tech@Core, Periodic Value Review, Integrated Backlogs, Measures of Success, and six core principles (vision → goals + measures → bets)
+- **Domain-Driven Design** (Eric Evans) - bounded contexts, ubiquitous language, and fracture planes so team shape follows problem-space boundaries
 - **Team Topologies** - topology intent for fast flow of value (team types, coplanar domain/stream/team lenses, interaction modes, cognitive load as a signal)
 
-The Lean Value Tree is the strategy spine; the other EDGE teachings keep investment adaptive (value review), product-shaped (not project theatre), and honest about BAU / tech debt mix.
+The Lean Value Tree is the strategy spine; DDD names the problem-space fences; Team Topologies shapes how work flows across those fences. Other EDGE teachings keep investment adaptive (value review), product-shaped (not project theatre), and honest about BAU / tech debt mix.
 
 ## For builders
 

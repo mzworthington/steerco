@@ -8,38 +8,40 @@ deciders: ['SteerCo']
 
 ## Context and Problem Statement
 
-Leaders naturally map Team Topologies language onto an org chart: domain → streams → teams as nested management tiers. That recreates handoffs and hides cognitive-load problems when a single “team” grows past trust boundaries. SteerSpec already stores `domains[]`, `streams[]`, and `teams[]`; we need a hard product rule for what those fields mean and how oversized teams should evolve.
+Leaders naturally map Team Topologies language onto an org chart: domain → streams → teams as nested management tiers. That recreates handoffs and hides cognitive-load problems when a single “team” grows past trust boundaries. SteerSpec already stores `domains[]`, `streams[]`, and `teams[]`; we need a hard product rule for what those fields mean, how they join Eric Evans’ Domain-Driven Design, and how oversized teams should evolve.
 
 ## Decision Drivers
 
+- Domain-Driven Design (Eric Evans): a domain is a **bounded context** - a fence around concepts and rules - not a managerial parent
 - Team Topologies: domain / stream / stream-aligned team are three lenses on one slice of value (what / flow / who), not a reporting hierarchy
 - Cognitive load: team complexity rises with size (`n(n-1)/2` communication paths); ~8 people is a healthy default; above ~15 high-trust relationships break down
-- Evolution paths for overload: fracture into peer stream-aligned teams, form a platform grouping, or extract a complicated subsystem - never add a “domain manager” tier
-- Platform, enabling, and complicated-subsystem teams sit laterally to stream-aligned teams
-- Directors / VPs stay outside the delivery stream (HR / strategy / boundary design), not inside the flow graph as a topology type
+- Evolution paths for overload: fracture into peer stream-aligned teams along **fracture planes**, form a platform grouping, or extract a complicated subsystem - never add a “domain manager” tier
+- Platform, enabling, and complicated-subsystem teams sit laterally; stream-aligned teams are their **customers**
+- Directors / VPs stay outside the delivery stream (HR / strategy / boundary design / Inverse Conway), not inside the flow graph as a topology type
 
 ## Considered Options
 
 - Option A: Treat `domains[]` as managerial parents of streams and teams (hierarchy)
-- Option B: Keep schema shape; redefine semantics as coplanar lenses + soft mismatches for size and multi-team streams
+- Option B: Keep schema shape; redefine semantics as coplanar lenses + DDD bounded-context teaching + soft mismatches for size and multi-team streams
 - Option C: Collapse domains into stream metadata only (lose vertical filter / related-context labels)
 
 ## Decision Outcome
 
 Chosen option: **Option B**.
 
-- **Domain** = problem-space boundary (bounded context / related-context label). Optional UI filter, not a boss.
+- **Domain** = DDD bounded context (problem-space fence). Optional UI filter / related-context label, not a boss. Containment is taxonomic (like a BC around a service), not HR.
 - **Stream** = end-to-end flow of change inside that boundary.
 - **Stream-aligned team** = the people who own that flow.
-- Ideal for stream-aligned delivery: one team ↔ one stream ↔ one domain slice. When load is too high, split into peer sub-domains / streams / teams.
+- Ideal for stream-aligned delivery: one team ↔ one stream ↔ one domain slice. When load is too high, split into peer sub-domains / streams / teams along fracture planes.
 - Soft mismatch `team_oversized` when recorded member count reaches the Dunbar trust caution threshold (default 15). Soft mismatch `stream_multi_team` when more than one stream-aligned team shares a stream.
-- Copy and Technical vocabulary teach evolution paths and “lenses not hierarchy.”
+- Copy and Technical vocabulary teach evolution paths, “lenses not hierarchy,” DDD bounded contexts, and leadership outside the stream.
 
 ### Consequences
 
 - Good, because SteerSpec stays additive and sample workspaces keep working
 - Good, because mismatches turn size and shared-stream smells into steering prompts with evolution advice
 - Good, because domain filters remain useful without implying middle-management boxes
+- Good, because DDD and Team Topologies share one vocabulary for problem-space vs flow vs ownership
 - Bad, because related streams may still share a domain label for filtering - teaching must stress taxonomy ≠ hierarchy
 - Bad, because size signals only fire when `members[]` are recorded (capacity is intentional, not HR sync)
 
@@ -48,7 +50,7 @@ Chosen option: **Option B**.
 ```mermaid
 flowchart TB
   subgraph lenses [Coplanar lenses - not a reporting chain]
-    Domain[Domain - what / bounded context]
+    Domain[Domain - DDD bounded context / what]
     Stream[Stream - flow of change]
     Team[Stream-aligned team - who]
     Domain --- Stream
@@ -56,12 +58,13 @@ flowchart TB
   end
   Platform[Platform / enabling / CSS]
   Leadership[Directors VPs - outside the stream]
-  Platform -.->|lateral XaaS facilitation| Team
-  Leadership -.->|boundaries funding cognitive load| lenses
+  Platform -.->|lateral XaaS facilitation - SATs are customers| Team
+  Leadership -.->|fracture planes funding Inverse Conway| lenses
 ```
 
 ## Links
 
 - [Team Topologies: When teams grow too large](https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues)
+- [Domain Language - DDD](https://www.domainlanguage.com/ddd/)
 - [OPERATING_MODEL_ALIGNMENT.md](../../plan/docs/OPERATING_MODEL_ALIGNMENT.md)
 - [F03 How work is organised](../../plan/docs/prds/F03-how-work-is-organised.md)

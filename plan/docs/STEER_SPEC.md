@@ -12,8 +12,9 @@ Executive UI never shows this document by default; Technical mode and git review
 4. **No secrets** in SteerSpec.
 5. Versioned with `apiVersion` + `kind` for migrations.
 6. **Team Topologies is canonical** for team types and interaction modes ([key concepts](https://teamtopologies.com/key-concepts)).
+7. **Domain-Driven Design (Eric Evans) is canonical** for problem-space meaning of `domains[]`: each domain is a **bounded context** lens (ubiquitous language in titles), not an HR parent of streams or teams ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)).
 
-Operating-model evolution (full EDGE toolkit beyond LVT, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+Operating-model evolution (full EDGE toolkit beyond LVT, DDD bounded contexts, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
 
 `kind: SteerTree` is the Lean Value Tree **spine** of the EDGE investment contract. EDGE teachings beyond the tree (product mindset / Product brief, Tech@Core, Periodic Value Review, Integrated Backlogs, MoS fitness framing, six principles) map onto existing fields today (`metrics`, `fundingStance`, `kind`, `reviewDate`, `decisionNotes`) and optional later surfaces - they are first-class product intent even when not separate SteerSpec kinds.
 

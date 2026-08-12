@@ -130,7 +130,7 @@ const domainSchema = z
     id: z.string().min(1),
     title: z.string().min(1),
     /**
-     * Related streams for this bounded-context / vertical label.
+     * Related streams for this DDD bounded context / vertical label.
      * Domains are coplanar lenses (the "what"), not managerial parents of streams or teams.
      */
     memberStreamIds: z.array(z.string()).default([]),
@@ -268,7 +268,7 @@ const specSchema = z
     /** Flow-of-change slices (the "flow" lens). Stream-aligned teams ideally own exactly one. */
     streams: z.array(streamSchema).default([]),
     /**
-     * Optional related-context labels (the "what" lens / bounded context).
+     * Optional related-context labels (DDD bounded contexts - the "what" lens).
      * Not a reporting hierarchy over streams or teams - see ADR 0008.
      */
     domains: z.array(domainSchema).default([]),

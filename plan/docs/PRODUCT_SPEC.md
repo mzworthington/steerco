@@ -12,10 +12,11 @@ Product owners, product executives, and Engineering Directors must align **goals
 
 SteerCo is a **steering workspace**: edit strategy and topology intent in plain language, persist a canonical **SteerSpec**, leave with decision notes, and export a board pack when you need to share. It reads and later writes _around_ existing systems of record; it does not become one.
 
-It operationalises two complementary models without becoming a PMO or HR tool:
+It operationalises three complementary models without becoming a PMO or HR tool:
 
 - **EDGE** - holistic value-driven operating model: Lean Value Tree **plus** product mindset / Product brief, Tech@Core, Periodic Value Review (PVR), Integrated Backlogs, Measures of Success, and six core principles (vision → goals/MoS → bets → optional initiatives)
-- **Team Topologies** (2e) - topology _intent_ for fast flow of value (team purposes, interaction modes, cognitive load as a signal)
+- **Domain-Driven Design** (Eric Evans) - problem-space boundaries as **bounded contexts**, ubiquitous language, and fracture planes when contexts overload
+- **Team Topologies** (2e) - topology _intent_ for fast flow of value (team purposes, interaction modes, cognitive load as a signal; domain / stream / team as coplanar lenses)
 
 See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice commitments in [ROADMAP.md](./ROADMAP.md).
 
@@ -37,7 +38,7 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | ---------------------------------- | ------------------------------------------------------------------------ |
 | **Investment alignment**           | Goals, MoS, bets, kill criteria, decision notes / PVR (EDGE toolkit)  |
 | **Product & tech fitness**         | Product mindset cues; Tech@Core capability bets (not a radar or debt DB) |
-| **Topology intent**                | How teams relate for fast flow (Team Topologies; not HR reporting lines) |
+| **Topology intent**                | How teams relate for fast flow (Team Topologies + DDD bounded contexts; not HR reporting lines) |
 | **Evidence**                       | Leading indicators / learning attached to goals/bets (sample Slice 1) |
 | **Identity & directories** (later) | External team refs only - owned by Entra/GitHub/Backstage                |
 | **Work execution** (external)      | Jira - link/annotate later, never dual / owned integrated backlog        |
@@ -57,8 +58,13 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 | **Integrated Backlog**       | EDGE model for cross-prioritising strategic (LVT) work with BAU, maintenance, and capability building via relative value/effort - SteerCo shows mix/stance cues and never owns the execution backlog                                                  |
 | **Kill criteria**            | Pre-agreed condition that triggers stop or re-scope (supports incremental funding / PVR)                                                                                                                                                                  |
 | **EDGE principles**          | Six cultural OS principles: outcome-based strategy; value-based prioritization; lightweight planning/governance; adaptive learning culture; autonomous teams; self-sufficient collaborative decisions                                                   |
-| **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                                                     |
-| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts)): stream-aligned (spine), platform (scoped org / vertical / team), enabling, complicated subsystem (in a stream); modes X-as-a-Service / Collaboration / Facilitation; **domain / stream / team as coplanar lenses** (what / flow / who - not a hierarchy); platform groupings; optional members with `discipline` + FTE% as capacity / mix / size signal; point-in-time as-of projection |
+| **Domain (bounded context)** | Problem-space fence from Domain-Driven Design (Eric Evans): concepts and rules for a slice of the business. SteerSpec `domains[]` is this lens - taxonomic containment, never a managerial parent of streams or teams |
+| **Stream**                   | End-to-end flow of change inside a domain / bounded-context slice (`streams[]`)                                                                                                                                      |
+| **Ubiquitous language**      | Shared business vocabulary used in domain, stream, goal, and bet titles - not org-chart labels                                                                                                                       |
+| **Fracture plane**           | Where leaders split an overloaded bounded context into peer sub-domains (each with its own stream-aligned team) to cut cognitive load                                                                                |
+| **Team**                     | Delivery group referenced by display name (Slice 1) and optional external ref (later)                                                                                                                                |
+| **Topology intent**          | Desired interaction shape for fast flow ([Team Topologies](https://teamtopologies.com/key-concepts) + DDD): stream-aligned (spine), platform (scoped org / vertical / team), enabling, complicated subsystem (in a stream); modes X-as-a-Service / Collaboration / Facilitation; **domain / stream / team as coplanar lenses** (what / flow / who - not a hierarchy); platform groupings; optional members with `discipline` + FTE% as capacity / mix / size signal; point-in-time as-of projection |
+| **Leadership (outside stream)** | Engineering Directors / VPs keep strategy, shape, and evidence aligned; sponsor platforms/enablers; find fracture planes - they are not a topology type on the canvas |
 | **Mismatch**                 | Detectable conflict (portfolio or topology smell - e.g. unfunded bet; platform overload; oversized team; shared stream) |
 | **Decision note**            | One-page start/stop/continue/rescope recommendation with rationale and evidence (PVR / lightweight governance)                                                                                                                                            |
 | **SteerSpec**                | Canonical YAML/JSON document for a workspace (`steertree.yaml`)                                                                                                                                                                                           |
@@ -78,14 +84,15 @@ See [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) and slice com
 
 ### Foundational frameworks
 
-SteerCo builds on two operating-model sources (full backlog and vocabulary bridge in [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)):
+SteerCo builds on three complementary sources (full backlog and vocabulary bridge in [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)):
 
 | Source                                  | Role in SteerCo                                                                                                                                                  |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **EDGE** (Highsmith / Luu / Robinson)   | Holistic operating model: LVT (vision → goals + MoS → bets → optional initiatives) **plus** product mindset/brief, Tech@Core, PVR, Integrated Backlogs, MoS fitness function, and six principles |
+| **Domain-Driven Design** (Eric Evans)   | Problem-space design: bounded contexts (`domains[]`), ubiquitous language, fracture planes when contexts overload - not a full tactical DDD modeler |
 | **Team Topologies** 2e (Skelton / Pais) | Topology _intent_ for fast flow: stream-aligned, platform _groupings_, enabling, complicated subsystem; three interaction modes; cognitive load as a design signal |
 
-Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). EDGE terms stay Goal / Bet / Measure of Success / value review in the default views; Product brief, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
+Executive UI uses Team Topologies names for team types and interaction modes (with plain-language teaching). Domains are taught as DDD bounded contexts. EDGE terms stay Goal / Bet / Measure of Success / value review in the default views; Product brief, Tech@Core, PVR, Integrated Backlog, and the six principles appear in glossary, product guide, and Technical mode.
 
 ## 7. Acceptance scenarios (Gherkin)
 

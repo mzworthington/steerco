@@ -332,6 +332,8 @@ describe('detectSteerSpecMismatches', () => {
     expect(mismatch?.relatedTeamIds).toEqual(
       expect.arrayContaining(['team_storefront', 'team_catalog']),
     );
-    expect(mismatch?.headline).toMatch(/peer domain|one team owning one flow/i);
+    expect(mismatch?.headline).toMatch(
+      /peer domain|bounded-context|one team owning one flow|fracture/i,
+    );
   });
 });

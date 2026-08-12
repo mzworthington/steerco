@@ -256,7 +256,7 @@ export function detectSteerSpecMismatches(
       code: 'stream_multi_team',
       severity: 'warning',
       title: 'Multiple stream-aligned teams on one stream',
-      headline: `Stream “${streamTitleById.get(streamId) ?? streamId}” has ${teamIds.length} stream-aligned teams (${names.join(', ')}). Ideal is one team owning one flow - if load is high, fracture into peer domain slices each with its own stream, rather than stacking teams under one stream.`,
+      headline: `Stream “${streamTitleById.get(streamId) ?? streamId}” has ${teamIds.length} stream-aligned teams (${names.join(', ')}). Ideal is one team owning one flow - if load is high, find a fracture plane and split into peer bounded-context slices each with its own stream, rather than stacking teams under one stream.`,
       relatedTeamIds: teamIds,
       relatedStreamIds: [streamId],
     });

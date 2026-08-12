@@ -81,7 +81,7 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     purpose:
       'A grouping of team types that provide a compelling internal product so stream-aligned teams can move faster with less cognitive load.',
     teaching:
-      'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams - not an org chart silo. Scope may be organisation-wide, one vertical, or a single team.',
+      'A good platform is the thinnest viable set of capabilities that removes complexity for stream-aligned teams - its customers. Scope may be organisation-wide, one vertical, or a single team. Platforms sit beside streams, not above them.',
     shape: 'square_dotted',
     shapeTeaching:
       'Square corners with a dotted border - platform as a grouping boundary, not a single silo box.',
@@ -195,26 +195,26 @@ export const GROUPING_KIND_COPY: Record<GroupingKind, { label: string; teaching:
 
 /**
  * Domain, stream, and stream-aligned team are three lenses on the same slice of value -
- * not nested management tiers. See ADR 0008.
+ * not nested management tiers. Domain aligns to Eric Evans' DDD bounded context. See ADR 0008.
  */
 export const TOPOLOGY_LENS_COPY = {
   domain: {
     label: 'Domain',
     lens: 'What',
     teaching:
-      'Business / bounded-context boundary for the problem space. Optional related-context label for filters - never a managerial parent of streams or teams.',
+      'DDD bounded context - the fence around a problem-space slice (concepts + rules). Optional related-context label for filters - never a managerial parent of streams or teams. Prefer ubiquitous language in the title.',
   },
   stream: {
     label: 'Stream',
     lens: 'Flow',
     teaching:
-      'End-to-end flow of change from idea to customer value inside a domain slice. Ideally one stream-aligned team owns one stream.',
+      'End-to-end flow of change from idea to customer value inside a bounded-context slice. Ideally one stream-aligned team owns one stream.',
   },
   team: {
     label: 'Stream-aligned team',
     lens: 'Who',
     teaching:
-      'The cross-functional people empowered to deliver that stream. Platform, enabling, and complicated-subsystem teams sit beside them - not above them.',
+      'The cross-functional people empowered to deliver that stream. They are the customers of platform and enabling teams. Platform, enabling, and complicated-subsystem teams sit beside them - not above them.',
   },
 } as const;
 
@@ -228,5 +228,15 @@ export const TEAM_SIZE_GUIDANCE = {
    */
   oversizedThreshold: 15,
   evolutionTeaching:
-    'When a team is too large or a domain slice is too heavy, fracture into peer sub-domains each with its own stream-aligned team, form a platform grouping, or extract a complicated subsystem - do not add a management layer over the stream.',
+    'When a team is too large or a bounded context is too heavy, find a fracture plane and split into peer sub-domains each with its own stream-aligned team, form a platform grouping, or extract a complicated subsystem - do not add a management layer over the stream.',
+} as const;
+
+/**
+ * How Engineering Directors / VPs relate to topology intent.
+ * HR reporting stays outside the delivery stream.
+ */
+export const LEADERSHIP_OUTSIDE_STREAM_COPY = {
+  title: 'Leadership outside the stream',
+  teaching:
+    'Directors and VPs keep strategy, team shape, and evidence aligned; sense cognitive load; find fracture planes; and sponsor platform / enabling teams. They drive the Inverse Conway Maneuver - reshape teams first so architecture can follow. They are not a topology type on the canvas.',
 } as const;
