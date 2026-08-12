@@ -8,7 +8,7 @@
   "scripts": {
     "prepare": "cd .. && husky",
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build && node scripts/verifyPwaBuild.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit --pretty false && pnpm --filter @steerco/core typecheck",
     "lint": "oxlint src packages/core/src",
@@ -17,6 +17,7 @@
     "test": "vitest run && pnpm --filter @steerco/core test",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:pwa": "node scripts/verifyPwaBuild.mjs",
     "test:lighthouse": "lhci autorun",
     "lighthouse:summary": "node scripts/writeLighthouseSummary.mjs",
     "record:docs-media": "RECORD_DOCS_MEDIA=1 playwright test --config playwright.docs-media.config.ts",
