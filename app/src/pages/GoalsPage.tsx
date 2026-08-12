@@ -7,7 +7,16 @@ import {
   type GoalsModel,
 } from '../application/presentGoals';
 import { lvtPath, parseLvtPath } from '../application/lvtRoutes';
+import {
+  applyAddBet,
+  applyAddGoal,
+  applyAddInitiative,
+  type BetDraft,
+  type GoalDraft,
+  type InitiativeDraft,
+} from '../application/presentLvtChildren';
 import { presentValueTree, type ValueTreeGraphNode } from '../application/presentValueTree';
+import { LvtAddChildForm } from '../components/lvt/LvtAddChildForm';
 import { LvtEditModal } from '../components/lvt/LvtEditModal';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 import { GoalsValueTree } from '../components/goals/GoalsValueTree';
@@ -17,7 +26,7 @@ function productsLinkedToGoal(products: GoalProductCard[], goalId: string): Goal
 }
 
 export function GoalsPage() {
-  const { session } = useWorkspaceSession();
+  const { session, setSession } = useWorkspaceSession();
   const [location, setLocation] = useLocation();
   const [editOpen, setEditOpen] = useState(false);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
@@ -70,12 +79,44 @@ export function GoalsPage() {
     setLocation(lvtPath(kind, id));
   };
 
+  const commitAdd = (
+    applied: { ok: true; value: typeof session.spec; id: string } | { ok: false; error: string },
+    kind: ValueTreeGraphNode['kind'],
+    flash: string,
+  ): { ok: true } | { ok: false; error: string } => {
+    if (!applied.ok) return applied;
+    setSession({ ...session, spec: applied.value });
+    setSavedFlash(flash);
+    openNode(kind, applied.id);
+    return { ok: true };
+  };
+
+  const addGoal = (draft: GoalDraft) =>
+    commitAdd(applyAddGoal(session.spec, draft), 'goal', 'Added goal to this workspace session.');
+
+  const addBet = (outcomeId: string, draft: BetDraft) =>
+    commitAdd(
+      applyAddBet(session.spec, outcomeId, draft),
+      'bet',
+      'Added bet to this workspace session.',
+    );
+
+  const addInitiative = (betId: string, draft: InitiativeDraft) =>
+    commitAdd(
+      applyAddInitiative(session.spec, betId, draft),
+      'initiative',
+      'Added initiative to this workspace session.',
+    );
+
   return (
     <section className="goals-page" data-testid="goals-page">
       <header className="goals-header">
-        <p className="eyebrow">Goals</p>
-        <h1 className="goals-title">Are we getting the goal?</h1>
-        <p className="goals-framing">{model.framingLine}</p>
+        <div className="goals-header-copy">
+          <p className="eyebrow">Goals</p>
+          <h1 className="goals-title">Are we getting the goal?</h1>
+          <p className="goals-framing">{model.framingLine}</p>
+        </div>
+        <LvtAddChildForm kind="goal" layout="header" onAdd={addGoal} />
       </header>
 
       <GoalsValueTree
@@ -91,6 +132,9 @@ export function GoalsPage() {
           model={model}
           onEdit={() => setEditOpen(true)}
           onOpenNode={openNode}
+          onAddGoal={addGoal}
+          onAddBet={addBet}
+          onAddInitiative={addInitiative}
         />
       </div>
 
@@ -118,9 +162,24 @@ type SelectedNodeDetailProps = {
   model: GoalsModel;
   onEdit: () => void;
   onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
+  onAddGoal: (draft: GoalDraft) => { ok: true } | { ok: false; error: string };
+  onAddBet: (outcomeId: string, draft: BetDraft) => { ok: true } | { ok: false; error: string };
+  onAddInitiative: (
+    betId: string,
+    draft: InitiativeDraft,
+  ) => { ok: true } | { ok: false; error: string };
 };
 
-function SelectedNodeDetail({ node, vision, model, onEdit, onOpenNode }: SelectedNodeDetailProps) {
+function SelectedNodeDetail({
+  node,
+  vision,
+  model,
+  onEdit,
+  onOpenNode,
+  onAddGoal,
+  onAddBet,
+  onAddInitiative,
+}: SelectedNodeDetailProps) {
   if (node.kind === 'goal') {
     const outcome = model.outcomes.find((item) => item.id === node.id);
     if (outcome) {
@@ -130,6 +189,7 @@ function SelectedNodeDetail({ node, vision, model, onEdit, onOpenNode }: Selecte
           products={productsLinkedToGoal(model.products, outcome.id)}
           onEdit={onEdit}
           onOpenNode={onOpenNode}
+          onAddBet={(draft) => onAddBet(outcome.id, draft)}
         />
       );
     }
@@ -143,11 +203,20 @@ function SelectedNodeDetail({ node, vision, model, onEdit, onOpenNode }: Selecte
         outcomes={model.outcomes}
         onEdit={onEdit}
         onOpenNode={onOpenNode}
+        onAddGoal={onAddGoal}
       />
     );
   }
 
-  return <TreeNodeDetail node={node} vision={vision} onEdit={onEdit} onOpenNode={onOpenNode} />;
+  return (
+    <TreeNodeDetail
+      node={node}
+      vision={vision}
+      onEdit={onEdit}
+      onOpenNode={onOpenNode}
+      onAddInitiative={node.kind === 'bet' ? (draft) => onAddInitiative(node.id, draft) : undefined}
+    />
+  );
 }
 
 function EditButton({ onEdit }: { onEdit: () => void }) {
@@ -164,12 +233,14 @@ function VisionDetail({
   outcomes,
   onEdit,
   onOpenNode,
+  onAddGoal,
 }: {
   vision: string;
   node: ValueTreeGraphNode;
   outcomes: GoalSection[];
   onEdit: () => void;
   onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
+  onAddGoal: (draft: GoalDraft) => { ok: true } | { ok: false; error: string };
 }) {
   return (
     <article className="goals-section" data-testid="goals-vision-detail">
@@ -195,34 +266,45 @@ function VisionDetail({
       ) : null}
 
       <section className="goals-vision-branches" aria-labelledby="goals-vision-branches-heading">
-        <h3 id="goals-vision-branches-heading" className="goals-bets-title">
-          Goal branches
-        </h3>
-        <p className="goals-list-intro-copy">
-          Select a goal in the tree to open Measures of Success, funded bets, and product briefs
-          linked to that goal.
-        </p>
-        <ul className="goals-vision-goal-list">
-          {outcomes.map((outcome) => (
-            <li key={outcome.id} className="goals-vision-goal-row">
-              <button
-                type="button"
-                className="goals-vision-goal-select"
-                onClick={() => onOpenNode('goal', outcome.id)}
-              >
-                <span>
-                  <p className="goals-bet-title">{outcome.title}</p>
-                  <p className="goals-bet-cue">
-                    {outcome.measures.length} measure
-                    {outcome.measures.length === 1 ? '' : 's'} · {outcome.bets.length} bet
-                    {outcome.bets.length === 1 ? '' : 's'}
-                  </p>
-                </span>
-                <span className="text-ink-muted">{outcome.statusLabel}</span>
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="goals-section-header">
+          <div>
+            <h3 id="goals-vision-branches-heading" className="goals-bets-title">
+              Goal branches
+            </h3>
+            <p className="goals-list-intro-copy">
+              Select a goal in the tree to open Measures of Success, funded bets, and product briefs
+              linked to that goal.
+            </p>
+          </div>
+          <LvtAddChildForm kind="goal" onAdd={onAddGoal} />
+        </div>
+        {outcomes.length === 0 ? (
+          <p className="goals-mos-claims-empty">
+            No goals yet - add the first branch under this vision.
+          </p>
+        ) : (
+          <ul className="goals-vision-goal-list">
+            {outcomes.map((outcome) => (
+              <li key={outcome.id} className="goals-vision-goal-row">
+                <button
+                  type="button"
+                  className="goals-vision-goal-select"
+                  onClick={() => onOpenNode('goal', outcome.id)}
+                >
+                  <span>
+                    <p className="goals-bet-title">{outcome.title}</p>
+                    <p className="goals-bet-cue">
+                      {outcome.measures.length} measure
+                      {outcome.measures.length === 1 ? '' : 's'} · {outcome.bets.length} bet
+                      {outcome.bets.length === 1 ? '' : 's'}
+                    </p>
+                  </span>
+                  <span className="text-ink-muted">{outcome.statusLabel}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </article>
   );
@@ -233,11 +315,13 @@ function GoalBranchDetail({
   products,
   onEdit,
   onOpenNode,
+  onAddBet,
 }: {
   outcome: GoalSection;
   products: GoalProductCard[];
   onEdit: () => void;
   onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
+  onAddBet: (draft: BetDraft) => { ok: true } | { ok: false; error: string };
 }) {
   return (
     <article
@@ -298,39 +382,46 @@ function GoalBranchDetail({
       </ul>
 
       <section className="goals-bets" aria-labelledby={`outcome-bets-${outcome.id}`}>
-        <h3 id={`outcome-bets-${outcome.id}`} className="goals-bets-title">
-          Funded bets
-        </h3>
-        <ul className="goals-bet-list">
-          {outcome.bets.map((bet) => (
-            <li key={bet.id}>
-              <button
-                type="button"
-                className="goals-bet-row"
-                data-status={bet.statusTone}
-                onClick={() => onOpenNode('bet', bet.id)}
-              >
-                <div>
-                  <p className="goals-bet-title">{bet.title}</p>
-                  <p className="goals-bet-cue">{bet.progressCue}</p>
-                </div>
-                <span
-                  className={
-                    bet.statusTone === 'on-track'
-                      ? 'status-on-track'
-                      : bet.statusTone === 'at-risk'
-                        ? 'status-at-risk'
-                        : bet.statusTone === 'stop'
-                          ? 'status-stop'
-                          : 'text-ink-muted'
-                  }
+        <div className="goals-section-header">
+          <h3 id={`outcome-bets-${outcome.id}`} className="goals-bets-title">
+            Funded bets
+          </h3>
+          <LvtAddChildForm kind="bet" onAdd={onAddBet} />
+        </div>
+        {outcome.bets.length === 0 ? (
+          <p className="goals-mos-claims-empty">No bets on this goal yet.</p>
+        ) : (
+          <ul className="goals-bet-list">
+            {outcome.bets.map((bet) => (
+              <li key={bet.id}>
+                <button
+                  type="button"
+                  className="goals-bet-row"
+                  data-status={bet.statusTone}
+                  onClick={() => onOpenNode('bet', bet.id)}
                 >
-                  {bet.statusLabel}
-                </span>
-              </button>
-            </li>
-          ))}
-        </ul>
+                  <div>
+                    <p className="goals-bet-title">{bet.title}</p>
+                    <p className="goals-bet-cue">{bet.progressCue}</p>
+                  </div>
+                  <span
+                    className={
+                      bet.statusTone === 'on-track'
+                        ? 'status-on-track'
+                        : bet.statusTone === 'at-risk'
+                          ? 'status-at-risk'
+                          : bet.statusTone === 'stop'
+                            ? 'status-stop'
+                            : 'text-ink-muted'
+                    }
+                  >
+                    {bet.statusLabel}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <section
@@ -397,11 +488,13 @@ function TreeNodeDetail({
   vision,
   onEdit,
   onOpenNode,
+  onAddInitiative,
 }: {
   node: ValueTreeGraphNode;
   vision: string;
   onEdit: () => void;
   onOpenNode: (kind: ValueTreeGraphNode['kind'], id: string) => void;
+  onAddInitiative?: (draft: InitiativeDraft) => { ok: true } | { ok: false; error: string };
 }) {
   return (
     <article className="goals-section" data-testid={`goals-${node.kind}-detail`}>
@@ -453,6 +546,22 @@ function TreeNodeDetail({
             </div>
           ))}
         </dl>
+      ) : null}
+
+      {onAddInitiative ? (
+        <section className="goals-bet-initiatives" aria-labelledby="goals-bet-initiatives-heading">
+          <div className="goals-section-header">
+            <div>
+              <h3 id="goals-bet-initiatives-heading" className="goals-bets-title">
+                Initiatives
+              </h3>
+              <p className="goals-list-intro-copy">
+                Thin narrative slices toward the Measure of Success - never a dual backlog.
+              </p>
+            </div>
+            <LvtAddChildForm kind="initiative" onAdd={onAddInitiative} />
+          </div>
+        </section>
       ) : null}
 
       {node.href && node.hrefLabel ? (

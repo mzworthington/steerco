@@ -41,6 +41,7 @@ import {
   type OrganisationFlowGraphMember,
   type OrganisationFlowGraphNode,
   type OrganisationFlowOrientation,
+  type OrganisationFlowRelationView,
 } from '../../application/presentOrganisationFlowGraph';
 import { GraphStageExpandButton } from '../graphs/GraphStageExpandButton';
 import { useGraphStageExpand } from '../graphs/useGraphStageExpand';
@@ -216,6 +217,7 @@ export function OrganisationRelationshipGraph({
 }: Props) {
   const [domainFilters, setDomainFilters] = useState<string[]>([]);
   const orientation = 'LR' as const;
+  const [relationView, setRelationView] = useState<OrganisationFlowRelationView>('depends_on');
   const [selection, setSelection] = useState<Selection>(null);
   const [activeDrag, setActiveDrag] = useState<DragMemberPayload | null>(null);
   const [addingPerson, setAddingPerson] = useState(false);
@@ -288,8 +290,9 @@ export function OrganisationRelationshipGraph({
             ? { kind: 'team', id: selection.node.id }
             : { kind: 'edge', id: selection.edge.id }
           : null,
+        relationView,
       ),
-    [graph.edges, selection],
+    [graph.edges, selection, relationView],
   );
 
   const activeNodeSet = useMemo(() => new Set(focus.activeNodeIds), [focus.activeNodeIds]);
@@ -419,6 +422,7 @@ export function OrganisationRelationshipGraph({
       data-expanded={expanded ? 'true' : 'false'}
       data-focus={focus.hasFocus ? 'true' : 'false'}
       data-domain-focus={domainFocusActive ? 'true' : 'false'}
+      data-relation-view={relationView}
     >
       <div className="organisation-flow-graph-toolbar">
         <div
@@ -463,6 +467,50 @@ export function OrganisationRelationshipGraph({
               Clear
             </button>
           ) : null}
+        </div>
+        <div
+          className="organisation-flow-graph-relation-view"
+          role="radiogroup"
+          aria-label="Relationship direction"
+          data-testid="organisation-flow-graph-relation-view"
+        >
+          <span className="organisation-flow-graph-relation-view-label">Relationships</span>
+          <div className="organisation-flow-graph-relation-view-options">
+            <label
+              className={
+                relationView === 'depends_on'
+                  ? 'organisation-flow-graph-relation-view-option is-checked'
+                  : 'organisation-flow-graph-relation-view-option'
+              }
+            >
+              <input
+                type="radio"
+                name="organisation-flow-relation-view"
+                value="depends_on"
+                checked={relationView === 'depends_on'}
+                onChange={() => setRelationView('depends_on')}
+                data-testid="organisation-flow-relation-depends-on"
+              />
+              <span>Depends on</span>
+            </label>
+            <label
+              className={
+                relationView === 'depended_on_by'
+                  ? 'organisation-flow-graph-relation-view-option is-checked'
+                  : 'organisation-flow-graph-relation-view-option'
+              }
+            >
+              <input
+                type="radio"
+                name="organisation-flow-relation-view"
+                value="depended_on_by"
+                checked={relationView === 'depended_on_by'}
+                onChange={() => setRelationView('depended_on_by')}
+                data-testid="organisation-flow-relation-depended-on-by"
+              />
+              <span>Depended on by</span>
+            </label>
+          </div>
         </div>
         <div
           className="organisation-flow-graph-range"
@@ -527,8 +575,9 @@ export function OrganisationRelationshipGraph({
           data-testid="organisation-flow-graph-legend"
         >
           <p className="organisation-flow-graph-legend-intro">
-            Select a team to reveal its dependencies. Lines stay hidden until then so the map stays
-            readable. Date range defaults to today - widen it to include planned or past
+            Select a team to reveal its relationships. Toggle <strong>Depends on</strong> (outbound)
+            or <strong>Depended on by</strong> (inbound). Lines stay hidden until then so the map
+            stays readable. Date range defaults to today - widen it to include planned or past
             interactions.
           </p>
           <ul className="organisation-flow-graph-legend-list">

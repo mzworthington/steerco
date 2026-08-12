@@ -86,22 +86,42 @@ describe('presentOrganisationFlowGraph', () => {
     expect(tb.nodes.every((node) => !node.isExternal && !node.inFocusDomain)).toBe(true);
   });
 
-  it('marks related nodes and edges when a team is selected', () => {
+  it('marks outbound relationships when viewing depends-on for a team', () => {
     const { org, meta } = teamMetaFromOrg();
     const graph = presentOrganisationFlowGraph(org.relationships, meta);
-    const focus = presentOrganisationFlowFocus(graph.edges, {
-      kind: 'team',
-      id: 'team_storefront',
-    });
+    const focus = presentOrganisationFlowFocus(
+      graph.edges,
+      { kind: 'team', id: 'team_storefront' },
+      'depends_on',
+    );
 
     expect(focus.hasFocus).toBe(true);
     expect(focus.activeNodeIds).toContain('team_storefront');
     expect(focus.activeNodeIds.length).toBeGreaterThan(1);
     expect(focus.activeEdgeIds.length).toBeGreaterThan(0);
-    expect(focus.activeEdgeIds.every((id) => id.includes('team_storefront'))).toBe(true);
+    expect(focus.activeEdgeIds.every((id) => id.startsWith('team_storefront-'))).toBe(true);
+    expect(focus.activeEdgeIds.some((id) => id.includes('team_enablement'))).toBe(false);
   });
 
-  it('includes cross-domain dependents when a shared platform is selected', () => {
+  it('marks inbound relationships when viewing depended-on-by for a team', () => {
+    const { org, meta } = teamMetaFromOrg();
+    const graph = presentOrganisationFlowGraph(org.relationships, meta);
+    const focus = presentOrganisationFlowFocus(
+      graph.edges,
+      { kind: 'team', id: 'team_storefront' },
+      'depended_on_by',
+    );
+
+    expect(focus.hasFocus).toBe(true);
+    expect(focus.activeEdgeIds).toContain('team_enablement-facilitation-team_storefront');
+    expect(focus.activeEdgeIds.every((id) => id.endsWith('-team_storefront'))).toBe(true);
+    expect(focus.activeNodeIds).toEqual(
+      expect.arrayContaining(['team_storefront', 'team_enablement']),
+    );
+    expect(focus.activeEdgeIds.some((id) => id.startsWith('team_storefront-'))).toBe(false);
+  });
+
+  it('includes cross-domain dependents when a shared platform is selected as depended-on-by', () => {
     const { org, meta } = teamMetaFromOrg();
     const graph = presentOrganisationFlowGraph(org.relationships, meta);
     const pricingMl = graph.nodes.find((node) => node.id === 'team_pricing_ml');
@@ -112,14 +132,22 @@ describe('presentOrganisationFlowGraph', () => {
       true,
     );
 
-    const focus = presentOrganisationFlowFocus(graph.edges, {
-      kind: 'team',
-      id: 'team_pricing_ml',
-    });
+    const focus = presentOrganisationFlowFocus(
+      graph.edges,
+      { kind: 'team', id: 'team_pricing_ml' },
+      'depended_on_by',
+    );
     expect(focus.activeNodeIds).toEqual(
       expect.arrayContaining(['team_pricing_ml', 'team_pricing']),
     );
     expect(focus.activeEdgeIds).toContain('team_pricing-x_as_a_service-team_pricing_ml');
+
+    const outboundOnly = presentOrganisationFlowFocus(
+      graph.edges,
+      { kind: 'team', id: 'team_pricing_ml' },
+      'depends_on',
+    );
+    expect(outboundOnly.activeEdgeIds).not.toContain('team_pricing-x_as_a_service-team_pricing_ml');
   });
 
   it('filters edges to dependencies active in the selected date range', () => {

@@ -543,67 +543,7 @@ export function applyBetDetailDraft(
   };
 }
 
-export type InitiativeDraft = {
-  title: string;
-  successSignal: string;
-  externalUrl: string;
-};
-
-export type ApplyInitiativeResult = { ok: true; value: SteerSpec } | { ok: false; error: string };
-
-/** Add a thin initiative narrative under a bet (never an execution backlog item). */
-export function applyAddInitiative(
-  spec: SteerSpec,
-  betId: string,
-  draft: InitiativeDraft,
-): ApplyInitiativeResult {
-  if (!spec.spec.bets.some((bet) => bet.id === betId)) {
-    return { ok: false, error: 'That bet is not in the open workspace.' };
-  }
-  const title = draft.title.trim();
-  const successSignal = draft.successSignal.trim();
-  if (!title) {
-    return { ok: false, error: 'Give the initiative a short title.' };
-  }
-  if (!successSignal) {
-    return { ok: false, error: 'Describe what success looks like for this slice.' };
-  }
-
-  const id = uniqueId(
-    'init_',
-    title,
-    (spec.spec.initiatives ?? []).map((item) => item.id),
-  );
-  const externalUrl = draft.externalUrl.trim() || undefined;
-
-  return {
-    ok: true,
-    value: {
-      ...spec,
-      spec: {
-        ...spec.spec,
-        initiatives: [
-          ...(spec.spec.initiatives ?? []),
-          { id, betId, title, successSignal, externalUrl },
-        ],
-      },
-    },
-  };
-}
-
-function uniqueId(prefix: string, seed: string, existing: string[]): string {
-  const base =
-    prefix +
-    seed
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '_')
-      .replace(/^_|_$/g, '')
-      .slice(0, 24);
-  if (!existing.includes(base)) return base || `${prefix}${existing.length + 1}`;
-  let n = 2;
-  while (existing.includes(`${base}_${n}`)) n += 1;
-  return `${base}_${n}`;
-}
+export { applyAddInitiative } from './presentLvtChildren';
 
 /** All metrics across every outcome in the workspace, for "measures this bet moves" pickers. */
 function collectWorkspaceMetrics(

@@ -86,9 +86,11 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-flow-graph-legend')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-detail')).toBeTruthy();
     expect(screen.getByText(/select a team to see people/i)).toBeTruthy();
-    expect(screen.getByText(/select a team to reveal its dependencies/i)).toBeTruthy();
+    expect(screen.getByText(/select a team to reveal its relationships/i)).toBeTruthy();
     expect(screen.getByText(/one team provides; another consumes/i)).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-domain')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-graph-relation-view')).toBeTruthy();
+    expect(screen.getByTestId('organisation-flow-relation-depends-on')).toBeChecked();
     expect(screen.getByTestId('organisation-flow-graph-range')).toBeTruthy();
     const today = new Date();
     const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
@@ -130,6 +132,17 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-team-team_storefront')).toBeTruthy();
     expect(screen.getByTestId('organisation-edit-team-team_storefront')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute('data-focus', 'true');
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute(
+      'data-relation-view',
+      'depends_on',
+    );
+
+    await user.click(screen.getByTestId('organisation-flow-relation-depended-on-by'));
+    expect(screen.getByTestId('organisation-flow-graph')).toHaveAttribute(
+      'data-relation-view',
+      'depended_on_by',
+    );
+    expect(screen.getByTestId('organisation-flow-relation-depended-on-by')).toBeChecked();
 
     await user.click(screen.getByRole('tab', { name: /^timeline$/i }));
     expect(screen.getByTestId('organisation-timeline')).toBeTruthy();

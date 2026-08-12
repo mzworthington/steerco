@@ -150,4 +150,81 @@ describe('GoalsPage', () => {
     expect(screen.queryByTestId('value-tree-expand')).toBeNull();
     expect(screen.getByTestId('value-tree-canvas')).toBeTruthy();
   });
+
+  it('adds a goal from the page header and opens the new goal', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+    const { memory } = renderGoals();
+
+    const headerAdd = screen
+      .getByTestId('goals-page')
+      .querySelector('.goals-header [data-testid="lvt-add-goal-open"]');
+    expect(headerAdd).toBeTruthy();
+    await user.click(headerAdd!);
+    expect(screen.getByTestId('lvt-add-goal-modal')).toBeTruthy();
+    await user.type(screen.getByTestId('lvt-add-goal-title'), 'Ship safer checkouts');
+    await user.type(screen.getByTestId('lvt-add-goal-summary'), 'Fewer payment fails.');
+    expect(screen.getByTestId('lvt-add-goal-status')).toBeTruthy();
+    await user.click(screen.getByTestId('lvt-add-goal-submit'));
+    expect(screen.queryByTestId('lvt-add-goal-modal')).toBeNull();
+
+    expect(memory.history.at(-1)).toMatch(/\/workspace\/lvt\/goal\/out_ship_safer_checkouts/);
+    expect(screen.getByTestId('goals-goal-detail')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /ship safer checkouts/i })).toBeTruthy();
+    expect(screen.getByText(/added goal to this workspace session/i)).toBeTruthy();
+  });
+
+  it('adds a bet under a selected goal', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+    const { memory } = renderGoals('/workspace/lvt/goal/out_promise');
+
+    await user.click(screen.getByTestId('lvt-add-bet-open'));
+    expect(screen.getByTestId('lvt-add-bet-modal')).toBeTruthy();
+    await user.type(screen.getByTestId('lvt-add-bet-title'), 'Promise dashboard slice');
+    await user.type(screen.getByTestId('lvt-add-bet-success'), 'Ops sees miss risk early');
+    await user.type(screen.getByTestId('lvt-add-bet-kill'), 'No adoption in six weeks');
+    expect(screen.getByTestId('lvt-add-bet-status')).toBeTruthy();
+    expect(screen.getByTestId('lvt-add-bet-funding')).toBeTruthy();
+    expect(screen.getByTestId('lvt-add-bet-teams')).toBeTruthy();
+    await user.click(screen.getByTestId('lvt-add-bet-submit'));
+    expect(screen.queryByTestId('lvt-add-bet-modal')).toBeNull();
+
+    expect(memory.history.at(-1)).toMatch(/\/workspace\/lvt\/bet\/bet_promise_dashboard_slic/);
+    expect(screen.getByTestId('goals-bet-detail')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /promise dashboard slice/i })).toBeTruthy();
+  });
+
+  it('adds an initiative under a selected bet', async () => {
+    const user = userEvent.setup();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+    const { memory } = renderGoals('/workspace/lvt/bet/bet_pickup');
+
+    await user.click(screen.getByTestId('lvt-add-initiative-open'));
+    expect(screen.getByTestId('lvt-add-initiative-modal')).toBeTruthy();
+    await user.type(screen.getByTestId('lvt-add-initiative-title'), 'Pilot store cohort');
+    await user.type(
+      screen.getByTestId('lvt-add-initiative-success'),
+      'One cohort completes under 5% miss',
+    );
+    expect(screen.getByTestId('lvt-add-initiative-url')).toBeTruthy();
+    await user.click(screen.getByTestId('lvt-add-initiative-submit'));
+    expect(screen.queryByTestId('lvt-add-initiative-modal')).toBeNull();
+
+    expect(memory.history.at(-1)).toMatch(/\/workspace\/lvt\/initiative\/init_pilot_store_cohort/);
+    expect(screen.getByTestId('goals-initiative-detail')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /pilot store cohort/i })).toBeTruthy();
+  });
 });
