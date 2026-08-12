@@ -1,14 +1,23 @@
-import type { SteerSpec } from '@steerco/core';
+import type { BetKind, FundingStance, SteerSpec } from '@steerco/core';
 
 export type GoalDraft = {
   title: string;
   summary: string;
+  status: SteerSpec['spec']['outcomes'][number]['status'];
 };
 
 export type BetDraft = {
   title: string;
   successSignal: string;
   killCriteria: string;
+  status: SteerSpec['spec']['bets'][number]['status'];
+  fundedTeamIds: string[];
+  metricIds: string[];
+  primaryMetricId: string | null;
+  reviewDate: string;
+  horizon: string;
+  fundingStance: FundingStance | null;
+  kind: BetKind | null;
 };
 
 export type InitiativeDraft = {
@@ -20,11 +29,16 @@ export type InitiativeDraft = {
 export type ApplyAddChildResult =
   { ok: true; value: SteerSpec; id: string } | { ok: false; error: string };
 
+const GOAL_STATUSES: GoalDraft['status'][] = ['on_track', 'at_risk', 'achieved', 'abandoned'];
+
 /** Add a goal (outcome) under the workspace vision. */
 export function applyAddGoal(spec: SteerSpec, draft: GoalDraft): ApplyAddChildResult {
   const title = draft.title.trim();
   if (!title) {
     return { ok: false, error: 'Give the goal a short title.' };
+  }
+  if (!GOAL_STATUSES.includes(draft.status)) {
+    return { ok: false, error: 'Pick a valid goal status.' };
   }
 
   const id = uniqueId(
@@ -47,7 +61,7 @@ export function applyAddGoal(spec: SteerSpec, draft: GoalDraft): ApplyAddChildRe
             id,
             title,
             summary,
-            status: 'on_track',
+            status: draft.status,
             metrics: [],
           },
         ],
@@ -56,7 +70,7 @@ export function applyAddGoal(spec: SteerSpec, draft: GoalDraft): ApplyAddChildRe
   };
 }
 
-/** Add a bet under a goal. New bets start as proposed with empty funding links. */
+/** Add a bet under a goal. Defaults preserve prior create behaviour when optional fields are empty. */
 export function applyAddBet(
   spec: SteerSpec,
   outcomeId: string,
@@ -79,6 +93,17 @@ export function applyAddBet(
     return { ok: false, error: 'Write the kill criteria before funding the bet.' };
   }
 
+  const knownTeams = new Set(spec.spec.teams.map((team) => team.id));
+  const fundedTeamIds = draft.fundedTeamIds.filter((id) => knownTeams.has(id));
+  const knownMetrics = new Set(
+    spec.spec.outcomes.flatMap((outcome) => outcome.metrics.map((metric) => metric.id)),
+  );
+  const metricIds = draft.metricIds.filter((id) => knownMetrics.has(id));
+  const primaryMetricId =
+    draft.primaryMetricId && metricIds.includes(draft.primaryMetricId)
+      ? draft.primaryMetricId
+      : null;
+
   const id = uniqueId(
     'bet_',
     title,
@@ -100,9 +125,14 @@ export function applyAddBet(
             title,
             successSignal,
             killCriteria,
-            status: 'proposed',
-            fundedTeamIds: [],
-            metricIds: [],
+            status: draft.status,
+            fundedTeamIds,
+            metricIds,
+            primaryMetricId,
+            reviewDate: draft.reviewDate.trim() || undefined,
+            horizon: draft.horizon.trim() || undefined,
+            fundingStance: draft.fundingStance ?? undefined,
+            kind: draft.kind ?? undefined,
           },
         ],
       },

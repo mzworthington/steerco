@@ -1279,29 +1279,24 @@
     @apply sm:pt-1;
   }
 
-  .lvt-add-child-form {
-    @apply border-line mt-2 grid max-w-xl gap-3 rounded-xl border bg-white px-4 py-4 sm:grid-cols-2;
+  .lvt-add-child-grid {
+    @apply grid gap-4 sm:grid-cols-2;
   }
 
-  .lvt-add-child-heading {
-    @apply text-ink text-sm font-semibold sm:col-span-2;
+  .lvt-add-child-checklist {
+    @apply grid gap-2;
   }
 
-  .lvt-add-child-field {
-    @apply text-ink-muted flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+  .lvt-add-child-check {
+    @apply text-ink flex items-start gap-2 text-sm font-normal tracking-normal normal-case;
   }
 
-  .lvt-add-child-field input,
-  .lvt-add-child-field textarea {
-    @apply border-line text-ink rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case;
+  .lvt-add-child-check-meta {
+    @apply text-ink-muted;
   }
 
-  .lvt-add-child-actions {
-    @apply flex flex-wrap items-center gap-2 sm:col-span-2;
-  }
-
-  .lvt-add-child-error {
-    @apply text-sm text-red-700 sm:col-span-2;
+  .lvt-add-child-hint {
+    @apply text-ink-muted m-0 text-sm font-normal tracking-normal normal-case;
   }
 
   .value-tree {
@@ -1404,6 +1399,30 @@
 
   .organisation-flow-graph-range-field {
     @apply min-w-[9rem];
+  }
+
+  .organisation-flow-graph-relation-view {
+    @apply flex flex-col gap-2;
+  }
+
+  .organisation-flow-graph-relation-view-label {
+    @apply text-ink-muted text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .organisation-flow-graph-relation-view-options {
+    @apply flex flex-wrap gap-2;
+  }
+
+  .organisation-flow-graph-relation-view-option {
+    @apply border-line text-ink inline-flex cursor-pointer items-center gap-2 rounded-lg border bg-white px-2.5 py-1.5 text-xs font-medium;
+  }
+
+  .organisation-flow-graph-relation-view-option.is-checked {
+    @apply border-ocean bg-ocean-soft text-ocean;
+  }
+
+  .organisation-flow-graph-relation-view-option input {
+    @apply accent-ocean;
   }
 
   .org-flow-handle {

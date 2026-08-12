@@ -12,12 +12,27 @@ const fixtureDir = path.resolve(
 );
 const sampleYaml = readFileSync(path.join(fixtureDir, 'steertree.sample.yaml'), 'utf8');
 
+const emptyBetDraft = {
+  title: '',
+  successSignal: '',
+  killCriteria: '',
+  status: 'proposed' as const,
+  fundedTeamIds: [] as string[],
+  metricIds: [] as string[],
+  primaryMetricId: null as string | null,
+  reviewDate: '',
+  horizon: '',
+  fundingStance: null,
+  kind: null,
+};
+
 describe('applyAddGoal', () => {
   it('adds a goal under the vision on a blank workspace', () => {
     const blank = createBlankSteerSpec();
     const applied = applyAddGoal(blank, {
       title: 'Reliable customer promises',
       summary: 'Customers get what we said, when we said.',
+      status: 'on_track',
     });
     expect(applied.ok).toBe(true);
     if (!applied.ok) return;
@@ -34,10 +49,22 @@ describe('applyAddGoal', () => {
 
   it('rejects an empty title', () => {
     const blank = createBlankSteerSpec();
-    const applied = applyAddGoal(blank, { title: '  ', summary: '' });
+    const applied = applyAddGoal(blank, { title: '  ', summary: '', status: 'on_track' });
     expect(applied.ok).toBe(false);
     if (applied.ok) return;
     expect(applied.error).toMatch(/title/i);
+  });
+
+  it('honours an explicit goal status', () => {
+    const blank = createBlankSteerSpec();
+    const applied = applyAddGoal(blank, {
+      title: 'At risk outcome',
+      summary: '',
+      status: 'at_risk',
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    expect(applied.value.spec.outcomes[0]?.status).toBe('at_risk');
   });
 });
 
@@ -48,6 +75,7 @@ describe('applyAddBet', () => {
     if (!opened.ok) return;
 
     const applied = applyAddBet(opened.value, 'out_promise', {
+      ...emptyBetDraft,
       title: 'Promise dashboard slice',
       successSignal: 'Ops can see miss risk a day early',
       killCriteria: 'No ops adoption after six weeks',
@@ -65,6 +93,48 @@ describe('applyAddBet', () => {
     });
   });
 
+  it('persists optional funding fields when provided', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const teamId = opened.value.spec.teams[0]?.id;
+    const metricId = opened.value.spec.outcomes
+      .flatMap((outcome) => outcome.metrics)
+      .map((metric) => metric.id)[0];
+    expect(teamId).toBeTruthy();
+    expect(metricId).toBeTruthy();
+    if (!teamId || !metricId) return;
+
+    const applied = applyAddBet(opened.value, 'out_promise', {
+      ...emptyBetDraft,
+      title: 'Funded slice',
+      successSignal: 'Signal',
+      killCriteria: 'Kill',
+      status: 'on_track',
+      fundedTeamIds: [teamId],
+      metricIds: [metricId],
+      primaryMetricId: metricId,
+      reviewDate: '2026-09-01',
+      horizon: 'Q3 review',
+      fundingStance: 'explore',
+      kind: 'opportunity',
+    });
+    expect(applied.ok).toBe(true);
+    if (!applied.ok) return;
+    const bet = applied.value.spec.bets.find((item) => item.id === applied.id);
+    expect(bet).toMatchObject({
+      status: 'on_track',
+      fundedTeamIds: [teamId],
+      metricIds: [metricId],
+      primaryMetricId: metricId,
+      reviewDate: '2026-09-01',
+      horizon: 'Q3 review',
+      fundingStance: 'explore',
+      kind: 'opportunity',
+    });
+  });
+
   it('rejects an unknown goal and missing kill criteria', () => {
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -72,6 +142,7 @@ describe('applyAddBet', () => {
 
     expect(
       applyAddBet(opened.value, 'out_missing', {
+        ...emptyBetDraft,
         title: 'x',
         successSignal: 'y',
         killCriteria: 'z',
@@ -79,6 +150,7 @@ describe('applyAddBet', () => {
     ).toBe(false);
 
     const missingKill = applyAddBet(opened.value, 'out_promise', {
+      ...emptyBetDraft,
       title: 'x',
       successSignal: 'y',
       killCriteria: ' ',

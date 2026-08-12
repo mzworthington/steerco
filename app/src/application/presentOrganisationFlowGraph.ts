@@ -82,6 +82,9 @@ export type OrganisationFlowGraphModel = {
 export type OrganisationFlowFocusSelection =
   { kind: 'team'; id: string } | { kind: 'edge'; id: string } | null;
 
+/** Filter team neighbourhood by relationship direction (from selected team's point of view). */
+export type OrganisationFlowRelationView = 'depends_on' | 'depended_on_by';
+
 export type OrganisationFlowFocus = {
   hasFocus: boolean;
   activeNodeIds: string[];
@@ -176,6 +179,7 @@ export function presentOrganisationFlowGraph(
 export function presentOrganisationFlowFocus(
   edges: OrganisationFlowGraphEdge[],
   selection: OrganisationFlowFocusSelection,
+  relationView: OrganisationFlowRelationView = 'depends_on',
 ): OrganisationFlowFocus {
   if (!selection) {
     return { hasFocus: false, activeNodeIds: [], activeEdgeIds: [] };
@@ -193,8 +197,8 @@ export function presentOrganisationFlowFocus(
     };
   }
 
-  const related = edges.filter(
-    (edge) => edge.source === selection.id || edge.target === selection.id,
+  const related = edges.filter((edge) =>
+    relationView === 'depends_on' ? edge.source === selection.id : edge.target === selection.id,
   );
   const activeNodeIds = new Set<string>([selection.id]);
   for (const edge of related) {
