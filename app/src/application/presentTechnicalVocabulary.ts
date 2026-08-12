@@ -63,14 +63,19 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
     ],
     teamTopologies: [
       {
+        term: 'Domain / stream / team',
+        alias: 'domains[] / streams[] / teams[]',
+        note: 'Coplanar lenses (what / flow / who) on one value slice - not a reporting hierarchy. Ideal: one stream-aligned team owns one stream for one domain slice.',
+      },
+      {
         term: 'Stream-aligned',
         alias: 'stream_aligned',
-        note: 'Customer-facing delivery spine; ideally one stream per team.',
+        note: 'Customer-facing delivery spine; ideally one stream per team, and one stream-aligned team per stream.',
       },
       {
         term: 'Platform',
         alias: 'platform + platformScope',
-        note: 'Reduces cognitive load; scope organisation / vertical / team.',
+        note: 'Lateral support that reduces cognitive load; scope organisation / vertical / team - not a manager above streams.',
       },
       {
         term: 'Enabling',
@@ -80,7 +85,12 @@ export function presentTechnicalVocabulary(): TechnicalVocabularyModel {
       {
         term: 'Complicated subsystem',
         alias: 'complicated_subsystem',
-        note: 'Nested in a stream - not a department column.',
+        note: 'Specialty in a stream - not a department column or hierarchy tier.',
+      },
+      {
+        term: 'Team size / complexity',
+        alias: 'team_oversized (~15 members)',
+        note: 'Soft cognitive-load cue (~8 healthy). Evolve by peer stream-aligned splits, platform grouping, or complicated subsystem - not a domain manager layer.',
       },
       {
         term: 'Interaction modes',

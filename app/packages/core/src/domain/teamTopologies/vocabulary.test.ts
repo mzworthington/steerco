@@ -4,7 +4,9 @@ import {
   INTERACTION_MODE_COPY,
   INTERACTION_SHAPE_GEOMETRIES,
   TEAM_SHAPE_GEOMETRIES,
+  TEAM_SIZE_GUIDANCE,
   TEAM_TOPOLOGY_TYPES,
+  TOPOLOGY_LENS_COPY,
   TOPOLOGY_TYPE_COPY,
 } from './vocabulary';
 
@@ -44,6 +46,17 @@ describe('Team Topologies vocabulary', () => {
     expect(INTERACTION_MODE_COPY.facilitation.shape).toBe('circle');
     const shapes = Object.values(INTERACTION_MODE_COPY).map((copy) => copy.shape);
     expect(new Set(shapes).size).toBe(INTERACTION_SHAPE_GEOMETRIES.length);
+  });
+
+  it('teaches domain / stream / team as coplanar lenses with size guidance', () => {
+    expect(TOPOLOGY_LENS_COPY.domain.lens).toBe('What');
+    expect(TOPOLOGY_LENS_COPY.stream.lens).toBe('Flow');
+    expect(TOPOLOGY_LENS_COPY.team.lens).toBe('Who');
+    expect(TOPOLOGY_LENS_COPY.domain.teaching).toMatch(/never a managerial parent/i);
+    expect(TEAM_SIZE_GUIDANCE.idealAround).toBe(8);
+    expect(TEAM_SIZE_GUIDANCE.oversizedThreshold).toBe(15);
+    expect(TEAM_SIZE_GUIDANCE.evolutionTeaching).toMatch(/fracture|platform grouping/i);
+    expect(TOPOLOGY_TYPE_COPY.stream_aligned.teaching).toMatch(/three lenses|not a hierarchy/i);
   });
 });
 

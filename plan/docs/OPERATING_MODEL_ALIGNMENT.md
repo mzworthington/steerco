@@ -36,6 +36,7 @@ Matthew Skelton, Manuel Pais (IT Revolution). Subtitle: _Organizing Business and
 | Groupings (2e clarification)   | https://teamtopologies.com/key-concepts-content/groupings                                                                                                            |
 | Core team types                | https://teamtopologies.com/key-concepts-content/what-are-the-core-team-types-in-team-topologies                                                                      |
 | Beyond the machine (2e themes) | https://teamtopologies.com/news-blogs-newsletters/2025/8/27/beyond-the-machine-team-topologies-second-edition-and-the-future-of-humane-high-performing-organizations |
+| Oversized teams / cognitive load | https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues |
 
 **Diagram / trademark note:** Team Topologies branding and book diagrams have usage rules ([use of book diagrams](https://teamtopologies.com/book)). SteerCo should use plain-language topology labels in the executive UI, not copy proprietary TT artwork without permission.
 
@@ -348,9 +349,19 @@ Suggested mismatch/warnings:
 
 ### B4. Groupings, scope, and flow-of-change layout (2e)
 
-Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams inside value stream groupings**; platform, enabling, and complicated-subsystem teams are scoped support for that flow - not peer columns of equal weight.
+Flat “four type zones” teach vocabulary but do not scale past a handful of teams. At ~20 teams across many domains, the **spine is stream-aligned teams** owning flows of change; platform, enabling, and complicated-subsystem teams are **lateral** support for that flow - not peer columns of equal weight, and not managers above streams.
 
-In Team Topologies 2e, “organise teams under a domain” maps to a **value stream grouping**; a multi-team platform maps to a **platform grouping**. Platforms also have an **audience scope**: organisation-wide, vertical (one value stream), or dedicated to a single stream-aligned team. Complicated-subsystem teams nest **inside** a value stream (team-within-a-team). Enabling teams **fan out** via facilitation to many streams.
+**Domains, streams, and teams are coplanar lenses - not a hierarchy** ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)):
+
+| Lens | Meaning | SteerSpec |
+| ---- | ------- | --------- |
+| **Domain** (what) | Problem-space / bounded-context boundary | `domains[]` labels related streams for filters - never a managerial parent |
+| **Stream** (flow) | End-to-end flow of change inside that slice | `streams[]` |
+| **Stream-aligned team** (who) | People empowered to deliver that flow | `teams[]` with `role: stream_aligned` + ideally one `streamId` |
+
+Ideal: **one stream-aligned team ↔ one stream ↔ one domain slice**. When a vertical is too large for one team’s cognitive load, **fracture into peer sub-domains** (each with its own stream and team) - do not invent a “Domain Team” that manages several “Stream Teams.” Platform, enabling, and complicated-subsystem teams remain beside the spine (XaaS / facilitation), not above it. Directors and VPs sit **outside** the delivery stream: they redesign boundaries, fund platforms/enablers, and watch load - they are not a topology type.
+
+In Team Topologies 2e, “organise teams under a domain” maps to related **value-stream** slices sharing a context label; a multi-team platform maps to a **platform grouping**. Platforms also have an **audience scope**: organisation-wide, vertical (related streams), or dedicated to a single stream-aligned team. Complicated-subsystem teams sit **in** a stream (specialty beside the stream team). Enabling teams **fan out** via facilitation to many streams.
 
 ```yaml
 # Illustrative - not yet in v1alpha1
@@ -406,7 +417,14 @@ Do **not** build a full psychometric survey in Slice 1. Do encode **steering-vis
 | Collaboration tax                | Too many concurrent `works_together` edges                                                    |
 | Missing enablement               | At-risk stream teams with no enabling relationship                                            |
 | Fractal overload                 | Platform grouping with too many internal members _and_ external dependents                    |
-| Size heuristic (later, optional) | Soft warning near Dunbar trust boundary for a single team - never hard HR enforcement         |
+| Team size / complexity           | Soft `team_oversized` when recorded members ≥ ~15 (Dunbar high-trust caution; ~8 is healthy). Headline cites communication paths `n(n-1)/2` and evolution paths - never hard HR enforcement |
+| Shared stream                    | Soft `stream_multi_team` when more than one stream-aligned team owns the same stream - prefer peer domain/stream splits |
+
+**Evolution paths when a team or domain slice is overloaded** ([TT newsletter on oversized teams](https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues)):
+
+1. Form independent stream-aligned teams on peer sub-domains / streams
+2. Form a platform grouping (X-as-a-Service) so streams shed shared complexity
+3. Extract a complicated-subsystem team for deep specialty
 
 Decision-note prompt: “What load are we removing for stream-aligned teams?”
 
@@ -444,6 +462,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 4. Schema: `complicated_subsystem` role
 5. Schema: `groupings` (platform + value_stream) + fractal membership; `platformScope`; CSS `within` nest
 6. Soft “one primary bet per stream team” mismatch
+6b. Soft `team_oversized` + `stream_multi_team`; teach domain/stream/team as coplanar lenses ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md))
 7. Org view **flow-of-change** layout (streams as spine) + as-of date; type zones as teaching/filter
 8. Bet flow overlay (funded teams + related interactions as of date)
 9. Board-pack “Work” page: topology intent + load signals + recommended interaction changes
@@ -482,7 +501,7 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] `relationships[].expectedUntil` (collaboration / facilitation time-box)
 - [x] Member / relationship `effectiveFrom`–`effectiveUntil` windows (capacity + interaction history toward [F13](./prds/F13-topology-timeline.md))
 - [x] Optional `topologyEvents[]` ledger (capacity up/down, relationship added/ended/mode-changed)
-- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`
+- [x] New mismatch codes: `bet_without_mos_link`, `collab_without_end`, `stream_bet_wip`, `enabling_owns_delivery`, `stream_missing_product`, `team_oversized`, `stream_multi_team`
 - [x] Decision notes prefer structured MoS refs in `measured` (keep free text)
 - [x] Member edit UX on organisation page
 
@@ -491,6 +510,8 @@ Empty / teaching states should reflect 2e language without trademark overload:
 - [x] `groupings[]` with `kind: platform | value_stream` and kinded `members[]` (team refs) - value-stream groupings = teams under a shared business domain / value stream; platform groupings = teams under a shared platform purpose
 - [x] `platformScope` on platform teams and platform groupings: `organisation | vertical | team` (who the platform accelerates)
 - [x] Complicated-subsystem nest: optional `within` (team ref to stream-aligned parent) and/or membership in a value-stream grouping for team-within-team layout
+- [x] Soft mismatches when reality breaks ideals (e.g. stream-aligned on multiple streams; multiple stream-aligned teams on one stream; team size ≥ ~15)
+- [x] Domain / stream / team taught as coplanar lenses (what / flow / who), not a reporting hierarchy ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md))
 - [x] Enabling one-to-many: present facilitation fan-out as expected; keep `enabling_owns_delivery` mismatch
 - [x] Org view **flow-of-change canvas** (streams as spine; platforms by scope; CSS nested; enabling beside dependents) - type zones remain teaching/filter
 - [x] **As-of date on org view** - project teams / members / relationships / mismatches at selected date (default today)
@@ -524,9 +545,10 @@ Empty / teaching states should reflect 2e language without trademark overload:
 | `bets[].reviewDate` / `horizon`      | PVR / incremental funding checkpoint | -                                       |
 | `products[]`                           | Product brief           | Stream-aligned product ownership              |
 | `initiatives` (future)               | Initiatives                 | Thin slices (not backlog items)               |
-| `teams` + `role`                     | Delivery capacity / product teams | Team types (incl. complicated subsystem) |
-| `groupings` (future)                 | -                           | Platform + value-stream groupings (domain org; fractal) |
-| `platformScope` / CSS `within` (future) | -                        | Platform audience; complicated subsystem nest |
+| `teams` + `role`                     | Delivery capacity / product teams | Team types (incl. complicated subsystem); size is a cognitive-load signal |
+| `streams` / `domains`                | -                           | Flow + problem-space **lenses** (not hierarchy); ideal 1 team ↔ 1 stream ↔ 1 domain slice |
+| `groupings`                          | -                           | Platform groupings only (lateral support; fractal membership) |
+| `platformScope` / CSS in stream      | -                           | Platform audience; complicated subsystem beside stream team |
 | Flow-of-change + as-of (future UI)   | Who delivers this bet when  | Point-in-time topology intent                 |
 | `relationships` + `mode`             | How we work                 | Interaction modes                             |
 | Capacity / topology windows          | Delivery capacity over time | Shape evolves; collaboration time-boxed       |

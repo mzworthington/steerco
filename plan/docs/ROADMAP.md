@@ -109,6 +109,6 @@ SteerCo delivers an **investment contract** (EDGE value-driven operating model -
 | EDGE beyond LVT (principles, Product brief, Tech@Core, PVR, Integrated Backlogs) | 1 (docs/copy), 1.5 (stance/review cues), 3 (product brief / mix / radar refs) |
 | EDGE lightweight governance / PVR         | 1 (F07/F08), 1.5 (MoS-measured + review dates)                           |
 | Team Topologies types + interaction modes | 1 (F03), 1.5 (time-box + capacity windows), 3 (flow-of-change + groupings + platform scope + CSS nest) |
-| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (fractal zoom + bet flow overlay + timeline) |
+| Cognitive load / fast flow as signals     | 1 (copy), 1.5 (mismatches + dated capacity), 3 (team size + shared-stream + lenses teaching + fractal zoom + bet flow overlay + timeline) |
 | Topology evolution over time              | 1.5 (schema), 3 (F03 as-of + [F13](./prds/F13-topology-timeline.md) view) |
 | Full rationale                            | [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md)           |

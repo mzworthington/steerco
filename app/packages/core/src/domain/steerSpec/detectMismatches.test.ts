@@ -281,4 +281,57 @@ describe('detectSteerSpecMismatches', () => {
     });
     expect(mismatches.some((item) => item.code === 'css_without_stream')).toBe(true);
   });
+
+  it('does not flag team_oversized or stream_multi_team on the sample workspace', () => {
+    const mismatches = detectSteerSpecMismatches(loadSample());
+    expect(mismatches.some((item) => item.code === 'team_oversized')).toBe(false);
+    expect(mismatches.some((item) => item.code === 'stream_multi_team')).toBe(false);
+  });
+
+  it('flags team_oversized when recorded members reach the Dunbar caution threshold', () => {
+    const sample = loadSample();
+    const storefront = sample.spec.teams.find((team) => team.id === 'team_storefront');
+    expect(storefront).toBeTruthy();
+    const extraMembers = Array.from({ length: 10 }, (_, index) => ({
+      id: `mem_extra_${index}`,
+      displayName: `Extra ${index}`,
+      discipline: 'engineering' as const,
+      title: 'Engineer',
+      ftePercent: 100,
+    }));
+    const nextTeams = sample.spec.teams.map((team) =>
+      team.id === 'team_storefront'
+        ? { ...team, members: [...team.members, ...extraMembers] }
+        : team,
+    );
+    const mismatches = detectSteerSpecMismatches({
+      ...sample,
+      spec: { ...sample.spec, teams: nextTeams },
+    });
+    const mismatch = mismatches.find((item) => item.code === 'team_oversized');
+    expect(mismatch).toBeTruthy();
+    expect(mismatch?.severity).toBe('warning');
+    expect(mismatch?.relatedTeamIds).toEqual(['team_storefront']);
+    expect(mismatch?.headline).toMatch(
+      /communication paths|fracture|platform grouping|complicated subsystem/i,
+    );
+  });
+
+  it('flags stream_multi_team when more than one stream-aligned team shares a stream', () => {
+    const sample = loadSample();
+    const nextTeams = sample.spec.teams.map((team) =>
+      team.id === 'team_catalog' ? { ...team, streamIds: ['stream_storefront'] } : team,
+    );
+    const mismatches = detectSteerSpecMismatches({
+      ...sample,
+      spec: { ...sample.spec, teams: nextTeams },
+    });
+    const mismatch = mismatches.find((item) => item.code === 'stream_multi_team');
+    expect(mismatch).toBeTruthy();
+    expect(mismatch?.relatedStreamIds).toEqual(['stream_storefront']);
+    expect(mismatch?.relatedTeamIds).toEqual(
+      expect.arrayContaining(['team_storefront', 'team_catalog']),
+    );
+    expect(mismatch?.headline).toMatch(/peer domain|one team owning one flow/i);
+  });
 });

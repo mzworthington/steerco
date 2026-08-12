@@ -463,7 +463,7 @@ spec:
       displayName: Payments experience
       role: stream_aligned
       provenance: local
-      streamIds: [stream_checkout]
+      streamIds: [stream_payments]
       externalRefs: []
       members:
         - id: mem_payments_ux_1
@@ -1378,7 +1378,7 @@ spec:
       displayName: Shelf availability
       role: stream_aligned
       provenance: local
-      streamIds: [stream_pos]
+      streamIds: [stream_shelf]
       externalRefs: []
       members:
         - id: mem_shelf_1
@@ -1828,6 +1828,8 @@ spec:
       title: Catalog
     - id: stream_checkout
       title: Checkout
+    - id: stream_payments
+      title: Payments
     - id: stream_promotions
       title: Promotions
     - id: stream_warehouse
@@ -1848,6 +1850,8 @@ spec:
       title: Experimentation
     - id: stream_pos
       title: In-store POS
+    - id: stream_shelf
+      title: Shelf availability
     - id: stream_workforce
       title: Store workforce
     - id: stream_b2b
@@ -1858,7 +1862,14 @@ spec:
     - id: domain_commerce
       title: Commerce
       memberStreamIds:
-        [stream_storefront, stream_catalog, stream_checkout, stream_promotions, stream_marketplace]
+        [
+          stream_storefront,
+          stream_catalog,
+          stream_checkout,
+          stream_payments,
+          stream_promotions,
+          stream_marketplace,
+        ]
     - id: domain_fulfilment
       title: Fulfilment
       memberStreamIds: [stream_warehouse, stream_lastmile, stream_inventory]
@@ -1870,7 +1881,7 @@ spec:
       memberStreamIds: [stream_analytics, stream_experimentation]
     - id: domain_stores
       title: Stores
-      memberStreamIds: [stream_pos, stream_workforce]
+      memberStreamIds: [stream_pos, stream_shelf, stream_workforce]
     - id: domain_b2b
       title: B2B
       memberStreamIds: [stream_b2b]

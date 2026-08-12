@@ -76,8 +76,9 @@ Topology **intent** for fast flow ([Team Topologies](https://teamtopologies.com/
 
 - **Four team types** - stream-aligned (the delivery spine), platform, enabling, complicated subsystem
 - **Three interaction modes** - X-as-a-Service, Collaboration, Facilitation
+- **Three lenses** - domain (what), stream (flow), stream-aligned team (who) on the same slice of value - not a reporting hierarchy
 
-Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams - not four flat department columns - with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems nested inside streams; and enabling teams supporting many streams. Mismatch cues (for example platform overload) are calm prompts about flow - not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period. Open the **Timeline** view for capacity deltas and interaction spans over the steering period.
+Platforms exist to reduce cognitive load so stream-aligned teams can go faster. At scale, the map is a **flow of change** across value streams - not four flat department columns - with platforms scoped to the organisation, a vertical, or a single team; complicated subsystems in streams; and enabling teams supporting many streams. Ideal is one stream-aligned team per stream per domain slice; when load or size is too high, fracture into peer sub-domains rather than stacking teams under a “domain manager.” Mismatch cues (platform overload, oversized team, shared stream) are calm prompts about flow - not HR headcount. The shape is a **point in time**; use as-of when reviewing a past steering period. Open the **Timeline** view for capacity deltas and interaction spans over the steering period.
 
 ### Technical mode
 
@@ -97,20 +98,20 @@ The sidebar shows whether the draft differs from what you opened. Review the dif
 
 ## Plain-language glossary
 
-| Term                   | Meaning                                                                            |
-| ---------------------- | ---------------------------------------------------------------------------------- |
-| **Goal**               | Measurable change the organisation wants (LVT); SteerSpec field `outcomes[]`       |
-| **Measure of Success** | Leading indicator in the customer-value fitness function - shapes and funds work   |
-| **Bet**                | Time-boxed investment intended to move a Goal                                      |
-| **Kill criteria**      | Pre-agreed condition that triggers stop or re-scope                                |
-| **Value review (PVR)** | Frequent, data-informed start / stop / continue decision - not annual stage-gate   |
-| **Product mindset**    | Long-lived teams delivering continuous value (vs temporary project teams)          |
-| **Tech@Core**          | Technology as the business engine; tech debt is an investment concern              |
-| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work - SteerCo cues the mix      |
-| **Topology intent**    | Desired team types, groupings, and interaction modes for fast flow (point-in-time) |
-| **Decision note**      | Start / stop / continue / re-scope recommendation with rationale                   |
-| **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`)                   |
-| **Board pack**         | Export for steering distribution                                                   |
+| Term                   | Meaning                                                                                                  |
+| ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Goal**               | Measurable change the organisation wants (LVT); SteerSpec field `outcomes[]`                             |
+| **Measure of Success** | Leading indicator in the customer-value fitness function - shapes and funds work                         |
+| **Bet**                | Time-boxed investment intended to move a Goal                                                            |
+| **Kill criteria**      | Pre-agreed condition that triggers stop or re-scope                                                      |
+| **Value review (PVR)** | Frequent, data-informed start / stop / continue decision - not annual stage-gate                         |
+| **Product mindset**    | Long-lived teams delivering continuous value (vs temporary project teams)                                |
+| **Tech@Core**          | Technology as the business engine; tech debt is an investment concern                                    |
+| **Integrated backlog** | Cross-prioritising strategic, BAU, and capability work - SteerCo cues the mix                            |
+| **Topology intent**    | Desired team types, lenses (domain / stream / team), and interaction modes for fast flow (point-in-time) |
+| **Decision note**      | Start / stop / continue / re-scope recommendation with rationale                                         |
+| **SteerSpec**          | The versionable document behind the workspace (`steertree.yaml`)                                         |
+| **Board pack**         | Export for steering distribution                                                                         |
 
 ## What SteerCo is not
 

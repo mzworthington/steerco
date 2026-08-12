@@ -71,7 +71,7 @@ export const TOPOLOGY_TYPE_COPY: Record<TeamTopologyType, TopologyTypeCopy> = {
     purpose:
       'Aligned to a flow of work from a segment of the business domain - they own outcomes end-to-end (“you build it, you run it”).',
     teaching:
-      'Stream-aligned teams deliver customer value along a value stream. Platforms and specialists exist to accelerate them, not to own their outcomes.',
+      'Domain, stream, and this team are three lenses on one slice of value (what / flow / who) - not a hierarchy. Ideally one team owns one stream for one domain slice. Platforms and specialists sit beside them to cut cognitive load, not above them.',
     shape: 'rounded_horizontal',
     shapeTeaching: 'Horizontal rounded rectangle - end-to-end flow of change toward the customer.',
   },
@@ -167,7 +167,8 @@ export const PLATFORM_SCOPE_COPY: Record<PlatformScope, { label: string; teachin
   },
   vertical: {
     label: 'Vertical',
-    teaching: 'Bound to one domain / vertical (a group of related streams).',
+    teaching:
+      'Bound to one domain / vertical label (related streams) - a filter lens, not a management tier.',
   },
   team: {
     label: 'Single team',
@@ -177,7 +178,8 @@ export const PLATFORM_SCOPE_COPY: Record<PlatformScope, { label: string; teachin
 
 /**
  * Platform groupings only.
- * Streams are first-class (`spec.streams`); domains group streams (`spec.domains`).
+ * Streams are first-class (`spec.streams`); domains label related streams (`spec.domains`).
+ * Domain / stream / stream-aligned team are coplanar lenses (what / flow / who), not a hierarchy.
  * Legacy `value_stream` groupings migrate to streams at parse time.
  */
 export const GROUPING_KINDS = ['platform'] as const;
@@ -190,3 +192,41 @@ export const GROUPING_KIND_COPY: Record<GroupingKind, { label: string; teaching:
     teaching: 'Teams that share a platform purpose - a compelling internal product.',
   },
 };
+
+/**
+ * Domain, stream, and stream-aligned team are three lenses on the same slice of value -
+ * not nested management tiers. See ADR 0008.
+ */
+export const TOPOLOGY_LENS_COPY = {
+  domain: {
+    label: 'Domain',
+    lens: 'What',
+    teaching:
+      'Business / bounded-context boundary for the problem space. Optional related-context label for filters - never a managerial parent of streams or teams.',
+  },
+  stream: {
+    label: 'Stream',
+    lens: 'Flow',
+    teaching:
+      'End-to-end flow of change from idea to customer value inside a domain slice. Ideally one stream-aligned team owns one stream.',
+  },
+  team: {
+    label: 'Stream-aligned team',
+    lens: 'Who',
+    teaching:
+      'The cross-functional people empowered to deliver that stream. Platform, enabling, and complicated-subsystem teams sit beside them - not above them.',
+  },
+} as const;
+
+/** Healthy default headcount band from Team Topologies / Dunbar high-trust guidance. */
+export const TEAM_SIZE_GUIDANCE = {
+  /** Rough sweet spot for a single team (~8). */
+  idealAround: 8,
+  /**
+   * Soft warning when recorded member count reaches this size.
+   * Above ~15, high-trust relationships and communication paths become hard to sustain.
+   */
+  oversizedThreshold: 15,
+  evolutionTeaching:
+    'When a team is too large or a domain slice is too heavy, fracture into peer sub-domains each with its own stream-aligned team, form a platform grouping, or extract a complicated subsystem - do not add a management layer over the stream.',
+} as const;
