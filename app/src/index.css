@@ -1256,6 +1256,10 @@
   }
 
   .goals-header {
+    @apply flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-start sm:justify-between;
+  }
+
+  .goals-header-copy {
     @apply max-w-2xl;
   }
 
@@ -1265,6 +1269,39 @@
 
   .goals-framing {
     @apply text-ink-muted mt-3 text-base leading-relaxed;
+  }
+
+  .lvt-add-child {
+    @apply shrink-0;
+  }
+
+  .lvt-add-child-header {
+    @apply sm:pt-1;
+  }
+
+  .lvt-add-child-form {
+    @apply border-line mt-2 grid max-w-xl gap-3 rounded-xl border bg-white px-4 py-4 sm:grid-cols-2;
+  }
+
+  .lvt-add-child-heading {
+    @apply text-ink text-sm font-semibold sm:col-span-2;
+  }
+
+  .lvt-add-child-field {
+    @apply text-ink-muted flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
+  }
+
+  .lvt-add-child-field input,
+  .lvt-add-child-field textarea {
+    @apply border-line text-ink rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case;
+  }
+
+  .lvt-add-child-actions {
+    @apply flex flex-wrap items-center gap-2 sm:col-span-2;
+  }
+
+  .lvt-add-child-error {
+    @apply text-sm text-red-700 sm:col-span-2;
   }
 
   .value-tree {
