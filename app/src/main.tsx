@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { registerServiceWorker } from './adapters/registerServiceWorker';
 import { App } from './App';
 import './index.css';
 
@@ -13,3 +14,5 @@ createRoot(root).render(
     <App />
   </StrictMode>,
 );
+
+void registerServiceWorker(() => import('virtual:pwa-register'));

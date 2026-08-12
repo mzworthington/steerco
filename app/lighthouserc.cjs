@@ -16,6 +16,8 @@ module.exports = {
         'categories:best-practices': ['warn', { minScore: 0.85 }],
         'categories:seo': ['warn', { minScore: 0.8 }],
         'categories:performance': ['warn', { minScore: 0.45 }],
+        // Lighthouse 12+ no longer ships a PWA category or installability audits.
+        // PWA artifacts are verified by `pnpm build` → scripts/verifyPwaBuild.mjs.
         'categories:pwa': 'off',
       },
     },
