@@ -1,15 +1,37 @@
 # Changelog
 
+## 2026-08-12
+
+### 🚀 Features
+
+- Lvt lanaguage
+- Coplanar domain/stream/team lenses and team-size load signals (#12)
+- Add consistent LVT child creation on Goals (#14)
+- Use modal when adding goals, bets, and initiatives
+- Add installable PWA with vite-plugin-pwa (#16)
+
+### 🧪 Testing
+
+- Cover Goals modal add goal/bet/initiative in critical journey (#15)
+
 ## 2026-08-11
 
 ### 🚀 Features
 
 - Persist preview mode in localStorage until preview=no
 - Team topologies learnings and a first class principle
+- Add initiatives and products to steerSpec with validation and presentation updates
+- Improved graphs
+- Rename to SteerCo
+- Improved front page logo
+- Enhance BrandReveal component and update HomePage layout
+- Remove many views that did not pass user testing
 
 ### 🐛 Bug Fixes
 
 - *(test)* Speed up OrganisationPage tests to stop CI timeouts
+- *(ui)* Improve mobile navigation for workspace and docs (#10)
+- *(ui)* Hide graph full-view control on mobile (#11)
 
 ### 🧰 Maintenance & Dependencies
 
@@ -37,5 +59,5 @@
 ### 🧰 Maintenance & Dependencies
 
 - Fix knip findings and add to precommit
-- Update design system and branding to SteerCo executive theme with new color tokens and assets
+- Update design system and branding to SteerLens executive theme with new color tokens and assets
 - Update brand assets with new logo designs and favicon adjustments
