@@ -39,7 +39,7 @@ describe('presentBoardPack', () => {
     });
     expect(full.decisionNotes?.some((note) => /loyalty/i.test(note.title))).toBe(true);
     expect(full.organisation).not.toBeNull();
-    expect(full.filenameBase).toMatch(/^steerco-board-pack-northwind-q3-alignment-20260810$/);
+    expect(full.filenameBase).toMatch(/^steerco-board-pack-northwind-group-h2-alignment-20260810$/);
 
     const withoutOrg = buildBoardPackPreview(opened.value, {
       ...selection,

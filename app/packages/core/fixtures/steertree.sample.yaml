@@ -1,13 +1,16 @@
 apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
-  name: northwind-q3-alignment
-  title: Northwind Q3 alignment
-  description: >
-    Synthetic ~289-person retailer demo (~269 FTE across 37 teams,
-    6 domains). Not a real programme - sized to exercise as-is capacity, domain filter, interaction graph, and timeline.
+  name: northwind-group-h2-alignment
+  title: Northwind Group H2 alignment
+  description:
+    'Synthetic large-org retailer demo (~450 people across ~60 teams, 12 domains, 36 streams).
+    Includes intentional analysis smells: oversized checkout mega-team, digital experience blob spanning
+    streams/domains, shared POS stream, and elevated collaboration chatter - for the analysis engine.'
 spec:
-  vision: Ship customer promises in days, not weeks, without burning out store and digital teams
+  vision:
+    Ship customer promises in days, not weeks, across digital, store, and B2B - without burning
+    out stream-aligned teams
   techRadarUrl: https://example.com/tech-radar
   outcomes:
     - id: out_promise
@@ -56,10 +59,15 @@ spec:
       killCriteria: Hit rate stays flat after one quarter of staffing and routing changes
       status: on_track
       fundedTeamIds:
-        [team_storefront, team_catalog, team_checkout, team_payments_ux, team_promotions]
-      metricIds: [met_promise_hit]
+        - team_storefront
+        - team_catalog
+        - team_checkout
+        - team_payments_ux
+        - team_promotions
+      metricIds:
+        - met_promise_hit
       primaryMetricId: met_promise_hit
-      reviewDate: 2026-09-30
+      reviewDate: '2026-09-30'
       horizon: Q3 review
       fundingStance: exploit
       kind: opportunity
@@ -71,10 +79,16 @@ spec:
       killCriteria: Fewer than two channels adopt the spine after two quarters
       status: at_risk
       fundedTeamIds:
-        [team_fulfilil, team_warehouse, team_lastmile, team_inventory, team_marketplace]
-      metricIds: [met_cycle_days, met_shared_wait]
+        - team_fulfilil
+        - team_warehouse
+        - team_lastmile
+        - team_inventory
+        - team_marketplace
+      metricIds:
+        - met_cycle_days
+        - met_shared_wait
       primaryMetricId: met_cycle_days
-      reviewDate: 2026-10-15
+      reviewDate: '2026-10-15'
       horizon: Q3 review
       fundingStance: explore
       kind: capability
@@ -85,8 +99,12 @@ spec:
       successSignal: Points balance disputes drop by half
       killCriteria: Promise hit rate unchanged after two quarters while programme cost rises
       status: stop_ready
-      fundedTeamIds: [team_loyalty_cx, team_care, team_returns]
-      metricIds: [met_promise_hit]
+      fundedTeamIds:
+        - team_loyalty_cx
+        - team_care
+        - team_returns
+      metricIds:
+        - met_promise_hit
       fundingStance: sustain
       kind: opportunity
       valueRank: 5
@@ -96,10 +114,16 @@ spec:
       successSignal: No more than one severity-1 POS incident per peak weekend
       killCriteria: Uptime flat after two peak events despite investment
       status: on_track
-      fundedTeamIds: [team_pos, team_workforce, team_shelf, team_identity, team_dev_platform]
-      metricIds: [met_pos_uptime]
+      fundedTeamIds:
+        - team_pos
+        - team_workforce
+        - team_shelf
+        - team_identity
+        - team_dev_platform
+      metricIds:
+        - met_pos_uptime
       primaryMetricId: met_pos_uptime
-      reviewDate: 2026-11-15
+      reviewDate: '2026-11-15'
       horizon: Q4 review
       fundingStance: exploit
       kind: capability
@@ -110,20 +134,42 @@ spec:
       successSignal: Experiment cycle time under one week for top funnels
       killCriteria: Insight unused in two consecutive quarterly reviews
       status: on_track
-      fundedTeamIds: [team_analytics, team_experimentation, team_b2b]
-      metricIds: [met_promise_hit]
+      fundedTeamIds:
+        - team_analytics
+        - team_experimentation
+        - team_b2b
+      metricIds:
+        - met_promise_hit
       primaryMetricId: met_promise_hit
-      reviewDate: 2026-12-01
+      reviewDate: '2026-12-01'
       horizon: Q4 review
       fundingStance: explore
       kind: opportunity
       valueRank: 4
+    - id: bet_blob_split
+      outcomeId: out_promise
+      title: Split the digital experience blob
+      successSignal: Storefront and care each have a dedicated stream-aligned team with clear fracture planes
+      killCriteria: Cycle time stays flat after one quarter of coaching and fracture-plane work
+      status: at_risk
+      fundedTeamIds:
+        - team_digital_blob
+        - team_enablement
+      metricIds:
+        - met_cycle_days
+      primaryMetricId: met_cycle_days
+      reviewDate: '2026-10-15'
+      horizon: H2 review
+      fundingStance: explore
+      kind: capability
+      valueRank: 6
   teams:
     - id: team_storefront
       displayName: Storefront experience
       role: stream_aligned
       provenance: local
-      streamIds: [stream_storefront]
+      streamIds:
+        - stream_storefront
       externalRefs: []
       members:
         - id: mem_storefront_em
@@ -136,8 +182,8 @@ spec:
           discipline: engineering
           title: Senior Engineer
           ftePercent: 100
-          effectiveFrom: 2026-04-01
-          effectiveUntil: 2026-09-30
+          effectiveFrom: '2026-04-01'
+          effectiveUntil: '2026-09-30'
         - id: mem_storefront_pm
           displayName: Casey Morales
           discipline: product
@@ -177,7 +223,8 @@ spec:
       displayName: Catalog and discovery
       role: stream_aligned
       provenance: local
-      streamIds: [stream_catalog]
+      streamIds:
+        - stream_catalog
       externalRefs: []
       members:
         - id: mem_catalog_em
@@ -229,7 +276,8 @@ spec:
       displayName: Pricing engine
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_storefront]
+      streamIds:
+        - stream_storefront
       externalRefs: []
       members:
         - id: mem_pricing_ic
@@ -361,10 +409,11 @@ spec:
           title: Engineer
           ftePercent: 100
     - id: team_checkout
-      displayName: Checkout journey
+      displayName: Checkout mega-team
       role: stream_aligned
       provenance: local
-      streamIds: [stream_checkout]
+      streamIds:
+        - stream_checkout
       externalRefs: []
       members:
         - id: mem_checkout_1
@@ -412,11 +461,47 @@ spec:
           discipline: engineering
           title: QA Engineer
           ftePercent: 100
+        - id: mem_checkout_extra_0
+          displayName: Alex Ng
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_extra_1
+          displayName: Blake Brooks
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_extra_2
+          displayName: Casey Hahn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_extra_3
+          displayName: Dana Moore
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_extra_4
+          displayName: Eden Rao
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_extra_5
+          displayName: Finn Wu
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_checkout_extra_6
+          displayName: Gray Ali
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
     - id: team_promotions
       displayName: Offers and promotions
       role: stream_aligned
       provenance: local
-      streamIds: [stream_promotions]
+      streamIds:
+        - stream_promotions
       externalRefs: []
       members:
         - id: mem_promotions_1
@@ -463,7 +548,8 @@ spec:
       displayName: Payments experience
       role: stream_aligned
       provenance: local
-      streamIds: [stream_payments]
+      streamIds:
+        - stream_payments
       externalRefs: []
       members:
         - id: mem_payments_ux_1
@@ -505,7 +591,8 @@ spec:
       displayName: Marketplace seller
       role: stream_aligned
       provenance: local
-      streamIds: [stream_marketplace]
+      streamIds:
+        - stream_marketplace
       externalRefs: []
       members:
         - id: mem_marketplace_1
@@ -552,7 +639,8 @@ spec:
       displayName: Search ranking
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_catalog]
+      streamIds:
+        - stream_catalog
       externalRefs: []
       members:
         - id: mem_search_rank_1
@@ -589,7 +677,8 @@ spec:
       displayName: Fraud signals
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_checkout]
+      streamIds:
+        - stream_checkout
       externalRefs: []
       members:
         - id: mem_fraud_1
@@ -678,7 +767,8 @@ spec:
       displayName: Warehouse flow
       role: stream_aligned
       provenance: local
-      streamIds: [stream_warehouse]
+      streamIds:
+        - stream_warehouse
       externalRefs: []
       members:
         - id: mem_warehouse_1
@@ -735,7 +825,8 @@ spec:
       displayName: Last-mile routing
       role: stream_aligned
       provenance: local
-      streamIds: [stream_lastmile]
+      streamIds:
+        - stream_lastmile
       externalRefs: []
       members:
         - id: mem_lastmile_1
@@ -787,7 +878,8 @@ spec:
       displayName: Inventory truth
       role: stream_aligned
       provenance: local
-      streamIds: [stream_inventory]
+      streamIds:
+        - stream_inventory
       externalRefs: []
       members:
         - id: mem_inventory_1
@@ -839,7 +931,8 @@ spec:
       displayName: Routing engine
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_lastmile]
+      streamIds:
+        - stream_lastmile
       externalRefs: []
       members:
         - id: mem_routing_engine_1
@@ -876,7 +969,8 @@ spec:
       displayName: Demand forecast
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_inventory]
+      streamIds:
+        - stream_inventory
       externalRefs: []
       members:
         - id: mem_forecast_1
@@ -950,7 +1044,8 @@ spec:
       displayName: Care workspace
       role: stream_aligned
       provenance: local
-      streamIds: [stream_care]
+      streamIds:
+        - stream_care
       externalRefs: []
       members:
         - id: mem_care_1
@@ -1007,7 +1102,8 @@ spec:
       displayName: Returns experience
       role: stream_aligned
       provenance: local
-      streamIds: [stream_returns]
+      streamIds:
+        - stream_returns
       externalRefs: []
       members:
         - id: mem_returns_1
@@ -1054,7 +1150,8 @@ spec:
       displayName: Loyalty experience
       role: stream_aligned
       provenance: local
-      streamIds: [stream_loyalty]
+      streamIds:
+        - stream_loyalty
       externalRefs: []
       members:
         - id: mem_loyalty_cx_1
@@ -1101,7 +1198,8 @@ spec:
       displayName: Care assistants
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_care]
+      streamIds:
+        - stream_care
       externalRefs: []
       members:
         - id: mem_care_assist_1
@@ -1133,7 +1231,8 @@ spec:
       displayName: Customer analytics
       role: stream_aligned
       provenance: local
-      streamIds: [stream_analytics]
+      streamIds:
+        - stream_analytics
       externalRefs: []
       members:
         - id: mem_analytics_1
@@ -1185,7 +1284,8 @@ spec:
       displayName: Experimentation
       role: stream_aligned
       provenance: local
-      streamIds: [stream_experimentation]
+      streamIds:
+        - stream_experimentation
       externalRefs: []
       members:
         - id: mem_experimentation_1
@@ -1232,7 +1332,8 @@ spec:
       displayName: Feature store
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_analytics]
+      streamIds:
+        - stream_analytics
       externalRefs: []
       members:
         - id: mem_feature_store_1
@@ -1269,7 +1370,8 @@ spec:
       displayName: Point of sale
       role: stream_aligned
       provenance: local
-      streamIds: [stream_pos]
+      streamIds:
+        - stream_pos
       externalRefs: []
       members:
         - id: mem_pos_1
@@ -1326,7 +1428,8 @@ spec:
       displayName: Store workforce tools
       role: stream_aligned
       provenance: local
-      streamIds: [stream_workforce]
+      streamIds:
+        - stream_workforce
       externalRefs: []
       members:
         - id: mem_workforce_1
@@ -1378,7 +1481,8 @@ spec:
       displayName: Shelf availability
       role: stream_aligned
       provenance: local
-      streamIds: [stream_shelf]
+      streamIds:
+        - stream_shelf
       externalRefs: []
       members:
         - id: mem_shelf_1
@@ -1420,7 +1524,8 @@ spec:
       displayName: B2B ordering
       role: stream_aligned
       provenance: local
-      streamIds: [stream_b2b]
+      streamIds:
+        - stream_b2b
       externalRefs: []
       members:
         - id: mem_b2b_1
@@ -1472,7 +1577,8 @@ spec:
       displayName: B2B pricing rules
       role: complicated_subsystem
       provenance: local
-      streamIds: [stream_b2b]
+      streamIds:
+        - stream_b2b
       externalRefs: []
       members:
         - id: mem_b2b_pricing_1
@@ -1821,6 +1927,989 @@ spec:
           discipline: design
           title: Product Designer
           ftePercent: 100
+    - id: team_pos_legacy
+      displayName: POS legacy till team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_pos
+      members:
+        - id: mem_pos_legacy_0
+          displayName: Logan Iyer
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_pos_legacy_1
+          displayName: Morgan Lee
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_pos_legacy_2
+          displayName: Noa Ortiz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pos_legacy_3
+          displayName: Oakley Rao
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pos_legacy_4
+          displayName: Parker Ueda
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_pos_legacy_5
+          displayName: Quinn Ng
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_pos_legacy_6
+          displayName: Remy Chen
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_digital_blob
+      displayName: Digital experience blob
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_storefront
+        - stream_care
+      members:
+        - id: mem_digital_blob_0
+          displayName: Val Shah
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_digital_blob_1
+          displayName: Winter Voss
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_digital_blob_2
+          displayName: Xander Patel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_digital_blob_3
+          displayName: Yael Ali
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_digital_blob_4
+          displayName: Zion Evans
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_digital_blob_5
+          displayName: Alex Hahn
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_digital_blob_6
+          displayName: Blake Kim
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_digital_blob_7
+          displayName: Casey Nair
+          discipline: other
+          title: Analyst
+          ftePercent: 100
+        - id: mem_digital_blob_8
+          displayName: Dana Quinn
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_digital_blob_9
+          displayName: Eden Tran
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_digital_blob_10
+          displayName: Finn Wu
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+    - id: team_accounts
+      displayName: Accounts team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_accounts
+      members:
+        - id: mem_accounts_0
+          displayName: Oakley Lee
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_accounts_1
+          displayName: Parker Ortiz
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_accounts_2
+          displayName: Quinn Rao
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_accounts_3
+          displayName: Remy Ueda
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_accounts_4
+          displayName: Sage Ng
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_accounts_5
+          displayName: Taylor Chen
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_accounts_6
+          displayName: Uma Diaz
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_authz
+      displayName: Authorisation team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_authz
+      members:
+        - id: mem_authz_0
+          displayName: Val Shah
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_authz_1
+          displayName: Winter Voss
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_authz_2
+          displayName: Xander Patel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_authz_3
+          displayName: Yael Ali
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_authz_4
+          displayName: Zion Evans
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_authz_5
+          displayName: Alex Hahn
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_authz_6
+          displayName: Blake Kim
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_authz_7
+          displayName: Casey Nair
+          discipline: other
+          title: Analyst
+          ftePercent: 100
+    - id: team_ci
+      displayName: Continuous delivery team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_ci
+      members:
+        - id: mem_ci_0
+          displayName: Casey Singh
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_ci_1
+          displayName: Dana Brooks
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_ci_2
+          displayName: Eden Ford
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_ci_3
+          displayName: Finn Iyer
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_ci_4
+          displayName: Gray Lee
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_ci_5
+          displayName: Harper Ortiz
+          discipline: design
+          title: Designer
+          ftePercent: 100
+    - id: team_runtime
+      displayName: Runtime platform team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_runtime
+      members:
+        - id: mem_runtime_0
+          displayName: Jordan Garcia
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_runtime_1
+          displayName: Kai Jones
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_runtime_2
+          displayName: Logan Moore
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_runtime_3
+          displayName: Morgan Park
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_runtime_4
+          displayName: Noa Shah
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_runtime_5
+          displayName: Oakley Voss
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_runtime_6
+          displayName: Parker Patel
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_observability_product
+      displayName: Observability product team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_observability_product
+      members:
+        - id: mem_observability_product_0
+          displayName: Quinn Nair
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_observability_product_1
+          displayName: Remy Quinn
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_observability_product_2
+          displayName: Sage Tran
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_observability_product_3
+          displayName: Taylor Wu
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_observability_product_4
+          displayName: Uma Singh
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_observability_product_5
+          displayName: Val Brooks
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_observability_product_6
+          displayName: Winter Ford
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_observability_product_7
+          displayName: Xander Iyer
+          discipline: other
+          title: Analyst
+          ftePercent: 100
+    - id: team_campaigns
+      displayName: Campaigns team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_campaigns
+      members:
+        - id: mem_campaigns_0
+          displayName: Xander Ueda
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_campaigns_1
+          displayName: Yael Ng
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_campaigns_2
+          displayName: Zion Chen
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_campaigns_3
+          displayName: Alex Diaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_campaigns_4
+          displayName: Blake Garcia
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_campaigns_5
+          displayName: Casey Jones
+          discipline: design
+          title: Designer
+          ftePercent: 100
+    - id: team_content
+      displayName: Content team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_content
+      members:
+        - id: mem_content_0
+          displayName: Eden Ali
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_content_1
+          displayName: Finn Evans
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_content_2
+          displayName: Gray Hahn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_content_3
+          displayName: Harper Kim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_content_4
+          displayName: Indigo Nair
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_content_5
+          displayName: Jordan Quinn
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_content_6
+          displayName: Kai Tran
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_personalisation
+      displayName: Personalisation team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_personalisation
+      members:
+        - id: mem_personalisation_0
+          displayName: Logan Iyer
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_personalisation_1
+          displayName: Morgan Lee
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_personalisation_2
+          displayName: Noa Ortiz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_personalisation_3
+          displayName: Oakley Rao
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_personalisation_4
+          displayName: Parker Ueda
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_personalisation_5
+          displayName: Quinn Ng
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_personalisation_6
+          displayName: Remy Chen
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_personalisation_7
+          displayName: Sage Diaz
+          discipline: other
+          title: Analyst
+          ftePercent: 100
+    - id: team_billing
+      displayName: Billing team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_billing
+      members:
+        - id: mem_billing_0
+          displayName: Sage Park
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_billing_1
+          displayName: Taylor Shah
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_billing_2
+          displayName: Uma Voss
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_billing_3
+          displayName: Val Patel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_billing_4
+          displayName: Winter Ali
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_billing_5
+          displayName: Xander Evans
+          discipline: design
+          title: Designer
+          ftePercent: 100
+    - id: team_settlements
+      displayName: Settlements team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_settlements
+      members:
+        - id: mem_settlements_0
+          displayName: Zion Wu
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_settlements_1
+          displayName: Alex Singh
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_settlements_2
+          displayName: Blake Brooks
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_settlements_3
+          displayName: Casey Ford
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_settlements_4
+          displayName: Dana Iyer
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_settlements_5
+          displayName: Eden Lee
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_settlements_6
+          displayName: Finn Ortiz
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_tax
+      displayName: Tax team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_tax
+      members:
+        - id: mem_tax_0
+          displayName: Gray Diaz
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_tax_1
+          displayName: Harper Garcia
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_tax_2
+          displayName: Indigo Jones
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_tax_3
+          displayName: Jordan Moore
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_tax_4
+          displayName: Kai Park
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_tax_5
+          displayName: Logan Shah
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_tax_6
+          displayName: Morgan Voss
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_tax_7
+          displayName: Noa Patel
+          discipline: other
+          title: Analyst
+          ftePercent: 100
+    - id: team_compliance
+      displayName: Compliance team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_compliance
+      members:
+        - id: mem_compliance_0
+          displayName: Noa Kim
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_compliance_1
+          displayName: Oakley Nair
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_compliance_2
+          displayName: Parker Quinn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_compliance_3
+          displayName: Quinn Tran
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_compliance_4
+          displayName: Remy Wu
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_compliance_5
+          displayName: Sage Singh
+          discipline: design
+          title: Designer
+          ftePercent: 100
+    - id: team_privacy
+      displayName: Privacy team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_privacy
+      members:
+        - id: mem_privacy_0
+          displayName: Uma Rao
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_privacy_1
+          displayName: Val Ueda
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_privacy_2
+          displayName: Winter Ng
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_privacy_3
+          displayName: Xander Chen
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_privacy_4
+          displayName: Yael Diaz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_privacy_5
+          displayName: Zion Garcia
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_privacy_6
+          displayName: Alex Jones
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_localisation
+      displayName: Localisation team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_localisation
+      members:
+        - id: mem_localisation_0
+          displayName: Blake Patel
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_localisation_1
+          displayName: Casey Ali
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_localisation_2
+          displayName: Dana Evans
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_localisation_3
+          displayName: Eden Hahn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_localisation_4
+          displayName: Finn Kim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_localisation_5
+          displayName: Gray Nair
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_localisation_6
+          displayName: Harper Quinn
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+        - id: mem_localisation_7
+          displayName: Indigo Tran
+          discipline: other
+          title: Analyst
+          ftePercent: 100
+    - id: team_intl_catalogue
+      displayName: Intl catalogue team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_intl_catalogue
+      members:
+        - id: mem_intl_catalogue_0
+          displayName: Indigo Ford
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_intl_catalogue_1
+          displayName: Jordan Iyer
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_intl_catalogue_2
+          displayName: Kai Lee
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_intl_catalogue_3
+          displayName: Logan Ortiz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_intl_catalogue_4
+          displayName: Morgan Rao
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_intl_catalogue_5
+          displayName: Noa Ueda
+          discipline: design
+          title: Designer
+          ftePercent: 100
+    - id: team_crossborder
+      displayName: Cross-border team
+      role: stream_aligned
+      provenance: local
+      externalRefs: []
+      streamIds:
+        - stream_crossborder
+      members:
+        - id: mem_crossborder_0
+          displayName: Parker Moore
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_crossborder_1
+          displayName: Quinn Park
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_crossborder_2
+          displayName: Remy Shah
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_crossborder_3
+          displayName: Sage Voss
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_crossborder_4
+          displayName: Taylor Patel
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_crossborder_5
+          displayName: Uma Ali
+          discipline: design
+          title: Designer
+          ftePercent: 100
+        - id: mem_crossborder_6
+          displayName: Val Evans
+          discipline: quality
+          title: QA Engineer
+          ftePercent: 100
+    - id: team_api_gateway
+      displayName: API gateway platform
+      role: platform
+      provenance: local
+      externalRefs: []
+      streamIds: []
+      members:
+        - id: mem_api_gateway_0
+          displayName: Winter Tran
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_api_gateway_1
+          displayName: Xander Wu
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_api_gateway_2
+          displayName: Yael Singh
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_api_gateway_3
+          displayName: Zion Brooks
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_api_gateway_4
+          displayName: Alex Ford
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_api_gateway_5
+          displayName: Blake Iyer
+          discipline: design
+          title: Designer
+          ftePercent: 100
+      platformScope: organisation
+    - id: team_data_platform
+      displayName: Data platform
+      role: platform
+      provenance: local
+      externalRefs: []
+      streamIds: []
+      members:
+        - id: mem_data_platform_0
+          displayName: Blake Patel
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_data_platform_1
+          displayName: Casey Ali
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_data_platform_2
+          displayName: Dana Evans
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_data_platform_3
+          displayName: Eden Hahn
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_data_platform_4
+          displayName: Finn Kim
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_data_platform_5
+          displayName: Gray Nair
+          discipline: design
+          title: Designer
+          ftePercent: 100
+      platformScope: organisation
+    - id: team_mobile_platform
+      displayName: Mobile platform
+      role: platform
+      provenance: local
+      externalRefs: []
+      streamIds: []
+      members:
+        - id: mem_mobile_platform_0
+          displayName: Gray Diaz
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_mobile_platform_1
+          displayName: Harper Garcia
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_mobile_platform_2
+          displayName: Indigo Jones
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_mobile_platform_3
+          displayName: Jordan Moore
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_mobile_platform_4
+          displayName: Kai Park
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_mobile_platform_5
+          displayName: Logan Shah
+          discipline: design
+          title: Designer
+          ftePercent: 100
+      platformScope: vertical
+    - id: team_sre_enable
+      displayName: SRE coaching
+      role: enabling
+      provenance: local
+      externalRefs: []
+      streamIds: []
+      members:
+        - id: mem_sre_enable_0
+          displayName: Logan Iyer
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_sre_enable_1
+          displayName: Morgan Lee
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_sre_enable_2
+          displayName: Noa Ortiz
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_sre_enable_3
+          displayName: Oakley Rao
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_sre_enable_4
+          displayName: Parker Ueda
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_sre_enable_5
+          displayName: Quinn Ng
+          discipline: design
+          title: Designer
+          ftePercent: 100
+    - id: team_product_ops_enable
+      displayName: Product ops coaching
+      role: enabling
+      provenance: local
+      externalRefs: []
+      streamIds: []
+      members:
+        - id: mem_product_ops_enable_0
+          displayName: Quinn Nair
+          discipline: leadership
+          title: Engineering Manager
+          ftePercent: 100
+        - id: mem_product_ops_enable_1
+          displayName: Remy Quinn
+          discipline: product
+          title: Product Manager
+          ftePercent: 100
+        - id: mem_product_ops_enable_2
+          displayName: Sage Tran
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_product_ops_enable_3
+          displayName: Taylor Wu
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_product_ops_enable_4
+          displayName: Uma Singh
+          discipline: engineering
+          title: Engineer
+          ftePercent: 100
+        - id: mem_product_ops_enable_5
+          displayName: Val Brooks
+          discipline: design
+          title: Designer
+          ftePercent: 100
   streams:
     - id: stream_storefront
       title: Storefront
@@ -1858,69 +2947,166 @@ spec:
       title: B2B ordering
     - id: stream_marketplace
       title: Marketplace
+    - id: stream_identity
+      title: Identity
+    - id: stream_accounts
+      title: Accounts
+    - id: stream_authz
+      title: Authorisation
+    - id: stream_ci
+      title: Continuous delivery
+    - id: stream_runtime
+      title: Runtime platform
+    - id: stream_observability_product
+      title: Observability product
+    - id: stream_campaigns
+      title: Campaigns
+    - id: stream_content
+      title: Content
+    - id: stream_personalisation
+      title: Personalisation
+    - id: stream_billing
+      title: Billing
+    - id: stream_settlements
+      title: Settlements
+    - id: stream_tax
+      title: Tax
+    - id: stream_fraud
+      title: Fraud
+    - id: stream_compliance
+      title: Compliance
+    - id: stream_privacy
+      title: Privacy
+    - id: stream_localisation
+      title: Localisation
+    - id: stream_intl_catalogue
+      title: Intl catalogue
+    - id: stream_crossborder
+      title: Cross-border
   domains:
     - id: domain_commerce
       title: Commerce
       memberStreamIds:
-        [
-          stream_storefront,
-          stream_catalog,
-          stream_checkout,
-          stream_payments,
-          stream_promotions,
-          stream_marketplace,
-        ]
+        - stream_storefront
+        - stream_catalog
+        - stream_checkout
+        - stream_payments
+        - stream_promotions
+        - stream_marketplace
     - id: domain_fulfilment
       title: Fulfilment
-      memberStreamIds: [stream_warehouse, stream_lastmile, stream_inventory]
+      memberStreamIds:
+        - stream_warehouse
+        - stream_lastmile
+        - stream_inventory
     - id: domain_customer
       title: Customer
-      memberStreamIds: [stream_care, stream_returns, stream_loyalty]
+      memberStreamIds:
+        - stream_care
+        - stream_returns
+        - stream_loyalty
     - id: domain_data
-      title: 'Data & insights'
-      memberStreamIds: [stream_analytics, stream_experimentation]
+      title: Data & insights
+      memberStreamIds:
+        - stream_analytics
+        - stream_experimentation
     - id: domain_stores
       title: Stores
-      memberStreamIds: [stream_pos, stream_shelf, stream_workforce]
+      memberStreamIds:
+        - stream_pos
+        - stream_shelf
+        - stream_workforce
     - id: domain_b2b
       title: B2B
-      memberStreamIds: [stream_b2b]
+      memberStreamIds:
+        - stream_b2b
+    - id: domain_identity
+      title: Identity & accounts
+      memberStreamIds:
+        - stream_identity
+        - stream_accounts
+        - stream_authz
+    - id: domain_platform
+      title: Developer platform
+      memberStreamIds:
+        - stream_ci
+        - stream_runtime
+        - stream_observability_product
+    - id: domain_marketing
+      title: Marketing technology
+      memberStreamIds:
+        - stream_campaigns
+        - stream_content
+        - stream_personalisation
+    - id: domain_finance
+      title: Finance operations
+      memberStreamIds:
+        - stream_billing
+        - stream_settlements
+        - stream_tax
+    - id: domain_risk
+      title: Risk & trust
+      memberStreamIds:
+        - stream_fraud
+        - stream_compliance
+        - stream_privacy
+    - id: domain_intl
+      title: International
+      memberStreamIds:
+        - stream_localisation
+        - stream_intl_catalogue
+        - stream_crossborder
   groupings:
     - id: grp_fulfilil_platform
       kind: platform
       title: Fulfilment platform
       platformScope: organisation
-      memberTeamIds: [team_fulfilil]
+      memberTeamIds:
+        - team_fulfilil
     - id: grp_identity_platform
       kind: platform
       title: Identity platform
       platformScope: organisation
-      memberTeamIds: [team_identity]
+      memberTeamIds:
+        - team_identity
     - id: grp_dev_platform
       kind: platform
       title: Developer platform
       platformScope: organisation
-      memberTeamIds: [team_dev_platform]
+      memberTeamIds:
+        - team_dev_platform
     - id: grp_observability_platform
       kind: platform
       title: Observability platform
       platformScope: organisation
-      memberTeamIds: [team_observability]
+      memberTeamIds:
+        - team_observability
     - id: grp_commerce_data
       kind: platform
       title: Commerce data platform
       platformScope: vertical
-      memberTeamIds: [team_commerce_data]
+      memberTeamIds:
+        - team_commerce_data
     - id: grp_fulfil_messaging
       kind: platform
       title: Fulfilment messaging
       platformScope: vertical
-      memberTeamIds: [team_fulfil_messaging]
+      memberTeamIds:
+        - team_fulfil_messaging
     - id: grp_pricing_ml
       kind: platform
       title: Pricing ML runtime
       platformScope: team
-      memberTeamIds: [team_pricing_ml]
+      memberTeamIds:
+        - team_pricing_ml
+    - id: grp_core_platforms
+      title: Core platforms
+      kind: platform
+      memberTeamIds:
+        - team_api_gateway
+        - team_data_platform
+        - team_mobile_platform
+        - team_dev_platform
   relationships:
     - fromTeamId: team_storefront
       toTeamId: team_fulfilil
@@ -1934,12 +3120,12 @@ spec:
     - fromTeamId: team_enablement
       toTeamId: team_storefront
       mode: facilitation
-      effectiveFrom: 2026-07-01
-      expectedUntil: 2026-12-31
+      effectiveFrom: '2026-07-01'
+      expectedUntil: '2026-12-31'
     - fromTeamId: team_enablement
       toTeamId: team_catalog
       mode: facilitation
-      expectedUntil: 2026-12-31
+      expectedUntil: '2026-12-31'
     - fromTeamId: team_checkout
       toTeamId: team_fulfilil
       mode: x_as_a_service
@@ -2030,14 +3216,14 @@ spec:
     - fromTeamId: team_lastmile
       toTeamId: team_routing_engine
       mode: collaboration
-      expectedUntil: 2026-12-31
+      expectedUntil: '2026-12-31'
     - fromTeamId: team_inventory
       toTeamId: team_forecast
       mode: x_as_a_service
     - fromTeamId: team_care
       toTeamId: team_care_assist
       mode: collaboration
-      expectedUntil: 2026-11-30
+      expectedUntil: '2026-11-30'
     - fromTeamId: team_analytics
       toTeamId: team_feature_store
       mode: x_as_a_service
@@ -2047,67 +3233,99 @@ spec:
     - fromTeamId: team_analytics
       toTeamId: team_commerce_data
       mode: collaboration
-      expectedUntil: 2026-10-31
+      expectedUntil: '2026-10-31'
     - fromTeamId: team_pos
       toTeamId: team_inventory
       mode: collaboration
-      expectedUntil: 2026-12-31
+      expectedUntil: '2026-12-31'
     - fromTeamId: team_shelf
       toTeamId: team_inventory
       mode: x_as_a_service
     - fromTeamId: team_enablement
       toTeamId: team_checkout
       mode: facilitation
-      expectedUntil: 2026-12-31
+      expectedUntil: '2026-12-31'
     - fromTeamId: team_enablement
       toTeamId: team_warehouse
       mode: facilitation
-      expectedUntil: 2026-09-30
+      expectedUntil: '2026-09-30'
     - fromTeamId: team_security_enable
       toTeamId: team_checkout
       mode: facilitation
-      expectedUntil: 2026-11-30
+      expectedUntil: '2026-11-30'
     - fromTeamId: team_security_enable
       toTeamId: team_identity
       mode: facilitation
-      expectedUntil: 2026-11-30
+      expectedUntil: '2026-11-30'
     - fromTeamId: team_security_enable
       toTeamId: team_pos
       mode: facilitation
-      expectedUntil: 2026-11-30
+      expectedUntil: '2026-11-30'
     - fromTeamId: team_quality_enable
       toTeamId: team_storefront
       mode: facilitation
-      expectedUntil: 2026-10-31
+      expectedUntil: '2026-10-31'
     - fromTeamId: team_quality_enable
       toTeamId: team_returns
       mode: facilitation
-      expectedUntil: 2026-10-31
+      expectedUntil: '2026-10-31'
     - fromTeamId: team_architecture_enable
       toTeamId: team_dev_platform
       mode: facilitation
-      expectedUntil: 2027-03-31
+      expectedUntil: '2027-03-31'
     - fromTeamId: team_architecture_enable
       toTeamId: team_fulfilil
       mode: facilitation
-      expectedUntil: 2027-03-31
+      expectedUntil: '2027-03-31'
     - fromTeamId: team_architecture_enable
       toTeamId: team_commerce_data
       mode: facilitation
-      expectedUntil: 2027-03-31
+      expectedUntil: '2027-03-31'
+    - fromTeamId: team_digital_blob
+      toTeamId: team_storefront
+      mode: collaboration
+      effectiveFrom: '2026-07-01'
+      expectedUntil: '2026-12-31'
+    - fromTeamId: team_digital_blob
+      toTeamId: team_care
+      mode: collaboration
+      effectiveFrom: '2026-07-01'
+      expectedUntil: '2026-12-31'
+    - fromTeamId: team_digital_blob
+      toTeamId: team_catalog
+      mode: collaboration
+      effectiveFrom: '2026-07-01'
+      expectedUntil: '2026-12-31'
+    - fromTeamId: team_digital_blob
+      toTeamId: team_checkout
+      mode: collaboration
+      effectiveFrom: '2026-07-01'
+      expectedUntil: '2026-12-31'
+    - fromTeamId: team_digital_blob
+      toTeamId: team_returns
+      mode: collaboration
+      effectiveFrom: '2026-07-01'
+      expectedUntil: '2026-12-31'
   decisionNotes:
     - id: dec_loyalty_stop
       betId: bet_loyalty
       recommendation: stop
       title: Stop Loyalty ledger unification?
-      why: >
-        Coordination cost rose without a measurable lift in promise hit rate.
-        Dispute handling improved in pockets but not enough to justify the programme tax.
+      why:
+        'Coordination cost rose without a measurable lift in promise hit rate. Dispute handling improved
+        in pockets but not enough to justify the programme tax.
+
+        '
       measured:
         - Promise hit rate unchanged quarter-on-quarter
         - Shared-service wait time increased
-      measuredMetricIds: [met_promise_hit, met_shared_wait]
-      affectedTeamIds: [team_fulfilil, team_storefront, team_loyalty_cx]
+      measuredMetricIds:
+        - met_promise_hit
+        - met_shared_wait
+      affectedTeamIds:
+        - team_fulfilil
+        - team_storefront
+        - team_loyalty_cx
       nextStep: Pause rollout; keep the existing ledger for two quarters and revisit
   evidence:
     - id: ev_sample
@@ -2128,21 +3346,25 @@ spec:
       note: Synthetic POS uptime for the Stores domain bet
   topologyEvents:
     - id: evt_storefront_capacity
-      at: 2026-04-01
+      at: '2026-04-01'
       kind: capacity_up
       summary: Jordan Blake joined Storefront experience for peak delivery (+100% FTE)
-      teamIds: [team_storefront]
+      teamIds:
+        - team_storefront
     - id: evt_enablement_facilitation
-      at: 2026-07-01
+      at: '2026-07-01'
       kind: relationship_added
       summary: Ways of working started a time-boxed facilitation partnership with Storefront through Q4
-      teamIds: [team_enablement, team_storefront]
+      teamIds:
+        - team_enablement
+        - team_storefront
       relationshipKey: team_enablement::team_storefront
     - id: evt_storefront_capacity_down
-      at: 2026-09-30
+      at: '2026-09-30'
       kind: capacity_down
       summary: Jordan Blake left Storefront experience after the seasonal surge (−100% FTE)
-      teamIds: [team_storefront]
+      teamIds:
+        - team_storefront
   initiatives:
     - id: init_pickup_routing
       betId: bet_pickup
@@ -2159,5 +3381,8 @@ spec:
       problem: Shoppers cannot trust delivery and pickup estimates across channels
       customers: Digital and store shoppers placing multi-channel orders
       nonGoals: Building a full OMS replacement or owning carrier contracts
-      outcomeIds: [out_promise]
-      betIds: [bet_pickup, bet_fulfilil]
+      outcomeIds:
+        - out_promise
+      betIds:
+        - bet_pickup
+        - bet_fulfilil

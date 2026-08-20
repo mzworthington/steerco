@@ -15,7 +15,7 @@ function loadSample(): SteerSpec {
 }
 
 describe('detectSteerSpecMismatches', () => {
-  it('does not flag platform_overload on the sample workspace', () => {
+  it('does not flag platform_overload on the large-org sample (fan-in kept under threshold)', () => {
     const mismatches = detectSteerSpecMismatches(loadSample());
     expect(mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
   });
@@ -117,21 +117,37 @@ describe('detectSteerSpecMismatches', () => {
 
   it('flags collab_without_end when a facilitation relationship has no expectedUntil', () => {
     const sample = loadSample();
+    const enablementRels = sample.spec.relationships.filter(
+      (rel) => rel.fromTeamId === 'team_enablement' && rel.mode === 'facilitation',
+    );
+    expect(enablementRels.length).toBeGreaterThan(0);
+    const target = enablementRels[0]!;
     const nextRelationships = sample.spec.relationships.map((rel) =>
-      rel.fromTeamId === 'team_enablement' ? { ...rel, expectedUntil: undefined } : rel,
+      rel.fromTeamId === target.fromTeamId &&
+      rel.toTeamId === target.toTeamId &&
+      rel.mode === target.mode
+        ? { ...rel, expectedUntil: undefined }
+        : rel,
     );
     const mismatches = detectSteerSpecMismatches({
       ...sample,
       spec: { ...sample.spec, relationships: nextRelationships },
     });
-    const mismatch = mismatches.find((item) => item.code === 'collab_without_end');
+    const mismatch = mismatches.find(
+      (item) =>
+        item.code === 'collab_without_end' &&
+        item.relatedTeamIds?.includes('team_enablement') &&
+        item.relatedTeamIds?.includes(target.toTeamId),
+    );
     expect(mismatch).toBeTruthy();
     expect(mismatch?.severity).toBe('warning');
-    expect(mismatch?.relatedTeamIds).toEqual(['team_enablement', 'team_storefront']);
   });
 
   it('flags collab_without_end for collaboration mode too, but not for x_as_a_service', () => {
     const sample = loadSample();
+    const before = detectSteerSpecMismatches(sample).filter(
+      (item) => item.code === 'collab_without_end',
+    ).length;
     const nextRelationships = [
       ...sample.spec.relationships,
       { fromTeamId: 'team_storefront', toTeamId: 'team_catalog', mode: 'collaboration' as const },
@@ -141,8 +157,14 @@ describe('detectSteerSpecMismatches', () => {
       spec: { ...sample.spec, relationships: nextRelationships },
     });
     const collabMismatches = mismatches.filter((item) => item.code === 'collab_without_end');
-    expect(collabMismatches).toHaveLength(1);
-    expect(collabMismatches[0]?.relatedTeamIds).toEqual(['team_storefront', 'team_catalog']);
+    expect(collabMismatches.length).toBe(before + 1);
+    expect(
+      collabMismatches.some(
+        (item) =>
+          item.relatedTeamIds?.includes('team_storefront') &&
+          item.relatedTeamIds?.includes('team_catalog'),
+      ),
+    ).toBe(true);
   });
 
   it('does not flag collab_without_end when expectedUntil is present', () => {
@@ -161,7 +183,13 @@ describe('detectSteerSpecMismatches', () => {
         killCriteria: 'Kill criteria',
         status: 'on_track' as const,
         fundedTeamIds: ['team_storefront'],
-        metricIds: [],
+        metricIds: ['met_promise_hit'],
+        primaryMetricId: null,
+        reviewDate: undefined,
+        horizon: undefined,
+        fundingStance: undefined,
+        kind: undefined,
+        valueRank: undefined,
       },
       {
         id: 'bet_extra_2',
@@ -172,17 +200,42 @@ describe('detectSteerSpecMismatches', () => {
         status: 'proposed' as const,
         fundedTeamIds: ['team_storefront'],
         metricIds: [],
+        primaryMetricId: null,
+        reviewDate: undefined,
+        horizon: undefined,
+        fundingStance: undefined,
+        kind: undefined,
+        valueRank: undefined,
+      },
+      {
+        id: 'bet_extra_3',
+        outcomeId: 'out_promise',
+        title: 'Extra bet three',
+        successSignal: 'Signal',
+        killCriteria: 'Kill criteria',
+        status: 'at_risk' as const,
+        fundedTeamIds: ['team_storefront'],
+        metricIds: ['met_promise_hit'],
+        primaryMetricId: null,
+        reviewDate: undefined,
+        horizon: undefined,
+        fundingStance: undefined,
+        kind: undefined,
+        valueRank: undefined,
       },
     ];
     const mismatches = detectSteerSpecMismatches({
       ...sample,
       spec: { ...sample.spec, bets: [...sample.spec.bets, ...extraBets] },
     });
-    const mismatch = mismatches.find((item) => item.code === 'stream_bet_wip');
+    const mismatch = mismatches.find(
+      (item) => item.code === 'stream_bet_wip' && item.relatedTeamIds?.includes('team_storefront'),
+    );
     expect(mismatch).toBeTruthy();
     expect(mismatch?.severity).toBe('warning');
-    expect(mismatch?.relatedTeamIds).toEqual(['team_storefront']);
-    expect(mismatch?.relatedBetIds).toEqual(['bet_pickup', 'bet_extra_1', 'bet_extra_2']);
+    expect(mismatch?.relatedBetIds).toEqual(
+      expect.arrayContaining(['bet_extra_1', 'bet_extra_2', 'bet_extra_3']),
+    );
   });
 
   it('does not flag stream_bet_wip at exactly the threshold', () => {
@@ -193,7 +246,7 @@ describe('detectSteerSpecMismatches', () => {
   it('flags enabling_owns_delivery when an enabling team is the sole funded team on an active bet', () => {
     const sample = loadSample();
     const nextBets = sample.spec.bets.map((bet) =>
-      bet.id === 'bet_loyalty' ? { ...bet, fundedTeamIds: ['team_enablement'] } : bet,
+      bet.id === 'bet_insights' ? { ...bet, fundedTeamIds: ['team_enablement'] } : bet,
     );
     const mismatches = detectSteerSpecMismatches({
       ...sample,
@@ -203,14 +256,14 @@ describe('detectSteerSpecMismatches', () => {
     expect(mismatch).toBeTruthy();
     expect(mismatch?.severity).toBe('warning');
     expect(mismatch?.relatedTeamIds).toEqual(['team_enablement']);
-    expect(mismatch?.relatedBetIds).toEqual(['bet_loyalty']);
+    expect(mismatch?.relatedBetIds).toEqual(['bet_insights']);
   });
 
   it('does not flag enabling_owns_delivery when an enabling team co-funds a bet with others', () => {
     const sample = loadSample();
     const nextBets = sample.spec.bets.map((bet) =>
-      bet.id === 'bet_loyalty'
-        ? { ...bet, fundedTeamIds: ['team_enablement', 'team_fulfilil'] }
+      bet.id === 'bet_insights'
+        ? { ...bet, fundedTeamIds: ['team_enablement', 'team_analytics'] }
         : bet,
     );
     const mismatches = detectSteerSpecMismatches({
@@ -223,7 +276,7 @@ describe('detectSteerSpecMismatches', () => {
   it('does not flag enabling_owns_delivery for a proposed bet solely funded by an enabling team', () => {
     const sample = loadSample();
     const nextBets = sample.spec.bets.map((bet) =>
-      bet.id === 'bet_loyalty'
+      bet.id === 'bet_insights'
         ? { ...bet, status: 'proposed' as const, fundedTeamIds: ['team_enablement'] }
         : bet,
     );
@@ -254,7 +307,7 @@ describe('detectSteerSpecMismatches', () => {
     expect(mismatch?.relatedTeamIds).toEqual(['team_catalog']);
   });
 
-  it('flags stream_aligned_multi_stream when a stream-aligned team spans multiple streams', () => {
+  it('flags team_breadth (via detectSteerSpecMismatches) when a stream-aligned team spans multiple streams', () => {
     const sample = loadSample();
     const nextTeams = sample.spec.teams.map((team) =>
       team.id === 'team_storefront'
@@ -265,9 +318,9 @@ describe('detectSteerSpecMismatches', () => {
       ...sample,
       spec: { ...sample.spec, teams: nextTeams },
     });
-    const mismatch = mismatches.find((item) => item.code === 'stream_aligned_multi_stream');
+    const mismatch = mismatches.find((item) => item.code === 'team_breadth');
     expect(mismatch).toBeTruthy();
-    expect(mismatch?.headline).toMatch(/multiple streams|cognitive load|one stream/i);
+    expect(mismatch?.headline).toMatch(/stream|bounded-context|cognitive load|breadth/i);
   });
 
   it('flags css_without_stream when a complicated subsystem has no stream', () => {
@@ -282,10 +335,12 @@ describe('detectSteerSpecMismatches', () => {
     expect(mismatches.some((item) => item.code === 'css_without_stream')).toBe(true);
   });
 
-  it('does not flag team_oversized or stream_multi_team on the sample workspace', () => {
+  it('flags intentional size, breadth, chatter, and shared-stream smells on the large-org sample', () => {
     const mismatches = detectSteerSpecMismatches(loadSample());
-    expect(mismatches.some((item) => item.code === 'team_oversized')).toBe(false);
-    expect(mismatches.some((item) => item.code === 'stream_multi_team')).toBe(false);
+    expect(mismatches.some((item) => item.code === 'team_oversized')).toBe(true);
+    expect(mismatches.some((item) => item.code === 'team_breadth')).toBe(true);
+    expect(mismatches.some((item) => item.code === 'team_chatter')).toBe(true);
+    expect(mismatches.some((item) => item.code === 'stream_multi_team')).toBe(true);
   });
 
   it('flags team_oversized when recorded members reach the Dunbar caution threshold', () => {
@@ -319,18 +374,13 @@ describe('detectSteerSpecMismatches', () => {
 
   it('flags stream_multi_team when more than one stream-aligned team shares a stream', () => {
     const sample = loadSample();
-    const nextTeams = sample.spec.teams.map((team) =>
-      team.id === 'team_catalog' ? { ...team, streamIds: ['stream_storefront'] } : team,
+    // Sample already includes POS shared by two stream-aligned teams; assert that smell.
+    const mismatch = detectSteerSpecMismatches(sample).find(
+      (item) => item.code === 'stream_multi_team' && item.relatedStreamIds?.includes('stream_pos'),
     );
-    const mismatches = detectSteerSpecMismatches({
-      ...sample,
-      spec: { ...sample.spec, teams: nextTeams },
-    });
-    const mismatch = mismatches.find((item) => item.code === 'stream_multi_team');
     expect(mismatch).toBeTruthy();
-    expect(mismatch?.relatedStreamIds).toEqual(['stream_storefront']);
     expect(mismatch?.relatedTeamIds).toEqual(
-      expect.arrayContaining(['team_storefront', 'team_catalog']),
+      expect.arrayContaining(['team_pos', 'team_pos_legacy']),
     );
     expect(mismatch?.headline).toMatch(
       /peer domain|bounded-context|one team owning one flow|fracture/i,

@@ -19,18 +19,18 @@ describe('presentSteeringOverview', () => {
 
     const model = presentSteeringOverview(opened.value, { periodLabel: 'Sample period' });
 
-    expect(model.workspaceTitle).toBe('Northwind Q3 alignment');
+    expect(model.workspaceTitle).toBe('Northwind Group H2 alignment');
     expect(model.periodLabel).toBe('Sample period');
     expect(model.vision).toMatch(/customer promises/i);
     expect(model.alignmentSummary).toMatch(/one recommended to stop/i);
-    expect(model.alignmentSummary).toMatch(/five bets funded/i);
-    expect(model.statusCounts).toEqual({ onTrack: 3, atRisk: 1, stop: 1 });
+    expect(model.alignmentSummary).toMatch(/six bets funded/i);
+    expect(model.statusCounts).toEqual({ onTrack: 3, atRisk: 2, stop: 1 });
     expect(model.decisionNotesSummary).toMatch(/stop recommendation/i);
     expect(model.decisionNotes[0]?.title).toMatch(/loyalty ledger/i);
     expect(model.nextReviewSummary).toMatch(/review/i);
 
     const bets = model.outcomes.flatMap((outcome) => outcome.bets);
-    expect(bets).toHaveLength(5);
+    expect(bets).toHaveLength(6);
     expect(bets.map((bet) => bet.status)).toEqual(
       expect.arrayContaining(['At risk', 'On track', 'Stop']),
     );
@@ -40,18 +40,15 @@ describe('presentSteeringOverview', () => {
     ];
     expect(visible.join('\n')).not.toMatch(/team_fulfilil|out_promise|entityRef/i);
     expect(model.portfolioMix.hint).toMatch(/opportunity|capability|explore|exploit|sustain/i);
-    expect(model.wipMismatchCount).toBeGreaterThanOrEqual(0);
-    if (model.wipMismatchCount > 0) {
-      expect(model.wipMismatchSummary).toMatch(/topology cue/i);
-    } else {
-      expect(model.wipMismatchSummary).toBeNull();
-    }
+    expect(model.wipMismatchCount).toBeGreaterThan(0);
+    expect(model.wipMismatchSummary).toMatch(/topology cue/i);
     expect(model.valueStack.map((bet) => bet.id)).toEqual([
       'bet_pickup',
       'bet_fulfilil',
       'bet_pos_resilience',
       'bet_insights',
       'bet_loyalty',
+      'bet_blob_split',
     ]);
     expect(model.valueStack[0]?.outcomeTitle).toMatch(/reliable customer promises/i);
   });
@@ -67,6 +64,7 @@ describe('presentSteeringOverview', () => {
       'bet_fulfilil',
       'bet_pos_resilience',
       'bet_insights',
+      'bet_blob_split',
     ]);
     expect(reordered.ok).toBe(true);
     if (!reordered.ok) return;
@@ -80,6 +78,7 @@ describe('presentSteeringOverview', () => {
       bet_fulfilil: 3,
       bet_pos_resilience: 4,
       bet_insights: 5,
+      bet_blob_split: 6,
     });
     expect(presentSteeringOverview(reordered.value).valueStack.map((bet) => bet.id)).toEqual([
       'bet_loyalty',
@@ -87,6 +86,7 @@ describe('presentSteeringOverview', () => {
       'bet_fulfilil',
       'bet_pos_resilience',
       'bet_insights',
+      'bet_blob_split',
     ]);
   });
 

@@ -40,11 +40,11 @@ Optional `teams[].members[]` records display name, `discipline` (engineering | d
 apiVersion: steerco.dev/v1alpha1
 kind: SteerTree
 metadata:
-  name: northwind-q3-alignment
-  title: Northwind Q3 alignment
-  description: Synthetic demo workspace - fictional retailer
+  name: northwind-group-h2-alignment
+  title: Northwind Group H2 alignment
+  description: Synthetic large-org demo workspace - fictional retailer with intentional analysis smells
 spec:
-  vision: Ship customer promises in days, not weeks, without burning out store and digital teams
+  vision: Ship customer promises in days, not weeks, across digital, store, and B2B - without burning out stream-aligned teams
   outcomes:
     - id: out_promise
       title: Reliable customer promises
@@ -143,12 +143,16 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 | `stream_bet_wip`            | Stream-aligned team funded on more than 2 active bets (`proposed`/`on_track`/`at_risk`/`stop_ready`, warning) | 1.5   |
 | `enabling_owns_delivery`    | Enabling team is the *only* funded team on a bet with status `on_track`/`at_risk`/`stop_ready` (warning)  | 1.5   |
 | `stream_missing_product`    | Stream-aligned team has members recorded but no `product` discipline FTE (warning)                       | 1.5   |
-| `team_oversized`            | Team has recorded `members[]` count ≥ 15 (Dunbar high-trust caution; ~8 is healthy) - cognitive-load / evolution cue, not HR | 3 |
+| `team_oversized`            | Adapter alias for analysis `team_size`: recorded `members[]` count ≥ 15 (Dunbar high-trust caution; ~8 is healthy) - cognitive-load / evolution cue, not HR | 3 |
+| `team_size`                 | Analysis engine: team size ≥ threshold (same signal as `team_oversized`) | 3 |
+| `team_breadth`              | Analysis engine: team spans too many streams and/or domains (problem-space breadth) | 3 |
+| `team_chatter`              | Analysis engine: within-team communication paths `n(n-1)/2` above threshold | 3 |
+| `team_chatter_external`     | Analysis engine: too many concurrent collaboration / facilitation edges | 3 |
 | `stream_multi_team`         | More than one stream-aligned team shares the same stream - prefer peer domain/stream splits              | 3     |
 
 Landed Slice 1.5 additive fields: `bets[].metricIds`/`primaryMetricId` (MoS links), `bets[].reviewDate`/`horizon` (review cadence), `bets[].fundingStance`/`kind`, `relationships[].expectedUntil`/`effectiveFrom`/`effectiveUntil`, `teams[].members[].discipline` (mix signal), `teams[].members[].effectiveFrom`/`effectiveUntil`, `decisionNotes[].measuredMetricIds`, and `spec.topologyEvents[]` ([F13](./prds/F13-topology-timeline.md)). `discipline` is required when a member is listed; temporal windows and MoS links remain optional with empty/undefined defaults so older Slice 1 fixtures still parse after migration.
 
-Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`withinTeamId`~~ landed then refined - **streams** + **domains** are first-class **coplanar lenses** with teams (what / flow / who - [ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)); teams use `streamIds[]` (ideal: one stream per stream-aligned team, and one stream-aligned team per stream); complicated subsystems sit in a stream (not under a team); platform `groupings[]` remain lateral. Soft mismatches advise when reality breaks the ideal (`team_oversized`, `stream_multi_team`, …). Remaining: polish. UI: flow-of-change + as-of + bet flow overlay + F13 timeline deep-dive landed. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md) · [F03](./prds/F03-how-work-is-organised.md).
+Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`withinTeamId`~~ landed then refined - **streams** + **domains** are first-class **coplanar lenses** with teams (what / flow / who - [ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)); teams use `streamIds[]` (ideal: one stream per stream-aligned team, and one stream-aligned team per stream); complicated subsystems sit in a stream (not under a team); platform `groupings[]` remain lateral. Soft mismatches advise when reality breaks the ideal (`team_size`/`team_oversized`, `team_breadth`, `team_chatter`, `stream_multi_team`, …) via the analysis engine ([ADR 0009](../../docs/ADRs/0009-analysis-engine-team-portfolio-advice.md)). Remaining: polish. UI: flow-of-change + as-of + bet flow overlay + F13 timeline deep-dive landed. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md) · [F03](./prds/F03-how-work-is-organised.md).
 
 ## Mapping to foreign shapes (later)
 

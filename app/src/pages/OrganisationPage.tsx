@@ -132,29 +132,38 @@ export function OrganisationPage() {
         </p>
       ) : null}
 
-      {model.mismatches.length > 0 ? (
+      {model.adviceByFamily.length > 0 ? (
         <section
           className="organisation-mismatches"
           aria-labelledby="organisation-mismatches-heading"
           data-testid="organisation-mismatches"
         >
           <h2 id="organisation-mismatches-heading" className="organisation-section-title">
-            Operating-model checks
+            Analysis & advice
           </h2>
-          <ul>
-            {model.mismatches.map((mismatch, index) => (
-              <li
-                key={`${mismatch.code}-${index}`}
-                className={
-                  mismatch.severity === 'error'
-                    ? 'organisation-mismatch organisation-mismatch-error'
-                    : 'organisation-mismatch'
-                }
-              >
-                {mismatch.headline}
-              </li>
-            ))}
-          </ul>
+          {model.adviceByFamily.map((group) => (
+            <div key={group.family} className="organisation-advice-family">
+              <h3 className="organisation-advice-family-title">{group.title}</h3>
+              <ul>
+                {group.items.map((item, index) => (
+                  <li
+                    key={`${item.code}-${index}`}
+                    className={
+                      item.severity === 'error'
+                        ? 'organisation-mismatch organisation-mismatch-error'
+                        : 'organisation-mismatch'
+                    }
+                  >
+                    <span className="organisation-advice-code">{item.code}</span>
+                    {item.headline}
+                    {item.rationale ? (
+                      <span className="organisation-advice-rationale"> {item.rationale}</span>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </section>
       ) : null}
 

@@ -64,10 +64,10 @@ describe('SteeringOverviewPage', () => {
     );
 
     expect(screen.getByTestId('steering-overview')).toBeTruthy();
-    expect(screen.getByRole('heading', { name: /northwind q3 alignment/i })).toBeTruthy();
-    expect(screen.getByText(/one recommended to stop\. five bets funded\./i)).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /northwind group h2 alignment/i })).toBeTruthy();
+    expect(screen.getByText(/one recommended to stop\. six bets funded\./i)).toBeTruthy();
     expect(screen.getByTestId('steering-portfolio-mix')).toBeTruthy();
-    expect(screen.queryByTestId('steering-wip-mismatches')).toBeNull();
+    expect(screen.getByTestId('steering-wip-mismatches')).toBeTruthy();
     expect(screen.getAllByText('On track').length).toBeGreaterThan(0);
     expect(screen.getAllByText('At risk').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Stop').length).toBeGreaterThan(0);

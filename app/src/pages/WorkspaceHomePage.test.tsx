@@ -80,7 +80,9 @@ describe('WorkspaceHomePage', () => {
     await user.click(screen.getByRole('button', { name: /start from sample/i }));
 
     expect(setLocation).toHaveBeenCalledWith('/workspace/steering');
-    expect(sessionStorage.getItem('steerco.workspace-session')).toMatch(/northwind-q3-alignment/);
+    expect(sessionStorage.getItem('steerco.workspace-session')).toMatch(
+      /northwind-group-h2-alignment/,
+    );
   });
 
   it('offers continue when a session is already open', async () => {

@@ -173,7 +173,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     );
 
     expect(screen.getByTestId('organisation-mismatches')).toBeTruthy();
-    expect(screen.getByRole('heading', { name: /operating-model checks/i })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /analysis & advice/i })).toBeTruthy();
     expect(screen.getByText(/returns desk.*not funding any bet/i)).toBeTruthy();
   });
 

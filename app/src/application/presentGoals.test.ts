@@ -46,7 +46,9 @@ describe('presentGoals', () => {
     expect(outcome?.measures[0]?.claimedByBets.map((bet) => bet.id)).toEqual(
       expect.arrayContaining(['bet_pickup', 'bet_loyalty']),
     );
-    expect(outcome?.measures[1]?.claimedByBets.map((bet) => bet.id)).toEqual(['bet_fulfilil']);
+    expect(outcome?.measures[1]?.claimedByBets.map((bet) => bet.id)).toEqual(
+      expect.arrayContaining(['bet_fulfilil', 'bet_blob_split']),
+    );
     expect(outcome?.measures[2]?.claimedByBets.map((bet) => bet.id)).toEqual(['bet_fulfilil']);
     expect(model.products.some((product) => product.title === 'Customer promises')).toBe(true);
     expect(model.products[0]?.betLinks.map((bet) => bet.id)).toEqual(

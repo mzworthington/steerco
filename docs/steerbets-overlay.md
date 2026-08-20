@@ -29,7 +29,7 @@ metadata:
   name: bet-fulfilil
   title: Shared fulfilment spine
   annotations:
-    steerco.dev/tree: northwind-q3-alignment
+    steerco.dev/tree: northwind-group-h2-alignment
 spec:
   outcomeRef: out_promise
   successSignal: New channels reuse one fulfilment path within two weeks of launch

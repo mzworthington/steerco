@@ -15,7 +15,7 @@ describe('parseSteerSpecYaml', () => {
     expect(result.ok).toBe(true);
     if (!result.ok) return;
 
-    expect(result.value.metadata.name).toBe('northwind-q3-alignment');
+    expect(result.value.metadata.name).toBe('northwind-group-h2-alignment');
     expect(result.value.spec.outcomes.map((o) => o.id)).toEqual(
       expect.arrayContaining(['out_promise', 'out_store']),
     );
@@ -25,19 +25,20 @@ describe('parseSteerSpecYaml', () => {
         'bet_fulfilil',
         'bet_loyalty',
         'bet_pos_resilience',
-        'bet_insights',
+        'bet_blob_split',
       ]),
     );
     expect(result.value.spec.teams.map((t) => t.id)).toEqual(
       expect.arrayContaining([
         'team_storefront',
         'team_catalog',
-        'team_pricing',
+        'team_checkout',
+        'team_digital_blob',
         'team_fulfilil',
         'team_enablement',
       ]),
     );
-    expect(result.value.spec.teams.length).toBeGreaterThan(20);
+    expect(result.value.spec.teams.length).toBeGreaterThan(40);
     expect(result.value.spec.groupings.map((g) => g.id)).toEqual(
       expect.arrayContaining(['grp_fulfilil_platform']),
     );
@@ -47,14 +48,16 @@ describe('parseSteerSpecYaml', () => {
     expect(result.value.spec.domains[0]?.memberStreamIds).toEqual(
       expect.arrayContaining(['stream_storefront', 'stream_catalog']),
     );
-    expect(result.value.spec.domains.length).toBeGreaterThanOrEqual(5);
+    expect(result.value.spec.domains.length).toBeGreaterThanOrEqual(10);
     expect(result.value.spec.teams.find((t) => t.id === 'team_pricing')?.streamIds).toEqual([
       'stream_storefront',
     ]);
     expect(result.value.spec.teams.find((t) => t.id === 'team_fulfilil')?.platformScope).toBe(
       'organisation',
     );
-    expect(result.value.spec.teams[0]?.members[0]).toMatchObject({
+    expect(
+      result.value.spec.teams.find((t) => t.id === 'team_storefront')?.members[0],
+    ).toMatchObject({
       id: 'mem_storefront_em',
       discipline: 'leadership',
       title: 'Engineering Manager',
