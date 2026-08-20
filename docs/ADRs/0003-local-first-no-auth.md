@@ -41,5 +41,5 @@ Auth arrives in Slice 2 **with** the first live connector - not before.
 
 ## Links
 
-- Roadmap Slice 1: `plan/docs/ROADMAP.md`
+- Roadmap Slice 1: [roadmap.md](../roadmap.md)
 - Related: [0005 Provider teams reference-only](./0005-provider-teams-reference-only.md)

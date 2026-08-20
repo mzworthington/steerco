@@ -1,6 +1,5 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { PREVIEW_STORAGE_KEY } from './siteGate';
 
 vi.mock('./pages/HomePage', () => ({
   HomePage: () => <div data-testid="home" />,
@@ -14,50 +13,24 @@ import { App } from './App';
 
 afterEach(() => {
   cleanup();
-  localStorage.removeItem(PREVIEW_STORAGE_KEY);
-  sessionStorage.removeItem(PREVIEW_STORAGE_KEY);
   window.history.replaceState({}, '', '/');
 });
 
-describe('App site gate', () => {
-  it('shows the Coming Soon splash by default', () => {
+describe('App routing', () => {
+  it('shows the home page by default', () => {
     render(<App />);
-    expect(screen.getByTestId('coming-soon')).toBeTruthy();
-    expect(screen.queryByTestId('home')).toBeNull();
-  });
-
-  it('shows the site when preview=1 is in the query string', () => {
-    window.history.replaceState({}, '', '/?preview=1');
-    render(<App />);
-    expect(screen.queryByTestId('coming-soon')).toBeNull();
     expect(screen.getByTestId('home')).toBeTruthy();
   });
 
-  it('keeps the site unlocked from localStorage without a query string', () => {
-    localStorage.setItem(PREVIEW_STORAGE_KEY, '1');
-    render(<App />);
-    expect(screen.queryByTestId('coming-soon')).toBeNull();
-    expect(screen.getByTestId('home')).toBeTruthy();
-  });
-
-  it('locks again when preview=no is in the query string', () => {
-    localStorage.setItem(PREVIEW_STORAGE_KEY, '1');
-    window.history.replaceState({}, '', '/?preview=no');
-    render(<App />);
-    expect(screen.getByTestId('coming-soon')).toBeTruthy();
-    expect(screen.queryByTestId('home')).toBeNull();
-    expect(localStorage.getItem(PREVIEW_STORAGE_KEY)).toBeNull();
-  });
-
-  it('redirects /design-system to /docs/design-system when unlocked', () => {
-    window.history.replaceState({}, '', '/design-system?preview=1');
+  it('redirects /design-system to /docs/design-system', () => {
+    window.history.replaceState({}, '', '/design-system');
     render(<App />);
     expect(screen.getByTestId('docs')).toBeTruthy();
     expect(window.location.pathname).toBe('/docs/design-system');
   });
 
-  it('routes nested ADR docs paths to DocsPage when unlocked', () => {
-    window.history.replaceState({}, '', '/docs/adrs/0005-provider-teams-reference-only?preview=1');
+  it('routes nested ADR docs paths to DocsPage', () => {
+    window.history.replaceState({}, '', '/docs/adrs/0005-provider-teams-reference-only');
     render(<App />);
     expect(screen.getByTestId('docs')).toBeTruthy();
     expect(screen.queryByText(/not found/i)).toBeNull();

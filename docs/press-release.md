@@ -1,6 +1,6 @@
 # Press release - SteerCo
 
-**FOR IMMEDIATE RELEASE** (draft)
+**FOR IMMEDIATE RELEASE**
 
 ## SteerCo brings investment clarity to product leadership - without another planning silo
 
@@ -27,9 +27,3 @@ The first release works entirely on the user’s machine: no account, no cloud s
 Product specification, mockups, and architecture are published in draft under the author’s open portfolio. A dedicated open-source repository and Slice 1 implementation will follow.
 
 **Contact:** [mzworthington.co.uk](https://mzworthington.co.uk) · [github.com/mzworthington](https://github.com/mzworthington)
-
----
-
-### Boilerplate
-
-Matthew Worthington is an engineering leader with two decades building and scaling software organisations across music, publishing, banking, public sector, and iGaming. His open work includes ArchLens (living architecture contracts) and the Agent Lifecycle Kit (standards for AI-assisted delivery).

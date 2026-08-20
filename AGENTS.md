@@ -17,8 +17,8 @@ Before starting work, read:
 
 ## Project notes
 
-- Product planning: `plan/` (specs, PRDs, SteerSpec schema/sample). Mockups: `mockups/`.
-- ADRs live only under `docs/ADRs/` (not under `plan/`).
+- Product planning: `docs/` (specs, PRDs in `docs/prds/`), schema in `schemas/`, sample in `samples/`. Mockups: `mockups/`.
+- ADRs live only under `docs/ADRs/`.
 - App code and pnpm workspace live under `app/` - run `cd app && pnpm …` (`@steerco/app` + `packages/core` → `@steerco/core`).
 - Tailwind executive theme (stone + ocean): tokens + recipes in `app/src/index.css`, showcase at `/docs/design-system`, assets in `design-pack/`.
 - Docs are Markdown under `docs/`, rendered in-app (not a separate docs framework).

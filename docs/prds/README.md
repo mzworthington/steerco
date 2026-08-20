@@ -1,6 +1,6 @@
 # Feature PRD index
 
-Operating-model commitments (EDGE full toolkit + Team Topologies): [../OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md) · slices in [../ROADMAP.md](../ROADMAP.md).
+Operating-model commitments (EDGE full toolkit + Team Topologies): [../operating-model-alignment.md](../operating-model-alignment.md) · slices in [../roadmap.md](../roadmap.md).
 
 | ID  | Feature               | Slice      | Doc                                                            |
 | --- | --------------------- | ---------- | -------------------------------------------------------------- |
@@ -8,7 +8,7 @@ Operating-model commitments (EDGE full toolkit + Team Topologies): [../OPERATING
 | F02 | Steering overview     | 1 (+1.5)   | [F02-steering-overview.md](./F02-steering-overview.md)         |
 | F03 | How work is organised | 1 (+1.5/3) | [F03-how-work-is-organised.md](./F03-how-work-is-organised.md) |
 | F04 | Bet detail            | 1 (+1.5)   | [F04-bet-detail.md](./F04-bet-detail.md)                       |
-| F05 | Goals              | 1 (+1.5)   | [F05-goals.md](./F05-goals.md)                           |
+| F05 | Goals                 | 1 (+1.5)   | [F05-goals.md](./F05-goals.md)                                 |
 | F06 | Evidence              | 1          | [F06-evidence.md](./F06-evidence.md)                           |
 | F07 | Decision note         | 1 (+1.5)   | [F07-decision-note.md](./F07-decision-note.md)                 |
 | F08 | Export board pack     | 1 (+3)     | [F08-export-board-pack.md](./F08-export-board-pack.md)         |

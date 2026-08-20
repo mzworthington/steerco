@@ -1,10 +1,8 @@
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Redirect, Route, Switch, useLocation, useParams } from 'wouter';
 import { BrandMark } from './components/BrandMark';
 import { SiteFooter } from './components/SiteFooter';
 import { SITE_NAME } from './siteConfig';
-import { isPreviewUnlocked } from './siteGate';
-import { ComingSoonPage } from './pages/ComingSoonPage';
 import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
 import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
@@ -126,17 +124,5 @@ function UnlockedApp() {
 }
 
 export function App() {
-  const [unlocked] = useState(() => isPreviewUnlocked());
-
-  if (!unlocked) {
-    return (
-      <div className="site-shell">
-        <main>
-          <ComingSoonPage />
-        </main>
-      </div>
-    );
-  }
-
   return <UnlockedApp />;
 }

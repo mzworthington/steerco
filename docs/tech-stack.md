@@ -20,7 +20,7 @@
 | IaC             | Pulumi (`infra/cloudflare`)                                                                                         |
 | Changelog       | git-cliff + day-bucketed renderer                                                                                   |
 
-ADRs: [0002 Tech stack](./ADRs/0002-tech-stack.md) · [0003 Local-first](./ADRs/0003-local-first-no-auth.md) · [0001 Hosting](./ADRs/0001-cloudflare-pages-pulumi-wrangler.md). Plan notes: `plan/docs/TECH_STACK.md`.
+ADRs: [0002 Tech stack](./ADRs/0002-tech-stack.md) · [0003 Local-first](./ADRs/0003-local-first-no-auth.md) · [0001 Hosting](./ADRs/0001-cloudflare-pages-pulumi-wrangler.md).
 
 ## Agent / Cloud
 

@@ -1,4 +1,4 @@
-import { SITE_DESCRIPTION, SITE_NAME } from '../siteConfig';
+import { SITE_DESCRIPTION, SITE_NAME } from '../siteConfig.ts';
 
 /** Brand colors used by the web app manifest and HTML theme-color. */
 export const PWA_THEME_COLOR = '#044a88';

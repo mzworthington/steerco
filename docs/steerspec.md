@@ -12,23 +12,23 @@ Executive UI never shows this document by default; Technical mode and git review
 4. **No secrets** in SteerSpec.
 5. Versioned with `apiVersion` + `kind` for migrations.
 6. **Team Topologies is canonical** for team types and interaction modes ([key concepts](https://teamtopologies.com/key-concepts)).
-7. **Domain-Driven Design (Eric Evans) is canonical** for problem-space meaning of `domains[]`: each domain is a **bounded context** lens (ubiquitous language in titles), not an HR parent of streams or teams ([ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)).
+7. **Domain-Driven Design (Eric Evans) is canonical** for problem-space meaning of `domains[]`: each domain is a **bounded context** lens (ubiquitous language in titles), not an HR parent of streams or teams ([ADR 0008](./ADRs/0008-domain-stream-team-coplanar-lenses.md)).
 
-Operating-model evolution (full EDGE toolkit beyond LVT, DDD bounded contexts, platform groupings, new mismatch codes): [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md).
+Operating-model evolution (full EDGE toolkit beyond LVT, DDD bounded contexts, platform groupings, new mismatch codes): [operating-model-alignment.md](./operating-model-alignment.md).
 
 `kind: SteerTree` is the Lean Value Tree **spine** of the EDGE investment contract. EDGE teachings beyond the tree (product mindset / Product brief, Tech@Core, Periodic Value Review, Integrated Backlogs, MoS fitness framing, six principles) map onto existing fields today (`metrics`, `fundingStance`, `kind`, `reviewDate`, `decisionNotes`) and optional later surfaces - they are first-class product intent even when not separate SteerSpec kinds.
 
 ## Team Topologies in SteerSpec
 
-| SteerSpec                           | Team Topologies                                    |
-| ----------------------------------- | -------------------------------------------------- |
-| `team.role: stream_aligned`         | Stream-aligned team                                |
-| `team.role: platform`               | Platform team (may later be a _grouping_)          |
-| `team.role: enabling`               | Enabling team                                      |
-| `team.role: complicated_subsystem`  | Complicated-subsystem team                         |
-| `relationship.mode: x_as_a_service` | X-as-a-Service                                     |
-| `relationship.mode: collaboration`  | Collaboration (time-boxed via `expectedUntil`)     |
-| `relationship.mode: facilitation`   | Facilitation (time-boxed via `expectedUntil`)      |
+| SteerSpec                           | Team Topologies                                |
+| ----------------------------------- | ---------------------------------------------- |
+| `team.role: stream_aligned`         | Stream-aligned team                            |
+| `team.role: platform`               | Platform team (may later be a _grouping_)      |
+| `team.role: enabling`               | Enabling team                                  |
+| `team.role: complicated_subsystem`  | Complicated-subsystem team                     |
+| `relationship.mode: x_as_a_service` | X-as-a-Service                                 |
+| `relationship.mode: collaboration`  | Collaboration (time-boxed via `expectedUntil`) |
+| `relationship.mode: facilitation`   | Facilitation (time-boxed via `expectedUntil`)  |
 
 Legacy aliases (`customer_facing`, `shared_platform`, `coaching_support`, `uses_as_service`, `works_together`, `coaching`) are accepted on parse and normalized to the canonical ids above.
 
@@ -131,32 +131,33 @@ Sample: [`../samples/steertree.sample.yaml`](../samples/steertree.sample.yaml)
 
 ## Mismatch rules (core)
 
-| Code                        | When                                                                                                      | Slice |
-| --------------------------- | --------------------------------------------------------------------------------------------------------- | ----- |
-| `bet_without_team`          | Bet has empty `fundedTeamIds`                                                                             | 1     |
-| `bet_without_kill_criteria` | Missing kill criteria                                                                                     | 1     |
-| `platform_overload`         | Platform has X-as-a-Service dependents above threshold (default 8); surface as cognitive-load / flow risk | 1     |
-| `team_without_bet`          | Stream-aligned team funds zero bets (warning)                                                             | 1     |
-| `orphan_outcome`            | Goal with zero bets                                                                                    | 1     |
-| `bet_without_mos_link`      | Bet status `on_track`/`at_risk`/`stop_ready` with empty `metricIds` and no `primaryMetricId` (warning)    | 1.5   |
-| `collab_without_end`        | Relationship `mode: collaboration` or `facilitation` with no `expectedUntil` (warning)                    | 1.5   |
-| `stream_bet_wip`            | Stream-aligned team funded on more than 2 active bets (`proposed`/`on_track`/`at_risk`/`stop_ready`, warning) | 1.5   |
-| `enabling_owns_delivery`    | Enabling team is the *only* funded team on a bet with status `on_track`/`at_risk`/`stop_ready` (warning)  | 1.5   |
-| `stream_missing_product`    | Stream-aligned team has members recorded but no `product` discipline FTE (warning)                       | 1.5   |
-| `team_oversized`            | Team has recorded `members[]` count ≥ 15 (Dunbar high-trust caution; ~8 is healthy) - cognitive-load / evolution cue, not HR | 3 |
-| `stream_multi_team`         | More than one stream-aligned team shares the same stream - prefer peer domain/stream splits              | 3     |
+| Code                        | When                                                                                                                         | Slice |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----- |
+| `bet_without_team`          | Bet has empty `fundedTeamIds`                                                                                                | 1     |
+| `bet_without_kill_criteria` | Missing kill criteria                                                                                                        | 1     |
+| `platform_overload`         | Platform has X-as-a-Service dependents above threshold (default 8); surface as cognitive-load / flow risk                    | 1     |
+| `team_without_bet`          | Stream-aligned team funds zero bets (warning)                                                                                | 1     |
+| `orphan_outcome`            | Goal with zero bets                                                                                                          | 1     |
+| `bet_without_mos_link`      | Bet status `on_track`/`at_risk`/`stop_ready` with empty `metricIds` and no `primaryMetricId` (warning)                       | 1.5   |
+| `collab_without_end`        | Relationship `mode: collaboration` or `facilitation` with no `expectedUntil` (warning)                                       | 1.5   |
+| `stream_bet_wip`            | Stream-aligned team funded on more than 2 active bets (`proposed`/`on_track`/`at_risk`/`stop_ready`, warning)                | 1.5   |
+| `enabling_owns_delivery`    | Enabling team is the _only_ funded team on a bet with status `on_track`/`at_risk`/`stop_ready` (warning)                     | 1.5   |
+| `stream_missing_product`    | Stream-aligned team has members recorded but no `product` discipline FTE (warning)                                           | 1.5   |
+| `team_oversized`            | Team has recorded `members[]` count ≥ 15 (Dunbar high-trust caution; ~8 is healthy) - cognitive-load / evolution cue, not HR | 3     |
+| `stream_multi_team`         | More than one stream-aligned team shares the same stream - prefer peer domain/stream splits                                  | 3     |
 
 Landed Slice 1.5 additive fields: `bets[].metricIds`/`primaryMetricId` (MoS links), `bets[].reviewDate`/`horizon` (review cadence), `bets[].fundingStance`/`kind`, `relationships[].expectedUntil`/`effectiveFrom`/`effectiveUntil`, `teams[].members[].discipline` (mix signal), `teams[].members[].effectiveFrom`/`effectiveUntil`, `decisionNotes[].measuredMetricIds`, and `spec.topologyEvents[]` ([F13](./prds/F13-topology-timeline.md)). `discipline` is required when a member is listed; temporal windows and MoS links remain optional with empty/undefined defaults so older Slice 1 fixtures still parse after migration.
 
-Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`withinTeamId`~~ landed then refined - **streams** + **domains** are first-class **coplanar lenses** with teams (what / flow / who - [ADR 0008](../../docs/ADRs/0008-domain-stream-team-coplanar-lenses.md)); teams use `streamIds[]` (ideal: one stream per stream-aligned team, and one stream-aligned team per stream); complicated subsystems sit in a stream (not under a team); platform `groupings[]` remain lateral. Soft mismatches advise when reality breaks the ideal (`team_oversized`, `stream_multi_team`, …). Remaining: polish. UI: flow-of-change + as-of + bet flow overlay + F13 timeline deep-dive landed. Details: [OPERATING_MODEL_ALIGNMENT.md](./OPERATING_MODEL_ALIGNMENT.md) · [ROADMAP.md](./ROADMAP.md) · [F03](./prds/F03-how-work-is-organised.md).
+Planned additive fields (Slice 3): ~~`groupings[]`~~ / ~~`platformScope`~~ / ~~`withinTeamId`~~ landed then refined - **streams** + **domains** are first-class **coplanar lenses** with teams (what / flow / who - [ADR 0008](./ADRs/0008-domain-stream-team-coplanar-lenses.md)); teams use `streamIds[]` (ideal: one stream per stream-aligned team, and one stream-aligned team per stream); complicated subsystems sit in a stream (not under a team); platform `groupings[]` remain lateral. Soft mismatches advise when reality breaks the ideal (`team_oversized`, `stream_multi_team`, …). Remaining: polish. UI: flow-of-change + as-of + bet flow overlay + F13 timeline deep-dive landed. Details: [operating-model-alignment.md](./operating-model-alignment.md) · [roadmap.md](./roadmap.md) · [F03](./prds/F03-how-work-is-organised.md).
 
 ## Mapping to foreign shapes (later)
 
-| Foreign              | Direction | Notes                                                           |
-| -------------------- | --------- | --------------------------------------------------------------- |
-| Backstage `Group`    | In        | Map to `teams[]` + `externalRefs`; set `provenance`             |
-| Backstage Group YAML | Out       | **Only** if `provenance: catalog_file` and user opts in         |
-| SteerBet overlay     | Out       | Always OK - SteerCo-owned kind                                |
-| GitHub team          | In        | `externalRefs: [{ system: github, id: org/team }]`              |
-| Entra group          | In        | `externalRefs: [{ system: entra, id: objectId }]`               |
-| ArchLens entityRef   | Out/In    | Deferred - no SteerSpec field yet; suite stays separate products |
+| Foreign              | Direction | Notes                                                   |
+| -------------------- | --------- | ------------------------------------------------------- |
+| Backstage `Group`    | In        | Map to `teams[]` + `externalRefs`; set `provenance`     |
+| Backstage Group YAML | Out       | Supported for `backstage` and `catalog_file` provenance |
+
+| SteerBet overlay | Out | Always OK - SteerCo-owned kind |
+| GitHub team | In | `externalRefs: [{ system: github, id: org/team }]` |
+| Entra group | In | `externalRefs: [{ system: entra, id: objectId }]` |
+| ArchLens entityRef | Out/In | Deferred - no SteerSpec field yet; suite stays separate products |

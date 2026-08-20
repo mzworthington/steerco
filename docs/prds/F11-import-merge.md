@@ -8,26 +8,26 @@ Teams already live in Backstage/GitHub/Entra. Leaders should map them into Steer
 
 ## Goal
 
-Import directory shapes, preview merge, apply refs into SteerSpec; block forbidden write-backs.
+Import directory shapes, preview merge, apply refs into SteerSpec; support Backstage Group export and write-backs.
 
 ## User stories
 
 - As a Platform engineer, I import Groups from Backstage Catalog API.
-- As a Platform engineer, I see provider-synced Groups marked reference-only.
+- As a Platform engineer, I configure export and graph write-back options for Backstage Groups.
 - As a Director, I only see friendly names after import (executive views unchanged).
 
 ## Requirements
 
 1. Source tabs: Backstage / GitHub / Entra
 2. Diff preview: incoming → SteerSpec team links
-3. Banner when Groups are provider-backed: no Group YAML emission
+3. Configuration panel for Backstage Groups: customize Group YAML and export/graph contribution settings
 4. Apply updates `teams[]` + `externalRefs` + `provenance`
 5. Optional emit SteerBet overlay (opt-in)
 
 ## Acceptance
 
-- Provider-backed import never proposes Group catalog file creation
-- Catalog-file provenance can opt into YAML round-trip
+- Provider-backed import supports proposing, exporting, and writing back Group catalog definitions to Backstage
+- Supports exporting Group definitions when user opts in
 
 ## XFN
 

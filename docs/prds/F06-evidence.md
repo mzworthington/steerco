@@ -1,7 +1,7 @@
 # PRD F06 - Evidence
 
 **Slice:** 1 · **Mockup:** `steerco-exec-07-evidence.png`  
-**Frameworks:** EDGE adapt / learn loop - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE adapt / learn loop - see [operating-model-alignment.md](../operating-model-alignment.md)
 
 ## Problem
 

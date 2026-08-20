@@ -1,7 +1,7 @@
 # PRD F12 - Technical mode
 
 **Slice:** 2+ · **Mockups:** `technical/steerco-01-steer-tree.png`, `technical/steerco-02-topology-fitness.png`  
-**Frameworks:** EDGE + Domain-Driven Design (Eric Evans) + Team Topologies vocabulary bridge for staff+ - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE + Domain-Driven Design (Eric Evans) + Team Topologies vocabulary bridge for staff+ - see [operating-model-alignment.md](../operating-model-alignment.md)
 
 ## Problem
 
@@ -14,7 +14,7 @@ Secondary surface for SteerSpec detail, topology fitness with policy panel, and 
 ## User stories
 
 - As a principal engineer, I inspect external refs and provenance.
-- As a platform engineer, I confirm Group YAML write-back is blocked for Entra-backed teams.
+- As a platform engineer, I configure Group YAML write-back and export settings for Backstage-backed teams.
 - As a staff engineer, I see how SteerSpec fields map to the full EDGE toolkit (not LVT alone), Eric Evans’ DDD, and Team Topologies types/modes.
 
 ## Requirements
@@ -32,7 +32,8 @@ Secondary surface for SteerSpec detail, topology fitness with policy panel, and 
 
 ## Acceptance
 
-- Policy panel matches ADR 0005 / provider write-back rules
+- Policy panel matches ADR 0010 / provider write-back rules
+
 - Vocabulary bridge visible without becoming default executive theme
 - Visual density may increase but must not become default theme
 

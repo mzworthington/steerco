@@ -52,4 +52,3 @@ flowchart LR
 ## Links
 
 - [Tech stack](../tech-stack.md)
-- Plan notes: `plan/docs/TECH_STACK.md`

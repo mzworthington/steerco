@@ -1,7 +1,7 @@
 # PRD F03 - How work is organised
 
 **Slice:** 1 · **Mockups:** `steerco-exec-02-org-shape.png`, `steerco-exec-10-org-empty.png`  
-**Frameworks:** [Team Topologies key concepts](https://teamtopologies.com/key-concepts) + [Domain-Driven Design](https://www.domainlanguage.com/ddd/) (Eric Evans) - four topologies, three interaction modes, cognitive load, bounded contexts, fast flow - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** [Team Topologies key concepts](https://teamtopologies.com/key-concepts) + [Domain-Driven Design](https://www.domainlanguage.com/ddd/) (Eric Evans) - four topologies, three interaction modes, cognitive load, bounded contexts, fast flow - see [operating-model-alignment.md](../operating-model-alignment.md)
 
 ## Problem
 
@@ -65,6 +65,7 @@ Edit and present **topology intent for fast flow of value**: four fundamental te
 - Slice 3: sample with ≥2 streams, a domain, a scoped platform, CSS in a stream, and multi-team enabling renders flow layout + interaction graph (not only four flat zones)
 - Slice 3: As-is / Timeline as-of date updates projected shape and mismatches without leaving the page
 - Slice 3: As-is domain filter narrows stream bands while keeping shared platforms and enabling
+
 ## XFN
 
 A11y: relationships available as list alternative to canvas · Keyboard add-team flow · As-of control labelled; list alternative for projected relationships

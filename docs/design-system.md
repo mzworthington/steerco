@@ -4,7 +4,7 @@ SteerCo executive theme is a **light editorial** board-pack language: warm stone
 
 In-app showcase: [`/docs/design-system`](/docs/design-system) (live swatches in the docs shell). Vector sources: [Design pack](/docs/design-pack).
 
-Styling source of truth: executive mockups `plan/mockups/steerco-exec-01` … `04`. Mark direction: sketch `mockups/logo-explorations/steerco-logo-sketch-dots-arrow.png` (evolved from v16 reticle).
+Styling source of truth: executive mockups `mockups/steerco-exec-01` … `04`. Mark direction: sketch `mockups/logo-explorations/steerco-logo-sketch-dots-arrow.png` (evolved from v16 reticle).
 
 ---
 

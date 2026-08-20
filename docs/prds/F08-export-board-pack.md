@@ -1,7 +1,7 @@
 # PRD F08 - Export board pack
 
 **Slice:** 1 · **Mockup:** `steerco-exec-08-export.png`  
-**Frameworks:** EDGE three questions (Invest / Work / Adapt) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE three questions (Invest / Work / Adapt) - see [operating-model-alignment.md](../operating-model-alignment.md)
 
 ## Problem
 

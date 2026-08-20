@@ -1,7 +1,7 @@
 # PRD F05 - Goals
 
 **Slice:** 1 · **Mockup:** `steerco-exec-04-outcomes.png`  
-**Frameworks:** EDGE Goals + Measures of Success (customer-value fitness function) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md)
+**Frameworks:** EDGE Goals + Measures of Success (customer-value fitness function) - see [operating-model-alignment.md](../operating-model-alignment.md)
 
 ## Problem
 

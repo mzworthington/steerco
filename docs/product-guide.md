@@ -46,7 +46,7 @@ The Lean Value Tree (vision → goals + Measures of Success → bets) is the spi
 | **Measures of Success**         | Customer-value fitness function tied to goals and bets - leading indicators that fund work, not vanity dashboards.                                                                                       |
 | **Six principles**              | Outcome-based strategy; value-based prioritization; lightweight governance; adaptive learning; autonomous teams; decisions close to the work.                                                            |
 
-Full framework backlog: planning docs under `plan/docs/OPERATING_MODEL_ALIGNMENT.md`.
+Full framework backlog: [Operating model alignment](./operating-model-alignment.md).
 
 ## Domain-Driven Design (Eric Evans)
 
@@ -106,7 +106,7 @@ Platforms exist to reduce cognitive load so stream-aligned teams can go faster -
 
 ### Technical mode
 
-Staff+ surface under **Technical** in the workspace nav: Steer tree (ids / provenance / refs), topology fitness with write-back policy, EDGE/TT vocabulary bridge, and catalog-file import (no OAuth). Executive chrome stays plain language; Technical deep-links back to steering, goals, and organisation when useful. Optional [SteerBet overlay](/docs/steerbets-overlay) docs explain Backstage mapping without emitting Groups.
+Staff+ surface under **Technical** in the workspace nav: Steer tree (ids / provenance / refs), topology fitness with write-back policy, EDGE/TT vocabulary bridge, and catalog-file import (no OAuth). Executive chrome stays plain language; Technical deep-links back to steering, goals, and organisation when useful. Optional [SteerBet overlay](/docs/steerbets-overlay) docs explain Backstage mapping and Group definition exports.
 
 ### Decision notes
 

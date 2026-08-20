@@ -66,5 +66,5 @@ flowchart TB
 
 - [Team Topologies: When teams grow too large](https://teamtopologies.com/news-blogs-newsletters/when-teams-grow-too-large-solving-cognitive-load-issues)
 - [Domain Language - DDD](https://www.domainlanguage.com/ddd/)
-- [OPERATING_MODEL_ALIGNMENT.md](../../plan/docs/OPERATING_MODEL_ALIGNMENT.md)
-- [F03 How work is organised](../../plan/docs/prds/F03-how-work-is-organised.md)
+- [operating-model-alignment.md](../operating-model-alignment.md)
+- [F03 How work is organised](../prds/F03-how-work-is-organised.md)

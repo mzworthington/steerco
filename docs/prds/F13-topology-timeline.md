@@ -1,7 +1,7 @@
 # PRD F13 - Topology timeline
 
 **Slice:** 1.5 (schema) → 3 (timeline view + org as-of)  
-**Frameworks:** Team Topologies (shape evolves; collaboration is time-boxed; cognitive load changes with capacity and interaction modes; flow-of-change is a snapshot in time) - see [OPERATING_MODEL_ALIGNMENT.md](../OPERATING_MODEL_ALIGNMENT.md) · [key concepts](https://teamtopologies.com/key-concepts)
+**Frameworks:** Team Topologies (shape evolves; collaboration is time-boxed; cognitive load changes with capacity and interaction modes; flow-of-change is a snapshot in time) - see [operating-model-alignment.md](../operating-model-alignment.md) · [key concepts](https://teamtopologies.com/key-concepts)
 
 ## Problem
 

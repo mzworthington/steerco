@@ -14,14 +14,16 @@ bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Public visitors see a **Coming Soon** splash; append `?preview=1` to unlock the full site (remembered in `localStorage` until you visit with `?preview=no`).
+Open [http://localhost:5173](http://localhost:5173).
 
-| Path                    | Role                                                    |
-| ----------------------- | ------------------------------------------------------- |
-| `app/`                  | pnpm workspace - SPA (`@steerco/app`) + `@steerco/core` |
-| `docs/`                 | Product & ops Markdown (rendered at `/docs`)            |
-| `plan/`                 | Product specs, PRDs, SteerSpec schema/sample, mockups   |
-| `app/src/siteConfig.ts` | Public name, origin, and SEO copy                       |
+| Path                    | Role                                                               |
+| ----------------------- | ------------------------------------------------------------------ |
+| `app/`                  | pnpm workspace - SPA (`@steerco/app`) + `@steerco/core`            |
+| `docs/`                 | Product & ops Markdown (rendered at `/docs`, including specs/PRDs) |
+| `schemas/`              | JSON Schema for SteerSpec                                          |
+| `samples/`              | Example steertree.yaml                                             |
+| `mockups/`              | Executive mockups                                                  |
+| `app/src/siteConfig.ts` | Public name, origin, and SEO copy                                  |
 
 ## Quality checks
 

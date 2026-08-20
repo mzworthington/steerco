@@ -2,7 +2,7 @@
 
 SteerCo can emit an optional **SteerBet** catalog overlay for Backstage. This documents the mapping from SteerSpec bets - it does **not** create or mutate directory `Group` entities.
 
-Provider-synced teams remain reference-only ([ADR 0005](/docs/adrs/0005-provider-teams-reference-only)). Import and write-back policy never propose Group YAML for Backstage / GitHub / Entra provenance.
+Provider-synced teams support Group export and write-back to contribute back to the Backstage graph ([ADR 0010](/docs/ADRs/0010-backstage-group-export-writeback.md)). Import and write-back policy allows proposing and exporting Group definitions.
 
 ## Mapping from SteerSpec
 
@@ -43,10 +43,10 @@ spec:
   valueRank: 2
 ```
 
-## Never emit Group
+## Export and write-back Group definitions
 
-- Do **not** generate `kind: Group` from SteerCo imports or overlays.
-- Team links stay as SteerSpec `teams[]` ids plus optional `externalRefs` to existing Groups.
-- Catalog import sets `proposesGroupYaml: false` and keeps provider Groups as the directory source of truth.
+- Enable generating and exporting `kind: Group` catalog definitions from SteerCo imports or overlays to Backstage.
+- Team links map directly to Backstage Group structures, allowing graph contributions.
+- Catalog export enables publishing Group definitions back to the provider graph.
 
-See also: [Product guide](/docs/product-guide) · Technical mode → Catalog import · [ADR 0005](/docs/adrs/0005-provider-teams-reference-only).
+See also: [Product guide](/docs/product-guide) · Technical mode → Catalog import · [ADR 0010](/docs/ADRs/0010-backstage-group-export-writeback.md).

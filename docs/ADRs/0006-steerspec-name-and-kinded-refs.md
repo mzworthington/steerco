@@ -91,6 +91,6 @@ flowchart TB
 
 ## Links
 
-- SteerSpec: [plan/docs/STEER_SPEC.md](../../plan/docs/STEER_SPEC.md)
+- SteerSpec: [steerspec.md](../steerspec.md)
 - Related: [0003 Local-first](./0003-local-first-no-auth.md), [0005 Provider teams reference-only](./0005-provider-teams-reference-only.md)
-- Capacity / timeline: [plan/docs/prds/F13-topology-timeline.md](../../plan/docs/prds/F13-topology-timeline.md)
+- Capacity / timeline: [F13-topology-timeline.md](../prds/F13-topology-timeline.md)

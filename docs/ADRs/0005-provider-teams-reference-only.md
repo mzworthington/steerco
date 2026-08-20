@@ -1,8 +1,11 @@
 ---
-status: Accepted
+status: Superseded
 date: 2026-08-10
 deciders: ['SteerCo']
 ---
+
+> [!WARNING]
+> This decision has been superseded by [ADR 0010](./0010-backstage-group-export-writeback.md) to support exporting Backstage group definitions and contributing back to the Backstage graph.
 
 # 0005. Provider-synced teams are reference-only
 
@@ -41,4 +44,4 @@ Chosen option: **Option B**.
 ## Links
 
 - Related: [0003 Local-first](./0003-local-first-no-auth.md)
-- SteerSpec: `plan/docs/STEER_SPEC.md`
+- SteerSpec: [steerspec.md](../steerspec.md)

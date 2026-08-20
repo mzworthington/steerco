@@ -6,7 +6,7 @@ SteerCo helps product owners, product executives, and Engineering Directors keep
 
 Jira plans work. Backstage catalogs systems. Directories catalog people. SteerCo holds the **investment contract**: goals, funded bets, topology intent, and decision notes - as a local-first board pack, not another system of record.
 
-Product planning lives under [`plan/`](./plan/). Implementation is under [`app/`](./app/) (`@steerco/app` + `@steerco/core`). Architecture decisions: [`docs/ADRs/`](./docs/ADRs/).
+Product planning and specs live under [`docs/`](./docs/) and feature PRDs under [`docs/prds/`](./docs/prds/). The canonical SteerSpec schema is at [`schemas/`](./schemas/) and the sample at [`samples/`](./samples/). Implementation is under [`app/`](./app/) (`@steerco/app` + `@steerco/core`). Architecture decisions: [`docs/ADRs/`](./docs/ADRs/).
 
 ## Getting started
 
@@ -15,7 +15,7 @@ bin/setup-dev-env.sh
 cd app && pnpm dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173). Append `?preview=1` to unlock the full site behind the Coming Soon gate (sticky in `localStorage` until `?preview=no`).
+Open [http://localhost:5173](http://localhost:5173).
 
 ## Docs
 
