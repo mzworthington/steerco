@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-20
+
+### 🚀 Features
+
+- Remove preview feature flag and tidy up docs
+
 ## 2026-08-12
 
 ### 🚀 Features
