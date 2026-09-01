@@ -116,12 +116,13 @@ if (legacyRedirectHostnames.length > 0) {
 
 const zone = cloudflare.getZoneOutput({ zoneId });
 
-/** Zone-owner RUM only. Shared-zone hosts reuse the apex site via CI inject. */
+/** Zone-owner RUM only. Shared-zone hosts reuse the apex `autoInstall` site. */
 const webAnalytics = enableWebAnalytics
   ? new cloudflare.WebAnalyticsSite('web-analytics', {
       accountId,
       zoneTag: zoneId,
-      autoInstall: false,
+      autoInstall: true,
+      enabled: true,
     })
   : undefined;
 

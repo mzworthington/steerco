@@ -116,15 +116,6 @@ jobs:
           name: dist
           path: app/dist
 
-      - name: Inject Web Analytics beacon
-        uses: mzworthington/edge-dns/.github/actions/inject-web-analytics-beacon@main
-        with:
-          html-path: app/dist
-          spa: 'true'
-          account-id: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          zone-id: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-          api-token: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v4
         with:
