@@ -11,7 +11,7 @@ Real zone/hostname values live in gitignored `Pulumi.<stack>.yaml`, local `.env`
 | `PagesProject` | Direct-upload Pages project |
 | `DnsRecord` / `PagesDomain` | Proxied CNAME + hostname binding per `pagesHostnames` entry |
 | `DnsRecord` + `Ruleset` | Optional legacy hostnames (`legacyRedirectHostnames`) → 301 to the canonical Pages host |
-| `WebAnalyticsSite` | Zone RUM / Web Analytics (`autoInstall`) - opt-in via `enableWebAnalytics` |
+| `WebAnalyticsSite` | Zone RUM / Web Analytics (`autoInstall: false`) - opt-in via `enableWebAnalytics` |
 | `ObservatoryScheduledTest` | Synthetic Speed test per Pages hostname |
 
 If Web Analytics or Observatory was enabled in the dashboard first, import before `pulumi up`:

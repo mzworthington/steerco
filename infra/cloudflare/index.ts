@@ -116,12 +116,12 @@ if (legacyRedirectHostnames.length > 0) {
 
 const zone = cloudflare.getZoneOutput({ zoneId });
 
-/** RUM beacon auto-injected for orange-clouded hosts on this zone (opt-in). */
+/** Zone-owner RUM only. Shared-zone hosts reuse the apex site via CI inject. */
 const webAnalytics = enableWebAnalytics
   ? new cloudflare.WebAnalyticsSite('web-analytics', {
       accountId,
       zoneTag: zoneId,
-      autoInstall: true,
+      autoInstall: false,
     })
   : undefined;
 
@@ -132,3 +132,4 @@ export const legacyRedirectHostnamesOut = legacyRedirectHostnames;
 export const zoneName = zone.name;
 /** Present only when `enableWebAnalytics` is true. */
 export const webAnalyticsSiteTag = webAnalytics?.siteTag ?? null;
+export const webAnalyticsSiteToken = webAnalytics?.siteToken ?? null;
