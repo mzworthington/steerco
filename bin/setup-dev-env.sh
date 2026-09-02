@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Idempotent local / Cursor Cloud bootstrap: mise → node/pnpm → pnpm install.
-# Optional: clone agent-lifecycle-kit into ~/.agents (SKIP_LIFECYCLE_KIT=1 to skip).
+# Optional: clone Waykit into ~/.agents (SKIP_LIFECYCLE_KIT=1 to skip).
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -21,16 +21,19 @@ mise install node pnpm
 
 ensure_lifecycle_kit() {
   if [[ "${SKIP_LIFECYCLE_KIT:-}" == "1" ]]; then
-    echo "Skipping agent-lifecycle-kit (SKIP_LIFECYCLE_KIT=1)"
+    echo "Skipping Waykit (SKIP_LIFECYCLE_KIT=1)"
     return 0
   fi
   if [[ -e "${HOME}/.agents" ]]; then
     echo "Lifecycle kit present at ~/.agents"
     return 0
   fi
-  local dest="${HOME}/.cache/agent-lifecycle-kit"
+  local dest="${HOME}/.cache/waykit"
+  if [[ -d "${HOME}/.cache/agent-lifecycle-kit/.git" && ! -d "${dest}/.git" ]]; then
+    dest="${HOME}/.cache/agent-lifecycle-kit"
+  fi
   if [[ ! -d "$dest/.git" ]]; then
-    git clone --depth 1 https://github.com/mzworthington/agent-lifecycle-kit.git "$dest"
+    git clone --depth 1 https://github.com/mzworthington/waykit.git "$dest"
   fi
   if [[ -x "$dest/install.sh" ]]; then
     (cd "$dest" && ./install.sh)

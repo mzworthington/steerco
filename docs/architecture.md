@@ -159,4 +159,4 @@ SteerCo never embeds ArchLens canvas. Deep link out is sufficient.
 - `core` fully unit-tested (SteerSpec + mismatches)
 - App: Playwright critical path + axe on executive routes
 - Schema published: Zod → JSON Schema in `schemas/`
-- Agent Lifecycle Kit handshake when app code exists
+- Waykit handshake when app code exists

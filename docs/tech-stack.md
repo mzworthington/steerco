@@ -24,4 +24,4 @@ ADRs: [0002 Tech stack](./ADRs/0002-tech-stack.md) · [0003 Local-first](./ADRs/
 
 ## Agent / Cloud
 
-Cursor Cloud agents bootstrap via `.cursor/environment.json` → `bin/setup-dev-env.sh`, which installs mise tools and `app/` dependencies and optionally clones [agent-lifecycle-kit](https://github.com/mzworthington/agent-lifecycle-kit).
+Cursor Cloud agents bootstrap via `.cursor/environment.json` → `bin/setup-dev-env.sh`, which installs mise tools and `app/` dependencies and optionally clones [Waykit](https://github.com/mzworthington/waykit).
