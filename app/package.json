@@ -40,7 +40,7 @@
     "wouter": "3.10.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.11.1",
+    "@axe-core/playwright": "4.13.0",
     "@lhci/cli": "0.15.1",
     "@playwright/test": "1.62.1",
     "@tailwindcss/vite": "4.3.3",
