@@ -16,6 +16,8 @@ cd app && pnpm dev
 
 Open [http://localhost:5173](http://localhost:5173).
 
+`bin/setup-dev-env.sh` bootstraps [Waykit](https://github.com/mzworthington/waykit) when needed. Check the handshake with `wk align .`. Project MCP is the kit `default` profile. For live Cloudflare work, `wk mcp cloudflare-ops --project`, then restore `wk mcp default --project`.
+
 | Path                    | Role                                                               |
 | ----------------------- | ------------------------------------------------------------------ |
 | `app/`                  | pnpm workspace - SPA (`@steerco/app`) + `@steerco/core`            |
