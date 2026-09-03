@@ -38,6 +38,7 @@ describe('WorkspaceShell', () => {
     expect(screen.getByRole('link', { name: /product guide/i }).getAttribute('href')).toBe(
       '/docs/product-guide',
     );
+    expect(screen.getByRole('link', { name: /^privacy$/i }).getAttribute('href')).toBe('/privacy');
   });
 
   it('disables section nav until a workspace session exists', () => {

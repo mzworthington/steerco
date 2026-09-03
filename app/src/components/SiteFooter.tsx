@@ -12,6 +12,8 @@ export function SiteFooter() {
         <a href={SITE_REPO_URL} rel="noopener noreferrer">
           Source
         </a>
+        {' · '}
+        <a href="/privacy">Privacy</a>
       </p>
     </footer>
   );

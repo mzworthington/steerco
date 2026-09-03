@@ -14,5 +14,6 @@ describe('SiteFooter', () => {
     expect(credit.getAttribute('href')).toBe(SITE_AUTHOR_URL);
     const source = screen.getByRole('link', { name: 'Source' });
     expect(source.getAttribute('href')).toBe(SITE_REPO_URL);
+    expect(screen.getByRole('link', { name: 'Privacy' }).getAttribute('href')).toBe('/privacy');
   });
 });

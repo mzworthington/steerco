@@ -5,6 +5,7 @@ import { SiteFooter } from './components/SiteFooter';
 import { SITE_NAME } from './siteConfig';
 import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
+import { PrivacyPage } from './pages/PrivacyPage';
 import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
 import { SteeringOverviewPage } from './pages/SteeringOverviewPage';
 import { DecisionNotesPage } from './pages/DecisionNotesPage';
@@ -64,6 +65,7 @@ function AppRoutes() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/privacy" component={PrivacyPage} />
       <Route path="/workspace" component={WorkspaceHomePage} />
       <Route path="/workspace/steering" component={SteeringOverviewPage} />
       <Route path="/workspace/lvt/:hierarchyType/:slug" component={GoalsPage} />

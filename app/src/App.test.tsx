@@ -17,6 +17,12 @@ afterEach(() => {
 });
 
 describe('App routing', () => {
+  it('routes /privacy to the privacy notice', () => {
+    window.history.replaceState({}, '', '/privacy');
+    render(<App />);
+    expect(screen.getByRole('heading', { name: 'Privacy policy' })).toBeTruthy();
+  });
+
   it('shows the home page by default', () => {
     render(<App />);
     expect(screen.getByTestId('home')).toBeTruthy();

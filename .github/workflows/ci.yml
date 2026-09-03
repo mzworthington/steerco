@@ -88,6 +88,9 @@ jobs:
           cache-dependency-path: app/pnpm-lock.yaml
 
       - name: Build
+        env:
+          POSTHOG_TOKEN: ${{ github.ref == 'refs/heads/main' && secrets.POSTHOG_TOKEN || '' }}
+          POSTHOG_HOST: ${{ github.ref == 'refs/heads/main' && 'https://a.mzworthington.co.uk' || '' }}
         run: pnpm build
 
       - name: Upload dist

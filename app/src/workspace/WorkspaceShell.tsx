@@ -238,6 +238,9 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
           <Link href="/docs/product-guide" className="workspace-sidebar-docs" onClick={closeNav}>
             Product guide
           </Link>
+          <Link href="/privacy" className="workspace-sidebar-docs" onClick={closeNav}>
+            Privacy
+          </Link>
           <p className="workspace-sidebar-note">No account required for Slice 1.</p>
         </div>
       </aside>

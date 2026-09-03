@@ -10,6 +10,8 @@ const appRoot = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(appRoot, '..');
 
 export default defineConfig({
+  // Project API key is a public phc_ token; expose only POSTHOG_TOKEN / POSTHOG_HOST.
+  envPrefix: ['VITE_', 'POSTHOG_TOKEN', 'POSTHOG_HOST'],
   plugins: [
     react(),
     tailwindcss(),
