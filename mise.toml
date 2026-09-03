@@ -3,12 +3,13 @@
 [tools]
 node = "26.7.0"
 pnpm = "11.20.0"
+pulumi = "3.261.0"
 # Optional: docs media GIFs (record:docs-media)
 ffmpeg = "8.1.2"
 
 [tasks.install-tools]
-description = "Install core toolchain (node, pnpm)"
-run = "mise install node pnpm"
+description = "Install core toolchain (node, pnpm, pulumi)"
+run = "mise install node pnpm pulumi"
 
 [tasks.install]
 description = "Install Node dependencies"
