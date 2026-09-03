@@ -16,6 +16,7 @@ minimumReleaseAgeExclude:
   - mermaid
   - lodash-es
   - yaml
+  - fast-uri
 
 # Dependabot / transitive security pins (dev-tooling only).
 overrides:
@@ -26,3 +27,4 @@ overrides:
   lodash-es: '>=4.17.24'
   yaml: '>=2.8.3'
   mermaid: '>=11.16.1'
+  fast-uri: '>=3.1.6 <4'
