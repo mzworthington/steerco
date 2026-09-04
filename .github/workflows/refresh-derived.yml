@@ -33,11 +33,10 @@ jobs:
           ref: main
 
       - name: Setup pnpm + Node
-        uses: pnpm/setup@v2
+        uses: ./.github/actions/setup-pnpm-node
         with:
           version: 11.20.0
           runtime: node@26.7.0
-          cache: true
           cache-dependency-path: app/pnpm-lock.yaml
 
       - name: Install media tooling

@@ -1,0 +1,42 @@
+name: Setup pnpm + Node
+description: Install pnpm and Node, retrying npm registry 504s on the standalone binary.
+inputs:
+  version:
+    description: pnpm version
+    required: true
+  runtime:
+    description: Runtime spec (for example node@26.7.0)
+    required: true
+  cache-dependency-path:
+    description: Lockfile path for the pnpm store cache
+    required: true
+  package-json-file:
+    description: Workspace package.json (relative to GITHUB_WORKSPACE)
+    required: false
+    default: app/package.json
+runs:
+  using: composite
+  steps:
+    - name: Setup pnpm + Node (attempt 1)
+      id: pnpm-1
+      continue-on-error: true
+      uses: pnpm/setup@v2
+      with:
+        version: ${{ inputs.version }}
+        runtime: ${{ inputs.runtime }}
+        cache: true
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+        package-json-file: ${{ inputs.package-json-file }}
+    - name: Wait before pnpm setup retry
+      if: steps.pnpm-1.outcome == 'failure'
+      shell: bash
+      run: sleep 8
+    - name: Setup pnpm + Node (attempt 2)
+      if: steps.pnpm-1.outcome == 'failure'
+      uses: pnpm/setup@v2
+      with:
+        version: ${{ inputs.version }}
+        runtime: ${{ inputs.runtime }}
+        cache: true
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+        package-json-file: ${{ inputs.package-json-file }}
