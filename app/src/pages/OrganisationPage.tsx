@@ -4,7 +4,9 @@ import {
   applyAddOrganisationMember,
   applyAddOrganisationRelationship,
   applyAddOrganisationTeam,
+  applyClearPlannedShapeChange,
   applyMoveOrganisationMember,
+  applyRecordPlannedShapeChange,
   applyRemoveOrganisationRelationship,
   applyUpdateOrganisationMember,
   applyUpdateOrganisationTeam,
@@ -12,6 +14,7 @@ import {
   presentOrganisation,
   type OrganisationViewMode,
 } from '../application/presentOrganisation';
+import { OrganisationPlannedShapeChange } from '../components/organisation/OrganisationPlannedShapeChange';
 import { OrganisationTeamEditorModal } from '../components/organisation/OrganisationTeamEditorModal';
 import { OrganisationTopologyTimeline } from '../components/organisation/OrganisationTopologyTimeline';
 import {
@@ -107,7 +110,12 @@ export function OrganisationPage() {
           <input
             type="date"
             value={asOf}
-            onChange={(event) => setAsOf(event.target.value)}
+            onChange={(event) => {
+              const next = event.target.value;
+              setAsOf(next);
+              setRangeFrom(next);
+              setRangeTo(next);
+            }}
             aria-label="As-of date"
           />
         </label>
@@ -136,8 +144,39 @@ export function OrganisationPage() {
         </div>
       </header>
 
+      <OrganisationPlannedShapeChange
+        plannedChanges={model.plannedChanges}
+        cue={model.plannedChangeCue}
+        teams={allTeams.map((team) => ({ id: team.id, displayName: team.displayName }))}
+        disciplineOptions={disciplineOptions}
+        onRecord={(input) => {
+          const applied = applyRecordPlannedShapeChange(session.spec, input);
+          if (!applied.ok) {
+            setError(applied.error);
+            setSavedFlash(null);
+            return applied;
+          }
+          setSession({ ...session, spec: applied.value });
+          setError(null);
+          setSavedFlash('Planned change recorded. Today is unchanged.');
+          return { ok: true };
+        }}
+        onClear={(plannedId) => {
+          const applied = applyClearPlannedShapeChange(session.spec, plannedId);
+          if (!applied.ok) {
+            setError(applied.error);
+            setSavedFlash(null);
+            return applied;
+          }
+          setSession({ ...session, spec: applied.value });
+          setError(null);
+          setSavedFlash('Planned change cleared.');
+          return { ok: true };
+        }}
+      />
+
       {model.overloadBanner ? (
-        <p className="organisation-overload" role="status">
+        <p className="organisation-overload" role="status" data-testid="organisation-overload">
           {model.overloadBanner}
         </p>
       ) : null}

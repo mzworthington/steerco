@@ -35,6 +35,7 @@ Record and visualise **capacity changes** (members / FTE%) and **relationship ch
 1. Date control on How work is organised: org shape + mismatches recompute **as of** selected date (default today).
 2. Projection includes groupings membership, platform scope, CSS `within` nest, and enabling fan-out when those fields exist.
 3. Teaching copy: “This map is a point in time - relationships will change as goals change.”
+4. Manual **planned shape change** (capacity seat or relationship with a future start): today stays unchanged, a cue shows the event is recorded, and as-of on that date projects load. Clearing the event removes it from a future as-of.
 
 ### Timeline view (Slice 3 - UI)
 

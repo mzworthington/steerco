@@ -126,6 +126,7 @@ test.describe('Slice 1 critical journey', () => {
     await page.getByRole('link', { name: /how work is organised/i }).click();
     await expect(page.getByTestId('organisation-page')).toBeVisible();
     await expect(page.getByTestId('organisation-as-of')).toBeVisible();
+    await expect(page.getByTestId('organisation-planned-change')).toBeVisible();
 
     await page.getByTestId('organisation-add-team-cta').click();
     const dialog = page.getByRole('dialog', { name: 'Add a team' });
@@ -145,4 +146,45 @@ test.describe('Slice 1 critical journey', () => {
     await expect(page.getByTestId('organisation-timeline-events')).toBeVisible();
     await expect(page.getByTestId('organisation-as-of')).toBeVisible();
   });
+
+  test('planned shape change shows load at a future as-of and can be cleared', async ({ page }) => {
+    await page.goto('/workspace?preview=1');
+    await page.getByRole('button', { name: /start from sample/i }).click();
+    await expect(page.getByTestId('steering-overview')).toBeVisible();
+
+    await page.getByRole('link', { name: /how work is organised/i }).click();
+    await expect(page.getByTestId('organisation-planned-change')).toBeVisible();
+
+    const plannedAxe = await new AxeBuilder({ page })
+      .include('[data-testid="organisation-planned-change"]')
+      .withTags(['wcag2a', 'wcag2aa'])
+      .analyze();
+    expect(plannedAxe.violations, 'axe violations on planned shape change').toEqual([]);
+
+    const plannedAt = futureIsoDate(120);
+    await page.getByTestId('organisation-planned-kind-relationship').check();
+    await page.getByLabel(/planned relationship from team/i).selectOption('team_pos');
+    await page.getByLabel(/planned relationship to team/i).selectOption('team_fulfilil');
+    await page.getByLabel(/planned start date/i).fill(plannedAt);
+    await page.getByTestId('organisation-planned-save').click();
+    await expect(page.getByTestId('organisation-planned-cue')).toBeVisible();
+    await expect(page.getByTestId('organisation-overload')).toHaveCount(0);
+
+    await page.getByLabel(/as-of date/i).fill(plannedAt);
+    await expect(page.getByTestId('organisation-overload')).toBeVisible();
+    await expect(page.getByTestId('organisation-overload')).toContainText(/fulfilment platform/i);
+
+    await page.getByRole('button', { name: `Clear planned change for ${plannedAt}` }).click();
+    await expect(page.getByTestId('organisation-planned-cue')).toHaveCount(0);
+    await expect(page.getByTestId('organisation-overload')).toHaveCount(0);
+  });
 });
+
+function futureIsoDate(daysAhead: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() + daysAhead);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
