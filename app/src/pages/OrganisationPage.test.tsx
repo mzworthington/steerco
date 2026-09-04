@@ -586,11 +586,13 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
 
     expect(screen.getByTestId('organisation-planned-cue')).toBeTruthy();
     await selectTeamNode(user, 'team_storefront');
-    expect(screen.queryByText('Horizon Hire')).toBeNull();
+    const teamPanel = screen.getByTestId('organisation-team-team_storefront');
+    expect(within(teamPanel).queryByText('Horizon Hire')).toBeNull();
 
     fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: plannedAt } });
-    await selectTeamNode(user, 'team_storefront');
-    expect(screen.getByText('Horizon Hire')).toBeTruthy();
+    expect(
+      within(screen.getByTestId('organisation-team-team_storefront')).getByText('Horizon Hire'),
+    ).toBeTruthy();
   });
 });
 
