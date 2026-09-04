@@ -240,7 +240,7 @@ export function OrganisationTeamEditorModal({
               className="btn-secondary organisation-team-modal-close"
               onClick={onClose}
             >
-              Close
+              {mode === 'create' ? 'Cancel' : 'Close'}
             </button>
           </header>
 

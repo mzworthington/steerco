@@ -35,6 +35,7 @@ export function OrganisationPage() {
   const [, setLocation] = useLocation();
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
+  const [asOf, setAsOf] = useState(organisationTodayIsoDate);
   const [rangeFrom, setRangeFrom] = useState(organisationTodayIsoDate);
   const [rangeTo, setRangeTo] = useState(organisationTodayIsoDate);
   const [viewMode, setViewMode] = useState<OrganisationViewMode>('as_is');
@@ -51,13 +52,13 @@ export function OrganisationPage() {
     () =>
       session
         ? presentOrganisation(session.spec, {
-            asOf: rangeTo || null,
+            asOf: asOf || null,
             rangeFrom: rangeFrom || null,
             rangeTo: rangeTo || null,
             viewMode,
           })
         : null,
-    [session, rangeFrom, rangeTo, viewMode],
+    [session, asOf, rangeFrom, rangeTo, viewMode],
   );
 
   useEffect(() => {
@@ -101,6 +102,15 @@ export function OrganisationPage() {
         <p className="organisation-teaching" data-testid="organisation-point-in-time">
           {model.pointInTimeLine}
         </p>
+        <label className="organisation-field organisation-as-of" data-testid="organisation-as-of">
+          <span>As of</span>
+          <input
+            type="date"
+            value={asOf}
+            onChange={(event) => setAsOf(event.target.value)}
+            aria-label="As-of date"
+          />
+        </label>
         <div
           className="organisation-view-switch"
           role="tablist"

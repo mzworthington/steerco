@@ -1735,7 +1735,11 @@
   }
 
   .organisation-header {
-    @apply max-w-2xl;
+    @apply max-w-3xl;
+  }
+
+  .organisation-as-of {
+    @apply mt-4 max-w-xs;
   }
 
   .organisation-header-top {
@@ -1954,6 +1958,22 @@
 
   .organisation-timeline-track {
     @apply border-line relative mt-3 h-10 rounded-md border border-dashed bg-stone-50;
+  }
+
+  .organisation-timeline-capacity {
+    @apply mt-3 flex list-none flex-col gap-3 p-0;
+  }
+
+  .organisation-timeline-marker {
+    @apply absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded px-1.5 py-0.5 text-[10px] font-semibold whitespace-nowrap text-white;
+  }
+
+  .organisation-timeline-marker--capacity_up {
+    @apply bg-teal-800;
+  }
+
+  .organisation-timeline-marker--capacity_down {
+    @apply bg-stone-700;
   }
 
   .organisation-timeline-bands {

@@ -1,4 +1,4 @@
-import { cleanup, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
@@ -80,7 +80,10 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-view-switch')).toBeTruthy();
     expect(screen.queryByRole('tab', { name: /flow of change/i })).toBeNull();
     expect(screen.queryByTestId('organisation-capacity-board')).toBeNull();
-    expect(screen.queryByTestId('organisation-as-of')).toBeNull();
+    const today = new Date();
+    const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
+    expect(screen.getByLabelText(/as-of date/i)).toHaveValue(todayIso);
     expect(screen.getByTestId('organisation-flow-graph')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-canvas')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-legend')).toBeTruthy();
@@ -92,8 +95,6 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-flow-graph-relation-view')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-relation-depends-on')).toBeChecked();
     expect(screen.getByTestId('organisation-flow-graph-range')).toBeTruthy();
-    const today = new Date();
-    const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     expect(screen.getByTestId('organisation-flow-range-from')).toHaveValue(todayIso);
     expect(screen.getByTestId('organisation-flow-range-to')).toHaveValue(todayIso);
     expect(screen.queryByTestId('organisation-flow-graph-orient')).toBeNull();
@@ -147,9 +148,13 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     await user.click(screen.getByRole('tab', { name: /^timeline$/i }));
     expect(screen.getByTestId('organisation-timeline')).toBeTruthy();
     expect(screen.getByTestId('organisation-timeline-chart')).toBeTruthy();
+    expect(screen.getByTestId('organisation-timeline-capacity')).toBeTruthy();
+    expect(screen.getByTestId('organisation-timeline-bands')).toBeTruthy();
     expect(screen.getByTestId('organisation-timeline-events')).toBeTruthy();
-    expect(screen.queryByTestId('organisation-as-of')).toBeNull();
+    expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
     expect(screen.getByText(/dated events/i)).toBeTruthy();
+    expect(screen.getByText(/jordan blake joined storefront/i)).toBeTruthy();
+    expect(screen.getByText(/capacity up/i)).toBeTruthy();
   });
 
   it('surfaces operating-model mismatches', () => {
@@ -177,7 +182,33 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByText(/returns desk.*not funding any bet/i)).toBeTruthy();
   });
 
-  it('adds a team by display name into the session', async () => {
+  it('projects as-is capacity for the selected as-of date without leaving the page', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const asOf = screen.getByLabelText(/as-of date/i);
+    fireEvent.change(asOf, { target: { value: '2026-03-01' } });
+    expect(screen.getByTestId('organisation-point-in-time')).toHaveTextContent('2026-03-01');
+
+    await selectTeamNode(user, 'team_storefront');
+    expect(screen.queryByText('Jordan Blake')).toBeNull();
+
+    fireEvent.change(asOf, { target: { value: '2026-06-01' } });
+    expect(screen.getByTestId('organisation-point-in-time')).toHaveTextContent('2026-06-01');
+    expect(screen.getByText('Jordan Blake')).toBeTruthy();
+  });
+
+  it('adds a team by display name and type in one dialog', async () => {
     const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -192,9 +223,15 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     );
 
     await user.click(screen.getByTestId('organisation-add-team-cta'));
-    const modal = screen.getByTestId('organisation-team-modal');
+    const modal = screen.getByRole('dialog', { name: 'Add a team' });
     expect(modal).toBeTruthy();
+    const typeSelect = within(modal).getByLabelText(/team type/i);
+    expect(within(typeSelect).getByRole('option', { name: 'Stream-aligned' })).toBeTruthy();
+    expect(within(typeSelect).getByRole('option', { name: 'Platform' })).toBeTruthy();
+    expect(within(typeSelect).getByRole('option', { name: 'Enabling' })).toBeTruthy();
+    expect(within(typeSelect).getByRole('option', { name: 'Complicated subsystem' })).toBeTruthy();
     await user.type(within(modal).getByLabelText('Display name'), 'Returns desk');
+    await user.selectOptions(typeSelect, 'complicated_subsystem');
     await user.selectOptions(
       within(modal).getByTestId('organisation-team-modal-domain'),
       'domain_customer',
@@ -211,12 +248,49 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     const stored = sessionStorage.getItem('steerco.workspace-session');
     const parsed = JSON.parse(stored ?? '{}') as {
       spec: {
-        spec: { teams: Array<{ displayName: string; streamIds?: string[] }> };
+        spec: { teams: Array<{ displayName: string; role?: string; streamIds?: string[] }> };
       };
     };
     const created = parsed.spec.spec.teams.find((team) => team.displayName === 'Returns desk');
     expect(created).toBeTruthy();
+    expect(created?.role).toBe('complicated_subsystem');
     expect(created?.streamIds).toEqual(['stream_returns']);
+  });
+
+  it('discards a draft team when the add-team dialog is cancelled or closed with Escape', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const teamCount = opened.value.spec.teams.length;
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    await user.click(screen.getByTestId('organisation-add-team-cta'));
+    const modal = screen.getByRole('dialog', { name: 'Add a team' });
+    await user.type(within(modal).getByLabelText('Display name'), 'Ghost team');
+    await user.click(within(modal).getByRole('button', { name: 'Cancel' }));
+    expect(screen.queryByRole('dialog', { name: 'Add a team' })).toBeNull();
+
+    const storedAfterCancel = sessionStorage.getItem('steerco.workspace-session');
+    const parsedAfterCancel = JSON.parse(storedAfterCancel ?? '{}') as {
+      spec: { spec: { teams: Array<{ displayName: string }> } };
+    };
+    expect(parsedAfterCancel.spec.spec.teams).toHaveLength(teamCount);
+    expect(
+      parsedAfterCancel.spec.spec.teams.some((team) => team.displayName === 'Ghost team'),
+    ).toBe(false);
+
+    await user.click(screen.getByTestId('organisation-add-team-cta'));
+    expect(screen.getByRole('dialog', { name: 'Add a team' })).toBeTruthy();
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog', { name: 'Add a team' })).toBeNull();
   });
 
   it('edits a team and can attach a relationship from the modal', async () => {

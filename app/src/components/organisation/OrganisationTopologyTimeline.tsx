@@ -42,6 +42,40 @@ export function OrganisationTopologyTimeline({ timeline }: Props) {
         ) : null}
 
         <div className="organisation-timeline-section">
+          <h3 className="organisation-timeline-section-title">Capacity</h3>
+          {timeline.capacityMarkers.length === 0 ? (
+            <p className="organisation-timeline-detail-empty">
+              No dated capacity joins or leaves in this window yet.
+            </p>
+          ) : (
+            <ul
+              className="organisation-timeline-capacity"
+              data-testid="organisation-timeline-capacity"
+            >
+              {timeline.capacityMarkers.map((marker) => (
+                <li key={`${marker.teamId}-${marker.at}-${marker.memberLabel}-${marker.kind}`}>
+                  <div className="organisation-timeline-band-meta">
+                    <span>
+                      {marker.label}
+                      <span className="organisation-timeline-band-window"> · {marker.at}</span>
+                    </span>
+                  </div>
+                  <div className="organisation-timeline-track">
+                    <div
+                      className={`organisation-timeline-marker organisation-timeline-marker--${marker.kind}`}
+                      style={{ left: `${marker.percent}%` }}
+                      title={marker.label}
+                    >
+                      {marker.deltaLabel}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div className="organisation-timeline-section">
           <h3 className="organisation-timeline-section-title">Interactions</h3>
           {timeline.relationshipBands.length === 0 ? (
             <p className="organisation-timeline-detail-empty">

@@ -195,7 +195,7 @@ export function presentTopologyTimeline(
     asOf,
     asOfPercent:
       asOf && hasRange && rangeStart && rangeEnd ? dateToPercent(asOf, rangeStart, rangeEnd) : null,
-    empty: relationshipBands.length === 0 && events.length === 0,
+    empty: relationshipBands.length === 0 && events.length === 0 && capacityMarkers.length === 0,
     lead: hasRange
       ? `Interaction windows from ${rangeStart} to ${rangeEnd}. Relationships without dates span the whole window (ongoing commitment).`
       : 'Add relationships (or dated topology events) to see interaction history. Undated relationships count as ongoing across the selected date range.',

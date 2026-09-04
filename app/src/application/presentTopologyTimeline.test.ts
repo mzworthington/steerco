@@ -29,6 +29,8 @@ describe('presentTopologyTimeline', () => {
     expect(model.rangeEnd).toBeTruthy();
     expect(model.asOf).toBe('2026-08-01');
     expect(model.asOfPercent).toEqual(expect.any(Number));
+    expect(model.capacityMarkers.length).toBeGreaterThan(0);
+    expect(model.capacityMarkers.some((marker) => marker.kind === 'capacity_up')).toBe(true);
     expect(model.relationshipBands.length).toBeGreaterThan(5);
     expect(model.relationshipBands.some((band) => band.openEnded)).toBe(true);
     expect(

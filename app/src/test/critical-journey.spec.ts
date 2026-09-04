@@ -117,4 +117,32 @@ test.describe('Slice 1 critical journey', () => {
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
     expect(results.violations, 'axe violations after LVT add flow').toEqual([]);
   });
+
+  test('organisation add-team dialog and timeline stay on the page', async ({ page }) => {
+    await page.goto('/workspace?preview=1');
+    await page.getByRole('button', { name: /start from sample/i }).click();
+    await expect(page.getByTestId('steering-overview')).toBeVisible();
+
+    await page.getByRole('link', { name: /how work is organised/i }).click();
+    await expect(page.getByTestId('organisation-page')).toBeVisible();
+    await expect(page.getByTestId('organisation-as-of')).toBeVisible();
+
+    await page.getByTestId('organisation-add-team-cta').click();
+    const dialog = page.getByRole('dialog', { name: 'Add a team' });
+    await expect(dialog).toBeVisible();
+    const addTeamAxe = await new AxeBuilder({ page })
+      .include('[data-testid="organisation-team-modal"]')
+      .withTags(['wcag2a', 'wcag2aa'])
+      .analyze();
+    expect(addTeamAxe.violations, 'axe violations on add-team dialog').toEqual([]);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+
+    await page.getByRole('tab', { name: /^timeline$/i }).click();
+    await expect(page.getByTestId('organisation-timeline')).toBeVisible();
+    await expect(page.getByTestId('organisation-timeline-capacity')).toBeVisible();
+    await expect(page.getByTestId('organisation-timeline-bands')).toBeVisible();
+    await expect(page.getByTestId('organisation-timeline-events')).toBeVisible();
+    await expect(page.getByTestId('organisation-as-of')).toBeVisible();
+  });
 });
