@@ -1742,6 +1742,34 @@
     @apply mt-4 max-w-xs;
   }
 
+  .organisation-planned {
+    @apply border-line mt-6 rounded-xl border bg-white px-5 py-4;
+  }
+
+  .organisation-planned-lead {
+    @apply text-ink-muted mt-2 text-sm leading-relaxed;
+  }
+
+  .organisation-planned-cue {
+    @apply border-line mt-4 rounded-lg border bg-stone-50 px-4 py-3 text-sm;
+  }
+
+  .organisation-planned-cue ul {
+    @apply mt-2 space-y-2;
+  }
+
+  .organisation-planned-cue li {
+    @apply flex flex-wrap items-center justify-between gap-2;
+  }
+
+  .organisation-planned-form {
+    @apply mt-4 grid gap-3 sm:grid-cols-2;
+  }
+
+  .organisation-planned-form .btn-primary {
+    @apply justify-self-start sm:col-span-2;
+  }
+
   .organisation-header-top {
     @apply flex flex-wrap items-start justify-between gap-4;
   }

@@ -126,6 +126,7 @@ test.describe('Slice 1 critical journey', () => {
     await page.getByRole('link', { name: /how work is organised/i }).click();
     await expect(page.getByTestId('organisation-page')).toBeVisible();
     await expect(page.getByTestId('organisation-as-of')).toBeVisible();
+    await expect(page.getByTestId('organisation-planned-change')).toBeVisible();
 
     await page.getByTestId('organisation-add-team-cta').click();
     const dialog = page.getByRole('dialog', { name: 'Add a team' });

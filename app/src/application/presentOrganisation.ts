@@ -3,15 +3,19 @@ import {
   DISCIPLINE_COPY,
   INTERACTION_MODE_COPY,
   MEMBER_DISCIPLINES,
+  INTERACTION_MODES,
   PLATFORM_SCOPE_COPY,
   TEAM_TOPOLOGY_TYPES,
   TOPOLOGY_TYPE_COPY,
+  listPlannedShapeChanges,
   normalizeInteractionMode,
   normalizeTeamTopologyType,
+  plannedShapeChangeIdParts,
   projectSteerSpecAsOf,
   type InteractionMode,
   type InteractionShapeGeometry,
   type MemberDiscipline,
+  type PlannedShapeChange,
   type PlatformScope,
   type SteerMismatch,
   type SteerSpec,
@@ -164,6 +168,8 @@ export type OrganisationModel = {
   timeline: TopologyTimelineModel;
   overloadBanner: string | null;
   mismatches: SteerMismatch[];
+  /** Future capacity and relationship windows that start after as-of. */
+  plannedChanges: PlannedShapeChange[];
 };
 
 export type AddOrganisationTeamInput = {
@@ -376,6 +382,7 @@ export function presentOrganisation(
     timeline: presentTopologyTimeline(spec, { asOf, rangeFrom, rangeTo }),
     overloadBanner: overload?.headline ?? null,
     mismatches,
+    plannedChanges: asOf ? listPlannedShapeChanges(spec, asOf) : [],
   };
 }
 
@@ -769,6 +776,66 @@ export type RemoveOrganisationRelationshipInput = {
   toTeamId: string;
   mode: OrganisationInteractionMode;
 };
+
+export function applyClearPlannedShapeChange(
+  spec: SteerSpec,
+  changeId: string,
+): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+  const parts = plannedShapeChangeIdParts(changeId);
+  if (!parts) {
+    return { ok: false, error: 'That planned change is not in this workspace.' };
+  }
+  if (parts.kind === 'capacity') {
+    return applyRemoveOrganisationMember(spec, {
+      teamId: parts.teamId,
+      memberId: parts.memberId,
+    });
+  }
+  const mode = INTERACTION_MODES.find((item) => item === parts.mode);
+  if (!mode) {
+    return { ok: false, error: 'That planned change is not in this workspace.' };
+  }
+  return applyRemoveOrganisationRelationship(spec, {
+    fromTeamId: parts.fromTeamId,
+    toTeamId: parts.toTeamId,
+    mode,
+  });
+}
+
+type RemoveOrganisationMemberInput = {
+  teamId: string;
+  memberId: string;
+};
+
+function applyRemoveOrganisationMember(
+  spec: SteerSpec,
+  input: RemoveOrganisationMemberInput,
+): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+  const teamIndex = spec.spec.teams.findIndex((team) => team.id === input.teamId);
+  if (teamIndex < 0) {
+    return { ok: false, error: 'That team is not in this workspace.' };
+  }
+  const team = spec.spec.teams[teamIndex];
+  if (!team) {
+    return { ok: false, error: 'That team is not in this workspace.' };
+  }
+  const nextMembers = (team.members ?? []).filter((member) => member.id !== input.memberId);
+  if (nextMembers.length === (team.members ?? []).length) {
+    return { ok: false, error: 'That planned capacity change is not in this workspace.' };
+  }
+  const nextTeams = [...spec.spec.teams];
+  nextTeams[teamIndex] = { ...team, members: nextMembers };
+  return {
+    ok: true,
+    value: {
+      ...spec,
+      spec: {
+        ...spec.spec,
+        teams: nextTeams,
+      },
+    },
+  };
+}
 
 export function applyRemoveOrganisationRelationship(
   spec: SteerSpec,

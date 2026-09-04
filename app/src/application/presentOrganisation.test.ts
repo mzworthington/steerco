@@ -6,6 +6,7 @@ import { openWorkspaceFromYaml } from './openWorkspace';
 import {
   applyAddOrganisationMember,
   applyAddOrganisationRelationship,
+  applyClearPlannedShapeChange,
   applyAddOrganisationTeam,
   applyMoveOrganisationMember,
   applyUpdateOrganisationMember,
@@ -415,5 +416,83 @@ describe('applyUpdateOrganisationMember', () => {
       discipline: 'other',
     });
     expect(applied.ok).toBe(false);
+  });
+});
+
+describe('planned shape changes', () => {
+  it('keeps today unchanged and lists the future window until as-of reaches it', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const planned = applyAddOrganisationMember(opened.value, {
+      teamId: 'team_storefront',
+      displayName: 'Horizon hire',
+      title: 'Engineer',
+      ftePercent: 100,
+      discipline: 'engineering',
+      effectiveFrom: '2027-01-15',
+    });
+    expect(planned.ok).toBe(true);
+    if (!planned.ok) return;
+
+    const collab = applyAddOrganisationRelationship(planned.value, {
+      fromTeamId: 'team_enablement',
+      toTeamId: 'team_catalog',
+      mode: 'collaboration',
+      effectiveFrom: '2027-01-15',
+    });
+    expect(collab.ok).toBe(true);
+    if (!collab.ok) return;
+
+    const today = presentOrganisation(collab.value, { asOf: '2026-09-04' });
+    const storefrontToday = today.zones[0]?.teams.find((team) => team.id === 'team_storefront');
+    expect(storefrontToday?.members.some((member) => member.displayName === 'Horizon hire')).toBe(
+      false,
+    );
+    expect(today.mismatches.some((item) => item.code === 'collab_without_end')).toBe(false);
+    expect(today.plannedChanges.map((item) => item.summary).join(' ')).toMatch(/Horizon hire/);
+    expect(today.plannedChanges.some((item) => /collaboration/i.test(item.summary))).toBe(true);
+
+    const future = presentOrganisation(collab.value, { asOf: '2027-01-15' });
+    const storefrontFuture = future.zones[0]?.teams.find((team) => team.id === 'team_storefront');
+    expect(storefrontFuture?.members.some((member) => member.displayName === 'Horizon hire')).toBe(
+      true,
+    );
+    expect(future.mismatches.some((item) => item.code === 'collab_without_end')).toBe(true);
+    expect(future.plannedChanges).toEqual([]);
+  });
+
+  it('clears a planned capacity window so a future as-of no longer includes it', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const planned = applyAddOrganisationMember(opened.value, {
+      teamId: 'team_storefront',
+      displayName: 'Horizon hire',
+      title: 'Engineer',
+      ftePercent: 100,
+      discipline: 'engineering',
+      effectiveFrom: '2027-01-15',
+    });
+    expect(planned.ok).toBe(true);
+    if (!planned.ok) return;
+
+    const listed = presentOrganisation(planned.value, { asOf: '2026-09-04' });
+    const changeId = listed.plannedChanges.find((item) =>
+      item.summary.includes('Horizon hire'),
+    )?.id;
+    expect(changeId).toBeTruthy();
+    if (!changeId) return;
+
+    const cleared = applyClearPlannedShapeChange(planned.value, changeId);
+    expect(cleared.ok).toBe(true);
+    if (!cleared.ok) return;
+
+    const future = presentOrganisation(cleared.value, { asOf: '2027-01-15' });
+    const storefront = future.zones[0]?.teams.find((team) => team.id === 'team_storefront');
+    expect(storefront?.members.some((member) => member.displayName === 'Horizon hire')).toBe(false);
+    expect(future.plannedChanges).toEqual([]);
   });
 });

@@ -515,4 +515,42 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByText(/allocation updated/i)).toBeTruthy();
     expect(screen.getByDisplayValue('Interim Lead')).toBeTruthy();
   });
+
+  it('records a planned capacity change, projects it at as-of, and clears it', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const planner = screen.getByTestId('organisation-planned-change');
+    await user.selectOptions(within(planner).getByLabelText(/kind of change/i), 'capacity');
+    await user.selectOptions(within(planner).getByLabelText(/^team$/i), 'team_storefront');
+    await user.type(within(planner).getByLabelText(/person name/i), 'Horizon hire');
+    await user.type(within(planner).getByLabelText(/^title$/i), 'Engineer');
+    fireEvent.change(within(planner).getByLabelText(/starts on/i), {
+      target: { value: '2027-01-15' },
+    });
+    await user.click(within(planner).getByRole('button', { name: /record planned change/i }));
+
+    expect(screen.getByTestId('organisation-planned-cue')).toHaveTextContent(/Horizon hire/);
+    await selectTeamNode(user, 'team_storefront');
+    expect(screen.queryByText('Horizon hire')).toBeNull();
+
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2027-01-15' } });
+    expect(screen.getByText('Horizon hire')).toBeTruthy();
+    expect(screen.queryByTestId('organisation-planned-cue')).toBeNull();
+
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2026-09-04' } });
+    await user.click(screen.getByRole('button', { name: /clear planned change/i }));
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2027-01-15' } });
+    expect(screen.queryByText('Horizon hire')).toBeNull();
+  });
 });
