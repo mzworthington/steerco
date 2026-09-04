@@ -1,5 +1,5 @@
 name: Setup pnpm + Node
-description: Install pnpm and Node, retrying npm registry 504s on the standalone binary.
+description: Install pnpm and Node in a nested workspace; retry only npm 5xx on the pnpm binary.
 inputs:
   version:
     description: pnpm version
@@ -8,12 +8,12 @@ inputs:
     description: Runtime spec (for example node@26.7.0)
     required: true
   cache-dependency-path:
-    description: Lockfile path for the pnpm store cache
+    description: Lockfile path relative to GITHUB_WORKSPACE
     required: true
-  package-json-file:
-    description: Workspace package.json (relative to GITHUB_WORKSPACE)
+  working-directory:
+    description: Directory that contains package.json (job defaults.run.working-directory does not apply to uses:)
     required: false
-    default: app/package.json
+    default: app
 runs:
   using: composite
   steps:
@@ -26,7 +26,8 @@ runs:
         runtime: ${{ inputs.runtime }}
         cache: true
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
-        package-json-file: ${{ inputs.package-json-file }}
+        working-directory: ${{ inputs.working-directory }}
+        install: true
     - name: Wait before pnpm setup retry
       if: steps.pnpm-1.outcome == 'failure'
       shell: bash
@@ -39,4 +40,5 @@ runs:
         runtime: ${{ inputs.runtime }}
         cache: true
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
-        package-json-file: ${{ inputs.package-json-file }}
+        working-directory: ${{ inputs.working-directory }}
+        install: true
