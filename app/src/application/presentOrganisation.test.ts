@@ -7,7 +7,9 @@ import {
   applyAddOrganisationMember,
   applyAddOrganisationRelationship,
   applyAddOrganisationTeam,
+  applyClearPlannedShapeChange,
   applyMoveOrganisationMember,
+  applyRecordPlannedShapeChange,
   applyUpdateOrganisationMember,
   applyUpdateOrganisationTeam,
   presentOrganisation,
@@ -415,5 +417,145 @@ describe('applyUpdateOrganisationMember', () => {
       discipline: 'other',
     });
     expect(applied.ok).toBe(false);
+  });
+});
+
+describe('planned shape change', () => {
+  const today = '2026-09-04';
+  const plannedAt = '2026-12-01';
+
+  it('projects a future relationship onto as-of that date and leaves today unchanged', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const recorded = applyRecordPlannedShapeChange(
+      opened.value,
+      {
+        kind: 'relationship',
+        at: plannedAt,
+        fromTeamId: 'team_pos',
+        toTeamId: 'team_fulfilil',
+        mode: 'x_as_a_service',
+      },
+      today,
+    );
+    expect(recorded.ok).toBe(true);
+    if (!recorded.ok) return;
+
+    const asToday = presentOrganisation(recorded.value, { asOf: today, today });
+    expect(asToday.plannedChanges).toHaveLength(1);
+    expect(asToday.plannedChangeCue).toMatch(/planned shape change is recorded for 2026-12-01/i);
+    expect(asToday.plannedChangeCue).toMatch(/today is unchanged/i);
+    expect(asToday.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+
+    const asPlanned = presentOrganisation(recorded.value, { asOf: plannedAt, today });
+    expect(asPlanned.plannedChangeCue).toMatch(/showing the planned shape for 2026-12-01/i);
+    expect(asPlanned.mismatches.some((item) => item.code === 'platform_overload')).toBe(true);
+    expect(asPlanned.overloadBanner).toMatch(/fulfilment platform/i);
+    expect(asPlanned.overloadBanner).toMatch(/8 teams/i);
+  });
+
+  it('projects a future capacity seat onto as-of that date', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const recorded = applyRecordPlannedShapeChange(
+      opened.value,
+      {
+        kind: 'capacity',
+        at: plannedAt,
+        teamId: 'team_storefront',
+        displayName: 'Horizon Hire',
+        title: 'Engineer',
+        ftePercent: 100,
+        discipline: 'engineering',
+      },
+      today,
+    );
+    expect(recorded.ok).toBe(true);
+    if (!recorded.ok) return;
+
+    const asToday = presentOrganisation(recorded.value, { asOf: today, today });
+    const storefrontToday = asToday.zones
+      .flatMap((zone) => zone.teams)
+      .find((team) => team.id === 'team_storefront');
+    expect(storefrontToday?.members.some((member) => member.displayName === 'Horizon Hire')).toBe(
+      false,
+    );
+    expect(asToday.plannedChanges[0]?.summary).toMatch(/horizon hire/i);
+    expect(asToday.plannedChangeCue).toMatch(/2026-12-01/);
+
+    const asPlanned = presentOrganisation(recorded.value, { asOf: plannedAt, today });
+    const storefrontPlanned = asPlanned.zones
+      .flatMap((zone) => zone.teams)
+      .find((team) => team.id === 'team_storefront');
+    expect(storefrontPlanned?.members.some((member) => member.displayName === 'Horizon Hire')).toBe(
+      true,
+    );
+  });
+
+  it('clears a planned event so a future as-of no longer shows it', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const recorded = applyRecordPlannedShapeChange(
+      opened.value,
+      {
+        kind: 'relationship',
+        at: plannedAt,
+        fromTeamId: 'team_pos',
+        toTeamId: 'team_fulfilil',
+        mode: 'x_as_a_service',
+      },
+      today,
+    );
+    expect(recorded.ok).toBe(true);
+    if (!recorded.ok) return;
+
+    const cleared = applyClearPlannedShapeChange(recorded.value, recorded.plannedId);
+    expect(cleared.ok).toBe(true);
+    if (!cleared.ok) return;
+
+    const asPlanned = presentOrganisation(cleared.value, { asOf: plannedAt, today });
+    expect(asPlanned.plannedChanges).toEqual([]);
+    expect(asPlanned.plannedChangeCue).toBeNull();
+    expect(asPlanned.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+    expect(
+      cleared.value.spec.relationships.some(
+        (item) =>
+          item.fromTeamId === 'team_pos' &&
+          item.toTeamId === 'team_fulfilil' &&
+          item.mode === 'x_as_a_service',
+      ),
+    ).toBe(false);
+    expect(
+      cleared.value.spec.topologyEvents?.some((event) => event.id === recorded.plannedId),
+    ).toBe(false);
+  });
+
+  it('rejects a planned change dated today or earlier', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const applied = applyRecordPlannedShapeChange(
+      opened.value,
+      {
+        kind: 'capacity',
+        at: today,
+        teamId: 'team_storefront',
+        displayName: 'Too Soon',
+        title: 'Engineer',
+        ftePercent: 100,
+        discipline: 'engineering',
+      },
+      today,
+    );
+    expect(applied.ok).toBe(false);
+    if (applied.ok) return;
+    expect(applied.error).toMatch(/future date/i);
   });
 });

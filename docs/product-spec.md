@@ -160,6 +160,13 @@ Feature: Topology intent
     Given capacity and relationship windows recorded over a steering period
     When the leader chooses an as-of date on How work is organised
     Then the projected shape and mismatches match that date
+
+  Scenario: Planned future team-shape change
+    Given a director records a future-dated capacity or relationship change
+    When they set as-of to that date
+    Then the map and mismatches show the planned shape
+    And today’s as-of stays unchanged while a cue shows the planned change is recorded
+    And clearing the planned event removes it from a future as-of
 ```
 
 ### Feature: Decision and export

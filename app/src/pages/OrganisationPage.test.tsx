@@ -83,6 +83,8 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     const today = new Date();
     const todayIso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     expect(screen.getByTestId('organisation-as-of')).toBeTruthy();
+    expect(screen.getByTestId('organisation-planned-change')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /planned shape change/i })).toBeTruthy();
     expect(screen.getByLabelText(/as-of date/i)).toHaveValue(todayIso);
     expect(screen.getByTestId('organisation-flow-graph')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-canvas')).toBeTruthy();
@@ -515,4 +517,88 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByText(/allocation updated/i)).toBeTruthy();
     expect(screen.getByDisplayValue('Interim Lead')).toBeTruthy();
   });
+
+  it('records a future relationship, shows load at that as-of, and clears it', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const plannedAt = futureIsoDate(120);
+    await user.click(screen.getByTestId('organisation-planned-kind-relationship'));
+    await user.selectOptions(screen.getByLabelText(/planned relationship from team/i), 'team_pos');
+    await user.selectOptions(
+      screen.getByLabelText(/planned relationship to team/i),
+      'team_fulfilil',
+    );
+    fireEvent.change(screen.getByLabelText(/planned start date/i), {
+      target: { value: plannedAt },
+    });
+    await user.click(screen.getByTestId('organisation-planned-save'));
+
+    expect(screen.getByText(/planned change recorded/i)).toBeTruthy();
+    expect(screen.getByTestId('organisation-planned-cue')).toHaveTextContent(/today is unchanged/i);
+    expect(screen.queryByTestId('organisation-overload')).toBeNull();
+
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: plannedAt } });
+    expect(screen.getByTestId('organisation-point-in-time')).toHaveTextContent(plannedAt);
+    expect(screen.getByTestId('organisation-overload')).toHaveTextContent(/fulfilment platform/i);
+    expect(screen.getByTestId('organisation-overload')).toHaveTextContent(/8 teams/i);
+    expect(screen.getByTestId('organisation-planned-cue')).toHaveTextContent(
+      /showing the planned shape/i,
+    );
+
+    await user.click(screen.getByRole('button', { name: `Clear planned change for ${plannedAt}` }));
+    expect(screen.getByText(/planned change cleared/i)).toBeTruthy();
+    expect(screen.queryByTestId('organisation-planned-cue')).toBeNull();
+    expect(screen.queryByTestId('organisation-overload')).toBeNull();
+  });
+
+  it('keeps today’s capacity when a future seat is recorded', async () => {
+    const user = setupUser();
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    seedSession(opened.value);
+
+    render(
+      <WorkspaceSessionProvider>
+        <OrganisationPage />
+      </WorkspaceSessionProvider>,
+    );
+
+    const plannedAt = futureIsoDate(90);
+    await user.selectOptions(screen.getByLabelText(/planned capacity team/i), 'team_storefront');
+    await user.type(screen.getByLabelText(/planned person name/i), 'Horizon Hire');
+    fireEvent.change(screen.getByLabelText(/planned start date/i), {
+      target: { value: plannedAt },
+    });
+    await user.click(screen.getByTestId('organisation-planned-save'));
+
+    expect(screen.getByTestId('organisation-planned-cue')).toBeTruthy();
+    await selectTeamNode(user, 'team_storefront');
+    expect(screen.queryByText('Horizon Hire')).toBeNull();
+
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: plannedAt } });
+    await selectTeamNode(user, 'team_storefront');
+    expect(screen.getByText('Horizon Hire')).toBeTruthy();
+  });
 });
+
+function futureIsoDate(daysAhead: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() + daysAhead);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}

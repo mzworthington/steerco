@@ -1,8 +1,16 @@
 import {
+  calendarTodayIsoDate,
   detectSteerSpecMismatches,
   DISCIPLINE_COPY,
   INTERACTION_MODE_COPY,
+  isFutureIsoDate,
+  isIsoDate,
+  listPlannedShapeChanges,
   MEMBER_DISCIPLINES,
+  parsePlannedShapeChangeId,
+  plannedChangeIdForMember,
+  plannedChangeIdForRelationship,
+  plannedShapeChangeCue,
   PLATFORM_SCOPE_COPY,
   TEAM_TOPOLOGY_TYPES,
   TOPOLOGY_TYPE_COPY,
@@ -12,11 +20,13 @@ import {
   type InteractionMode,
   type InteractionShapeGeometry,
   type MemberDiscipline,
+  type PlannedShapeChangeKind,
   type PlatformScope,
   type SteerMismatch,
   type SteerSpec,
   type TeamRole,
   type TeamShapeGeometry,
+  type TopologyEvent,
 } from '@steerco/core';
 import { presentTopologyTimeline, type TopologyTimelineModel } from './presentTopologyTimeline';
 
@@ -144,6 +154,8 @@ export type PresentOrganisationOptions = {
   viewMode?: OrganisationViewMode;
   /** Domain id when filtering as-is capacity. */
   domainId?: string | null;
+  /** Calendar day used to decide which windows are still planned (defaults to today). */
+  today?: string | null;
 };
 
 export type OrganisationModel = {
@@ -164,6 +176,16 @@ export type OrganisationModel = {
   timeline: TopologyTimelineModel;
   overloadBanner: string | null;
   mismatches: SteerMismatch[];
+  plannedChanges: OrganisationPlannedChange[];
+  plannedChangeCue: string | null;
+};
+
+export type OrganisationPlannedChange = {
+  id: string;
+  at: string;
+  kind: PlannedShapeChangeKind;
+  summary: string;
+  teamIds: string[];
 };
 
 export type AddOrganisationTeamInput = {
@@ -214,6 +236,15 @@ export function presentOrganisation(
   const asOf = options.asOf?.trim() || options.rangeTo?.trim() || null;
   const rangeFrom = options.rangeFrom?.trim() || null;
   const rangeTo = options.rangeTo?.trim() || null;
+  const today = options.today?.trim() || calendarTodayIsoDate();
+  const planned = listPlannedShapeChanges(spec, today);
+  const plannedChanges = planned.map((item) => ({
+    id: item.id,
+    at: item.at,
+    kind: item.kind,
+    summary: item.summary,
+    teamIds: item.teamIds,
+  }));
   const projected = projectSteerSpecAsOf(spec, asOf);
   const teams = projected.spec.teams.map(normalizeTeam);
   const teamById = new Map(teams.map((team) => [team.id, team]));
@@ -376,6 +407,8 @@ export function presentOrganisation(
     timeline: presentTopologyTimeline(spec, { asOf, rangeFrom, rangeTo }),
     overloadBanner: overload?.headline ?? null,
     mismatches,
+    plannedChanges,
+    plannedChangeCue: plannedShapeChangeCue(planned, asOf),
   };
 }
 
@@ -835,7 +868,7 @@ function validateOrganisationMemberFields(
 export function applyAddOrganisationMember(
   spec: SteerSpec,
   input: AddOrganisationMemberInput,
-): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+): { ok: true; value: SteerSpec; memberId: string } | { ok: false; error: string } {
   const validated = validateOrganisationMemberFields(input);
   if (!validated.ok) return validated;
 
@@ -868,12 +901,171 @@ export function applyAddOrganisationMember(
 
   return {
     ok: true,
+    memberId: id,
     value: {
       ...spec,
       spec: {
         ...spec.spec,
         teams: nextTeams,
       },
+    },
+  };
+}
+
+export type RecordPlannedCapacityInput = {
+  kind: 'capacity';
+  at: string;
+  teamId: string;
+  displayName: string;
+  title: string;
+  ftePercent: number;
+  discipline: MemberDiscipline;
+};
+
+export type RecordPlannedRelationshipInput = {
+  kind: 'relationship';
+  at: string;
+  fromTeamId: string;
+  toTeamId: string;
+  mode: OrganisationInteractionMode;
+  expectedUntil?: string;
+};
+
+export type RecordPlannedShapeChangeInput =
+  RecordPlannedCapacityInput | RecordPlannedRelationshipInput;
+
+export function applyRecordPlannedShapeChange(
+  spec: SteerSpec,
+  input: RecordPlannedShapeChangeInput,
+  today: string = calendarTodayIsoDate(),
+): { ok: true; value: SteerSpec; plannedId: string } | { ok: false; error: string } {
+  const at = input.at.trim();
+  if (!isIsoDate(at)) {
+    return { ok: false, error: 'Choose the date this change starts.' };
+  }
+  if (!isFutureIsoDate(at, today)) {
+    return { ok: false, error: 'Use a future date so today’s shape stays as it is.' };
+  }
+
+  if (input.kind === 'capacity') {
+    const added = applyAddOrganisationMember(spec, {
+      teamId: input.teamId,
+      displayName: input.displayName,
+      title: input.title,
+      ftePercent: input.ftePercent,
+      discipline: input.discipline,
+      effectiveFrom: at,
+    });
+    if (!added.ok) return added;
+    const team = added.value.spec.teams.find((item) => item.id === input.teamId);
+    const plannedId = plannedChangeIdForMember(added.memberId);
+    const event: TopologyEvent = {
+      id: plannedId,
+      at,
+      kind: 'capacity_up',
+      summary: `${input.displayName.trim()} joins ${team?.displayName ?? 'the team'} on ${at}`,
+      teamIds: [input.teamId],
+    };
+    return {
+      ok: true,
+      plannedId,
+      value: withTopologyEvent(added.value, event),
+    };
+  }
+
+  const added = applyAddOrganisationRelationship(spec, {
+    fromTeamId: input.fromTeamId,
+    toTeamId: input.toTeamId,
+    mode: input.mode,
+    expectedUntil: input.expectedUntil,
+    effectiveFrom: at,
+  });
+  if (!added.ok) return added;
+  const plannedId = plannedChangeIdForRelationship(input.fromTeamId, input.toTeamId, input.mode);
+  const fromLabel =
+    spec.spec.teams.find((team) => team.id === input.fromTeamId)?.displayName ?? input.fromTeamId;
+  const toLabel =
+    spec.spec.teams.find((team) => team.id === input.toTeamId)?.displayName ?? input.toTeamId;
+  const event: TopologyEvent = {
+    id: plannedId,
+    at,
+    kind: 'relationship_added',
+    summary: `${fromLabel} will use ${toLabel} (${input.mode}) from ${at}`,
+    teamIds: [input.fromTeamId, input.toTeamId],
+    relationshipKey: `${input.fromTeamId}::${input.toTeamId}`,
+  };
+  return {
+    ok: true,
+    plannedId,
+    value: withTopologyEvent(added.value, event),
+  };
+}
+
+export function applyClearPlannedShapeChange(
+  spec: SteerSpec,
+  plannedId: string,
+): { ok: true; value: SteerSpec } | { ok: false; error: string } {
+  const parsed = parsePlannedShapeChangeId(plannedId);
+  if (!parsed) {
+    return { ok: false, error: 'That planned change is not recorded.' };
+  }
+
+  if (parsed.kind === 'capacity') {
+    const nextTeams = spec.spec.teams.map((team) => ({
+      ...team,
+      members: (team.members ?? []).filter((member) => member.id !== parsed.memberId),
+    }));
+    const removed = spec.spec.teams.some((team) =>
+      (team.members ?? []).some((member) => member.id === parsed.memberId),
+    );
+    if (!removed) {
+      return { ok: false, error: 'That planned change is not recorded.' };
+    }
+    return {
+      ok: true,
+      value: {
+        ...spec,
+        spec: {
+          ...spec.spec,
+          teams: nextTeams,
+          topologyEvents: (spec.spec.topologyEvents ?? []).filter(
+            (event) => event.id !== plannedId,
+          ),
+        },
+      },
+    };
+  }
+
+  const removedRel = applyRemoveOrganisationRelationship(spec, {
+    fromTeamId: parsed.fromTeamId,
+    toTeamId: parsed.toTeamId,
+    mode: parsed.mode,
+  });
+  if (!removedRel.ok) {
+    return { ok: false, error: 'That planned change is not recorded.' };
+  }
+  return {
+    ok: true,
+    value: {
+      ...removedRel.value,
+      spec: {
+        ...removedRel.value.spec,
+        topologyEvents: (removedRel.value.spec.topologyEvents ?? []).filter(
+          (event) => event.id !== plannedId,
+        ),
+      },
+    },
+  };
+}
+
+function withTopologyEvent(spec: SteerSpec, event: TopologyEvent): SteerSpec {
+  const existing = spec.spec.topologyEvents ?? [];
+  if (existing.some((item) => item.id === event.id)) return spec;
+  return {
+    ...spec,
+    spec: {
+      ...spec.spec,
+      topologyEvents: [...existing, event],
     },
   };
 }

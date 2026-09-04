@@ -75,6 +75,18 @@ export {
   type EffectiveWindow,
 } from './domain/steerSpec/projectSteerSpecAsOf';
 export {
+  calendarTodayIsoDate,
+  isFutureIsoDate,
+  isIsoDate,
+  listPlannedShapeChanges,
+  parsePlannedShapeChangeId,
+  plannedChangeIdForMember,
+  plannedChangeIdForRelationship,
+  plannedShapeChangeCue,
+  type PlannedShapeChange,
+  type PlannedShapeChangeKind,
+} from './domain/steerSpec/plannedShapeChange';
+export {
   buildTopologyTimeline,
   type TopologyTimeline,
   type TopologyTimelineCapacityDelta,

@@ -1742,6 +1742,50 @@
     @apply mt-4 max-w-xs;
   }
 
+  .organisation-planned {
+    @apply border-line mt-6 rounded-xl border bg-white px-5 py-4;
+  }
+
+  .organisation-planned-lead {
+    @apply text-ink-muted mt-1 text-sm leading-relaxed;
+  }
+
+  .organisation-planned-cue {
+    @apply text-ink mt-3 text-sm leading-relaxed;
+  }
+
+  .organisation-planned-list {
+    @apply mt-3 space-y-2;
+  }
+
+  .organisation-planned-item {
+    @apply text-ink flex flex-wrap items-start justify-between gap-3 text-sm leading-relaxed;
+  }
+
+  .organisation-planned-item-date {
+    @apply font-semibold;
+  }
+
+  .organisation-planned-form {
+    @apply mt-4 grid gap-3 sm:grid-cols-2;
+  }
+
+  .organisation-planned-kind {
+    @apply text-ink flex flex-col gap-2 text-xs font-semibold tracking-wide uppercase sm:col-span-2;
+
+    legend {
+      @apply mb-1;
+    }
+
+    label {
+      @apply text-ink flex items-center gap-2 text-sm font-normal tracking-normal normal-case;
+    }
+  }
+
+  .organisation-planned-actions {
+    @apply sm:col-span-2;
+  }
+
   .organisation-header-top {
     @apply flex flex-wrap items-start justify-between gap-4;
   }
