@@ -50,7 +50,7 @@ describe('WorkspaceShell', () => {
       </WorkspaceSessionProvider>,
     );
 
-    expect(screen.getByRole('link', { name: /^home$/i })).toBeTruthy();
+    expect(screen.getByRole('link', { name: /skip to main content/i })).toBeTruthy();
     expect(screen.queryByRole('link', { name: /steering overview/i })).toBeNull();
     expect(screen.getByText('Steering overview').getAttribute('aria-disabled')).toBe('true');
     expect(screen.getByTestId('workspace-nav-hint')).toBeTruthy();

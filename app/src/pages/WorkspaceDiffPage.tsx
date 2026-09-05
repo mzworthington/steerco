@@ -1,21 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { presentWorkspaceDiff } from '../application/presentWorkspaceDiff';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function WorkspaceDiffPage() {
   const { session, hasPendingChanges, canWriteToFolder, revertDraft, saveWorkspace } =
     useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const [flash, setFlash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(
     () =>
@@ -33,7 +26,11 @@ export function WorkspaceDiffPage() {
     document.title = `Pending changes · ${model.workspaceTitle} · SteerCo`;
   }, [model]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   const onRevert = () => {
     if (!hasPendingChanges) return;

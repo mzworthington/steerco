@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import {
   applyAddOrganisationMember,
   applyAddOrganisationRelationship,
@@ -21,6 +21,7 @@ import {
   organisationTodayIsoDate,
 } from '../components/organisation/OrganisationRelationshipGraph';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
+import { PageHeader } from '../components/PageHeader';
 
 const VIEW_OPTIONS: Array<{ value: OrganisationViewMode; label: string }> = [
   { value: 'as_is', label: 'As-is' },
@@ -34,7 +35,6 @@ type TeamEditorState =
 
 export function OrganisationPage() {
   const { session, setSession } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
   const [asOf, setAsOf] = useState(organisationTodayIsoDate);
@@ -43,12 +43,6 @@ export function OrganisationPage() {
   const [viewMode, setViewMode] = useState<OrganisationViewMode>('as_is');
   const [teamEditor, setTeamEditor] = useState<TeamEditorState>({ open: false });
   const disciplineOptions = useMemo(() => organisationMemberDisciplineOptions(), []);
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(
     () =>
@@ -69,7 +63,11 @@ export function OrganisationPage() {
     }
   }, [model]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   const allTeams = model.zones.flatMap((zone) => zone.teams);
   const editingTeam =
@@ -83,65 +81,63 @@ export function OrganisationPage() {
 
   return (
     <section className="organisation-page" data-testid="organisation-page">
-      <header className="organisation-header">
-        <div className="organisation-header-top">
-          <div>
-            <p className="eyebrow">Organisation</p>
-            <h1 className="organisation-title">How work is organised</h1>
-          </div>
-          <button
-            type="button"
-            className="btn-primary"
-            data-testid="organisation-add-team-cta"
-            onClick={openCreateTeam}
-          >
-            Add a team
-          </button>
-        </div>
-        <p className="organisation-lead">{model.lead}</p>
-        <p className="organisation-teaching">{model.teachingLine}</p>
-        <p className="organisation-teaching">{model.interactionTeaching}</p>
-        <p className="organisation-teaching" data-testid="organisation-point-in-time">
-          {model.pointInTimeLine}
-        </p>
-        <label className="organisation-field organisation-as-of" data-testid="organisation-as-of">
-          <span>As of</span>
-          <input
-            type="date"
-            value={asOf}
-            onChange={(event) => {
-              const next = event.target.value;
-              setAsOf(next);
-              setRangeFrom(next);
-              setRangeTo(next);
-            }}
-            aria-label="As-of date"
-          />
-        </label>
-        <div
-          className="organisation-view-switch"
-          role="tablist"
-          aria-label="Organisation views"
-          data-testid="organisation-view-switch"
-        >
-          {VIEW_OPTIONS.map((option) => (
+      <PageHeader
+        eyebrow="Organisation"
+        title="How work is organised"
+        framing={<p>{model.lead}</p>}
+        action={
+          model.empty ? undefined : (
             <button
-              key={option.value}
               type="button"
-              role="tab"
-              aria-selected={viewMode === option.value}
-              className={
-                viewMode === option.value
-                  ? 'organisation-view-tab organisation-view-tab--active'
-                  : 'organisation-view-tab'
-              }
-              onClick={() => setViewMode(option.value)}
+              className="btn-primary"
+              data-testid="organisation-add-team-cta"
+              onClick={openCreateTeam}
             >
-              {option.label}
+              Add team
             </button>
-          ))}
-        </div>
-      </header>
+          )
+        }
+      />
+      <p className="organisation-teaching">{model.teachingLine}</p>
+      <p className="organisation-teaching" data-testid="organisation-point-in-time">
+        {model.pointInTimeLine}
+      </p>
+      <label className="organisation-field organisation-as-of" data-testid="organisation-as-of">
+        <span>As of</span>
+        <input
+          type="date"
+          value={asOf}
+          onChange={(event) => {
+            const next = event.target.value;
+            setAsOf(next);
+            setRangeFrom(next);
+            setRangeTo(next);
+          }}
+          aria-label="As-of date"
+        />
+      </label>
+      <div
+        className="organisation-view-switch"
+        role="group"
+        aria-label="Organisation views"
+        data-testid="organisation-view-switch"
+      >
+        {VIEW_OPTIONS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            aria-pressed={viewMode === option.value}
+            className={
+              viewMode === option.value
+                ? 'organisation-view-tab organisation-view-tab--active'
+                : 'organisation-view-tab'
+            }
+            onClick={() => setViewMode(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
 
       <OrganisationPlannedShapePanel
         teams={allTeams}
@@ -208,19 +204,19 @@ export function OrganisationPage() {
       {model.empty ? (
         <div className="organisation-empty" data-testid="organisation-empty">
           <p className="organisation-empty-lead">
-            Add the teams that deliver your bets - names, Team Topologies type, and the domain /
-            stream lenses they own.
+            Add the teams that deliver your bets - name, type and the domain they own.
           </p>
           <p className="organisation-empty-tip">
-            Tip: A domain is a DDD bounded context (the problem-space fence) - domain, stream, and
-            stream-aligned team are three lenses on one slice of value, not a hierarchy. Platform
-            teams accelerate stream-aligned teams (their customers) by reducing cognitive load;
-            enabling teams facilitate temporarily; complicated-subsystem teams hold rare specialty.
-            If a team or context grows too large, find a fracture plane and split into peer streams
-            - do not add a management layer. Directors stay outside the stream.
+            Team types and interaction modes are in the{' '}
+            <Link href="/docs/product-guide">product guide</Link>.
           </p>
-          <button type="button" className="btn-primary" onClick={openCreateTeam}>
-            Add a team
+          <button
+            type="button"
+            className="btn-primary"
+            data-testid="organisation-add-team-cta"
+            onClick={openCreateTeam}
+          >
+            Add team
           </button>
         </div>
       ) : viewMode === 'timeline' ? (
@@ -330,16 +326,6 @@ export function OrganisationPage() {
           Prepare decision note
         </Link>
       </div>
-
-      <button
-        type="button"
-        className="organisation-fab"
-        data-testid="organisation-add-team-fab"
-        onClick={openCreateTeam}
-        aria-label="Add a team"
-      >
-        + Team
-      </button>
 
       <OrganisationTeamEditorModal
         open={teamEditor.open}

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { BrandMark } from '../components/BrandMark';
+import { SkipToMain } from '../components/SkipToMain';
 import {
   NavDrawerBackdrop,
   NavDrawerClose,
@@ -86,6 +87,16 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
     desktop,
   });
 
+  useEffect(() => {
+    if (!hasPendingChanges) return;
+    const onBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [hasPendingChanges]);
+
   const onSave = async () => {
     if (!session || saving) return;
     setSaving(true);
@@ -111,6 +122,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="workspace-shell" data-testid="workspace-shell">
+      <SkipToMain />
       <header className="workspace-mobile-bar" data-testid="workspace-mobile-bar">
         <NavDrawerToggle
           open={navOpen}
@@ -244,7 +256,9 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
           <p className="workspace-sidebar-note">No account required for Slice 1.</p>
         </div>
       </aside>
-      <div className="workspace-main">{children}</div>
+      <main id="main-content" className="workspace-main" tabIndex={-1}>
+        {children}
+      </main>
     </div>
   );
 }

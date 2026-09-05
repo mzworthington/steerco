@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import type { CatalogMergePlan } from '@steerco/core';
 import {
   applyCatalogImportPlan,
@@ -10,7 +10,6 @@ import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function TechnicalImportPage() {
   const { session, setSession } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const [raw, setRaw] = useState('');
   const [sourceLabel, setSourceLabel] = useState('catalog file');
   const [preview, setPreview] = useState<CatalogImportPreview | null>(null);
@@ -19,16 +18,12 @@ export function TechnicalImportPage() {
   const [flash, setFlash] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
-
-  useEffect(() => {
     document.title = 'Catalog import · SteerCo';
   }, []);
 
-  if (!session) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
 
   const onParse = () => {
     setFlash(null);

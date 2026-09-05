@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { applyProductDraft, presentGoals } from '../application/presentGoals';
 import { lvtPath } from '../application/lvtRoutes';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
+import { PageHeader } from '../components/PageHeader';
 
 export function ProductsPage() {
   const { session, setSession } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const [productDraft, setProductDraft] = useState<{
     id?: string;
     title: string;
@@ -18,12 +18,6 @@ export function ProductsPage() {
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(() => (session ? presentGoals(session.spec) : null), [session]);
 
@@ -44,7 +38,11 @@ export function ProductsPage() {
     }
   }, [model]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   const toggleProductOutcome = (outcomeId: string) => {
     if (!productDraft) return;
@@ -64,13 +62,13 @@ export function ProductsPage() {
 
   return (
     <section className="goals-page" data-testid="products-page">
-      <header className="goals-header">
-        <p className="eyebrow">Product briefs</p>
-        <h1 className="goals-title">Product mindset</h1>
-        <p className="goals-framing">
-          Short product briefs - customer problem and linked goals/bets, not requirements docs.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Product briefs"
+        title="Customer problem, linked to goals"
+        framing={
+          <p>Short briefs: customer problem and linked goals and bets. Not requirements docs.</p>
+        }
+      />
 
       <section className="goals-products" aria-labelledby="products-heading">
         <div className="goals-section-header">
@@ -98,7 +96,7 @@ export function ProductsPage() {
               setSavedFlash(null);
             }}
           >
-            Add product
+            Add brief
           </button>
         </div>
 

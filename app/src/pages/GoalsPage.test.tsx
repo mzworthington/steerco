@@ -55,6 +55,7 @@ describe('GoalsPage', () => {
     expect(screen.getByTestId('goals-selection')).toBeTruthy();
     expect(screen.getByTestId('goals-vision-detail')).toBeTruthy();
     expect(screen.getByTestId('goals-vision-facts')).toBeTruthy();
+    expect(screen.getByRole('heading', { name: /^goals$/i, level: 1 })).toBeTruthy();
     expect(screen.getByRole('heading', { name: /investment vision/i })).toBeTruthy();
     expect(screen.getByTestId('lvt-edit')).toBeTruthy();
     expect(screen.queryByRole('button', { name: /add product/i })).toBeNull();
@@ -151,7 +152,7 @@ describe('GoalsPage', () => {
     expect(screen.getByTestId('value-tree-canvas')).toBeTruthy();
   });
 
-  it('adds a goal from the page header and opens the new goal', async () => {
+  it('adds a goal from the vision panel and opens the new goal', async () => {
     const user = userEvent.setup();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -162,7 +163,7 @@ describe('GoalsPage', () => {
 
     const headerAdd = screen
       .getByTestId('goals-page')
-      .querySelector('.goals-header [data-testid="lvt-add-goal-open"]');
+      .querySelector('.goals-vision-branches [data-testid="lvt-add-goal-open"]');
     expect(headerAdd).toBeTruthy();
     await user.click(headerAdd!);
     expect(screen.getByTestId('lvt-add-goal-modal')).toBeTruthy();

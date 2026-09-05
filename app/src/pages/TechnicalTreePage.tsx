@@ -1,18 +1,11 @@
 import { useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { presentTechnicalTree } from '../application/presentTechnicalTree';
 import { GoalsValueTree } from '../components/goals/GoalsValueTree';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function TechnicalTreePage() {
   const { session } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(() => (session ? presentTechnicalTree(session.spec) : null), [session]);
 
@@ -22,7 +15,11 @@ export function TechnicalTreePage() {
     }
   }, [model]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   return (
     <section className="technical-page" data-testid="technical-tree">

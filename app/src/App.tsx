@@ -2,6 +2,7 @@ import { type ReactNode } from 'react';
 import { Redirect, Route, Switch, useLocation, useParams } from 'wouter';
 import { BrandMark } from './components/BrandMark';
 import { SiteFooter } from './components/SiteFooter';
+import { SkipToMain } from './components/SkipToMain';
 import { SITE_NAME } from './siteConfig';
 import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
@@ -36,6 +37,7 @@ function BetToLvtRedirect() {
 function SiteChrome({ children }: { children: ReactNode }) {
   return (
     <div className="site-shell">
+      <SkipToMain />
       <header className="site-nav">
         <div className="site-nav-inner">
           <a href="/" className="site-brand inline-flex items-center gap-2.5">
@@ -43,9 +45,6 @@ function SiteChrome({ children }: { children: ReactNode }) {
             <span>{SITE_NAME}</span>
           </a>
           <nav className="site-nav-links" aria-label="Primary">
-            <a href="/" className="site-nav-link">
-              Home
-            </a>
             <a href="/workspace" className="site-nav-link">
               Workspace
             </a>
@@ -55,7 +54,7 @@ function SiteChrome({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </header>
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <SiteFooter />
     </div>
   );

@@ -9,7 +9,7 @@ export const COLOR_TOKENS = [
   {
     name: 'Ink muted',
     cssVar: '--color-ink-muted',
-    hex: '#5c6570',
+    hex: '#3d4650',
     role: 'Secondary copy and labels',
     swatchClass: 'bg-ink-muted',
   },

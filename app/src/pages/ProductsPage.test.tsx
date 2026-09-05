@@ -68,7 +68,7 @@ describe('ProductsPage', () => {
     expect(screen.getByTestId('products-page')).toBeTruthy();
     expect(screen.getByText('Customer promises')).toBeTruthy();
 
-    await user.click(screen.getByRole('button', { name: /add product/i }));
+    await user.click(screen.getByRole('button', { name: /add brief/i }));
     const editor = screen.getByTestId('products-edit');
     expect(editor).toBeTruthy();
 

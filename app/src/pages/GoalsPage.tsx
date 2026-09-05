@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect, useLocation } from 'wouter';
 import {
   presentGoals,
   type GoalProductCard,
@@ -20,6 +20,7 @@ import { LvtAddChildForm } from '../components/lvt/LvtAddChildForm';
 import { LvtEditModal } from '../components/lvt/LvtEditModal';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 import { GoalsValueTree } from '../components/goals/GoalsValueTree';
+import { PageHeader } from '../components/PageHeader';
 
 function productsLinkedToGoal(products: GoalProductCard[], goalId: string): GoalProductCard[] {
   return products.filter((product) => product.outcomeIds.includes(goalId));
@@ -30,12 +31,6 @@ export function GoalsPage() {
   const [location, setLocation] = useLocation();
   const [editOpen, setEditOpen] = useState(false);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(() => (session ? presentGoals(session.spec) : null), [session]);
   const tree = useMemo(() => (session ? presentValueTree(session.spec, 'TB') : null), [session]);
@@ -60,7 +55,11 @@ export function GoalsPage() {
     setEditOpen(false);
   }, [selectedNode?.id]);
 
-  if (!session || !model || !tree || !selectedNode) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model || !tree || !selectedNode) return null;
 
   const selectNode = (id: string | null) => {
     if (!id) {
@@ -110,14 +109,21 @@ export function GoalsPage() {
 
   return (
     <section className="goals-page" data-testid="goals-page">
-      <header className="goals-header">
-        <div className="goals-header-copy">
-          <p className="eyebrow">Goals</p>
-          <h1 className="goals-title">Are we getting the goal?</h1>
-          <p className="goals-framing">{model.framingLine}</p>
-        </div>
-        <LvtAddChildForm kind="goal" layout="header" onAdd={addGoal} />
-      </header>
+      <PageHeader
+        eyebrow="Goals"
+        title="Goals"
+        framing={
+          <p>
+            {selectedNode.kind === 'goal'
+              ? 'Measures of success for this goal - not a status dashboard.'
+              : selectedNode.kind === 'bet'
+                ? 'What this bet must prove and who delivers it.'
+                : selectedNode.kind === 'initiative'
+                  ? 'A thin slice toward the measure of success.'
+                  : model.framingLine}
+          </p>
+        }
+      />
 
       <GoalsValueTree
         spec={session.spec}
@@ -337,6 +343,7 @@ function GoalBranchDetail({
               ? ` → ${outcome.bets.length} bet${outcome.bets.length === 1 ? '' : 's'}`
               : ''}
           </p>
+          <p className="goals-list-intro-copy">Are we getting the goal?</p>
           <h2 id={`outcome-${outcome.id}`} className="goals-section-title">
             {outcome.title}
           </h2>

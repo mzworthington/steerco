@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { takeDecisionNoteMeasured } from '../application/decisionNoteSeed';
 import {
   applyDecisionNoteDraft,
@@ -9,22 +9,16 @@ import {
   type DecisionNoteDraft,
 } from '../application/presentDecisionNotes';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
+import { PageHeader } from '../components/PageHeader';
 
 export function DecisionNotesPage() {
   const { session, setSession } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const [selectedId, setSelectedId] = useState<string | 'new' | null>(null);
   const [draft, setDraft] = useState<DecisionNoteDraft | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
   const [teamQuery, setTeamQuery] = useState('');
   const evidenceSeedApplied = useRef(false);
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   useEffect(() => {
     const seed = takeDecisionNoteMeasured();
@@ -78,7 +72,11 @@ export function DecisionNotesPage() {
       .filter((group) => group.teams.length > 0);
   }, [model, teamQuery]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   const activeCard = model.notes.find((note) => note.id === selectedId) ?? null;
 
@@ -132,14 +130,16 @@ export function DecisionNotesPage() {
 
   return (
     <section className="decision-notes-page" data-testid="decision-notes-page">
-      <header className="decision-notes-header">
-        <p className="eyebrow">Decision note · for board review</p>
-        <h1 className="decision-notes-title">Decision notes</h1>
-        <p className="decision-notes-lead">
-          One-page start / continue / stop / re-scope recommendations - lightweight governance, not
-          a slide archaeology dig.
-        </p>
-      </header>
+      <PageHeader
+        eyebrow="Decision notes"
+        title="Decision notes"
+        framing={
+          <p>
+            One-page start / continue / stop / re-scope recommendations - lightweight governance,
+            not a slide archaeology dig.
+          </p>
+        }
+      />
 
       <div className="decision-notes-layout">
         <aside className="decision-notes-list" aria-label="Saved decision notes">

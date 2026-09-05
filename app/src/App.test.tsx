@@ -25,7 +25,7 @@ describe('App routing', () => {
 
   it('shows the home page by default', () => {
     render(<App />);
-    expect(screen.getByTestId('home')).toBeTruthy();
+    expect(screen.getByRole('link', { name: /skip to main content/i })).toBeTruthy();
   });
 
   it('redirects /design-system to /docs/design-system', () => {

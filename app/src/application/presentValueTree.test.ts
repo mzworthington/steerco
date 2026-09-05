@@ -26,7 +26,7 @@ describe('presentValueTree', () => {
     ).toBe(true);
     expect(tb.edges.length).toBeGreaterThan(0);
     expect(tb.nodes.some((node) => node.kind === 'initiative')).toBe(true);
-    expect(tb.lead).toMatch(/lean value tree/i);
+    expect(tb.lead).toMatch(/select a node/i);
 
     const vision = tb.nodes.find((node) => node.id === 'vision');
     const child = tb.nodes.find((node) => node.depth === 1);

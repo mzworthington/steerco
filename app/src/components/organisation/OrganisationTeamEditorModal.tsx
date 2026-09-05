@@ -233,7 +233,7 @@ export function OrganisationTeamEditorModal({
         >
           <header className="organisation-team-modal-header">
             <h2 id={titleId} className="organisation-section-title">
-              {mode === 'create' ? 'Add a team' : 'Edit team'}
+              {mode === 'create' ? 'Add team' : 'Edit team'}
             </h2>
             <button
               type="button"
@@ -325,7 +325,7 @@ export function OrganisationTeamEditorModal({
 
           <div className="organisation-team-modal-actions">
             <button type="submit" className="btn-primary">
-              {mode === 'create' ? 'Add a team' : 'Save team'}
+              {mode === 'create' ? 'Add team' : 'Save team'}
             </button>
           </div>
 

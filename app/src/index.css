@@ -10,7 +10,7 @@
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
 
   --color-ink: #041c38;
-  --color-ink-muted: #5c6570;
+  --color-ink-muted: #3d4650;
   --color-paper: #f7f5f3;
   --color-paper-soft: #fbfaf8;
   --color-stone: #ebe7e2;
@@ -56,6 +56,10 @@
 @layer base {
   html {
     @apply scroll-smooth antialiased;
+  }
+
+  #main-content {
+    scroll-margin-top: 4.5rem;
   }
 
   body {
@@ -232,7 +236,7 @@
   }
 
   .hero-inner {
-    @apply relative mx-auto flex min-h-[calc(100dvh-4.25rem)] max-w-6xl flex-col justify-center px-5 py-16 sm:px-8 sm:py-24;
+    @apply relative mx-auto flex min-h-[calc(100dvh-4.25rem)] max-w-6xl flex-col items-start justify-center px-5 py-16 sm:px-8 sm:py-24;
   }
 
   .hero-brand {
@@ -288,15 +292,15 @@
   }
 
   .btn-primary {
-    @apply bg-ocean hover:bg-ocean-hover inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors;
+    @apply bg-ocean hover:bg-ocean-hover focus-visible:ring-ocean focus-visible:ring-offset-paper inline-flex min-h-11 [touch-action:manipulation] items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
   }
 
   .btn-secondary {
-    @apply border-line text-ink hover:border-ocean hover:text-ocean inline-flex items-center justify-center rounded-lg border bg-white px-5 py-2.5 text-sm font-semibold transition-colors;
+    @apply border-line text-ink hover:border-ocean hover:text-ocean focus-visible:ring-ocean focus-visible:ring-offset-paper inline-flex min-h-11 [touch-action:manipulation] items-center justify-center rounded-lg border bg-white px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
   }
 
   .btn-tertiary {
-    @apply text-ink-muted hover:text-ink inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors;
+    @apply text-ink-muted hover:text-ink focus-visible:ring-ocean focus-visible:ring-offset-paper inline-flex min-h-11 [touch-action:manipulation] items-center justify-center rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none;
   }
 
   .surface {
@@ -819,7 +823,7 @@
   }
 
   .steering-overview {
-    @apply mx-auto max-w-4xl;
+    @apply mx-auto max-w-5xl;
   }
 
   .steering-header {
@@ -959,7 +963,7 @@
   }
 
   .bet-detail-title-input {
-    @apply font-display text-ink mt-2 w-full border-0 bg-transparent p-0 text-3xl font-semibold tracking-tight outline-none sm:text-4xl;
+    @apply font-display text-ink focus-visible:ring-ocean mt-2 w-full border-0 bg-transparent p-0 text-3xl font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:text-4xl;
   }
 
   .bet-detail-goal {
@@ -1027,7 +1031,7 @@
   }
 
   .bet-detail-textarea {
-    @apply border-line text-ink focus:border-ocean w-full rounded-lg border bg-white px-3 py-2 text-sm leading-relaxed outline-none;
+    @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean w-full rounded-lg border bg-white px-3 py-2 text-sm leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
   }
 
   .bet-detail-mos-summary {
@@ -1075,7 +1079,7 @@
   }
 
   .bet-who-delivers-search input {
-    @apply border-line text-ink focus:border-ocean w-full rounded-lg border bg-white px-3 py-2 text-sm outline-none;
+    @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean w-full rounded-lg border bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
   }
 
   .bet-who-delivers-graph {
@@ -1243,7 +1247,7 @@
 
     input,
     select {
-      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
   }
 
@@ -1256,7 +1260,7 @@
   }
 
   .goals-header {
-    @apply flex max-w-4xl flex-col gap-4 sm:flex-row sm:items-start sm:justify-between;
+    @apply flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-start sm:justify-between;
   }
 
   .goals-header-copy {
@@ -1264,7 +1268,7 @@
   }
 
   .goals-title {
-    @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight sm:text-4xl;
+    @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight text-pretty sm:text-4xl;
   }
 
   .goals-framing {
@@ -1686,7 +1690,7 @@
     @apply text-ink flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
 
     input {
-      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
   }
 
@@ -1731,11 +1735,11 @@
   }
 
   .organisation-page {
-    @apply mx-auto max-w-4xl;
+    @apply mx-auto max-w-5xl;
   }
 
   .organisation-header {
-    @apply max-w-3xl;
+    @apply max-w-5xl;
   }
 
   .organisation-as-of {
@@ -1772,10 +1776,6 @@
 
   .organisation-header-top {
     @apply flex flex-wrap items-start justify-between gap-4;
-  }
-
-  .organisation-fab {
-    @apply bg-ocean text-paper hover:bg-ocean-hover fixed right-4 bottom-4 z-40 rounded-full px-4 py-3 text-sm font-semibold shadow-lg sm:right-6 sm:bottom-6;
   }
 
   .organisation-team-header-actions {
@@ -2060,10 +2060,28 @@
     @apply border-line border-b py-2 align-top;
   }
 
-  .sr-only {
-    @apply absolute h-px w-px overflow-hidden border-0 p-0;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
+  .skip-link {
+    @apply bg-ocean sr-only text-white focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:px-4 focus:py-2 focus:text-sm focus:font-semibold;
+  }
+
+  .page-header {
+    @apply flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-start sm:justify-between;
+  }
+
+  .page-header-copy {
+    @apply max-w-2xl min-w-0;
+  }
+
+  .page-header-title {
+    @apply font-display text-ink mt-2 text-3xl font-semibold tracking-tight text-pretty sm:text-4xl;
+  }
+
+  .page-header-framing {
+    @apply text-ink-muted mt-3 max-w-2xl text-base leading-relaxed;
+  }
+
+  .page-header-action {
+    @apply shrink-0 sm:pt-1;
   }
 
   .organisation-view-switch {
@@ -2697,7 +2715,7 @@
 
     input,
     select {
-      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
   }
 
@@ -2771,7 +2789,7 @@
     input,
     select,
     textarea {
-      @apply border-line text-ink focus:border-ocean w-full rounded-lg border bg-white px-3 py-2.5 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean w-full rounded-lg border bg-white px-3 py-2.5 text-sm font-normal tracking-normal normal-case outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
 
     textarea {
@@ -3025,7 +3043,7 @@
     input,
     select,
     textarea {
-      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
   }
 
@@ -3085,7 +3103,7 @@
     @apply text-ink flex flex-col gap-1 text-xs font-semibold tracking-wide uppercase;
 
     input {
-      @apply border-line text-ink focus:border-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none;
+      @apply border-line text-ink focus:border-ocean focus-visible:ring-ocean rounded-lg border bg-white px-3 py-2 text-sm font-normal tracking-normal normal-case outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
     }
   }
 

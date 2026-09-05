@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
-import { SITE_NAME, SITE_TAGLINE } from '../siteConfig';
+import { SITE_NAME, SITE_SUPPORTING, SITE_TAGLINE } from '../siteConfig';
 import { HomePage } from './HomePage';
 
 afterEach(() => {
@@ -13,6 +13,7 @@ describe('HomePage', () => {
     expect(screen.getByRole('heading', { name: SITE_NAME })).toBeTruthy();
     expect(screen.getByTestId('brand-reveal')).toBeTruthy();
     expect(screen.getByText(SITE_TAGLINE)).toBeTruthy();
+    expect(screen.getByText(SITE_SUPPORTING)).toBeTruthy();
   });
 
   it('links to workspace and product guide', () => {

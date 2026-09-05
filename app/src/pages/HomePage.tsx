@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 import { BrandReveal } from '../components/BrandReveal';
-import { SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN, SITE_SLUG, SITE_TAGLINE } from '../siteConfig';
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_ORIGIN,
+  SITE_SLUG,
+  SITE_SUPPORTING,
+  SITE_TAGLINE,
+} from '../siteConfig';
 
 export function HomePage() {
   useEffect(() => {
@@ -19,9 +26,8 @@ export function HomePage() {
       <div className="hero-inner">
         <BrandReveal className="items-start" wordmarkAs="h1" wordmarkClassName="hero-brand" />
         <p className="hero-lead">{SITE_TAGLINE}</p>
-        <p className="hero-supporting text-ink-muted mx-auto mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
-          Align goals, funded bets and team shape in a local workspace - then leave with a decision
-          note fit for a board pack.
+        <p className="hero-supporting text-ink-muted mt-4 max-w-xl text-base leading-relaxed sm:text-lg">
+          {SITE_SUPPORTING}
         </p>
         <div className="hero-actions">
           <a href="/workspace" className="btn-primary">

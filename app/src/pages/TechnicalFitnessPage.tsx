@@ -1,17 +1,10 @@
 import { useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { presentTechnicalFitness } from '../application/presentTechnicalFitness';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function TechnicalFitnessPage() {
   const { session } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(() => (session ? presentTechnicalFitness(session.spec) : null), [session]);
 
@@ -21,7 +14,11 @@ export function TechnicalFitnessPage() {
     }
   }, [model]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   return (
     <section className="technical-page" data-testid="technical-fitness">

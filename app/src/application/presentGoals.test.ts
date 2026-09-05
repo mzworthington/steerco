@@ -23,7 +23,7 @@ describe('presentGoals', () => {
     if (!opened.ok) return;
 
     const model = presentGoals(opened.value);
-    expect(model.framingLine).toMatch(/measures of success/i);
+    expect(model.framingLine).toMatch(/select a node/i);
     expect(model.outcomes.length).toBeGreaterThanOrEqual(2);
 
     const outcome = model.outcomes.find((item) => item.title === 'Reliable customer promises');

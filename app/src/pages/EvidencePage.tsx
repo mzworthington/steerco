@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'wouter';
+import { Redirect, useLocation } from 'wouter';
 import { stashDecisionNoteMeasured } from '../application/decisionNoteSeed';
 import {
   applyAddEvidence,
@@ -8,6 +8,7 @@ import {
   type EvidenceCard,
 } from '../application/presentEvidence';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
+import { PageHeader } from '../components/PageHeader';
 
 type MetricDraft = {
   current: string;
@@ -56,12 +57,6 @@ export function EvidencePage() {
   const [error, setError] = useState<string | null>(null);
   const [savedFlash, setSavedFlash] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
-
   const model = useMemo(() => (session ? presentEvidence(session.spec) : null), [session]);
 
   useEffect(() => {
@@ -70,7 +65,11 @@ export function EvidencePage() {
     }
   }, [model]);
 
-  if (!session || !model) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model) return null;
 
   const openAddForm = () => {
     if (model.outcomeOptions.length === 0) {
@@ -140,12 +139,11 @@ export function EvidencePage() {
 
   return (
     <section className="evidence-page" data-testid="evidence-page">
-      <header className="evidence-header">
-        <div className="evidence-header-top">
-          <div>
-            <p className="eyebrow">Evidence · adapt</p>
-            <h1 className="evidence-title">What the numbers say</h1>
-          </div>
+      <PageHeader
+        eyebrow="Evidence"
+        title="What the numbers say"
+        framing={<p>{model.framingLine}</p>}
+        action={
           <button
             type="button"
             className="btn-primary"
@@ -154,12 +152,13 @@ export function EvidencePage() {
           >
             Add evidence
           </button>
-        </div>
-        <p className="evidence-framing">{model.framingLine}</p>
+        }
+      />
+      {model.sampleBanner ? (
         <p className="evidence-banner" data-testid="evidence-sample-banner">
           {model.sampleBanner}
         </p>
-      </header>
+      ) : null}
 
       {adding && addDraft ? (
         <form

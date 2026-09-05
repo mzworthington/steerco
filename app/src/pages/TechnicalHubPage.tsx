@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 const LINKS = [
@@ -27,13 +27,6 @@ const LINKS = [
 
 export function TechnicalHubPage() {
   const { session } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const title = useMemo(
     () => session?.spec.metadata.title ?? session?.spec.metadata.name ?? 'Workspace',
@@ -44,7 +37,9 @@ export function TechnicalHubPage() {
     document.title = `Technical · ${title} · SteerCo`;
   }, [title]);
 
-  if (!session) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
 
   return (
     <section className="technical-page" data-testid="technical-hub">

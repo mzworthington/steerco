@@ -1,24 +1,19 @@
 import { useEffect } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, Redirect } from 'wouter';
 import { presentTechnicalVocabulary } from '../application/presentTechnicalVocabulary';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
 
 export function TechnicalVocabularyPage() {
   const { session } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const model = presentTechnicalVocabulary();
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   useEffect(() => {
     document.title = 'Vocabulary bridge · SteerCo';
   }, []);
 
-  if (!session) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
 
   return (
     <section className="technical-page" data-testid="technical-vocabulary">

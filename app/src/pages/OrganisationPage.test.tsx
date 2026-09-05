@@ -101,6 +101,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.getByTestId('organisation-flow-expand')).toBeTruthy();
     expect(screen.queryByTestId('organisation-flow-graph-list')).toBeNull();
     expect(screen.getByRole('link', { name: /prepare decision note/i })).toBeTruthy();
+    expect(screen.queryByTestId('organisation-add-team-fab')).toBeNull();
 
     expect(screen.getByTestId('organisation-flow-graph-detail')).toBeTruthy();
     expect(screen.getByTestId('organisation-flow-graph-canvas').parentElement).toHaveAttribute(
@@ -145,7 +146,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     );
     expect(screen.getByTestId('organisation-flow-relation-depended-on-by')).toBeChecked();
 
-    await user.click(screen.getByRole('tab', { name: /^timeline$/i }));
+    await user.click(screen.getByRole('button', { name: /^timeline$/i }));
     expect(screen.getByTestId('organisation-timeline')).toBeTruthy();
     expect(screen.getByTestId('organisation-timeline-chart')).toBeTruthy();
     expect(screen.getByTestId('organisation-timeline-capacity')).toBeTruthy();
@@ -223,7 +224,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     );
 
     await user.click(screen.getByTestId('organisation-add-team-cta'));
-    const modal = screen.getByRole('dialog', { name: 'Add a team' });
+    const modal = screen.getByRole('dialog', { name: 'Add team' });
     expect(modal).toBeTruthy();
     const typeSelect = within(modal).getByLabelText(/team type/i);
     expect(within(typeSelect).getByRole('option', { name: 'Stream-aligned' })).toBeTruthy();
@@ -240,7 +241,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
       within(modal).getByTestId('organisation-team-modal-stream'),
       'stream_returns',
     );
-    await user.click(within(modal).getByRole('button', { name: 'Add a team' }));
+    await user.click(within(modal).getByRole('button', { name: 'Add team' }));
 
     expect(screen.getByText(/team added/i)).toBeTruthy();
     expect(within(modal).getByRole('heading', { name: /edit team/i })).toBeTruthy();
@@ -273,10 +274,10 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     );
 
     await user.click(screen.getByTestId('organisation-add-team-cta'));
-    const modal = screen.getByRole('dialog', { name: 'Add a team' });
+    const modal = screen.getByRole('dialog', { name: 'Add team' });
     await user.type(within(modal).getByLabelText('Display name'), 'Ghost team');
     await user.click(within(modal).getByRole('button', { name: 'Cancel' }));
-    expect(screen.queryByRole('dialog', { name: 'Add a team' })).toBeNull();
+    expect(screen.queryByRole('dialog', { name: 'Add team' })).toBeNull();
 
     const storedAfterCancel = sessionStorage.getItem('steerco.workspace-session');
     const parsedAfterCancel = JSON.parse(storedAfterCancel ?? '{}') as {
@@ -288,9 +289,9 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     ).toBe(false);
 
     await user.click(screen.getByTestId('organisation-add-team-cta'));
-    expect(screen.getByRole('dialog', { name: 'Add a team' })).toBeTruthy();
+    expect(screen.getByRole('dialog', { name: 'Add team' })).toBeTruthy();
     await user.keyboard('{Escape}');
-    expect(screen.queryByRole('dialog', { name: 'Add a team' })).toBeNull();
+    expect(screen.queryByRole('dialog', { name: 'Add team' })).toBeNull();
   });
 
   it('edits a team and can attach a relationship from the modal', async () => {

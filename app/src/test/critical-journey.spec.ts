@@ -86,7 +86,7 @@ test.describe('Slice 1 critical journey', () => {
     await page.getByRole('link', { name: /^goals$/i }).click();
     await expect(page.getByTestId('goals-page')).toBeVisible();
 
-    await page.locator('.goals-header [data-testid="lvt-add-goal-open"]').click();
+    await page.locator('.goals-vision-branches [data-testid="lvt-add-goal-open"]').click();
     await expect(page.getByTestId('lvt-add-goal-modal')).toBeVisible();
     await page.getByTestId('lvt-add-goal-title').fill('Safer checkouts');
     await page.getByTestId('lvt-add-goal-summary').fill('Fewer payment fails at till.');
@@ -129,7 +129,7 @@ test.describe('Slice 1 critical journey', () => {
     await expect(page.getByTestId('organisation-planned-change')).toBeVisible();
 
     await page.getByTestId('organisation-add-team-cta').click();
-    const dialog = page.getByRole('dialog', { name: 'Add a team' });
+    const dialog = page.getByRole('dialog', { name: 'Add team' });
     await expect(dialog).toBeVisible();
     const addTeamAxe = await new AxeBuilder({ page })
       .include('[data-testid="organisation-team-modal"]')
@@ -139,7 +139,7 @@ test.describe('Slice 1 critical journey', () => {
     await page.keyboard.press('Escape');
     await expect(dialog).toHaveCount(0);
 
-    await page.getByRole('tab', { name: /^timeline$/i }).click();
+    await page.getByRole('button', { name: /^timeline$/i }).click();
     await expect(page.getByTestId('organisation-timeline')).toBeVisible();
     await expect(page.getByTestId('organisation-timeline-capacity')).toBeVisible();
     await expect(page.getByTestId('organisation-timeline-bands')).toBeVisible();

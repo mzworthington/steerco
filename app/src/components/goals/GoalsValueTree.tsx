@@ -135,7 +135,7 @@ export function GoalsValueTree({
         <div>
           <p className="eyebrow">Lean Value Tree</p>
           <h2 id="value-tree-heading" className="value-tree-title">
-            How investment nests
+            Vision, goals, bets
           </h2>
           <p className="value-tree-lead">{tree.lead}</p>
         </div>

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'wouter';
+import { Redirect } from 'wouter';
 import {
   boardPackSectionGroups,
   buildBoardPackPreview,
@@ -9,18 +9,12 @@ import {
   type BoardPackSelection,
 } from '../application/presentBoardPack';
 import { useWorkspaceSession } from '../workspace/WorkspaceSession';
+import { PageHeader } from '../components/PageHeader';
 
 export function ExportBoardPackPage() {
   const { session } = useWorkspaceSession();
-  const [, setLocation] = useLocation();
   const [packTitle, setPackTitle] = useState('');
   const [selection, setSelection] = useState<BoardPackSelection>(() => defaultBoardPackSelection());
-
-  useEffect(() => {
-    if (!session) {
-      setLocation('/workspace');
-    }
-  }, [session, setLocation]);
 
   const model = useMemo(() => (session ? presentBoardPack(session.spec) : null), [session]);
 
@@ -37,7 +31,11 @@ export function ExportBoardPackPage() {
     });
   }, [session, model, selection, packTitle]);
 
-  if (!session || !model || !preview) return null;
+  if (!session) {
+    return <Redirect to="/workspace" />;
+  }
+
+  if (!model || !preview) return null;
 
   const groups = boardPackSectionGroups(model.sections);
 
@@ -54,14 +52,18 @@ export function ExportBoardPackPage() {
 
   return (
     <section className="export-page" data-testid="export-board-pack-page">
-      <header className="export-header no-print">
-        <p className="eyebrow">Export · board pack</p>
-        <h1 className="export-title">Share with leadership</h1>
-        <p className="export-lead">
-          Create a board-ready PDF pack structured around how we invest, how we work, and how we
-          adapt.
-        </p>
-      </header>
+      <div className="no-print">
+        <PageHeader
+          eyebrow="Export"
+          title="Share with leadership"
+          framing={
+            <p>
+              Create a board-ready PDF pack structured around how we invest, how we work and how we
+              adapt.
+            </p>
+          }
+        />
+      </div>
 
       <div className="export-layout">
         <aside className="export-config no-print" aria-label="Board pack options">

@@ -4,6 +4,8 @@ export const SITE_NAME = 'SteerCo';
 export const SITE_DESCRIPTION =
   'SteerCo holds the investment contract: goals, funded bets, topology intent and decision notes. Local-first board pack. Not another system of record.';
 export const SITE_TAGLINE = 'Goals, funded bets and team shape in one local board pack';
+export const SITE_SUPPORTING =
+  'Local-first workspace. Leave with a decision note fit for a board pack - not another system of record.';
 /** Public site origin (no trailing slash). Used for canonical/SEO when enabled. */
 export const SITE_ORIGIN = 'https://steerco.mzworthington.co.uk';
 /** GitHub repository for this product. */

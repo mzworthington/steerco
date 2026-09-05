@@ -191,7 +191,7 @@ export function presentValueTree(
   return {
     vision: spec.spec.vision,
     orientation,
-    lead: 'Lean Value Tree: vision → goals → bets → initiatives. Select a node to open detail.',
+    lead: 'Select a node for detail.',
     nodes,
     edges,
   };

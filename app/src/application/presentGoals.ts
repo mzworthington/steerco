@@ -79,7 +79,7 @@ export function presentGoals(spec: SteerSpec): GoalsModel {
 
   return {
     workspaceTitle: spec.metadata.title ?? humanizeName(spec.metadata.name),
-    framingLine: 'Measures of success for this goal - not a status dashboard.',
+    framingLine: 'Select a node for detail. Measures of success live on each goal.',
     outcomes: spec.spec.outcomes.map((outcome) => {
       const outcomeBets = spec.spec.bets.filter((bet) => bet.outcomeId === outcome.id);
       return {
