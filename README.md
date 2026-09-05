@@ -1,10 +1,10 @@
 # SteerCo
 
-SteerCo helps product owners, product executives, and Engineering Directors keep **strategy, team shape, and evidence** aligned - and decide what to start, stop, or continue.
+SteerCo holds the **investment contract**: goals, funded bets, topology intent and decision notes. Local-first board pack. Not another system of record.
 
 ## Overview
 
-Jira plans work. Backstage catalogs systems. Directories catalog people. SteerCo holds the **investment contract**: goals, funded bets, topology intent, and decision notes - as a local-first board pack, not another system of record.
+Jira plans work. Backstage catalogs systems. Directories catalog people. SteerCo is what you steer from: start, stop or continue, with the evidence in the same pack.
 
 Product planning and specs live under [`docs/`](./docs/) and feature PRDs under [`docs/prds/`](./docs/prds/). The canonical SteerSpec schema is at [`schemas/`](./schemas/) and the sample at [`samples/`](./samples/). Implementation is under [`app/`](./app/) (`@steerco/app` + `@steerco/core`). Architecture decisions: [`docs/ADRs/`](./docs/ADRs/).
 

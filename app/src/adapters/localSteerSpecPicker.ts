@@ -107,9 +107,7 @@ async function readSteerSpecFromDirectory(
       const file = await handle.getFile();
       const text = await file.text();
       return { ok: true, text, label: directory.name, directory, fileName: name };
-    } catch {
-      // try next name
-    }
+    } catch {}
   }
   return {
     ok: false,

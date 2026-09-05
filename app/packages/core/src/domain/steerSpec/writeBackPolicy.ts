@@ -35,7 +35,6 @@ export function evaluateWriteBackPolicy(input: {
     };
   }
 
-  // group_yaml
   if (PROVIDER_PROVENANCE.has(provenance)) {
     return {
       allowed: false,
@@ -54,7 +53,6 @@ export function evaluateWriteBackPolicy(input: {
     };
   }
 
-  // catalog_file
   if (!catalogFileOptIn) {
     return {
       allowed: false,

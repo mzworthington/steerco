@@ -89,9 +89,7 @@ async function directoryHasSteerSpec(directory: FileSystemDirectoryHandle): Prom
     try {
       await directory.getFileHandle(name);
       return true;
-    } catch {
-      // try next
-    }
+    } catch {}
   }
   return false;
 }

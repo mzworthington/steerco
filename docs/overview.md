@@ -1,19 +1,19 @@
 # SteerCo
 
-SteerCo is a **steering workspace** for product owners, product executives, and Engineering Directors: align **goals**, **funded bets**, and **team shape**, then leave with a **decision note** - and export a board pack when you need to share it.
+SteerCo is a **steering workspace**: align **goals**, **funded bets** and **team shape**, then leave with a **decision note** - and export a board pack when you need to share it.
 
 ## The problem
 
-Jira holds work, Backstage holds services, and directories hold people. Nothing holds the **investment contract**, so steering meetings re-litigate priorities in slide decks.
+Jira holds work, Backstage holds services and directories hold people. Nothing holds the **investment contract**, so steering meetings re-litigate priorities in slide decks.
 
 ## What you do here
 
-| Step                        | Intent                                                        |
-| --------------------------- | ------------------------------------------------------------- |
-| Open a local workspace      | Start from a sample or a folder - no account required         |
-| Steer investment            | Goals, measures of success, and funded bets in plain language |
-| Shape how work is organised | Team Topologies intent for fast flow (not an org chart)       |
-| Decide and share            | Decision notes and a board pack for leadership                |
+| Step                        | Intent                                                       |
+| --------------------------- | ------------------------------------------------------------ |
+| Open a local workspace      | Start from a sample or a folder - no account required        |
+| Steer investment            | Goals, measures of success and funded bets in plain language |
+| Shape how work is organised | Team Topologies intent for fast flow (not an org chart)      |
+| Decide and share            | Decision notes and a board pack for leadership               |
 
 Start with the [Product guide](/docs/product-guide), or [open the workspace](/workspace) and try the sample.
 
@@ -26,7 +26,7 @@ Start with the [Product guide](/docs/product-guide), or [open the workspace](/wo
 
 ## Operating model
 
-SteerCo operationalises three complementary models without becoming a PMO or HR tool:
+SteerCo uses three complementary models without becoming a PMO or HR tool:
 
 - **EDGE** - a holistic value-driven operating model: Lean Value Tree **plus** product mindset, Tech@Core, Periodic Value Review, Integrated Backlogs, Measures of Success, and six core principles (vision → goals + measures → bets)
 - **Domain-Driven Design** (Eric Evans) - bounded contexts, ubiquitous language, and fracture planes so team shape follows problem-space boundaries
@@ -36,4 +36,4 @@ The Lean Value Tree is the strategy spine; DDD names the problem-space fences; T
 
 ## For builders
 
-Setup, architecture, CI, and ADRs live under **Build & ops** in the sidebar. They support the product; they are not the starting point for product leaders.
+Setup, architecture, CI and ADRs live under **Build & ops** in the sidebar. They support the product; they are not the starting point for product leaders.

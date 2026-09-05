@@ -66,9 +66,7 @@ export async function writeDirectoryFile(
   } catch (error) {
     try {
       await writable.abort();
-    } catch {
-      // ignore abort failures
-    }
+    } catch {}
     throw error;
   }
 }

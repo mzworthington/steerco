@@ -254,9 +254,7 @@ export function WorkspaceSessionProvider({ children }: { children: ReactNode }) 
           };
           setPersistence(activePersistence);
         }
-      } catch {
-        // fall through to download
-      }
+      } catch {}
     }
 
     const result = await saveSteerSpecToPersistence(session.spec, activePersistence, {

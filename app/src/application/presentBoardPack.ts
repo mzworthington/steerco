@@ -56,7 +56,7 @@ const SECTION_OPTIONS: BoardPackSectionOption[] = [
     label: 'Steering overview',
     pillar: 'invest',
     pillarLabel: 'Invest',
-    description: 'Vision, funded bets, and stop-ready cues',
+    description: 'Vision, funded bets and stop-ready cues',
     defaultSelected: true,
   },
   {

@@ -1,17 +1,17 @@
 # Product guide
 
-How to use SteerCo as a **steering workspace**: open a session, align investment and team shape, write a decision, and export a board pack - without signing in or touching YAML.
+How to use SteerCo as a **steering workspace**: open a session, align investment and team shape, write a decision and export a board pack - without signing in or touching YAML.
 
 Everything in Slice 1 stays on this device until you choose to connect systems later.
 
 ## Who it is for
 
-| Role                                    | What you do here                                                                                 |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| Product Owner / CPO / Head of Product   | Own goals and funded bets; decide start / stop / continue with evidence                          |
-| Engineering Director / Head of Platform | Align team shape to bets; partner on start / stop / continue with evidence                       |
-| CTO or transformation sponsor           | Read a steering view and take a decision note - no tooling jargon                                |
-| Staff+ (optional)                       | **Technical** mode for refs, fitness, vocabulary, and catalog import; default UI stays executive |
+| Role                                    | What you do here                                                                                |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Product Owner / CPO / Head of Product   | Own goals and funded bets; decide start / stop / continue with evidence                         |
+| Engineering Director / Head of Platform | Align team shape to bets; partner on start / stop / continue with evidence                      |
+| CTO or transformation sponsor           | Read a steering view and take a decision note - no tooling jargon                               |
+| Staff+ (optional)                       | **Technical** mode for refs, fitness, vocabulary and catalog import; default UI stays executive |
 
 Squad sprint planning stays in Jira. Directories stay in Entra / GitHub. Architecture diagrams stay in ArchLens. SteerCo holds the **investment contract**.
 
@@ -27,11 +27,11 @@ Recent workspaces appear on the home screen for quick return. Edits live in the 
 
 SteerCo is organised around how leadership already steers (EDGE’s invest / work / adapt loop):
 
-| Question   | Where in the app          | Intent                                                                   |
-| ---------- | ------------------------- | ------------------------------------------------------------------------ |
-| **Invest** | Steering, Goals, Evidence | Are we funding the right bets for the goals we care about?               |
-| **Work**   | How work is organised     | Is team shape set up for fast flow of value?                             |
-| **Adapt**  | Decision notes, Export    | What should we start, stop, continue, or re-scope - and can we share it? |
+| Question   | Where in the app          | Intent                                                                  |
+| ---------- | ------------------------- | ----------------------------------------------------------------------- |
+| **Invest** | Steering, Goals, Evidence | Are we funding the right bets for the goals we care about?              |
+| **Work**   | How work is organised     | Is team shape set up for fast flow of value?                            |
+| **Adapt**  | Decision notes, Export    | What should we start, stop, continue or re-scope - and can we share it? |
 
 ## EDGE beyond the Lean Value Tree
 
@@ -50,20 +50,20 @@ Full framework backlog: [Operating model alignment](./operating-model-alignment.
 
 ## Domain-Driven Design (Eric Evans)
 
-SteerCo utilises and aligns to Eric Evans’ Domain-Driven Design for **problem-space** boundaries - not as a tactical modeling CAD (that stays in code / ArchLens).
+SteerCo uses Eric Evans’ Domain-Driven Design for **problem-space** boundaries - not as a tactical modeling CAD (that stays in code / ArchLens).
 
 | DDD teaching                | In SteerCo                                                                                                                                      |
 | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Bounded context**         | A **domain** is the fence around a slice of the business (concepts + rules). Domains label related streams for filters - they are not managers. |
-| **Ubiquitous language**     | Prefer business words in domain, stream, goal, and bet titles - not “Squad 4” org-chart labels.                                                 |
+| **Ubiquitous language**     | Prefer business words in domain, stream, goal and bet titles - not “Squad 4” org-chart labels.                                                  |
 | **Fracture planes**         | When a context overloads a team, split into peer sub-domains each with its own stream-aligned team - do not stack teams under a domain boss.    |
 | **Join to Team Topologies** | Stream-aligned teams own a context slice end-to-end; platforms and enablers sit beside them as services, not above them.                        |
 
 ## Leadership outside the stream
 
-Engineering Directors and VPs still own line management, budget, and careers. That **HR structure is separate** from the delivery topology on How work is organised. In SteerCo, leaders:
+Engineering Directors and VPs still own line management, budget and careers. That **HR structure is separate** from the delivery topology on How work is organised. In SteerCo, leaders:
 
-- Keep **strategy, team shape, and evidence** aligned
+- Keep **strategy, team shape and evidence** aligned
 - Sense cognitive load and find **fracture planes**
 - Sponsor platform and enabling teams when many streams share the same drag
 - Drive the **Inverse Conway Maneuver** - reshape teams and interaction modes so the desired architecture can emerge
@@ -74,7 +74,7 @@ They do not appear as a topology type on the canvas, and they do not hand work d
 
 ### Steering overview
 
-Portfolio view of **goals** and the **bets** funded against them: status, alignment cues, portfolio mix (kind + funding stance), calm topology cues, a drag-to-reorder value stack, and links into detail. Use it to see the whole contract at a glance before drilling in.
+Portfolio view of **goals** and the **bets** funded against them: status, alignment cues, portfolio mix (kind + funding stance), calm topology cues, a drag-to-reorder value stack and links into detail. Use it to see the whole contract at a glance before drilling in.
 
 ### Goals
 

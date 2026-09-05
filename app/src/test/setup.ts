@@ -44,9 +44,7 @@ function ensureStorage(name: 'localStorage' | 'sessionStorage') {
       current.removeItem('__steerco_storage_probe__');
       return;
     }
-  } catch {
-    // fall through to polyfill
-  }
+  } catch {}
   Object.defineProperty(globalThis, name, {
     configurable: true,
     writable: true,
