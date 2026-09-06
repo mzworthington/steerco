@@ -495,4 +495,39 @@ describe('planned shape changes', () => {
     expect(storefront?.members.some((member) => member.displayName === 'Horizon hire')).toBe(false);
     expect(future.plannedChanges).toEqual([]);
   });
+
+  it('shows platform load risk at a planned X-as-a-Service as-of and not today', () => {
+    const opened = openWorkspaceFromYaml(sampleYaml);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+
+    const planned = applyAddOrganisationRelationship(opened.value, {
+      fromTeamId: 'team_pos',
+      toTeamId: 'team_fulfilil',
+      mode: 'x_as_a_service',
+      effectiveFrom: '2027-01-15',
+    });
+    expect(planned.ok).toBe(true);
+    if (!planned.ok) return;
+
+    const today = presentOrganisation(planned.value, { asOf: '2026-09-04' });
+    expect(today.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+    expect(today.overloadBanner).toBeNull();
+    expect(today.plannedChanges.some((item) => /point of sale/i.test(item.summary))).toBe(true);
+
+    const future = presentOrganisation(planned.value, { asOf: '2027-01-15' });
+    expect(future.mismatches.some((item) => item.code === 'platform_overload')).toBe(true);
+    expect(future.overloadBanner).toMatch(/fulfilment platform/i);
+    expect(future.overloadBanner).toMatch(/8 teams/i);
+
+    const changeId = today.plannedChanges.find((item) => /point of sale/i.test(item.summary))?.id;
+    expect(changeId).toBeTruthy();
+    if (!changeId) return;
+    const cleared = applyClearPlannedShapeChange(planned.value, changeId);
+    expect(cleared.ok).toBe(true);
+    if (!cleared.ok) return;
+    const afterClear = presentOrganisation(cleared.value, { asOf: '2027-01-15' });
+    expect(afterClear.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+    expect(afterClear.overloadBanner).toBeNull();
+  });
 });

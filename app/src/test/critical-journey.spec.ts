@@ -146,4 +146,38 @@ test.describe('Slice 1 critical journey', () => {
     await expect(page.getByTestId('organisation-timeline-events')).toBeVisible();
     await expect(page.getByTestId('organisation-as-of')).toBeVisible();
   });
+
+  test('planned X-as-a-Service shows platform load risk at as-of', async ({ page }) => {
+    await page.goto('/workspace?preview=1');
+    await page.getByRole('button', { name: /start from sample/i }).click();
+    await expect(page.getByTestId('steering-overview')).toBeVisible();
+
+    await page.getByRole('link', { name: /how work is organised/i }).click();
+    const planner = page.getByTestId('organisation-planned-change');
+    await expect(planner).toBeVisible();
+
+    const plannedAxe = await new AxeBuilder({ page })
+      .include('[data-testid="organisation-planned-change"]')
+      .withTags(['wcag2a', 'wcag2aa'])
+      .analyze();
+    expect(plannedAxe.violations, 'axe violations on planned shape change').toEqual([]);
+
+    await planner.getByLabel(/kind of change/i).selectOption('relationship');
+    await planner.getByLabel(/^from team$/i).selectOption('team_pos');
+    await planner.getByLabel(/^to team$/i).selectOption('team_fulfilil');
+    await planner.getByLabel(/interaction mode/i).selectOption('x_as_a_service');
+    await planner.getByLabel(/starts on/i).fill('2027-01-15');
+    await planner.getByRole('button', { name: /record planned change/i }).click();
+    await expect(page.getByTestId('organisation-planned-cue')).toBeVisible();
+    await expect(page.getByTestId('organisation-overload')).toHaveCount(0);
+
+    await page.getByLabel(/as-of date/i).fill('2027-01-15');
+    await expect(page.getByTestId('organisation-overload')).toBeVisible();
+    await expect(page.getByTestId('organisation-overload')).toContainText(/fulfilment platform/i);
+
+    await page.getByLabel(/as-of date/i).fill('2026-09-04');
+    await page.getByRole('button', { name: /clear planned change/i }).click();
+    await page.getByLabel(/as-of date/i).fill('2027-01-15');
+    await expect(page.getByTestId('organisation-overload')).toHaveCount(0);
+  });
 });
