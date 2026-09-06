@@ -170,7 +170,7 @@ export function OrganisationPage() {
       />
 
       {model.overloadBanner ? (
-        <p className="organisation-overload" role="status">
+        <p className="organisation-overload" role="status" data-testid="organisation-overload">
           {model.overloadBanner}
         </p>
       ) : null}

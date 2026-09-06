@@ -146,4 +146,39 @@ test.describe('Slice 1 critical journey', () => {
     await expect(page.getByTestId('organisation-timeline-events')).toBeVisible();
     await expect(page.getByTestId('organisation-as-of')).toBeVisible();
   });
+
+  test('planned X-as-a-Service shows platform load risk at as-of', async ({ page }) => {
+    await page.goto('/workspace?preview=1');
+    await page.getByRole('button', { name: /start from sample/i }).click();
+    await expect(page.getByTestId('steering-overview')).toBeVisible();
+
+    await page.getByRole('link', { name: /how work is organised/i }).click();
+    await expect(page.getByTestId('organisation-planned-change')).toBeVisible();
+
+    const planner = page.getByTestId('organisation-planned-change');
+    const plannerAxe = await new AxeBuilder({ page })
+      .include('[data-testid="organisation-planned-change"]')
+      .withTags(['wcag2a', 'wcag2aa'])
+      .analyze();
+    expect(plannerAxe.violations, 'axe violations on planned shape panel').toEqual([]);
+
+    await planner.getByLabel('Kind of change').selectOption('relationship');
+    await planner.getByLabel('From team').selectOption('team_pos');
+    await planner.getByLabel('To team').selectOption('team_fulfilil');
+    await planner.getByLabel('Interaction mode').selectOption('x_as_a_service');
+    await planner.getByLabel('Starts on').fill('2026-12-01');
+    await planner.getByRole('button', { name: /record planned change/i }).click();
+
+    await expect(page.getByTestId('organisation-planned-cue')).toBeVisible();
+    await expect(page.getByTestId('organisation-overload')).toHaveCount(0);
+
+    await page.getByLabel('As-of date').fill('2026-12-01');
+    await expect(page.getByTestId('organisation-overload')).toContainText(/Fulfilment platform/);
+    await expect(page.getByTestId('organisation-overload')).toContainText(/8 teams/);
+
+    await page.getByLabel('As-of date').fill('2026-09-06');
+    await page.getByRole('button', { name: /clear planned change/i }).click();
+    await page.getByLabel('As-of date').fill('2026-12-01');
+    await expect(page.getByTestId('organisation-overload')).toHaveCount(0);
+  });
 });
