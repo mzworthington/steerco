@@ -1,5 +1,86 @@
 # Changelog
 
+## 2026-09-06
+
+### 🚀 Features
+
+- *(organisation)* Add tests for platform load risk in planned X-as-a-Service scenarios
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps)* Bump @pulumi/cloudflare in /infra/cloudflare (#34)
+- *(deps-dev)* Bump @types/node in /infra/cloudflare (#33)
+- *(deps-dev)* Bump wrangler from 4.120.0 to 4.125.0 in /app (#32)
+- *(deps-dev)* Bump oxlint from 1.77.0 to 1.79.0 in /app (#31)
+- *(deps-dev)* Bump @testing-library/user-event in /app (#29)
+- *(deps-dev)* Bump knip from 6.32.0 to 6.32.2 in /app (#25)
+- *(deps-dev)* Bump @testing-library/jest-dom in /app (#24)
+- *(deps-dev)* Bump @axe-core/playwright from 4.11.1 to 4.13.0 in /app (#22)
+- *(deps)* Bump @pulumi/pulumi in /infra/cloudflare (#28)
+- *(deps)* Bump zod from 4.3.6 to 4.5.4 in /app (#19)
+- *(deps-dev)* Bump @types/node from 26.1.2 to 26.4.1 in /app (#21)
+- *(deps)* Bump mermaid from 11.16.1 to 11.17.2 in /app (#30)
+
+## 2026-09-05
+
+### 🚀 Features
+
+- Enhance accessibility and UI components across the application
+
+### 📚 Documentation
+
+- Update README, press release, and product guid
+
+## 2026-09-04
+
+### 🚀 Features
+
+- Enhance organisation timeline with capacity markers and update related tests
+- *(organisation)* Record planned team-shape changes (MZW-55)
+
+### 🐛 Bug Fixes
+
+- Pipeline fixes
+
+### 🧰 Maintenance & Dependencies
+
+- Retry pnpm setup after npm registry 504s (MZW-55)
+
+## 2026-09-03
+
+### 🚀 Features
+
+- Integrate PostHog for analytics tracking
+
+### 🐛 Bug Fixes
+
+- Skip core-js postinstall and format PostHog secrets docs
+
+### 🧰 Maintenance & Dependencies
+
+- Update documentation for Waykit integration and clarify setup instructions
+- Dependabot fixes
+- Depndabot fixes
+- Update .gitignore and AGENTS.md for MCP configuration and setup instructions
+- Add pulumi to toolchain installation in mise.toml
+- Update core-js setting in pnpm-workspace.yaml to false
+
+## 2026-09-02
+
+### 🧰 Maintenance & Dependencies
+
+- Update references from agent-lifecycle-kit to Waykit in documentation and setup script
+
+## 2026-09-01
+
+### 🚀 Features
+
+- *(cloudflare)* Inject web analytics beacon and update documentation
+
+### ⚙️ Refactoring & Performance
+
+- *(cloudflare)* Remove web analytics beacon injection and update documentation for autoInstall
+
 ## 2026-08-20
 
 ### 🚀 Features
