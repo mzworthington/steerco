@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
-import { buildPwaManifest } from './src/pwa/buildPwaManifest.ts';
+import { buildPwaManifest } from './src/pwa/buildPwaManifest';
 
 const appRoot = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(appRoot, '..');
