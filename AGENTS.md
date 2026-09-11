@@ -16,13 +16,13 @@ Start from `~/.agents/AGENTS.md` (thin index). **Do not** bulk-read philosophy, 
 | SOP / handover lookup           | kit-knowledge MCP                                                  |
 | Durable project facts           | memory MCP (glossary, SLOs, prefs — never secrets)                 |
 
-Phase handovers: `~/.agents/handover/steerlens/`.
+Phase handovers: `~/.agents/handover/steerco/`.
 
 For bugs and failed jobs, use `agent-debug`. Do not open the full feature lifecycle unless RCA needs a new capability.
 
 For non-trivial feature work, before coding: inventory tests (functional + XFN), complete an XFN apply/skip matrix, then orchestrator routing (grill if unsettled → spec → TDD → XFN → audit → release).
 
-## SteerLens notes
+## steerco notes
 
 - Planning: `docs/` (PRDs in `docs/prds/`), schema in `schemas/`, sample in `samples/`, mockups in `mockups/`.
 - App workspace: `cd app && pnpm …` (`@steerco/app` + `packages/core` → `@steerco/core`).
