@@ -1,0 +1,6 @@
+{
+  "disabled": false,
+  "lastTestOutcome": "fail",
+  "lastTestCommand": "pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run knip && pnpm test && pnpm build",
+  "lastTestAt": "2026-09-11T13:39:42.261Z"
+}

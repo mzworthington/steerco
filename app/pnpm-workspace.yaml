@@ -18,6 +18,11 @@ minimumReleaseAgeExclude:
   - lodash-es
   - yaml
   - fast-uri
+  - '@posthog/browser-common@0.8.3'
+  - '@posthog/core@1.53.2'
+  - '@posthog/types@1.411.1'
+  - posthog-js@1.430.2
+  - zod@4.6.2
 
 # Dependabot / transitive security pins (dev-tooling only).
 overrides:
