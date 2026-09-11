@@ -505,29 +505,34 @@ describe('planned shape changes', () => {
       fromTeamId: 'team_pos',
       toTeamId: 'team_fulfilil',
       mode: 'x_as_a_service',
-      effectiveFrom: '2027-01-15',
+      effectiveFrom: '2026-12-01',
     });
     expect(planned.ok).toBe(true);
     if (!planned.ok) return;
 
-    const today = presentOrganisation(planned.value, { asOf: '2026-09-04' });
-    expect(today.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+    const today = presentOrganisation(planned.value, { asOf: '2026-09-06' });
     expect(today.overloadBanner).toBeNull();
-    expect(today.plannedChanges.some((item) => /point of sale/i.test(item.summary))).toBe(true);
+    expect(today.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+    expect(today.plannedChanges.map((item) => item.summary).join(' ')).toMatch(
+      /Point of sale.*Fulfilment platform/i,
+    );
 
-    const future = presentOrganisation(planned.value, { asOf: '2027-01-15' });
+    const future = presentOrganisation(planned.value, { asOf: '2026-12-01' });
     expect(future.mismatches.some((item) => item.code === 'platform_overload')).toBe(true);
-    expect(future.overloadBanner).toMatch(/fulfilment platform/i);
+    expect(future.overloadBanner).toMatch(/Fulfilment platform/i);
     expect(future.overloadBanner).toMatch(/8 teams/i);
+    expect(future.plannedChanges).toEqual([]);
 
-    const changeId = today.plannedChanges.find((item) => /point of sale/i.test(item.summary))?.id;
+    const changeId = today.plannedChanges.find((item) => item.kind === 'relationship')?.id;
     expect(changeId).toBeTruthy();
     if (!changeId) return;
+
     const cleared = applyClearPlannedShapeChange(planned.value, changeId);
     expect(cleared.ok).toBe(true);
     if (!cleared.ok) return;
-    const afterClear = presentOrganisation(cleared.value, { asOf: '2027-01-15' });
-    expect(afterClear.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
+
+    const afterClear = presentOrganisation(cleared.value, { asOf: '2026-12-01' });
     expect(afterClear.overloadBanner).toBeNull();
+    expect(afterClear.mismatches.some((item) => item.code === 'platform_overload')).toBe(false);
   });
 });

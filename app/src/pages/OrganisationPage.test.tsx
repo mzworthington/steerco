@@ -555,7 +555,7 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
     expect(screen.queryByText('Horizon hire')).toBeNull();
   });
 
-  it('shows fulfilment load risk at a planned X-as-a-Service as-of', async () => {
+  it('shows platform load risk when as-of reaches a planned X-as-a-Service window', async () => {
     const user = setupUser();
     const opened = openWorkspaceFromYaml(sampleYaml);
     expect(opened.ok).toBe(true);
@@ -571,24 +571,25 @@ describe('OrganisationPage', { timeout: 15_000 }, () => {
 
     const planner = screen.getByTestId('organisation-planned-change');
     await user.selectOptions(within(planner).getByLabelText(/kind of change/i), 'relationship');
-    await user.selectOptions(within(planner).getByLabelText(/^from team$/i), 'team_pos');
-    await user.selectOptions(within(planner).getByLabelText(/^to team$/i), 'team_fulfilil');
+    await user.selectOptions(within(planner).getByLabelText(/from team/i), 'team_pos');
+    await user.selectOptions(within(planner).getByLabelText(/to team/i), 'team_fulfilil');
     await user.selectOptions(within(planner).getByLabelText(/interaction mode/i), 'x_as_a_service');
     fireEvent.change(within(planner).getByLabelText(/starts on/i), {
-      target: { value: '2027-01-15' },
+      target: { value: '2026-12-01' },
     });
     await user.click(within(planner).getByRole('button', { name: /record planned change/i }));
 
-    expect(screen.getByTestId('organisation-planned-cue')).toHaveTextContent(/point of sale/i);
+    expect(screen.getByTestId('organisation-planned-cue')).toHaveTextContent(/Point of sale/);
     expect(screen.queryByTestId('organisation-overload')).toBeNull();
 
-    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2027-01-15' } });
-    expect(screen.getByTestId('organisation-overload')).toHaveTextContent(/fulfilment platform/i);
-    expect(screen.getByTestId('organisation-overload')).toHaveTextContent(/8 teams/i);
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2026-12-01' } });
+    expect(screen.getByTestId('organisation-overload')).toHaveTextContent(/Fulfilment platform/);
+    expect(screen.getByTestId('organisation-overload')).toHaveTextContent(/8 teams/);
+    expect(screen.queryByTestId('organisation-planned-cue')).toBeNull();
 
-    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2026-09-04' } });
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2026-09-06' } });
     await user.click(screen.getByRole('button', { name: /clear planned change/i }));
-    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2027-01-15' } });
+    fireEvent.change(screen.getByLabelText(/as-of date/i), { target: { value: '2026-12-01' } });
     expect(screen.queryByTestId('organisation-overload')).toBeNull();
   });
 });
