@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseSteerSpecYaml, type SteerSpec } from '../../index';
+import { parseSteerSpecYaml, projectSteerSpecAsOf, type SteerSpec } from '../../index';
 import { detectSteerSpecMismatches, DEFAULT_PLATFORM_OVERLOAD_THRESHOLD } from './detectMismatches';
 
 const fixtureDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../fixtures');
@@ -52,6 +52,35 @@ describe('detectSteerSpecMismatches', () => {
     expect(overload).toBeTruthy();
     expect(overload?.headline).toMatch(/cognitive-load|flow/i);
     expect(overload?.headline).toMatch(/Fulfilment platform|8/);
+  });
+
+  it('projects platform_overload only after a planned X-as-a-Service window starts', () => {
+    const sample = loadSample();
+    const withPlanned: SteerSpec = {
+      ...sample,
+      spec: {
+        ...sample.spec,
+        relationships: [
+          ...sample.spec.relationships,
+          {
+            fromTeamId: 'team_pos',
+            toTeamId: 'team_fulfilil',
+            mode: 'x_as_a_service',
+            effectiveFrom: '2027-01-15',
+          },
+        ],
+      },
+    };
+
+    const today = detectSteerSpecMismatches(projectSteerSpecAsOf(withPlanned, '2026-09-04'));
+    expect(today.some((item) => item.code === 'platform_overload')).toBe(false);
+
+    const asPlanned = detectSteerSpecMismatches(projectSteerSpecAsOf(withPlanned, '2027-01-15'));
+    const overload = asPlanned.find((item) => item.code === 'platform_overload');
+    expect(overload).toBeTruthy();
+    expect(overload?.headline).toMatch(/cognitive-load|flow/i);
+    expect(overload?.headline).toMatch(/Fulfilment platform/);
+    expect(overload?.headline).toMatch(/8/);
   });
 
   it('flags bet_without_team when fundedTeamIds is empty', () => {
