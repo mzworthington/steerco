@@ -1,0 +1,6 @@
+{
+  "disabled": false,
+  "lastTestOutcome": "pass",
+  "lastTestCommand": "cd app && pnpm run format:check && pnpm run lint && pnpm run typecheck && pnpm run knip && CI=true pnpm exec vitest run src/infrastructure/deps/lockfileSharp.test.ts",
+  "lastTestAt": "2026-09-11T06:34:45.100Z"
+}
