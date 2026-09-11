@@ -9,8 +9,8 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - vite
   - '@pulumi/cloudflare'
-  - miniflare@5.20260801.1-alpha
-  - wrangler@4.120.0
+  - miniflare@5.20260801.1-alpha || 5.20260910.0-alpha
+  - wrangler@4.120.0 || 4.131.0
   - tmp
   - undici
   - uuid
@@ -29,3 +29,4 @@ overrides:
   yaml: '>=2.8.3'
   mermaid: '>=11.16.1'
   fast-uri: '>=4.1.3'
+  sharp: '>=0.35.4'
