@@ -9,6 +9,7 @@ dist-ssr/
 .turbo/
 .cache/
 *.tsbuildinfo
+.waykit/
 
 # Test / quality artifacts
 coverage/
