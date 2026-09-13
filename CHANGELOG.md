@@ -1,5 +1,48 @@
 # Changelog
 
+## 2026-09-12
+
+### 🐛 Bug Fixes
+
+- *(deps)* Clear Dependabot alerts for js-yaml and extract-zip (#49)
+
+### 🧰 Maintenance & Dependencies
+
+- Improve dependendabot & codeQL
+
+## 2026-09-11
+
+### 🐛 Bug Fixes
+
+- *(deps)* Bump wrangler so sharp reaches the libheif patch
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps-dev)* Bump @types/node in /infra/cloudflare (#37)
+- *(deps-dev)* Bump @testing-library/user-event in /app (#38)
+- *(deps)* Bump posthog-js from 1.425.1 to 1.426.2 in /app (#39)
+- *(deps-dev)* Bump knip from 6.32.2 to 6.34.0 in /app (#40)
+- *(deps-dev)* Bump wrangler from 4.125.0 to 4.129.0 in /app (#41)
+- *(deps)* Bump @xyflow/react from 12.10.0 to 12.11.6 in /app (#42)
+- *(deps-dev)* Bump oxlint from 1.79.0 to 1.81.0 in /app (#44)
+- *(deps-dev)* Bump vitest from 4.1.10 to 5.0.0 in /app (#45)
+- *(deps-dev)* Bump lint-staged from 17.3.0 to 17.5.0 in /app (#43)
+- *(deps-dev)* Bump @testing-library/react in /app (#47)
+- *(deps-dev)* Bump vite from 8.2.1 to 8.2.2 in /app (#46)
+- Update wk hooks
+- Steerlens updates
+- *(deps)* Bump app and Pulumi packages to latest current majors
+
+### 🧪 Testing
+
+- *(organisation)* Catalog planned XaaS load risk (MZW-55) (#36)
+
+## 2026-09-07
+
+### 🐛 Bug Fixes
+
+- Update import paths to remove file extensions in analysis package
+
 ## 2026-09-06
 
 ### 🚀 Features
