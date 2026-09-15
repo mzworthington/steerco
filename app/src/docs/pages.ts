@@ -16,6 +16,7 @@ import adr0004 from '../../../docs/ADRs/0004-suite-relationship-archlens.md?raw'
 import adr0005 from '../../../docs/ADRs/0005-provider-teams-reference-only.md?raw';
 import adr0006 from '../../../docs/ADRs/0006-steerspec-name-and-kinded-refs.md?raw';
 import adr0007 from '../../../docs/ADRs/0007-mermaid-docs-react-flow-product-graphs.md?raw';
+import { trimAffixRuns } from '../text/trimAffixRuns';
 import { titleFromMarkdown } from './presentDocsMarkdown';
 
 export type DocSection = 'product' | 'build';
@@ -112,6 +113,6 @@ export function docsNavSections(): DocNavSection[] {
 }
 
 export function findDocPage(slug: string | undefined): DocPage {
-  const key = (slug ?? '').replace(/^\/+|\/+$/g, '');
+  const key = trimAffixRuns(slug ?? '', '/');
   return DOC_PAGES.find((page) => page.slug === key) ?? DOC_PAGES[0]!;
 }

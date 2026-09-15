@@ -1049,7 +1049,6 @@ function QuickAddForm({
           value={displayName}
           onChange={(event) => setDisplayName(event.target.value)}
           placeholder="Nina Torres"
-          autoFocus
         />
       </label>
       <div className="organisation-quick-add-row">

@@ -22,6 +22,7 @@ import {
   type TeamRole,
   type TeamShapeGeometry,
 } from '@steerco/core';
+import { trimAffixRuns } from '../text/trimAffixRuns';
 import { presentTopologyTimeline, type TopologyTimelineModel } from './presentTopologyTimeline';
 
 export type OrganisationTeamRole = TeamRole;
@@ -1108,11 +1109,7 @@ function uniqueMemberId(spec: SteerSpec, displayName: string): string {
 }
 
 function slugify(value: string): string {
-  const slug = value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 40);
+  const slug = trimAffixRuns(value.toLowerCase().replace(/[^a-z0-9]+/g, '-'), '-').slice(0, 40);
   return slug || 'team';
 }
 

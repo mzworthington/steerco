@@ -235,7 +235,6 @@ export function LvtAddChildForm<K extends LvtAddChildKind>({
                     data-testid="lvt-add-goal-title"
                     onChange={(event) => setGoalDraft({ ...goalDraft, title: event.target.value })}
                     required
-                    autoFocus
                   />
                 </label>
                 <label className="goals-mos-field">
@@ -281,7 +280,6 @@ export function LvtAddChildForm<K extends LvtAddChildKind>({
                     data-testid="lvt-add-bet-title"
                     onChange={(event) => setBetDraft({ ...betDraft, title: event.target.value })}
                     required
-                    autoFocus
                   />
                 </label>
                 <label className="goals-mos-field">
@@ -480,7 +478,6 @@ export function LvtAddChildForm<K extends LvtAddChildKind>({
                       setInitiativeDraft({ ...initiativeDraft, title: event.target.value })
                     }
                     required
-                    autoFocus
                   />
                 </label>
                 <label className="goals-mos-field">

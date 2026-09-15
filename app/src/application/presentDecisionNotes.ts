@@ -1,4 +1,5 @@
 import type { SteerSpec } from '@steerco/core';
+import { trimAffixRuns } from '../text/trimAffixRuns';
 
 export type DecisionRecommendation = SteerSpec['spec']['decisionNotes'][number]['recommendation'];
 
@@ -289,11 +290,7 @@ function uniqueDecisionId(spec: SteerSpec, title: string): string {
 }
 
 function slugify(value: string): string {
-  const slug = value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 40);
+  const slug = trimAffixRuns(value.toLowerCase().replace(/[^a-z0-9]+/g, '-'), '-').slice(0, 40);
   return slug || 'note';
 }
 

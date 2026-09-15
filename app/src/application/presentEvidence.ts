@@ -1,4 +1,5 @@
 import type { SteerSpec } from '@steerco/core';
+import { trimAffixRuns } from '../text/trimAffixRuns';
 import {
   applyGoalMetricEdit,
   validateGoalMetricEdit,
@@ -214,11 +215,7 @@ function uniqueEvidenceId(spec: SteerSpec, title: string): string {
 }
 
 function slugify(value: string): string {
-  const slug = value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '')
-    .slice(0, 40);
+  const slug = trimAffixRuns(value.toLowerCase().replace(/[^a-z0-9]+/g, '_'), '_').slice(0, 40);
   return slug || 'measure';
 }
 
@@ -259,7 +256,7 @@ function buildLearning(input: {
 }
 
 function formatMeasureNumber(value: number, unit?: string): string {
-  const rendered = Number.isInteger(value) ? String(value) : String(value);
+  const rendered = String(value);
   if (!unit) return rendered;
   if (unit === 'percent') return `${rendered}%`;
   return `${rendered} ${unit}`;

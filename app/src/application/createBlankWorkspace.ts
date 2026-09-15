@@ -1,4 +1,5 @@
 import { steerSpecSchema, type SteerSpec } from '@steerco/core';
+import { trimAffixRuns } from '../text/trimAffixRuns';
 
 export const BLANK_WORKSPACE_LABEL = 'New workspace';
 
@@ -12,11 +13,7 @@ export function createBlankSteerSpec(options?: { name?: string; title?: string }
     apiVersion: 'steerco.dev/v1alpha1',
     kind: 'SteerTree',
     metadata: {
-      name:
-        name
-          .replace(/[^a-z0-9-]+/gi, '-')
-          .replace(/^-+|-+$/g, '')
-          .toLowerCase() || 'new-workspace',
+      name: trimAffixRuns(name.replace(/[^a-z0-9-]+/gi, '-').toLowerCase(), '-') || 'new-workspace',
       title,
     },
     spec: {

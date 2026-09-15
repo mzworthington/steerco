@@ -1,4 +1,5 @@
 import type { SteerSpec } from '@steerco/core';
+import { trimAffixRuns } from '../text/trimAffixRuns';
 import { presentDecisionNotes, type DecisionNoteCard } from './presentDecisionNotes';
 import { presentEvidence, type EvidenceCard } from './presentEvidence';
 import { presentOrganisation, type OrganisationModel } from './presentOrganisation';
@@ -217,11 +218,7 @@ function formatFilenameDate(date: Date): string {
 }
 
 function slugify(value: string): string {
-  const slug = value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 48);
+  const slug = trimAffixRuns(value.toLowerCase().replace(/[^a-z0-9]+/g, '-'), '-').slice(0, 48);
   return slug || 'workspace';
 }
 

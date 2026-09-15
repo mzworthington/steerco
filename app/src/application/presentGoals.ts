@@ -369,7 +369,7 @@ function parseOptionalNumber(raw: string): { ok: true; value: number | null } | 
 }
 
 function formatMeasureNumber(value: number, unit?: string): string {
-  const rendered = Number.isInteger(value) ? String(value) : String(value);
+  const rendered = String(value);
   if (!unit) return rendered;
   if (unit === 'percent') return `${rendered}%`;
   return `${rendered} ${unit}`;

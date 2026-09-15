@@ -47,7 +47,7 @@ export function MermaidPreview({ code }: MermaidPreviewProps) {
         const mermaid = await getMermaid();
         if (!active) return;
 
-        const id = `mermaid-${reactId}-${Math.random().toString(36).slice(2, 9)}`;
+        const id = `mermaid-${reactId}-${crypto.randomUUID()}`;
         const { svg: renderedSvg } = await mermaid.render(id, code);
 
         if (active) {

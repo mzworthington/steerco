@@ -1,3 +1,5 @@
+import { trimAffixRuns } from '../text/trimAffixRuns';
+
 /**
  * Resolve a Markdown href to an in-app `/docs/...` path when it targets a
  * registered docs page (including nested ADR slugs).
@@ -47,7 +49,7 @@ export function resolveDocsHref(
     joined = joined.slice(0, -'/index'.length);
   }
 
-  const slug = joined.replace(/^\/+|\/+$/g, '');
+  const slug = trimAffixRuns(joined, '/');
   if (slug === '' || knownSlugs.has(slug)) {
     return slug === '' ? '/docs' : `/docs/${slug}`;
   }

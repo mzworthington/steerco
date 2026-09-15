@@ -94,7 +94,11 @@ export function ExportBoardPackPage() {
                   </span>
                 </legend>
                 {group.sections.map((section) => (
-                  <label key={section.id} className="export-section-option">
+                  <label
+                    key={section.id}
+                    className="export-section-option"
+                    aria-label={section.label}
+                  >
                     <input
                       type="checkbox"
                       checked={selection[section.id]}
@@ -135,7 +139,6 @@ export function ExportBoardPackPage() {
           <article
             className="export-preview"
             data-testid="export-preview"
-            tabIndex={0}
             aria-label="Board pack preview document"
           >
             <header className="export-cover">
