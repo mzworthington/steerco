@@ -1,5 +1,8 @@
 # SteerCo
 
+[![CI](https://img.shields.io/github/actions/workflow/status/mzworthington/steerco/ci.yml?branch=main&style=for-the-badge&logo=github-actions&label=CI)](https://github.com/mzworthington/steerco/actions/workflows/ci.yml)
+[![Quality gate](https://img.shields.io/sonar/alert_status/mzworthington_steerco?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge&logo=sonarqube)](https://sonarcloud.io/summary/new_code?id=mzworthington_steerco)
+
 SteerCo holds the **investment contract**: goals, funded bets, topology intent and decision notes. Local-first board pack. Not another system of record.
 
 ## Overview
