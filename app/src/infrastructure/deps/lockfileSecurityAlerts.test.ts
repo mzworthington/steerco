@@ -1,35 +1,8 @@
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
+import { isAtLeast, lockfilePackageVersions, readAppLockfile } from './lockfileVersions';
 
 const PATCHED_JS_YAML_V3 = '3.15.2';
 const PATCHED_JS_YAML_V4 = '4.3.2';
-
-function lockfilePackageVersions(lockfile: string, packageName: string): string[] {
-  const pattern = new RegExp(`^ {2}${packageName.replace('/', '\\/')}@([^:]+):$`, 'gm');
-  return [
-    ...new Set(
-      [...lockfile.matchAll(pattern)].map((match) => (match[1] ?? '').replace(/\(.*\)$/, '')),
-    ),
-  ];
-}
-
-function isAtLeast(version: string, minimum: string): boolean {
-  const actual = version.split('.').map(Number);
-  const required = minimum.split('.').map(Number);
-  for (let index = 0; index < required.length; index += 1) {
-    const left = actual[index] ?? 0;
-    const right = required[index] ?? 0;
-    if (left > right) {
-      return true;
-    }
-    if (left < right) {
-      return false;
-    }
-  }
-  return true;
-}
 
 function jsYamlIsPatched(version: string): boolean {
   const major = Number(version.split('.')[0] ?? 0);
@@ -43,10 +16,7 @@ function jsYamlIsPatched(version: string): boolean {
 }
 
 describe('pnpm lockfile Dependabot security pins', () => {
-  const lockfile = readFileSync(
-    path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../../pnpm-lock.yaml'),
-    'utf8',
-  );
+  const lockfile = readAppLockfile();
 
   it('resolves js-yaml to a release that counts empty merge sources', () => {
     const versions = lockfilePackageVersions(lockfile, 'js-yaml');
