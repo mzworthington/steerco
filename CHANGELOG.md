@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-09-20
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps)* Batch dependabot updates (#63)
+
+## 2026-09-19
+
+### 🐛 Bug Fixes
+
+- *(test)* Share lockfile helpers so Sonar new-code duplication drops (#50)
+
+## 2026-09-17
+
+### 📚 Documentation
+
+- Render readme status badges via shields.io
+
+## 2026-09-15
+
+### 🐛 Bug Fixes
+
+- Clear SteerCo SonarCloud quality findings
+
 ## 2026-09-12
 
 ### 🐛 Bug Fixes
