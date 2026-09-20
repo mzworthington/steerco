@@ -31,7 +31,7 @@
     "@posthog/react": "^1.10.6",
     "@steerco/core": "workspace:*",
     "@xyflow/react": "12.11.6",
-    "mermaid": "11.17.2",
+    "mermaid": "12.0.0",
     "posthog-js": "^1.430.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
