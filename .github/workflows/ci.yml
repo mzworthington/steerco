@@ -54,6 +54,8 @@ jobs:
         working-directory: app
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm + Node
         uses: ./.github/actions/setup-pnpm-node
@@ -63,10 +65,16 @@ jobs:
           cache-dependency-path: app/pnpm-lock.yaml
 
       - name: Unit tests
-        run: pnpm test
+        run: pnpm test:coverage
 
       - name: SteerSpec mismatch check
         run: pnpm --filter @steerco/core test -- checkSteerSpec
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
 
   build:
     runs-on: ubuntu-latest

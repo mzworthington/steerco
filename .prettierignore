@@ -12,6 +12,9 @@ app/lighthouse-report
 app/.lighthouseci
 CHANGELOG.md
 docs/screenshots
+coverage/**
+app/coverage/**
+*.png
 *.png
 *.gif
 test-results/
