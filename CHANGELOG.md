@@ -1,5 +1,20 @@
 # Changelog
 
+## 2026-09-22
+
+### 🧰 Maintenance & Dependencies
+
+- Drop SonarCloud scan so automatic analysis can run
+
+## 2026-09-21
+
+### 🧰 Maintenance & Dependencies
+
+- Publish existing Vitest coverage to SonarCloud
+- Use SONARQUBE_API_TOKEN and SONARQUBE_ORG for SonarCloud
+- Keep test files out of coverage reports
+- Omit test folders, scripts, and Vite from coverage
+
 ## 2026-09-20
 
 ### 🧰 Maintenance & Dependencies
