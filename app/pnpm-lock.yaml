@@ -38,8 +38,8 @@ importers:
         specifier: 3.2.2
         version: 3.2.2(react@19.3.0)
       '@posthog/react':
-        specifier: ^1.11.0
-        version: 1.11.1(@types/react@19.3.0)(posthog-js@1.435.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+        specifier: ^1.11.3
+        version: 1.11.3(@types/react@19.3.0)(posthog-js@1.435.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@steerco/core':
         specifier: workspace:*
         version: link:packages/core
@@ -1633,8 +1633,8 @@ packages:
   '@posthog/core@1.55.2':
     resolution: {integrity: sha512-2mYxGbDmTLUs096VbcZqSWo0lrI48/BrX65r54NynxxFq409BOx9w73HxOAtOKZ1vblkdV6/GxQTe7KDcIQidg==}
 
-  '@posthog/react@1.11.1':
-    resolution: {integrity: sha512-mHpef0Vp7e0103ePGOWbFDC7v/E0jpMI8OeTCkTCsL2DSV4PP2oIcBSiuxELQPo5MV6yBpGx/hwkWNcbDp65Aw==}
+  '@posthog/react@1.11.3':
+    resolution: {integrity: sha512-YqvZb2y9jh/yW0ojUtAns0l4yHWqpu+5UeIBxZlXpyGuWlh8M4siXRMtqhEh1BKfqp6Sq2usdsQCuoUzx1QFWQ==}
     peerDependencies:
       '@types/react': '>=16.8.0'
       posthog-js: '>=1.257.2'
@@ -6972,7 +6972,7 @@ snapshots:
     dependencies:
       '@posthog/types': 1.413.0
 
-  '@posthog/react@1.11.1(@types/react@19.3.0)(posthog-js@1.435.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
+  '@posthog/react@1.11.3(@types/react@19.3.0)(posthog-js@1.435.2(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)':
     dependencies:
       posthog-js: 1.435.2(@types/react@19.3.0)(react@19.3.0)
       react: 19.3.0
