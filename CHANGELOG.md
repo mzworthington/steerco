@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-01
+
+### 🐛 Bug Fixes
+
+- *(deps)* Apply Dependabot bumps and patch open advisories
+- *(deps)* Raise transitive pins past the remaining advisories
+
 ## 2026-09-22
 
 ### 🧰 Maintenance & Dependencies
