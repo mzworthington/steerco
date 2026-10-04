@@ -31,7 +31,7 @@
     "@dnd-kit/utilities": "3.2.2",
     "@posthog/react": "^1.11.0",
     "@steerco/core": "workspace:*",
-    "@xyflow/react": "12.11.6",
+    "@xyflow/react": "12.12.0",
     "mermaid": "^12.0.0",
     "posthog-js": "^1.434.12",
     "react": "19.3.0",
