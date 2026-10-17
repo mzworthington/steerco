@@ -2,10 +2,10 @@
 STAGED=$(git diff --cached --name-only)
 
 NEEDS_CHECKS=false
-if echo "$STAGED" | grep -qE '^(app/|docs/)'; then
+if echo "$STAGED" | grep -qE '^(app/|docs/|\.github/)'; then
   NEEDS_CHECKS=true
 fi
-if echo "$STAGED" | grep -qE '\.(md|ts|tsx|css|json)$'; then
+if echo "$STAGED" | grep -qE '\.(md|ts|tsx|css|json|yml|yaml)$'; then
   NEEDS_CHECKS=true
 fi
 

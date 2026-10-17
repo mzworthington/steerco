@@ -82,6 +82,9 @@
     ],
     "../*.md": [
       "prettier --config ../.prettierrc --ignore-path ../.prettierignore --write"
+    ],
+    "../.github/**/*.{yml,yaml,md}": [
+      "prettier --config ../.prettierrc --ignore-path ../.prettierignore --write"
     ]
   }
 }
