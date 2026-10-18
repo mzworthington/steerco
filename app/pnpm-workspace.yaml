@@ -49,3 +49,4 @@ overrides:
   'js-yaml@4': '4.3.2'
   '@puppeteer/browsers': '3.2.2'
   qs: '>=6.16.0'
+  source-map-js: '>=1.2.2'
