@@ -1,5 +1,33 @@
 # Changelog
 
+## 2026-10-18
+
+### 🐛 Bug Fixes
+
+- *(deps)* Bump sharp to 0.35.5
+- *(deps)* Pin source-map-js past the indexed map DoS
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps)* Bump the npm-minor-patch group across 1 directory with 2 updates
+- *(deps)* Bump the npm-minor-patch group across 1 directory with 19 updates
+
+## 2026-10-17
+
+### 🐛 Bug Fixes
+
+- *(deps)* Land open dependency updates and patched advisories
+- Run the format gate on .github yaml
+
+### 🧰 Maintenance & Dependencies
+
+- Keep Dependabot lockfile updates with the manifest
+- *(deps-dev)* Bump vite-plugin-pwa from 1.3.0 to 2.0.0 in /app
+
+### 🎨 Styling
+
+- Format Dependabot config for the pre-commit check
+
 ## 2026-10-01
 
 ### 🐛 Bug Fixes
