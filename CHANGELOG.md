@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-24
+
+### 🐛 Bug Fixes
+
+- *(deps)* Bump postcss-selector-parser past selector parsing DoS
+- *(deps)* Pin transitive packages past the October Dependabot advisories
+
 ## 2026-10-18
 
 ### 🐛 Bug Fixes
