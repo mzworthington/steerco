@@ -1,4 +1,4 @@
-import { StrictMode, type ReactNode } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { registerServiceWorker } from './adapters/registerServiceWorker';
 import { App } from './App';
@@ -16,19 +16,16 @@ const posthogConfig = resolvePostHogConfig(import.meta.env, {
   },
 });
 
-const reactRoot = createRoot(root);
-const app = <App />;
-
-function paint(children: ReactNode) {
-  reactRoot.render(<StrictMode>{children}</StrictMode>);
-}
-
-paint(app);
+createRoot(root).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
 
 if (posthogConfig.enabled) {
   void import('./infrastructure/analytics/loadBrowserPostHog')
     .then(({ mountPostHog }) => {
-      mountPostHog(posthogConfig, paint, app);
+      mountPostHog(posthogConfig);
     })
     .catch((error: unknown) => {
       console.error(error);
