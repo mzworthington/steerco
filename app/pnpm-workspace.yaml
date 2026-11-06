@@ -56,4 +56,7 @@ overrides:
   # GHSA-3g3m-2fjr-6pw4: an aborted glob walk kept reading the filesystem.
   # Scoped so rimraf 3 can keep glob 7.
   'glob@>=9.0.0 <14.0.2': 14.0.3
+  # GHSA-gcqx-w48m-w2h4 has no release after 4.3.1. workbox-build pulls it
+  # through @rollup/plugin-node-resolve.
+  deepmerge: file:vendor/deepmerge
   source-map-js: '>=1.2.2'
