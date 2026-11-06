@@ -50,19 +50,20 @@ function usePrefersReducedMotion() {
  */
 export function BrandReveal({ className, wordmarkAs = 'p', wordmarkClassName }: BrandRevealProps) {
   const reduceMotion = usePrefersReducedMotion();
-  const [named, setNamed] = useState(reduceMotion);
   const Wordmark = wordmarkAs;
   const isPageHeading = wordmarkAs === 'h1';
+  const showNameNow = reduceMotion || isPageHeading;
+  const [named, setNamed] = useState(showNameNow);
 
   useEffect(() => {
-    if (reduceMotion) {
+    if (showNameNow) {
       setNamed(true);
       return;
     }
     setNamed(false);
     const timer = window.setTimeout(() => setNamed(true), SWEEP_MS);
     return () => window.clearTimeout(timer);
-  }, [reduceMotion]);
+  }, [showNameNow]);
 
   return (
     <div

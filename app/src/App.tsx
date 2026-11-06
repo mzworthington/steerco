@@ -1,127 +1,95 @@
-import { type ReactNode } from 'react';
-import { Redirect, Route, Switch, useLocation, useParams } from 'wouter';
+import { lazy, Suspense } from 'react';
+import { Redirect, Route, Switch, useLocation } from 'wouter';
 import { BrandMark } from './components/BrandMark';
+import { RouteBoundary, RouteFallback } from './components/RouteBoundary';
 import { SiteFooter } from './components/SiteFooter';
 import { SkipToMain } from './components/SkipToMain';
 import { SITE_NAME } from './siteConfig';
-import { DocsPage } from './pages/DocsPage';
 import { HomePage } from './pages/HomePage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { PrivacyPage } from './pages/PrivacyPage';
-import { WorkspaceHomePage } from './pages/WorkspaceHomePage';
-import { SteeringOverviewPage } from './pages/SteeringOverviewPage';
-import { DecisionNotesPage } from './pages/DecisionNotesPage';
-import { EvidencePage } from './pages/EvidencePage';
-import { ExportBoardPackPage } from './pages/ExportBoardPackPage';
-import { OrganisationPage } from './pages/OrganisationPage';
-import { GoalsPage } from './pages/GoalsPage';
-import { ProductsPage } from './pages/ProductsPage';
-import { WorkspaceDiffPage } from './pages/WorkspaceDiffPage';
-import { TechnicalHubPage } from './pages/TechnicalHubPage';
-import { TechnicalTreePage } from './pages/TechnicalTreePage';
-import { TechnicalFitnessPage } from './pages/TechnicalFitnessPage';
-import { TechnicalVocabularyPage } from './pages/TechnicalVocabularyPage';
-import { TechnicalImportPage } from './pages/TechnicalImportPage';
-import { lvtPath } from './application/lvtRoutes';
-import { WorkspaceSessionProvider } from './workspace/WorkspaceSession';
-import { WorkspaceShell } from './workspace/WorkspaceShell';
+
+const DocsPage = lazy(() =>
+  import('./pages/DocsPage').then((module) => ({ default: module.DocsPage })),
+);
+
+const WorkspaceApp = lazy(() =>
+  import('./workspace/WorkspaceApp').then((module) => ({ default: module.WorkspaceApp })),
+);
 
 function isWorkspacePath(path: string): boolean {
   return path === '/workspace' || path.startsWith('/workspace/');
 }
 
-function BetToLvtRedirect() {
-  const params = useParams<{ betId: string }>();
-  return <Redirect to={lvtPath('bet', params.betId || 'vision')} />;
-}
-
-function SiteChrome({ children }: { children: ReactNode }) {
+function SiteHeader() {
   return (
-    <div className="site-shell">
-      <SkipToMain />
-      <header className="site-nav">
-        <div className="site-nav-inner">
-          <a href="/" className="site-brand inline-flex items-center gap-2.5">
-            <BrandMark variant="mark" />
-            <span>{SITE_NAME}</span>
+    <header className="site-nav">
+      <div className="site-nav-inner">
+        <a href="/" className="site-brand inline-flex items-center gap-2.5">
+          <BrandMark variant="mark" />
+          <span>{SITE_NAME}</span>
+        </a>
+        <nav className="site-nav-links" aria-label="Primary">
+          <a href="/workspace" className="site-nav-link">
+            Workspace
           </a>
-          <nav className="site-nav-links" aria-label="Primary">
-            <a href="/workspace" className="site-nav-link">
-              Workspace
-            </a>
-            <a href="/docs" className="site-nav-link">
-              Docs
-            </a>
-          </nav>
-        </div>
-      </header>
-      <main id="main-content">{children}</main>
-      <SiteFooter />
-    </div>
+          <a href="/docs" className="site-nav-link">
+            Docs
+          </a>
+        </nav>
+      </div>
+    </header>
   );
 }
 
-function AppRoutes() {
+function PublicRoutes() {
   return (
-    <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/privacy" component={PrivacyPage} />
-      <Route path="/workspace" component={WorkspaceHomePage} />
-      <Route path="/workspace/steering" component={SteeringOverviewPage} />
-      <Route path="/workspace/lvt/:hierarchyType/:slug" component={GoalsPage} />
-      <Route path="/workspace/lvt" component={GoalsPage} />
-      <Route path="/workspace/goals">
-        <Redirect to="/workspace/lvt" />
-      </Route>
-      <Route path="/workspace/products" component={ProductsPage} />
-      <Route path="/workspace/outcomes">
-        <Redirect to="/workspace/lvt" />
-      </Route>
-      <Route path="/workspace/evidence" component={EvidencePage} />
-      <Route path="/workspace/organisation" component={OrganisationPage} />
-      <Route path="/workspace/decisions" component={DecisionNotesPage} />
-      <Route path="/workspace/diff" component={WorkspaceDiffPage} />
-      <Route path="/workspace/export" component={ExportBoardPackPage} />
-      <Route path="/workspace/technical/tree" component={TechnicalTreePage} />
-      <Route path="/workspace/technical/fitness" component={TechnicalFitnessPage} />
-      <Route path="/workspace/technical/vocabulary" component={TechnicalVocabularyPage} />
-      <Route path="/workspace/technical/import" component={TechnicalImportPage} />
-      <Route path="/workspace/technical" component={TechnicalHubPage} />
-      <Route path="/workspace/bets/:betId" component={BetToLvtRedirect} />
-      <Route path="/design-system">
-        <Redirect to="/docs/design-system" />
-      </Route>
-      <Route path="/docs/*" component={DocsPage} />
-      <Route path="/docs" component={DocsPage} />
-      <Route>
-        <section className="not-found">
-          <h1>Not found</h1>
-          <p>That page is not part of SteerCo.</p>
-          <a href="/" className="btn-secondary mt-6">
-            ← Back home
-          </a>
-        </section>
-      </Route>
-    </Switch>
+    <div className="site-shell">
+      <SkipToMain />
+      <SiteHeader />
+      <RouteBoundary>
+        <Suspense
+          fallback={
+            <main id="main-content">
+              <RouteFallback />
+            </main>
+          }
+        >
+          <main id="main-content">
+            <Switch>
+              <Route path="/" component={HomePage} />
+              <Route path="/privacy" component={PrivacyPage} />
+              <Route path="/design-system">
+                <Redirect to="/docs/design-system" />
+              </Route>
+              <Route path="/docs/*" component={DocsPage} />
+              <Route path="/docs" component={DocsPage} />
+              <Route>
+                <NotFoundPage />
+              </Route>
+            </Switch>
+          </main>
+          <SiteFooter />
+        </Suspense>
+      </RouteBoundary>
+    </div>
   );
 }
 
 function UnlockedApp() {
   const [location] = useLocation();
-  const workspace = isWorkspacePath(location);
 
-  return (
-    <WorkspaceSessionProvider>
-      {workspace ? (
-        <WorkspaceShell>
-          <AppRoutes />
-        </WorkspaceShell>
-      ) : (
-        <SiteChrome>
-          <AppRoutes />
-        </SiteChrome>
-      )}
-    </WorkspaceSessionProvider>
-  );
+  if (isWorkspacePath(location)) {
+    return (
+      <RouteBoundary>
+        <Suspense fallback={<RouteFallback />}>
+          <WorkspaceApp />
+        </Suspense>
+      </RouteBoundary>
+    );
+  }
+
+  return <PublicRoutes />;
 }
 
 export function App() {
