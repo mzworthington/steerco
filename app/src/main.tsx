@@ -1,10 +1,8 @@
-import { StrictMode, type ReactElement } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { PostHogProvider } from '@posthog/react';
-import posthog from 'posthog-js';
 import { registerServiceWorker } from './adapters/registerServiceWorker';
 import { App } from './App';
-import { initBrowserPostHog } from './infrastructure/analytics/initBrowserPostHog';
+import { AnalyticsRoot } from './infrastructure/analytics/AnalyticsRoot';
 import { resolvePostHogConfig } from './infrastructure/analytics/posthogConfig';
 import './index.css';
 
@@ -18,13 +16,12 @@ const posthogConfig = resolvePostHogConfig(import.meta.env, {
     console.error(message);
   },
 });
-initBrowserPostHog(posthogConfig);
-
-const app: ReactElement = <App />;
 
 createRoot(root).render(
   <StrictMode>
-    {posthogConfig.enabled ? <PostHogProvider client={posthog}>{app}</PostHogProvider> : app}
+    <AnalyticsRoot config={posthogConfig}>
+      <App />
+    </AnalyticsRoot>
   </StrictMode>,
 );
 

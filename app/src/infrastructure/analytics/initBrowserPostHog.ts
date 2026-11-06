@@ -1,4 +1,3 @@
-import posthog from 'posthog-js';
 import { POSTHOG_SDK_DEFAULTS, type PostHogBrowserConfig } from './posthogConfig';
 
 export type PostHogInitClient = {
@@ -16,16 +15,9 @@ export type PostHogInitClient = {
   startExceptionAutocapture?: () => void;
 };
 
-const defaultPostHogClient: PostHogInitClient = {
-  init: (apiKey, options) => posthog.init(apiKey, options),
-  startExceptionAutocapture: () => {
-    posthog.startExceptionAutocapture();
-  },
-};
-
 export function initBrowserPostHog(
   config: PostHogBrowserConfig,
-  client: PostHogInitClient = defaultPostHogClient,
+  client: PostHogInitClient,
 ): boolean {
   if (!config.enabled) {
     return false;

@@ -28,17 +28,23 @@ describe('App routing', () => {
     expect(screen.getByRole('link', { name: /skip to main content/i })).toBeTruthy();
   });
 
-  it('redirects /design-system to /docs/design-system', () => {
+  it('redirects /design-system to /docs/design-system', async () => {
     window.history.replaceState({}, '', '/design-system');
     render(<App />);
-    expect(screen.getByTestId('docs')).toBeTruthy();
+    expect(await screen.findByTestId('docs')).toBeTruthy();
     expect(window.location.pathname).toBe('/docs/design-system');
   });
 
-  it('routes nested ADR docs paths to DocsPage', () => {
+  it('routes nested ADR docs paths to DocsPage', async () => {
     window.history.replaceState({}, '', '/docs/adrs/0005-provider-teams-reference-only');
     render(<App />);
-    expect(screen.getByTestId('docs')).toBeTruthy();
+    expect(await screen.findByTestId('docs')).toBeTruthy();
     expect(screen.queryByText(/not found/i)).toBeNull();
+  });
+
+  it('keeps the home route off the workspace frame', () => {
+    render(<App />);
+    expect(screen.queryByText('Loading…')).toBeNull();
+    expect(screen.getByRole('link', { name: /skip to main content/i })).toBeTruthy();
   });
 });
