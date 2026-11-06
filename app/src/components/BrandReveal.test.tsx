@@ -30,4 +30,11 @@ describe('BrandReveal', () => {
     expect(screen.getByRole('heading', { level: 1, name: SITE_NAME })).toBeTruthy();
     expect(screen.getByTestId('brand-reveal').getAttribute('role')).toBeNull();
   });
+
+  it('paints the page heading immediately so the hero name is not delayed', () => {
+    render(<BrandReveal wordmarkAs="h1" />);
+    const heading = screen.getByRole('heading', { level: 1, name: SITE_NAME });
+    expect(heading.className).toContain('is-visible');
+    expect(screen.getByTestId('brand-reveal').getAttribute('data-named')).toBe('true');
+  });
 });

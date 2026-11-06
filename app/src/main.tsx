@@ -1,10 +1,7 @@
-import { StrictMode, type ReactElement } from 'react';
+import { StrictMode, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { PostHogProvider } from '@posthog/react';
-import posthog from 'posthog-js';
 import { registerServiceWorker } from './adapters/registerServiceWorker';
 import { App } from './App';
-import { initBrowserPostHog } from './infrastructure/analytics/initBrowserPostHog';
 import { resolvePostHogConfig } from './infrastructure/analytics/posthogConfig';
 import './index.css';
 
@@ -18,14 +15,24 @@ const posthogConfig = resolvePostHogConfig(import.meta.env, {
     console.error(message);
   },
 });
-initBrowserPostHog(posthogConfig);
 
-const app: ReactElement = <App />;
+const reactRoot = createRoot(root);
+const app = <App />;
 
-createRoot(root).render(
-  <StrictMode>
-    {posthogConfig.enabled ? <PostHogProvider client={posthog}>{app}</PostHogProvider> : app}
-  </StrictMode>,
-);
+function paint(children: ReactNode) {
+  reactRoot.render(<StrictMode>{children}</StrictMode>);
+}
+
+paint(app);
+
+if (posthogConfig.enabled) {
+  void import('./infrastructure/analytics/loadBrowserPostHog')
+    .then(({ mountPostHog }) => {
+      mountPostHog(posthogConfig, paint, app);
+    })
+    .catch((error: unknown) => {
+      console.error(error);
+    });
+}
 
 void registerServiceWorker(() => import('virtual:pwa-register'));
