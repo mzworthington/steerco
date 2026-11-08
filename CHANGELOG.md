@@ -1,5 +1,36 @@
 # Changelog
 
+## 2026-11-08
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps)* Bump @pulumi/pulumi
+- *(deps)* Bump the npm-minor-patch group in /app with 13 updates
+
+## 2026-11-06
+
+### 🐛 Bug Fixes
+
+- *(deps)* Pin minimatch 11.0.5 and replace vulnerable deepmerge
+- *(analytics)* Do not remount the app when PostHog loads
+
+### ⚙️ Refactoring & Performance
+
+- *(home)* Keep the first screen off the heavy route graph (MZW-120)
+
+## 2026-11-05
+
+### 🐛 Bug Fixes
+
+- *(deps)* Pin glob 14.0.3 and qs 6.17.1 past open advisories
+
+## 2026-11-01
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps)* Bump the npm-minor-patch group in /app with 5 updates
+- *(deps)* Bump the npm-minor-patch group
+
 ## 2026-10-25
 
 ### 🧰 Maintenance & Dependencies
