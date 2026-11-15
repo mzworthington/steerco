@@ -6,6 +6,7 @@
 
 - *(deps)* Bump @pulumi/pulumi
 - *(deps)* Bump the npm-minor-patch group in /app with 13 updates
+- *(codeql)* Add timeout-minutes to CodeQL analyze job (#106)
 
 ## 2026-11-06
 
