@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-11-15
+
+### 🧰 Maintenance & Dependencies
+
+- *(deps)* Bump the npm-minor-patch group in /app with 14 updates
+- *(deps)* Bump the npm-minor-patch group
+- *(deps-dev)* Bump jsdom from 30.1.3 to 31.0.0 in /app
+
 ## 2026-11-08
 
 ### 🧰 Maintenance & Dependencies
