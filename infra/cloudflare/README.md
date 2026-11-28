@@ -30,7 +30,7 @@ export DOMAIN=mzworthington.co.uk PAGES_HOSTNAMES=steerco.mzworthington.co.uk
 export PAGES_PROJECT_NAME=steerco PULUMI_STACK=prod
 # After destroying the old steerco stack (frees DNS), set:
 #   pulumi config set --path legacyRedirectHostnames[0] steerco.mzworthington.co.uk
-../../bin/setup-cloudflare-hosting.sh
+setup-cloudflare-hosting
 pulumi up
 ```
 
@@ -43,4 +43,4 @@ Or merge to `main`. `.github/workflows/pulumi-cloudflare.yml` is a thin caller o
 | `wrangler.toml`            | Pages project name + `app/dist` output    |
 | `app/public/_redirects`    | SPA routing                               |
 | `.github/workflows/ci.yml` | Build + wrangler deploy                   |
-| `bin/setup-cloudflare-hosting.sh` | Thin shim → edge-dns bootstrap     |
+| `setup-cloudflare-hosting` | edge-dns command on PATH |

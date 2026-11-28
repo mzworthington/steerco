@@ -270,7 +270,7 @@ export function templateCloneSnippet(): string {{
 export function hostingBootstrapSnippet(): string {{
   return [
     'cp .env.example .env   # DOMAIN, PAGES_HOSTNAMES, BWS_* or token',
-    'bin/setup-cloudflare-hosting.sh',
+    'setup-cloudflare-hosting',
   ].join('\\n');
 }}
 """
@@ -385,8 +385,8 @@ echo "  2. cd app && pnpm dev"
 echo "  3. Review app/src/siteConfig.ts (brand + origin)"
 echo "  4. When ready for hosting:"
 echo "       cp .env.example .env   # set DOMAIN, PAGES_HOSTNAMES, tokens"
-echo "       bin/setup-cloudflare-hosting.sh"
+echo "       setup-cloudflare-hosting"
 echo "       # Or: DOMAIN=example.com PAGES_HOSTNAMES=app.example.com \\"
-echo "       #     PAGES_PROJECT_NAME=$SLUG PULUMI_STACK=prod bin/setup-cloudflare-hosting.sh"
+echo "       #     PAGES_PROJECT_NAME=$SLUG PULUMI_STACK=prod setup-cloudflare-hosting"
 echo
 echo "Tip: commit the customization as its own change before feature work."

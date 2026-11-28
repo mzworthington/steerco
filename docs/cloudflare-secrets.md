@@ -18,10 +18,10 @@ export PAGES_PROJECT_NAME=steerco
 
 gh auth login
 pulumi login
-bin/setup-cloudflare-hosting.sh
+setup-cloudflare-hosting
 ```
 
-The shim downloads the canonical script from edge-dns (`EDGE_DNS_REF`, default `main`).
+`setup-cloudflare-hosting` is the edge-dns command (`cmd` on `PATH`). This repo does not keep a copy.
 
 Then `cd infra/cloudflare && pulumi up`, or merge to `main` for CI.
 
